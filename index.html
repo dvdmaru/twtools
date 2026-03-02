@@ -3,7 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>打工人工具箱</title>
+  <title>打工人工具箱 | 圖片壓縮、PDF合併、匯率換算、颱風停班停課</title>
+  <meta name="description" content="免費線上工具箱：圖片壓縮與調整尺寸、PDF合併與分割、即時匯率換算（TWD基準）、單位換算、颱風停班停課查詢、台灣彩券號碼查詢。無需安裝，開啟即用。">
+  <meta name="keywords" content="圖片壓縮,PDF合併,PDF分割,匯率換算,颱風停班,颱風停課,單位換算,台灣彩券,威力彩,大樂透,免費工具">
+  <meta name="author" content="twtools.cc">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://twtools.cc/">
+  <!-- Open Graph / 社群分享 -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://twtools.cc/">
+  <meta property="og:title" content="打工人工具箱 | 免費線上工具">
+  <meta property="og:description" content="圖片壓縮、PDF合併分割、即時匯率換算、颱風停班停課查詢，一站搞定。免費、無廣告干擾、開啟即用。">
+  <meta property="og:locale" content="zh_TW">
+  <!-- JSON-LD 結構化資料（有助 Google / AI 搜尋引擎理解網站） -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "打工人工具箱",
+    "url": "https://twtools.cc/",
+    "description": "免費線上工具：圖片壓縮、PDF合併分割、匯率換算、颱風停班停課、單位換算、台灣彩券查詢",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "inLanguage": "zh-TW",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" },
+    "featureList": [
+      "圖片壓縮與調整尺寸",
+      "PDF合併與分割",
+      "即時匯率換算（TWD基準）",
+      "颱風停班停課縣市查詢",
+      "長度與溫度單位換算",
+      "台灣彩券威力彩大樂透查詢"
+    ]
+  }
+  </script>
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -2244,6 +2277,70 @@ function TyphoonTool() {
 }
 
 // ================================================================
+// 隱私權政策頁面
+// ================================================================
+function PrivacyPage({ setPage }) {
+  const Section = ({ title, children }) => (
+    <div className="mb-8">
+      <h2 className="text-lg font-bold text-purple-300 mb-3 pb-2 border-b border-gray-800">{title}</h2>
+      <div className="text-gray-300 leading-relaxed space-y-2">{children}</div>
+    </div>
+  );
+  return (
+    <div className="max-w-3xl mx-auto px-4 py-10">
+      <button onClick={() => setPage('lottery')} className="mb-6 text-sm text-gray-500 hover:text-gray-300 flex items-center gap-1">
+        ← 返回首頁
+      </button>
+      <h1 className="text-2xl font-bold text-white mb-2">隱私權政策</h1>
+      <p className="text-sm text-gray-500 mb-8">最後更新：2026 年 3 月　·　適用網站：twtools.cc</p>
+
+      <Section title="1. 總覽">
+        <p>本網站（twtools.cc，以下稱「本站」）提供免費線上工具，包含圖片處理、PDF 工具、匯率換算、颱風停班停課查詢、單位換算及台灣彩券查詢。本站重視您的隱私，本政策說明我們如何處理與您相關的資料。</p>
+      </Section>
+
+      <Section title="2. 我們收集的資料">
+        <p><span className="text-white font-medium">本站不主動收集任何個人識別資訊</span>（如姓名、電子郵件、身分證號等）。</p>
+        <p>本站使用以下第三方服務，可能依其各自政策收集技術性資料：</p>
+        <ul className="list-disc list-inside space-y-1 mt-2 pl-2">
+          <li><span className="text-white">Google AdSense</span>：用於顯示廣告，會使用 Cookie 及裝置識別碼投放個人化廣告。</li>
+          <li><span className="text-white">Firebase Realtime Database</span>（Google）：用於即時同步匯率與颱風停班停課資料，不儲存任何個人資訊。</li>
+          <li><span className="text-white">Netlify</span>：本站的託管平台，可能記錄標準伺服器存取日誌（IP 位址、瀏覽器類型等）。</li>
+        </ul>
+      </Section>
+
+      <Section title="3. Cookie 使用">
+        <p>本站本身不設置 Cookie。Google AdSense 會設置 Cookie 以提供個人化廣告。您可透過 <a href="https://adssettings.google.com" target="_blank" rel="noopener" className="text-purple-400 underline">Google 廣告設定</a> 管理或關閉個人化廣告。</p>
+      </Section>
+
+      <Section title="4. 您上傳的檔案">
+        <p>使用圖片壓縮或 PDF 工具時，您所上傳的檔案<span className="text-white font-medium">僅在您的瀏覽器本地處理</span>，不會上傳至任何伺服器，關閉頁面後即自動清除。</p>
+      </Section>
+
+      <Section title="5. 兒童隱私">
+        <p>本站不針對 13 歲以下兒童提供服務，亦不刻意收集兒童個人資訊。</p>
+      </Section>
+
+      <Section title="6. 第三方連結">
+        <p>本站可能包含連結至台灣彩券官網、中央氣象署等外部網站，這些網站有其各自的隱私權政策，本站不對其負責。</p>
+      </Section>
+
+      <Section title="7. 政策變更">
+        <p>本政策如有修訂，將更新本頁面的日期。建議您定期查閱本頁面。</p>
+      </Section>
+
+      <Section title="8. 聯絡我們">
+        <p>若您對本隱私權政策有任何疑問，歡迎透過本站頁面上的意見回饋管道聯絡我們。</p>
+      </Section>
+
+      <div className="mt-10 pt-6 border-t border-gray-800 text-center text-xs text-gray-600">
+        © 2026 twtools.cc　·
+        <button onClick={() => setPage('lottery')} className="underline hover:text-gray-400">返回工具箱</button>
+      </div>
+    </div>
+  );
+}
+
+// ================================================================
 
 let _db = null;
 (function initFirebase() {
@@ -2424,10 +2521,16 @@ function App() {
             {/* 廣告版位 2：內容下方，頁尾上方（橫幅廣告）*/}
             <AdBanner slot="2222222222" />
 
-            <footer className="text-center text-xs text-gray-800 py-4 border-t border-gray-900">
-              資料參考：
-              <a href="https://www.taiwanlottery.com" target="_blank" rel="noopener" className="text-gray-700 underline">台灣彩券官網</a>
-              　·　本站僅供娛樂，不構成任何財務建議
+            <footer className="text-center text-xs text-gray-800 py-4 border-t border-gray-900 space-y-1">
+              <div>
+                資料參考：
+                <a href="https://www.taiwanlottery.com" target="_blank" rel="noopener" className="text-gray-700 underline">台灣彩券官網</a>
+                　·　本站僅供娛樂，不構成任何財務建議
+              </div>
+              <div>
+                <button onClick={() => setPage('privacy')} className="text-gray-700 underline hover:text-gray-500">隱私權政策</button>
+                　·　© 2026 twtools.cc
+              </div>
             </footer>
 
             {showEdit && (
@@ -2447,6 +2550,7 @@ function App() {
         {page === 'currency' && <CurrencyTool />}
         {page === 'unit'     && <UnitTool />}
         {page === 'typhoon'  && <TyphoonTool />}
+        {page === 'privacy'  && <PrivacyPage setPage={setPage} />}
 
       </div>
     </div>
