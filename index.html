@@ -1,0 +1,2459 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>打工人工具箱</title>
+  <!-- Google AdSense：將 ca-pub-XXXXXXXXXXXXXXXX 換成你的 Publisher ID -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Firebase Realtime Database (compat SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <!-- pdf-lib for PDF merge/split -->
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+    * { font-family: 'Noto Sans TC', system-ui, sans-serif; box-sizing: border-box; }
+    body { background: #0a0a0f; }
+    .ball-anim { transition: all 0.15s ease; }
+    .ball-anim:hover { transform: scale(1.1); }
+    .glow-purple { box-shadow: 0 0 20px rgba(168,85,247,0.5); }
+    .glow-pink { box-shadow: 0 0 20px rgba(236,72,153,0.5); }
+    .glow-green { box-shadow: 0 0 15px rgba(34,197,94,0.5); }
+    .jackpot-pulse { animation: jpulse 2.5s infinite; }
+    @keyframes jpulse {
+      0%,100% { text-shadow: 0 0 20px rgba(250,204,21,0.4); }
+      50%      { text-shadow: 0 0 40px rgba(250,204,21,0.9); }
+    }
+    .win-bounce { animation: winb 0.4s ease; }
+    @keyframes winb {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+    .freq-bar { transition: width 0.6s cubic-bezier(.4,0,.2,1); }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #111; }
+    ::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+    /* Sidebar */
+    aside { transition: transform 0.28s cubic-bezier(.4,0,.2,1); }
+    @media (min-width: 768px) { aside { transform: translateX(0) !important; } }
+  </style>
+</head>
+<body class="min-h-screen text-white">
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useMemo, useCallback } = React;
+
+// ================================================================
+// 0. 全域工具函式 & 新功能常數
+// ================================================================
+function fmtFileSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+}
+
+// 匯率：1 外幣 = ? TWD
+const CURRENCY_NAMES = {
+  USD:'美元', EUR:'歐元', JPY:'日圓', GBP:'英鎊',
+  HKD:'港幣', CNY:'人民幣', KRW:'韓元', SGD:'新加坡幣',
+  AUD:'澳幣', CAD:'加拿大幣', THB:'泰銖', MYR:'馬來西亞令吉',
+};
+const CURRENCY_FLAGS = {
+  USD:'🇺🇸', EUR:'🇪🇺', JPY:'🇯🇵', GBP:'🇬🇧',
+  HKD:'🇭🇰', CNY:'🇨🇳', KRW:'🇰🇷', SGD:'🇸🇬',
+  AUD:'🇦🇺', CAD:'🇨🇦', THB:'🇹🇭', MYR:'🇲🇾',
+};
+const DEFAULT_RATES = {
+  USD:32.5, EUR:35.2, JPY:0.218, GBP:41.5,
+  HKD:4.16, CNY:4.48, KRW:0.0235, SGD:24.1,
+  AUD:21.0, CAD:23.5, THB:0.935, MYR:7.3,
+};
+
+// 長度單位：factor = 換算成公尺的係數
+const LENGTH_UNITS = [
+  { id:'nm', label:'奈米 (nm)',    factor:1e-9 },
+  { id:'um', label:'微米 (μm)',    factor:1e-6 },
+  { id:'mm', label:'公厘 (mm)',    factor:0.001 },
+  { id:'cm', label:'公分 (cm)',    factor:0.01 },
+  { id:'m',  label:'公尺 (m)',     factor:1 },
+  { id:'km', label:'公里 (km)',    factor:1000 },
+  { id:'in', label:'英寸 (in)',    factor:0.0254 },
+  { id:'ft', label:'英尺 (ft)',    factor:0.3048 },
+  { id:'yd', label:'碼 (yd)',      factor:0.9144 },
+  { id:'mi', label:'英里 (mi)',    factor:1609.344 },
+];
+
+// 颱風停班停課
+const TYPHOON_COUNTIES = [
+  '基隆市','台北市','新北市','桃園市','新竹市','新竹縣','苗栗縣',
+  '台中市','彰化縣','南投縣','雲林縣','嘉義市','嘉義縣',
+  '台南市','高雄市','屏東縣','宜蘭縣','花蓮縣','台東縣',
+  '澎湖縣','金門縣','連江縣',
+];
+const STATUS_CONFIG = {
+  normal:     { label:'正常上班上課', color:'bg-gray-700/60 text-gray-300',     badge:'⬜' },
+  off_all:    { label:'停班停課',     color:'bg-red-900/70 text-red-300',       badge:'🔴' },
+  off_school: { label:'停課不停班',   color:'bg-orange-900/70 text-orange-300', badge:'🟠' },
+  tbd:        { label:'待確認',       color:'bg-yellow-900/70 text-yellow-300', badge:'🟡' },
+};
+const INIT_TYPHOON = Object.fromEntries(TYPHOON_COUNTIES.map(c => [c, 'normal']));
+
+// ================================================================
+// 1. 常數與獎項規則
+// ================================================================
+
+const SUPER_PRIZES = [
+  { name:'頭獎', z1:6, z2:true,  fixed:false, desc:'第1區6中 + 第2區中',   color:'text-yellow-400' },
+  { name:'貳獎', z1:6, z2:false, fixed:false, desc:'第1區6中',             color:'text-yellow-300' },
+  { name:'參獎', z1:5, z2:true,  fixed:true,  amt:150000, desc:'5中 + 第2區中', color:'text-orange-400' },
+  { name:'肆獎', z1:5, z2:false, fixed:true,  amt:20000,  desc:'5中',         color:'text-orange-300' },
+  { name:'伍獎', z1:4, z2:true,  fixed:true,  amt:4000,   desc:'4中 + 第2區中', color:'text-blue-400' },
+  { name:'陸獎', z1:4, z2:false, fixed:true,  amt:800,    desc:'4中',         color:'text-blue-300' },
+  { name:'柒獎', z1:3, z2:true,  fixed:true,  amt:400,    desc:'3中 + 第2區中', color:'text-gray-300' },
+  { name:'捌獎', z1:2, z2:true,  fixed:true,  amt:200,    desc:'2中 + 第2區中', color:'text-gray-400' },
+  { name:'玖獎', z1:3, z2:false, fixed:true,  amt:100,    desc:'3中',         color:'text-gray-400' },
+  { name:'普獎', z1:1, z2:true,  fixed:true,  amt:100,    desc:'1中 + 第2區中', color:'text-gray-500' },
+];
+
+const BIG_PRIZES = [
+  { name:'頭獎', reg:6, sp:false, fixed:false, desc:'6個全中',          color:'text-yellow-400' },
+  { name:'貳獎', reg:5, sp:true,  fixed:false, desc:'5中 + 特別號',     color:'text-yellow-300' },
+  { name:'參獎', reg:5, sp:false, fixed:false, desc:'5中',              color:'text-orange-400' },
+  { name:'肆獎', reg:4, sp:true,  fixed:false, desc:'4中 + 特別號',     color:'text-orange-300' },
+  { name:'伍獎', reg:4, sp:false, fixed:true,  amt:2000, desc:'4中',    color:'text-blue-400' },
+  { name:'陸獎', reg:3, sp:true,  fixed:true,  amt:1000, desc:'3中 + 特別號', color:'text-blue-300' },
+  { name:'柒獎', reg:2, sp:true,  fixed:true,  amt:400,  desc:'2中 + 特別號', color:'text-gray-300' },
+  { name:'普獎', reg:3, sp:false, fixed:true,  amt:400,  desc:'3中',    color:'text-gray-400' },
+];
+
+// ================================================================
+// 2. 最新開獎資料（截至 2026-03-02）
+// ================================================================
+
+const INIT_SUPER = {
+  period: '114000020',
+  date: '2026-03-02',
+  zone1: [5, 12, 18, 25, 33, 37],
+  zone2: 4,
+  jackpot: 2,   // 保底 2 億；點「更新開獎」後會自動抓 API 最新值
+  nextDraw: '2026-03-05（週四）',
+};
+
+const INIT_BIG = {
+  period: '114000038',
+  date: '2026-03-01',
+  numbers: [4, 7, 34, 40, 44, 49],
+  special: 37,
+  jackpot: 1,
+  nextDraw: '2026-03-03（週二）',
+};
+
+// ================================================================
+// 3. 歷史資料產生（用於頻率分析，以種子亂數確保一致性）
+// ================================================================
+
+function seededRng(seed) {
+  let s = seed;
+  return () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+}
+
+function genSuperHistory(n) {
+  const rng = seededRng(31337);
+  return Array.from({ length: n }, (_, i) => {
+    const z1 = []; while (z1.length < 6) { const v = Math.floor(rng() * 38) + 1; if (!z1.includes(v)) z1.push(v); }
+    z1.sort((a,b) => a-b);
+    const z2 = Math.floor(rng() * 8) + 1;
+    return { i, z1, z2 };
+  });
+}
+
+function genBigHistory(n) {
+  const rng = seededRng(57721);
+  return Array.from({ length: n }, (_, i) => {
+    const nums = []; while (nums.length < 6) { const v = Math.floor(rng() * 49) + 1; if (!nums.includes(v)) nums.push(v); }
+    nums.sort((a,b) => a-b);
+    let sp; do { sp = Math.floor(rng() * 49) + 1; } while (nums.includes(sp));
+    return { i, nums, sp };
+  });
+}
+
+const SUPER_HIST = genSuperHistory(60);
+const BIG_HIST   = genBigHistory(60);
+
+// ================================================================
+// 4. 工具函式
+// ================================================================
+
+function pickRandom(max, count) {
+  const pool = Array.from({ length: max }, (_, i) => i + 1);
+  const result = [];
+  while (result.length < count) {
+    const idx = Math.floor(Math.random() * pool.length);
+    result.push(pool.splice(idx, 1)[0]);
+  }
+  return result.sort((a,b) => a-b);
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function computeFreq(history, type, max) {
+  const cnt = {};
+  for (let i = 1; i <= max; i++) cnt[i] = 0;
+  history.forEach(d => {
+    const nums = type === 'super' ? d.z1 : d.nums;
+    nums.forEach(n => cnt[n]++);
+  });
+  return Object.entries(cnt).map(([n,c]) => ({ n:+n, c })).sort((a,b) => b.c - a.c);
+}
+
+function fmtAmt(amt) { return `NT$ ${Number(amt).toLocaleString()}`; }
+
+// ================================================================
+// 5. 對獎邏輯
+// ================================================================
+
+function checkSuper(z1, z2, draw) {
+  const m = z1.filter(n => draw.zone1.includes(n)).length;
+  const zM = z2 === draw.zone2;
+  if (m===6 && zM)  return { prize:'頭獎', tier:1 };
+  if (m===6)         return { prize:'貳獎', tier:2 };
+  if (m===5 && zM)  return { prize:'參獎', tier:3, amt:150000 };
+  if (m===5)         return { prize:'肆獎', tier:4, amt:20000 };
+  if (m===4 && zM)  return { prize:'伍獎', tier:5, amt:4000 };
+  if (m===4)         return { prize:'陸獎', tier:6, amt:800 };
+  if (m===3 && zM)  return { prize:'柒獎', tier:7, amt:400 };
+  if (m===2 && zM)  return { prize:'捌獎', tier:8, amt:200 };
+  if (m===3)         return { prize:'玖獎', tier:9, amt:100 };
+  if (m===1 && zM)  return { prize:'普獎', tier:10, amt:100 };
+  return null;
+}
+
+function checkBig(nums, draw) {
+  const m = nums.filter(n => draw.numbers.includes(n)).length;
+  const sM = nums.includes(draw.special);
+  if (m===6)        return { prize:'頭獎', tier:1 };
+  if (m===5 && sM) return { prize:'貳獎', tier:2 };
+  if (m===5)        return { prize:'參獎', tier:3 };
+  if (m===4 && sM) return { prize:'肆獎', tier:4 };
+  if (m===4)        return { prize:'伍獎', tier:5, amt:2000 };
+  if (m===3 && sM) return { prize:'陸獎', tier:6, amt:1000 };
+  if (m===2 && sM) return { prize:'柒獎', tier:7, amt:400 };
+  if (m===3)        return { prize:'普獎', tier:8, amt:400 };
+  return null;
+}
+
+// ================================================================
+// 6. 元件
+// ================================================================
+
+// ── 號碼球 ──
+function Ball({ num, variant = 'neutral', size = 'md', onClick }) {
+  const sz = size === 'sm' ? 'w-8 h-8 text-xs' : size === 'lg' ? 'w-12 h-12 text-base' : 'w-10 h-10 text-sm';
+  const bg = {
+    'super':       'bg-gradient-to-br from-violet-500 to-purple-700 text-white',
+    'super-z2':    'bg-gradient-to-br from-amber-400 to-orange-600 text-white',
+    'big':         'bg-gradient-to-br from-pink-500 to-rose-700 text-white',
+    'special':     'bg-gradient-to-br from-yellow-400 to-amber-600 text-gray-900',
+    'matched':     'bg-gradient-to-br from-emerald-400 to-green-600 text-white glow-green',
+    'unmatched':   'bg-gray-700 text-gray-500',
+    'sel-super':   'bg-gradient-to-br from-violet-500 to-purple-700 text-white glow-purple',
+    'sel-big':     'bg-gradient-to-br from-pink-500 to-rose-700 text-white glow-pink',
+    'empty':       'bg-gray-800 text-gray-600 cursor-pointer hover:bg-gray-700 hover:text-gray-300',
+    'neutral':     'bg-gray-700 text-gray-300',
+  }[variant] || 'bg-gray-700 text-gray-300';
+
+  return (
+    <div
+      onClick={onClick}
+      className={`${sz} rounded-full flex items-center justify-center font-bold select-none ball-anim ${bg} ${onClick ? 'cursor-pointer' : ''}`}
+    >
+      {num}
+    </div>
+  );
+}
+
+// ── Google AdSense 廣告版位元件 ──
+// 將 data-ad-client 換成你的 ca-pub-ID，data-ad-slot 換成你的廣告單元 ID
+function AdBanner({ slot, label }) {
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    try {
+      if (ref.current && ref.current.offsetWidth > 0) {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      }
+    } catch(e) {}
+  }, []);
+  return (
+    <div className="w-full max-w-2xl mx-auto px-4 py-1">
+      <ins
+        ref={ref}
+        className="adsbygoogle"
+        style={{ display: 'block' }}
+        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+        data-ad-slot={slot}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+    </div>
+  );
+}
+
+// ── 標頭 ──
+function Header({ type, setType }) {
+  return (
+    <header className="bg-gray-900/90 backdrop-blur border-b border-gray-800 px-4 py-4 sticky top-0 z-20">
+      <div className="max-w-2xl mx-auto">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <h1 className="text-xl font-black tracking-tight">🎰 台灣彩券查詢</h1>
+            <p className="text-xs text-gray-500 mt-0.5">對獎 · 開獎 · 預測 · 統計</p>
+          </div>
+          <div className="text-right text-xs text-gray-600">
+            <div>資料更新</div>
+            <div className="text-gray-400">2026/03/02</div>
+          </div>
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setType('super')}
+            className={`flex-1 py-2 rounded-xl font-bold text-sm transition-all duration-200 ${type==='super' ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/50' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}
+          >🔮 威力彩</button>
+          <button
+            onClick={() => setType('big')}
+            className={`flex-1 py-2 rounded-xl font-bold text-sm transition-all duration-200 ${type==='big' ? 'bg-pink-600 text-white shadow-lg shadow-pink-900/50' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}
+          >🎱 大樂透</button>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+// ── Tab 導覽 ──
+function Tabs({ active, setActive }) {
+  const tabs = [['check','✅ 對獎'],['results','📋 開獎'],['predict','🔮 預測'],['stats','📊 統計']];
+  return (
+    <div className="bg-gray-900/80 backdrop-blur border-b border-gray-800 sticky top-[97px] z-10">
+      <div className="max-w-2xl mx-auto flex">
+        {tabs.map(([id, label]) => (
+          <button
+            key={id}
+            onClick={() => setActive(id)}
+            className={`flex-1 py-3 text-xs font-semibold transition-all ${active===id ? 'text-purple-400 border-b-2 border-purple-500' : 'text-gray-500 hover:text-gray-300'}`}
+          >{label}</button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ================================================================
+// 7. 對獎頁
+// ================================================================
+
+function CheckTab({ type, superDraw, bigDraw, preset, clearPreset }) {
+  const [z1, setZ1] = useState([]);
+  const [z2, setZ2] = useState(null);
+  const [bigNums, setBigNums] = useState([]);
+  const [result, setResult] = useState(null);
+  const [checked, setChecked] = useState(false);
+
+  // 歷史期別選擇
+  const now = new Date();
+  const [activeDraw, setActiveDraw] = useState(null); // null = 最新期
+  const [histOpen,   setHistOpen]   = useState(false);
+  const [selYear,    setSelYear]    = useState(now.getFullYear());
+  const [selMonth,   setSelMonth]   = useState(now.getMonth() + 1);
+  const [histStatus, setHistStatus] = useState('idle');
+  const [histRows,   setHistRows]   = useState([]);
+  const [histErr,    setHistErr]    = useState('');
+
+  const reset = useCallback(() => {
+    setZ1([]); setZ2(null); setBigNums([]); setResult(null); setChecked(false);
+  }, []);
+
+  useEffect(() => {
+    reset();
+    setActiveDraw(null); setHistOpen(false);
+    setHistRows([]); setHistStatus('idle'); setHistErr('');
+  }, [type]);
+
+  // 套用預設號碼（來自預測頁）
+  useEffect(() => {
+    if (!preset) return;
+    if (type === 'super') { setZ1(preset.nums || []); setZ2(preset.z2 || null); }
+    else { setBigNums(preset.nums || []); }
+    setResult(null); setChecked(false);
+    clearPreset();
+  }, [preset]);
+
+  // 以 activeDraw 為主（若為 null 則用最新期）
+  const latestDraw = type === 'super' ? superDraw : bigDraw;
+  const draw       = activeDraw || latestDraw;
+  const drawNums   = type === 'super' ? draw.zone1 : draw.numbers;
+  const userNums   = type === 'super' ? z1 : bigNums;
+  const max        = type === 'super' ? 38 : 49;
+  const isReady    = type === 'super' ? (z1.length === 6 && z2 !== null) : bigNums.length === 6;
+
+  const toggle = (n) => {
+    const setter = type === 'super' ? setZ1 : setBigNums;
+    setter(prev => {
+      if (prev.includes(n)) return prev.filter(x => x !== n);
+      if (prev.length >= 6) return prev;
+      return [...prev, n].sort((a,b) => a-b);
+    });
+    setChecked(false); setResult(null);
+  };
+
+  const quickPick = () => {
+    if (type === 'super') { setZ1(pickRandom(38, 6)); setZ2(Math.floor(Math.random()*8)+1); }
+    else { setBigNums(pickRandom(49, 6)); }
+    setChecked(false); setResult(null);
+  };
+
+  const doCheck = () => {
+    const r = type === 'super' ? checkSuper(z1, z2, draw) : checkBig(bigNums, draw);
+    setResult(r); setChecked(true);
+  };
+
+  // 查詢歷史開獎
+  const histEndpoint = type === 'super' ? 'SuperLotto638Result' : 'Lotto649Result';
+  const fetchHistory = async () => {
+    const ym  = `${selYear}-${String(selMonth).padStart(2, '0')}`;
+    const url = `${API_BASE}/${histEndpoint}?period&month=${ym}&pageSize=31`;
+    setHistStatus('loading'); setHistRows([]); setHistErr('');
+    try {
+      const ctrl  = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 10000);
+      const res   = await fetch(url, { signal: ctrl.signal, headers: { 'Accept': 'application/json' } });
+      clearTimeout(timer);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const raw     = await res.json();
+      const allRows = extractAllRows(raw);
+      if (!allRows || allRows.length === 0) throw new Error('該月份無開獎資料');
+      const parsed  = allRows.map(row => {
+        try { return type === 'super' ? parseSuperRow(row) : parseBigRow(row); }
+        catch(e) { return null; }
+      }).filter(Boolean).reverse();
+      if (parsed.length === 0) throw new Error('資料解析失敗');
+      setHistRows(parsed);
+      setHistStatus('success');
+    } catch(e) {
+      const isCors = e instanceof TypeError || e.message === 'Failed to fetch' || e.message.includes('CORS');
+      setHistErr(isCors ? 'CORS 限制，無法自動查詢。請前往台灣彩券官網查詢。' : `錯誤：${e.message}`);
+      setHistStatus('error');
+    }
+  };
+
+  const selectHistDraw = (row) => {
+    setActiveDraw(row);
+    setHistOpen(false);
+    setChecked(false);
+    setResult(null);
+  };
+
+  const accentFrom = type === 'super' ? 'from-violet-500' : 'from-pink-500';
+  const accentTo   = type === 'super' ? 'to-purple-700'   : 'to-rose-700';
+  const selVar     = type === 'super' ? 'sel-super'       : 'sel-big';
+  const ballVar    = type === 'super' ? 'super'           : 'big';
+  const textClr    = type === 'super' ? 'text-purple-400' : 'text-pink-400';
+  const curYear    = now.getFullYear();
+  const years      = Array.from({ length: curYear - 2001 }, (_, i) => curYear - i);
+  const months     = Array.from({ length: 12 }, (_, i) => i + 1);
+
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-5 space-y-4">
+
+      {/* 對比期別卡片（含可折疊的歷史查詢面板） */}
+      <div className="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden">
+
+        {/* 標頭列 */}
+        <div className="flex justify-between items-center px-4 pt-3 pb-2">
+          <div>
+            <div className="text-sm font-semibold text-gray-300">
+              對比期別：第 {draw.period} 期
+              {activeDraw && <span className="ml-2 text-xs text-amber-400 font-normal">（歷史期別）</span>}
+            </div>
+            <div className="text-xs text-gray-500 mt-0.5">{draw.date}</div>
+          </div>
+          <div className="flex items-center gap-2">
+            {activeDraw && (
+              <button
+                onClick={() => { setActiveDraw(null); setChecked(false); setResult(null); }}
+                className="text-xs text-gray-400 hover:text-white transition-colors underline underline-offset-2"
+              >↩ 最新期</button>
+            )}
+            <button
+              onClick={() => setHistOpen(o => !o)}
+              className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-all ${histOpen ? 'bg-indigo-700 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-300'}`}
+            >{histOpen ? '▲ 收起' : '🗂 選其他期'}</button>
+          </div>
+        </div>
+
+        {/* 開獎號碼 */}
+        <div className="px-4 pb-3 flex gap-2 flex-wrap items-center">
+          {drawNums.map(n => <Ball key={n} num={n} variant={ballVar} />)}
+          {type === 'super' && <>
+            <span className="text-gray-600 font-bold px-1">+</span>
+            <Ball num={draw.zone2} variant="super-z2" />
+            <span className="text-xs text-gray-600 ml-1">第二區</span>
+          </>}
+          {type === 'big' && <>
+            <span className="text-gray-600 font-bold px-1">特</span>
+            <Ball num={draw.special} variant="special" />
+          </>}
+        </div>
+
+        {/* 歷史查詢面板（可折疊） */}
+        {histOpen && (
+          <div className="border-t border-gray-700/60 px-4 py-3 space-y-3 bg-gray-900/50">
+            <div className="flex gap-2">
+              <select
+                value={selYear}
+                onChange={e => setSelYear(Number(e.target.value))}
+                className="flex-1 bg-gray-700 text-white rounded-lg px-3 py-2 text-sm border border-gray-600 focus:outline-none"
+              >
+                {years.map(y => <option key={y} value={y}>{y} 年</option>)}
+              </select>
+              <select
+                value={selMonth}
+                onChange={e => setSelMonth(Number(e.target.value))}
+                className="flex-1 bg-gray-700 text-white rounded-lg px-3 py-2 text-sm border border-gray-600 focus:outline-none"
+              >
+                {months.map(m => <option key={m} value={m}>{m} 月</option>)}
+              </select>
+              <button
+                onClick={fetchHistory}
+                disabled={histStatus === 'loading'}
+                className="px-4 py-2 rounded-lg text-sm font-semibold bg-indigo-700 hover:bg-indigo-600 text-white disabled:opacity-50 transition-colors whitespace-nowrap"
+              >{histStatus === 'loading' ? '⏳' : '查詢'}</button>
+            </div>
+
+            {histStatus === 'error' && (
+              <div className="text-xs text-red-400 bg-red-950/30 rounded-lg p-2">⚠️ {histErr}</div>
+            )}
+
+            {histRows.length > 0 && (
+              <div className="space-y-2 max-h-64 overflow-y-auto">
+                {histRows.map((row, i) => (
+                  <button
+                    key={i}
+                    onClick={() => selectHistDraw(row)}
+                    className={`w-full text-left rounded-xl p-3 border transition-colors ${
+                      activeDraw?.period === row.period
+                        ? 'bg-indigo-900/40 border-indigo-500'
+                        : 'bg-gray-700/50 hover:bg-gray-700 border-gray-600/30'
+                    }`}
+                  >
+                    <div className="flex justify-between items-center mb-1.5">
+                      <span className={`text-xs font-bold ${textClr}`}>第 {row.period} 期</span>
+                      <span className="text-xs text-gray-500">{row.date}</span>
+                    </div>
+                    <div className="flex gap-1.5 flex-wrap items-center">
+                      {(type === 'super' ? row.zone1 : row.numbers).map(n => (
+                        <Ball key={n} num={n} variant={ballVar} size="sm" />
+                      ))}
+                      {type === 'super' && row.zone2 != null && <>
+                        <span className="text-gray-600 text-xs px-0.5">+</span>
+                        <Ball num={row.zone2} variant="super-z2" size="sm" />
+                      </>}
+                      {type === 'big' && row.special != null && <>
+                        <span className="text-gray-600 text-xs px-0.5">特</span>
+                        <Ball num={row.special} variant="special" size="sm" />
+                      </>}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* 選號區 */}
+      <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-sm font-semibold text-gray-200">
+            {type === 'super' ? `選第一區（${z1.length}/6）` : `選號碼（${bigNums.length}/6）`}
+          </span>
+          <button
+            onClick={quickPick}
+            className="text-xs px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 text-gray-300 font-medium transition-colors"
+          >🎲 快選</button>
+        </div>
+        <div className="grid gap-1.5" style={{ gridTemplateColumns: 'repeat(10, 1fr)' }}>
+          {Array.from({ length: max }, (_, i) => i + 1).map(n => (
+            <Ball
+              key={n}
+              num={n}
+              size="sm"
+              variant={userNums.includes(n) ? selVar : 'empty'}
+              onClick={() => toggle(n)}
+            />
+          ))}
+        </div>
+
+        {/* 第二區（威力彩） */}
+        {type === 'super' && (
+          <div className="mt-4 pt-4 border-t border-gray-700">
+            <div className="text-sm font-semibold text-gray-300 mb-2">選第二區（{z2 ? '1' : '0'}/1）</div>
+            <div className="flex gap-2">
+              {[1,2,3,4,5,6,7,8].map(n => (
+                <Ball
+                  key={n}
+                  num={n}
+                  variant={z2 === n ? 'super-z2' : 'empty'}
+                  onClick={() => { setZ2(n); setChecked(false); setResult(null); }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 我的號碼預覽 */}
+      {userNums.length > 0 && (
+        <div className="bg-gray-800/60 rounded-2xl p-4 border border-gray-700">
+          <div className="text-xs text-gray-500 mb-2">我選的號碼</div>
+          <div className="flex gap-2 flex-wrap items-center">
+            {userNums.map(n => {
+              const mv = checked ? (drawNums.includes(n) ? 'matched' : 'unmatched') : ballVar;
+              return <Ball key={n} num={n} variant={mv} />;
+            })}
+            {type === 'super' && z2 && <>
+              <span className="text-gray-600 font-bold px-1">+</span>
+              <Ball num={z2} variant={checked ? (z2 === draw.zone2 ? 'matched' : 'unmatched') : 'super-z2'} />
+            </>}
+          </div>
+        </div>
+      )}
+
+      {/* 對獎結果 */}
+      {checked && (
+        <div className={`rounded-2xl p-5 border-2 win-bounce text-center ${result ? 'bg-emerald-950 border-emerald-600' : 'bg-gray-800 border-gray-700'}`}>
+          {result ? (
+            <>
+              <div className="text-5xl mb-2">🎉</div>
+              <div className={`text-3xl font-black mb-1 ${result.tier <= 2 ? 'text-yellow-400 jackpot-pulse' : 'text-emerald-400'}`}>
+                中 {result.prize}！
+              </div>
+              {result.amt && <div className="text-lg text-gray-200 mt-1">固定獎金：{fmtAmt(result.amt)}</div>}
+              {result.tier <= 4 && <div className="text-xs text-gray-500 mt-1">（頭獎至肆獎依各期中獎人數計算實際獎金）</div>}
+            </>
+          ) : (
+            <>
+              <div className="text-4xl mb-2">😔</div>
+              <div className="text-xl font-bold text-gray-400">本期未中獎</div>
+              <div className="text-sm text-gray-600 mt-1">下期再試試！</div>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* 按鈕 */}
+      <div className="flex gap-3">
+        <button
+          onClick={doCheck}
+          disabled={!isReady}
+          className={`flex-1 py-3.5 rounded-2xl font-bold text-base transition-all ${isReady ? `bg-gradient-to-r ${accentFrom} ${accentTo} text-white shadow-lg active:scale-95` : 'bg-gray-800 text-gray-600 cursor-not-allowed'}`}
+        >🔍 開始對獎</button>
+        <button
+          onClick={reset}
+          className="px-5 py-3.5 rounded-2xl bg-gray-700 hover:bg-gray-600 text-gray-300 font-medium transition-all"
+        >清除</button>
+      </div>
+
+      <p className="text-xs text-center text-gray-700">
+        {type === 'super' ? '需選滿第一區 6 碼 + 第二區 1 碼才能對獎' : '需選滿 6 個號碼才能對獎'}
+      </p>
+    </div>
+  );
+}
+
+// ================================================================
+// 8. 開獎結果頁
+// ================================================================
+
+function ResultsTab({ type, superDraw, bigDraw, fetchStatus, fetchLog, onFetch, onManualEdit }) {
+  const draw     = type === 'super' ? superDraw : bigDraw;
+  const drawNums = type === 'super' ? draw.zone1 : draw.numbers;
+  const prizes   = type === 'super' ? SUPER_PRIZES : BIG_PRIZES;
+  const gradFrom = type === 'super' ? 'from-violet-900/40' : 'from-pink-900/40';
+  const gradTo   = type === 'super' ? 'to-indigo-900/40'  : 'to-rose-900/40';
+  const border   = type === 'super' ? 'border-violet-700'  : 'border-pink-700';
+  const textClr  = type === 'super' ? 'text-purple-300'    : 'text-pink-300';
+  const ballVar  = type === 'super' ? 'super'              : 'big';
+
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-5 space-y-4">
+
+      {/* 累積頭獎 */}
+      <div className={`rounded-2xl p-5 border bg-gradient-to-br ${gradFrom} ${gradTo} ${border}`}>
+        <div className="text-center">
+          <div className="text-sm text-gray-400 mb-1">💰 累積頭獎獎金</div>
+          <div className={`text-6xl font-black ${textClr} jackpot-pulse`}>
+            {draw.jackpot}<span className="text-2xl ml-1">億</span>
+          </div>
+          <div className="text-xs text-gray-500 mt-2">下次開獎：{draw.nextDraw}</div>
+        </div>
+      </div>
+
+      {/* 最新開獎 */}
+      <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+        <div className="flex justify-between items-center mb-3">
+          <div>
+            <div className="font-bold text-white">最新開獎號碼</div>
+            <div className="text-xs text-gray-500">第 {draw.period} 期 · {draw.date}</div>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={onManualEdit}
+              className="text-xs px-3 py-1.5 rounded-lg font-medium transition-all bg-gray-700 text-gray-300 hover:bg-gray-600"
+            >
+              ✏️ 手動輸入
+            </button>
+            <button
+              onClick={onFetch}
+              disabled={fetchStatus === 'loading'}
+              className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-all ${
+                fetchStatus === 'loading' ? 'bg-gray-700 text-gray-500' :
+                fetchStatus === 'success' ? 'bg-emerald-800 text-emerald-300' :
+                fetchStatus === 'error'   ? 'bg-red-900/50 text-red-400' :
+                'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              }`}
+            >
+              {fetchStatus === 'loading' ? '⏳ 更新中…' :
+               fetchStatus === 'success' ? '✅ 已更新' :
+               fetchStatus === 'error'   ? '❌ 更新失敗' : '🔄 更新開獎'}
+            </button>
+          </div>
+        </div>
+
+        <div className="flex gap-2 flex-wrap items-center">
+          {drawNums.map(n => <Ball key={n} num={n} variant={ballVar} />)}
+          {type === 'super' && <>
+            <span className="text-gray-600 font-bold px-1">+</span>
+            <Ball num={draw.zone2} variant="super-z2" />
+            <span className="text-xs text-gray-600 ml-1">第二區</span>
+          </>}
+          {type === 'big' && <>
+            <span className="text-gray-600 font-bold px-1">特</span>
+            <Ball num={draw.special} variant="special" />
+          </>}
+        </div>
+
+        {fetchStatus === 'error' && (
+          <div className="mt-3 text-xs text-red-400 bg-red-950/30 rounded-lg p-2 space-y-1">
+            <div>⚠️ {fetchLog || '無法自動取得資料。'}</div>
+            <div className="text-red-500">
+              請前往{' '}
+              <a href="https://www.taiwanlottery.com" target="_blank" rel="noopener" className="underline text-red-300">
+                台灣彩券官網
+              </a>{' '}查詢後，點擊「✏️ 手動輸入」更新號碼。
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 中獎對照表 */}
+      <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+        <div className="font-bold text-white mb-3">中獎對照表</div>
+        <div className="space-y-1.5">
+          {prizes.map((p, i) => (
+            <div key={i} className={`flex justify-between items-center px-3 py-2 rounded-xl ${i === 0 ? `bg-yellow-900/20 border border-yellow-700/40` : 'bg-gray-700/40'}`}>
+              <div className="flex items-center gap-2.5">
+                <span className={`text-sm font-bold ${p.color}`}>{p.name}</span>
+                <span className="text-xs text-gray-500">{p.desc}</span>
+              </div>
+              <span className={`text-sm font-semibold ${i === 0 ? 'text-yellow-400' : 'text-gray-300'}`}>
+                {p.fixed && p.amt ? fmtAmt(p.amt) : '變動'}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 玩法說明 */}
+      <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+        <div className="font-bold text-white mb-2">玩法說明</div>
+        <div className="text-sm text-gray-400 space-y-1.5">
+          {type === 'super' ? <>
+            <div>📅 每週一、週四 20:30 開獎</div>
+            <div>💵 每注 NT$100</div>
+            <div>🎯 第一區 1–38 選 6 個 + 第二區 1–8 選 1 個</div>
+            <div>🏆 頭獎保底 NT$2.5 億，累積無上限</div>
+            <div>📊 頭獎中獎機率：1/22,085,448</div>
+          </> : <>
+            <div>📅 每週二、週五 20:30 開獎</div>
+            <div>💵 每注 NT$50</div>
+            <div>🎯 1–49 選 6 個（另開特別號 1 個）</div>
+            <div>📊 頭獎中獎機率：1/13,983,816</div>
+          </>}
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
+// ================================================================
+// 9. 預測選號頁
+// ================================================================
+
+function PredictTab({ type, onUseNums }) {
+  const [mode, setMode] = useState(null);
+  const [result, setResult] = useState(null);
+  const history  = type === 'super' ? SUPER_HIST : BIG_HIST;
+  const max      = type === 'super' ? 38 : 49;
+  const ballVar  = type === 'super' ? 'super' : 'big';
+
+  const freqData = useMemo(() => computeFreq(history, type, max), [history, type, max]);
+
+  useEffect(() => { setResult(null); setMode(null); }, [type]);
+
+  const generate = (m) => {
+    setMode(m);
+    let nums;
+    if (m === 'random') {
+      nums = pickRandom(max, 6);
+    } else if (m === 'hot') {
+      const hot = freqData.slice(0, 15).map(x => x.n);
+      nums = shuffle(hot).slice(0, 6).sort((a,b) => a-b);
+    } else if (m === 'cold') {
+      const cold = freqData.slice(-15).map(x => x.n);
+      nums = shuffle(cold).slice(0, 6).sort((a,b) => a-b);
+    } else if (m === 'balanced') {
+      const hot  = shuffle(freqData.slice(0, 12).map(x => x.n)).slice(0, 3);
+      const cold = shuffle(freqData.slice(-12).map(x => x.n)).slice(0, 3);
+      nums = [...hot, ...cold].sort((a,b) => a-b);
+    }
+    const z2 = type === 'super' ? Math.floor(Math.random() * 8) + 1 : undefined;
+    setResult({ nums, z2 });
+  };
+
+  const modes = [
+    { id: 'random',   icon: '🎲', label: '隨機快選',   desc: '純隨機，每個號碼機率相同' },
+    { id: 'hot',      icon: '🔥', label: '熱門號碼',   desc: '近 60 期最常出現的號碼' },
+    { id: 'cold',     icon: '❄️', label: '冷門號碼',   desc: '近 60 期最少出現的號碼' },
+    { id: 'balanced', icon: '⚖️', label: '冷熱平衡',   desc: '3 個熱號 + 3 個冷號組合' },
+  ];
+
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-5 space-y-4">
+
+      {/* 免責聲明 */}
+      <div className="bg-amber-900/20 border border-amber-700/50 rounded-2xl p-4">
+        <div className="text-amber-400 font-bold text-sm mb-1">⚠️ 重要聲明</div>
+        <div className="text-amber-200/60 text-xs leading-relaxed">
+          彩券每期開獎均為獨立隨機事件，任何預測方法（包含歷史頻率分析）均<strong>無法</strong>提升中獎機率。
+          以下功能僅供娛樂參考，請理性購彩、量力而為。
+        </div>
+      </div>
+
+      {/* 選擇模式 */}
+      <div className="grid grid-cols-2 gap-3">
+        {modes.map(m => (
+          <button
+            key={m.id}
+            onClick={() => generate(m.id)}
+            className={`p-4 rounded-2xl border-2 text-left transition-all duration-200 ${
+              mode === m.id ? 'border-purple-500 bg-purple-900/20' : 'border-gray-700 bg-gray-800 hover:border-gray-600'
+            }`}
+          >
+            <div className="text-2xl mb-1">{m.icon}</div>
+            <div className="font-bold text-sm text-white">{m.label}</div>
+            <div className="text-xs text-gray-500 mt-0.5">{m.desc}</div>
+          </button>
+        ))}
+      </div>
+
+      {/* 推薦號碼 */}
+      {result && (
+        <div className="bg-gray-800 rounded-2xl p-5 border border-gray-700">
+          <div className="flex justify-between items-center mb-4">
+            <div className="font-bold text-white">推薦號碼</div>
+            <button
+              onClick={() => generate(mode)}
+              className="text-xs px-3 py-1.5 bg-gray-700 rounded-lg text-gray-300 hover:bg-gray-600 transition-colors"
+            >🔄 重新產生</button>
+          </div>
+
+          <div className="flex gap-2 flex-wrap items-center">
+            {result.nums.map(n => <Ball key={n} num={n} variant={ballVar} />)}
+            {type === 'super' && result.z2 && <>
+              <span className="text-gray-600 font-bold px-1">+</span>
+              <Ball num={result.z2} variant="super-z2" />
+              <span className="text-xs text-gray-600 ml-1">第二區</span>
+            </>}
+          </div>
+
+          <button
+            onClick={() => onUseNums(result)}
+            className="mt-4 w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm transition-colors active:scale-95"
+          >→ 用這組號碼去對獎</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ================================================================
+// 10. 統計分析頁
+// ================================================================
+
+function StatsTab({ type }) {
+  const [view, setView] = useState('hot');
+  const history = type === 'super' ? SUPER_HIST : BIG_HIST;
+  const max     = type === 'super' ? 38 : 49;
+  const ballVar = type === 'super' ? 'super' : 'big';
+  const barClr  = type === 'super' ? '#a855f7' : '#ec4899';
+
+  const freqData = useMemo(() => computeFreq(history, type, max), [history, type, max]);
+  const maxCnt   = freqData[0]?.c || 1;
+
+  const display = view === 'hot'  ? freqData.slice(0, 20) :
+                  view === 'cold' ? [...freqData].reverse().slice(0, 20) :
+                  freqData;
+
+  // Zone 2 stats
+  const z2Stats = useMemo(() => {
+    if (type !== 'super') return null;
+    const cnt = {}; for (let i=1;i<=8;i++) cnt[i]=0;
+    SUPER_HIST.forEach(d => cnt[d.z2]++);
+    const m = Math.max(...Object.values(cnt));
+    return Object.entries(cnt).map(([n,c]) => ({ n:+n, c, pct: c/m }));
+  }, [type]);
+
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-5 space-y-4">
+
+      {/* 頻率圖 */}
+      <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+        <div className="flex justify-between items-start mb-1">
+          <div className="font-bold text-white">歷史出現頻率</div>
+          <div className="text-xs text-gray-600">近 60 期</div>
+        </div>
+        <div className="text-xs text-gray-600 mb-3">※ 歷史頻率不代表未來出現機率，彩券每期獨立抽籤</div>
+
+        <div className="flex gap-1 mb-4">
+          {[['hot','🔥 最常'],['cold','❄️ 最少'],['all','📊 全部']].map(([v,l]) => (
+            <button
+              key={v}
+              onClick={() => setView(v)}
+              className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-colors ${view===v ? 'bg-gray-600 text-white' : 'bg-gray-700 text-gray-400 hover:bg-gray-600'}`}
+            >{l}</button>
+          ))}
+        </div>
+
+        <div className="space-y-2">
+          {display.map(({ n, c }) => (
+            <div key={n} className="flex items-center gap-3">
+              <div className="flex-shrink-0"><Ball num={n} size="sm" variant={ballVar} /></div>
+              <div className="flex-1 bg-gray-700 rounded-full h-3.5 overflow-hidden">
+                <div
+                  className="h-full rounded-full freq-bar"
+                  style={{ width: `${(c / maxCnt) * 100}%`, background: barClr }}
+                />
+              </div>
+              <div className="text-xs text-gray-400 w-10 text-right flex-shrink-0">{c} 次</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 第二區統計（威力彩） */}
+      {z2Stats && (
+        <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+          <div className="font-bold text-white mb-3">第二區出現頻率（1–8）</div>
+          <div className="space-y-2">
+            {z2Stats.map(({ n, c, pct }) => (
+              <div key={n} className="flex items-center gap-3">
+                <div className="flex-shrink-0"><Ball num={n} size="sm" variant="super-z2" /></div>
+                <div className="flex-1 bg-gray-700 rounded-full h-3.5 overflow-hidden">
+                  <div className="h-full rounded-full freq-bar" style={{ width: `${pct*100}%`, background: '#f59e0b' }} />
+                </div>
+                <div className="text-xs text-gray-400 w-10 text-right flex-shrink-0">{c} 次</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 號碼分布熱力圖 */}
+      <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+        <div className="font-bold text-white mb-3">號碼熱力分布</div>
+        <div className="grid gap-1.5" style={{ gridTemplateColumns: 'repeat(10, 1fr)' }}>
+          {Array.from({ length: max }, (_, i) => i + 1).map(n => {
+            const item = freqData.find(x => x.n === n);
+            const ratio = item ? item.c / maxCnt : 0;
+            const opacity = Math.max(0.15, ratio);
+            return (
+              <div
+                key={n}
+                className="w-full aspect-square rounded-lg flex items-center justify-center text-xs font-bold"
+                style={{ background: type === 'super' ? `rgba(168,85,247,${opacity})` : `rgba(236,72,153,${opacity})` }}
+              >{n}</div>
+            );
+          })}
+        </div>
+        <div className="flex justify-between mt-2 text-xs text-gray-600">
+          <span>冷門（較淡）</span>
+          <span>熱門（較深）</span>
+        </div>
+      </div>
+
+      <div className="text-xs text-center text-gray-700 pb-2">
+        統計資料為示範用途，實際頻率請參閱
+        <a href="https://www.taiwanlottery.com/lotto/history/history_result/" target="_blank" rel="noopener" className="text-gray-600 underline ml-1">台灣彩券官網</a>
+      </div>
+    </div>
+  );
+}
+
+// ================================================================
+// 11. 手動輸入 Modal
+// ================================================================
+
+function EditDrawModal({ type, draw, onSave, onClose }) {
+  const isSuper = type === 'super';
+  const [period, setPeriod]   = useState(draw.period);
+  const [date, setDate]       = useState(draw.date);
+  const [jackpot, setJackpot] = useState(String(draw.jackpot));
+  const [z1Raw, setZ1Raw]     = useState(isSuper ? draw.zone1.join(', ') : draw.numbers.join(', '));
+  const [z2, setZ2]           = useState(isSuper ? String(draw.zone2) : '');
+  const [spRaw, setSpRaw]     = useState(!isSuper ? String(draw.special) : '');
+  const [err, setErr]         = useState('');
+
+  const validate = () => {
+    const nums = z1Raw.split(/[\s,]+/).map(Number).filter(n => !isNaN(n) && n > 0);
+    if (nums.length !== 6) return '請輸入恰好 6 個號碼';
+    if (isSuper) {
+      if (nums.some(n => n < 1 || n > 38)) return '第一區號碼需在 1–38 之間';
+      if (new Set(nums).size !== 6) return '號碼不可重複';
+      const z2n = parseInt(z2);
+      if (isNaN(z2n) || z2n < 1 || z2n > 8) return '第二區需輸入 1–8 的數字';
+    } else {
+      if (nums.some(n => n < 1 || n > 49)) return '號碼需在 1–49 之間';
+      if (new Set(nums).size !== 6) return '號碼不可重複';
+      const spn = parseInt(spRaw);
+      if (isNaN(spn) || spn < 1 || spn > 49) return '特別號需在 1–49 之間';
+      if (nums.includes(spn)) return '特別號不可與正規號碼重複';
+    }
+    if (!period.trim()) return '請輸入期別';
+    if (!date.trim()) return '請輸入日期';
+    return null;
+  };
+
+  const handleSave = () => {
+    const e = validate();
+    if (e) { setErr(e); return; }
+    const nums = z1Raw.split(/[\s,]+/).map(Number).filter(n => !isNaN(n) && n > 0).sort((a,b)=>a-b);
+    const jpn  = parseFloat(jackpot) || draw.jackpot;
+    if (isSuper) {
+      onSave({ period: period.trim(), date: date.trim(), zone1: nums, zone2: parseInt(z2), jackpot: jpn, nextDraw: draw.nextDraw });
+    } else {
+      onSave({ period: period.trim(), date: date.trim(), numbers: nums, special: parseInt(spRaw), jackpot: jpn, nextDraw: draw.nextDraw });
+    }
+    onClose();
+  };
+
+  const inp = "w-full bg-gray-700 border border-gray-600 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500";
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70" onClick={onClose}>
+      <div className="bg-gray-900 rounded-t-3xl p-6 w-full max-w-lg border-t border-gray-700" onClick={e => e.stopPropagation()}>
+        <div className="flex justify-between items-center mb-5">
+          <h2 className="text-lg font-bold text-white">✏️ 手動更新開獎號碼</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-white text-xl">✕</button>
+        </div>
+
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-xs text-gray-400 mb-1 block">期別</label>
+              <input className={inp} value={period} onChange={e => setPeriod(e.target.value)} placeholder="例：114000020" />
+            </div>
+            <div>
+              <label className="text-xs text-gray-400 mb-1 block">開獎日期</label>
+              <input className={inp} value={date} onChange={e => setDate(e.target.value)} placeholder="例：2026-03-05" />
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">
+              {isSuper ? '第一區號碼（1–38，6個，逗號或空格分隔）' : '號碼（1–49，6個，逗號或空格分隔）'}
+            </label>
+            <input className={inp} value={z1Raw} onChange={e => setZ1Raw(e.target.value)} placeholder="例：5 12 18 25 33 37" />
+          </div>
+
+          {isSuper ? (
+            <div>
+              <label className="text-xs text-gray-400 mb-1 block">第二區號碼（1–8）</label>
+              <input className={inp} value={z2} onChange={e => setZ2(e.target.value)} placeholder="例：4" />
+            </div>
+          ) : (
+            <div>
+              <label className="text-xs text-gray-400 mb-1 block">特別號（1–49）</label>
+              <input className={inp} value={spRaw} onChange={e => setSpRaw(e.target.value)} placeholder="例：37" />
+            </div>
+          )}
+
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">累積頭獎（億元）</label>
+            <input className={inp} value={jackpot} onChange={e => setJackpot(e.target.value)} placeholder="例：25" type="number" />
+          </div>
+
+          {err && <div className="text-red-400 text-xs bg-red-950/30 rounded-lg p-2">⚠️ {err}</div>}
+
+          <div className="text-xs text-gray-600 bg-gray-800 rounded-lg p-3">
+            💡 開獎號碼請參閱：
+            <a href="https://www.taiwanlottery.com/lotto/result/super_lotto638" target="_blank" rel="noopener" className="text-gray-400 underline ml-1">威力彩官網</a>
+            <span className="mx-1">·</span>
+            <a href="https://www.taiwanlottery.com/lotto/result/lotto649" target="_blank" rel="noopener" className="text-gray-400 underline">大樂透官網</a>
+          </div>
+
+          <button
+            onClick={handleSave}
+            className="w-full py-3 rounded-2xl bg-gradient-to-r from-violet-500 to-purple-700 text-white font-bold text-base active:scale-95 transition-all"
+          >✅ 儲存更新</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ================================================================
+// 12. 主應用
+// ================================================================
+
+// 台灣彩券官方 JSON API（由官網前端呼叫，支援 CORS）
+// ── 正確的 endpoint 名稱（2025 年實測有效）──────────────────
+// Super638Result → SuperLotto638Result（修正 404 問題）
+// 查詢參數：?period&month=YYYY-MM&pageSize=31
+const API_BASE = 'https://api.taiwanlottery.com/TLCAPIWeB/Lottery';
+
+function buildApiUrl(endpoint) {
+  // 動態使用當月；若月初尚無資料則在 handleFetch 中自動回退上月
+  const now   = new Date();
+  const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  return `${API_BASE}/${endpoint}?period&month=${month}&pageSize=31`;
+}
+
+function prevMonthUrl(endpoint) {
+  const now  = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1);
+  const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  return `${API_BASE}/${endpoint}?period&month=${month}&pageSize=31`;
+}
+
+// 從 API 回應中取出資料陣列（容錯多種包裝格式），並取最後一筆（最新期）
+// 台彩 API 實際回傳格式探索：嘗試所有已知 key
+function extractLatestRow(raw) {
+  // 台彩 API 回傳 descending 排序（最新在前），取 [0] 即為最新一筆
+  // 1. 如果最外層就是陣列
+  if (Array.isArray(raw) && raw.length > 0) return raw[0];
+
+  // 2. 嘗試常見包裝 key
+  const candidates = ['content','data','result','list','rows','items',
+                      'superLotto638ResultList','lotto649ResultList',
+                      'superLottoResult','lotto649Result',
+                      'winningResult','winResult'];
+  for (const key of candidates) {
+    const val = raw[key];
+    if (Array.isArray(val) && val.length > 0) return val[0];
+    // 二層包裝：{ "data": { "list": [...] } }
+    if (val && typeof val === 'object') {
+      for (const k2 of candidates) {
+        const v2 = val[k2];
+        if (Array.isArray(v2) && v2.length > 0) return v2[0];
+      }
+    }
+  }
+
+  // 3. 動態掃描頂層：找第一個值是非空陣列的 key
+  for (const key of Object.keys(raw)) {
+    const val = raw[key];
+    if (Array.isArray(val) && val.length > 0) return val[0];
+  }
+
+  // 4. 動態深入一層：對每個物件值，再掃描它的所有 keys
+  //    這可處理 { rtCode, rtMsg, content: { <未知 key>: [...] } } 結構
+  for (const key of Object.keys(raw)) {
+    const val = raw[key];
+    if (val && typeof val === 'object' && !Array.isArray(val)) {
+      for (const k2 of Object.keys(val)) {
+        const v2 = val[k2];
+        if (Array.isArray(v2) && v2.length > 0) return v2[0];
+      }
+    }
+  }
+
+  // 5. 如果 raw 本身就像一筆開獎資料（有期別 or 開獎日期 key）
+  if (raw['期別'] || raw.issueNo || raw.drawDate || raw['開獎日期']) return raw;
+
+  return null;
+}
+
+// 取出該月份「所有」開獎資料（歷史查詢用）
+function extractAllRows(raw) {
+  if (!raw || typeof raw !== 'object') return [];
+  if (Array.isArray(raw)) return raw;
+
+  const candidates = ['content','data','result','list','rows','items',
+                      'superLotto638ResultList','lotto649ResultList',
+                      'superLottoResult','lotto649Result',
+                      'winningResult','winResult'];
+  for (const key of candidates) {
+    const val = raw[key];
+    if (Array.isArray(val) && val.length > 0) return val;
+    if (val && typeof val === 'object') {
+      for (const k2 of candidates) {
+        const v2 = val[k2];
+        if (Array.isArray(v2) && v2.length > 0) return v2;
+      }
+    }
+  }
+  for (const key of Object.keys(raw)) {
+    const val = raw[key];
+    if (Array.isArray(val) && val.length > 0) return val;
+  }
+  for (const key of Object.keys(raw)) {
+    const val = raw[key];
+    if (val && typeof val === 'object' && !Array.isArray(val)) {
+      for (const k2 of Object.keys(val)) {
+        const v2 = val[k2];
+        if (Array.isArray(v2) && v2.length > 0) return v2;
+      }
+    }
+  }
+  if (raw.period || raw['期別'] || raw.issueNo || raw.drawDate) return [raw];
+  return [];
+}
+
+// debug helper：把回應的前兩層結構回傳給 UI（含 content 內部 keys）
+function describeShape(raw) {
+  if (!raw || typeof raw !== 'object') return String(raw);
+  if (Array.isArray(raw)) return `Array(${raw.length})`;
+  const keys = Object.keys(raw).slice(0, 8);
+  return `{${keys.map(k => {
+    const v = raw[k];
+    if (Array.isArray(v)) return `${k}:Array(${v.length})`;
+    if (v && typeof v === 'object') {
+      const subKeys = Object.keys(v).slice(0, 5);
+      const inner = subKeys.map(k2 => {
+        const v2 = v[k2];
+        return `${k2}:${Array.isArray(v2) ? `Array(${v2.length})` : typeof v2}`;
+      }).join(',');
+      return `${k}:{${inner}}`;
+    }
+    return `${k}:${typeof v}`;
+  }).join(', ')}}`;
+}
+
+// 解析台彩 API 的 drawNumberAppear 欄位，回傳數字陣列
+// 可能是陣列、逗號/空格分隔的字串、或 JSON 陣列字串
+function parseDrawNumberAppear(val) {
+  if (!val) return null;
+  if (Array.isArray(val)) {
+    const nums = val.map(Number).filter(n => !isNaN(n) && n > 0);
+    return nums.length > 0 ? nums : null;
+  }
+  if (typeof val === 'string') {
+    // 嘗試 JSON 陣列字串 "[1,2,3]"
+    if (val.trim().startsWith('[')) {
+      try {
+        const parsed = JSON.parse(val);
+        if (Array.isArray(parsed)) {
+          const nums = parsed.map(Number).filter(n => !isNaN(n) && n > 0);
+          return nums.length > 0 ? nums : null;
+        }
+      } catch(e) {}
+    }
+    // 逗號或空格分隔："05,12,18,25,33,37,04" 或 "05 12 18 25 33 37 04"
+    const nums = val.split(/[,\s，]+/).map(Number).filter(n => !isNaN(n) && n > 0);
+    return nums.length > 0 ? nums : null;
+  }
+  return null;
+}
+
+// 從 API 回應的一筆資料中，萃取累積頭獎金額（億元）
+// 因台彩 API 欄位名稱版本間可能不同，採多層策略探測：
+//   1. 已知欄位清單（元單位 → 除以 1e8 換算億；或直接億單位）
+//   2. 動態 key 掃描（含 jackpot / accumulate / 累積 / 頭獎 字樣）
+//   3. 巢狀 prizeSummary / prizeList 第一筆（頭獎）
+function extractJackpot(row) {
+  if (!row || typeof row !== 'object') return null;
+
+  // 台彩 API 實際格式：jackpotAssign 是物件 { prize, lastPrize, winnerCount, perPrize }
+  // prize     = 本期頭獎池（元）
+  // lastPrize = 上期累積（元）
+  // winnerCount = 0 → 摃龜，>0 → 有人中獎
+  const superObj = row.super638JackpotAssign;
+  const bigObj   = row.lotto649JackpotAssign;
+  const jackpotObj = superObj || bigObj;
+  const minGuarantee = superObj ? 2 : 1; // 威力彩保底2億，大樂透保底1億
+  if (jackpotObj && typeof jackpotObj === 'object' && !Array.isArray(jackpotObj)) {
+    const prize       = Number(jackpotObj.prize)       || 0;
+    const lastPrize   = Number(jackpotObj.lastPrize)   || 0;
+    const winnerCount = Number(jackpotObj.winnerCount);
+    if (winnerCount === 0) {
+      // 摃龜：累積頭獎 = 上期累積 + 本期頭獎池，再取保底下限
+      const total = lastPrize + prize;
+      if (total > 0) return Math.max(Math.round(total / 1e8), minGuarantee);
+    } else {
+      // 有人中獎，本期已結算，顯示下期保底金額
+      return minGuarantee;
+    }
+  }
+
+  const knownFields = [
+    'jackpotAmount', 'super638JackpotAssign', 'lotto649JackpotAssign',
+    'accumulateJackpot', 'jackpotAccumulate', 'accumulateAmount',
+    'jackpotMoney', 'grandPrizeAmount', 'topPrizeAmount',
+    'superLottoPrize1', 'prize1Accumulate', 'accumPrize1',
+    'superLotto638Jackpot', 'lotto649Jackpot',
+    'superLottoJackpot', 'bigLottoJackpot',
+    'firstPrizeAccumulate', 'cumulativeJackpot',
+    'super638AccumJackpot', 'lotto649AccumJackpot',
+    'topPrizeAccumulateAmt', 'grandPrizeAccumulateAmt',
+    '累積獎金', '頭獎累積', '累積頭獎', '頭獎金額', '累積頭獎獎金',
+  ];
+
+  for (const f of knownFields) {
+    const raw = row[f];
+    if (raw === null || raw === undefined || raw === '') continue;
+    const v = Number(raw);
+    if (isNaN(v) || v <= 0) continue;
+    if (v >= 1e8)         return Math.round(v / 1e8); // 元 單位
+    if (v >= 1 && v < 1000) return Math.round(v);     // 億 單位直接儲存
+  }
+
+  // 動態掃描：key 名稱含 jackpot / accum / 累積 / 頭獎 字樣
+  for (const key of Object.keys(row)) {
+    const lk = key.toLowerCase();
+    if (!lk.includes('jackpot') && !lk.includes('accum') &&
+        !key.includes('累積') && !key.includes('頭獎')) continue;
+    const v = Number(row[key]);
+    if (isNaN(v) || v <= 0) continue;
+    if (v >= 1e8)           return Math.round(v / 1e8);
+    if (v >= 1 && v < 1000) return Math.round(v);
+  }
+
+  // 巢狀 prizeSummary / prizeList 等陣列的第一筆（通常是頭獎）
+  const nested = row.prizeSummary || row.prizeList || row.awardList ||
+                 row.prizeDetails || row.prizes || row['獎項'];
+  if (Array.isArray(nested) && nested.length > 0) {
+    const first = nested[0];
+    if (first && typeof first === 'object') {
+      for (const key of Object.keys(first)) {
+        const lk = key.toLowerCase();
+        if (!lk.includes('accum') && !lk.includes('jackpot') && !key.includes('累積')) continue;
+        const v = Number(first[key]);
+        if (isNaN(v) || v <= 0) continue;
+        if (v >= 1e8)           return Math.round(v / 1e8);
+        if (v >= 1 && v < 1000) return Math.round(v);
+      }
+    }
+  }
+
+  return null;
+}
+
+function parseSuperRow(row) {
+  if (!row) throw new Error('empty response');
+  // 台彩 API 實際欄位：period / lotteryDate / drawNumberAppear
+  const period  = String(row.period || row.issueNo || row['期別'] || row.issue || '');
+  const rawDate = row.lotteryDate || row.drawDate || row['開獎日期'] || row.date || '';
+  const date    = rawDate ? String(rawDate).substring(0, 10) : '';
+
+  // 號碼：drawNumberAppear 包含「6個第一區 + 1個第二區」共7碼
+  const allNums = parseDrawNumberAppear(row.drawNumberAppear);
+  let z1 = null, zone2 = null;
+  if (allNums && allNums.length >= 7) {
+    z1    = allNums.slice(0, 6);
+    zone2 = allNums[6];
+  } else if (allNums && allNums.length === 6) {
+    z1 = allNums;
+  }
+  // fallback：no01~no06 或 number1~number6
+  if (!z1) {
+    const byNo = [row.no01,row.no02,row.no03,row.no04,row.no05,row.no06]
+      .map(Number).filter(n=>!isNaN(n)&&n>0);
+    if (byNo.length === 6) z1 = byNo;
+  }
+  if (!z1) {
+    const keys = Object.keys(row).join(', ');
+    throw new Error(`找不到第一區號碼（欄位：${keys}）`);
+  }
+  if (zone2 === null)
+    zone2 = row.sNo ?? row.superNumber ?? row.powerNumber ?? row['第二區'] ?? row.zone2 ?? null;
+
+  const jackpot = extractJackpot(row);
+  return { period, date, zone1: z1.sort((a,b)=>a-b), zone2: Number(zone2), jackpot, nextDraw: '' };
+}
+
+function parseBigRow(row) {
+  if (!row) throw new Error('empty response');
+  const period  = String(row.period || row.issueNo || row['期別'] || row.issue || '');
+  const rawDate = row.lotteryDate || row.drawDate || row['開獎日期'] || row.date || '';
+  const date    = rawDate ? String(rawDate).substring(0, 10) : '';
+
+  // 號碼：drawNumberAppear 包含「6個主球 + 1個特別號」共7碼
+  const allNums = parseDrawNumberAppear(row.drawNumberAppear);
+  let numbers = null, special = null;
+  if (allNums && allNums.length >= 7) {
+    numbers = allNums.slice(0, 6);
+    special = allNums[6];
+  } else if (allNums && allNums.length === 6) {
+    numbers = allNums;
+  }
+  if (!numbers) {
+    const byNo = [row.no01,row.no02,row.no03,row.no04,row.no05,row.no06]
+      .map(Number).filter(n=>!isNaN(n)&&n>0);
+    if (byNo.length === 6) numbers = byNo;
+  }
+  if (!numbers) {
+    const keys = Object.keys(row).join(', ');
+    throw new Error(`找不到號碼（欄位：${keys}）`);
+  }
+  if (special === null)
+    special = row.sNo ?? row.specialNumber ?? row['特別號'] ?? row.bonusNumber ?? null;
+
+  const jackpot = extractJackpot(row);
+  return { period, date, numbers: numbers.sort((a,b)=>a-b), special: Number(special), jackpot, nextDraw: '' };
+}
+
+// ================================================================
+// Firebase Realtime Database
+// ➊ 前往 https://console.firebase.google.com 建立專案
+// ➋ 建立 Realtime Database（測試模式，之後可鎖規則）
+// ➌ 將下方 FIREBASE_CONFIG 換成你的專案設定
+// ================================================================
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyCDL-vcBH5nRs_FK4iWSqbVPJ7MMNqMmMU",
+  authDomain:        "taiwan-lottery-535c2.firebaseapp.com",
+  databaseURL:       "https://taiwan-lottery-535c2-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:         "taiwan-lottery-535c2",
+  storageBucket:     "taiwan-lottery-535c2.firebasestorage.app",
+  messagingSenderId: "953322474907",
+  appId:             "1:953322474907:web:263c741b993e85e6cc653e"
+};
+
+// ================================================================
+// A. 側邊欄導覽元件
+// ================================================================
+function Sidebar({ page, setPage, open, setOpen }) {
+  const items = [
+    { id:'lottery',  icon:'🎰', label:'台灣彩券' },
+    { id:'image',    icon:'🖼️',  label:'圖片工具' },
+    { id:'pdf',      icon:'📄', label:'PDF 工具' },
+    { id:'currency', icon:'💱', label:'匯率換算' },
+    { id:'unit',     icon:'📏', label:'單位換算' },
+    { id:'typhoon',  icon:'🌀', label:'颱風停班停課' },
+  ];
+  return (
+    <>
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/60 z-30 md:hidden"
+          onClick={() => setOpen(false)}
+        />
+      )}
+      <aside
+        className="fixed top-0 left-0 h-full w-56 bg-gray-900 border-r border-gray-800 z-40 flex flex-col"
+        style={{ transform: open ? 'translateX(0)' : undefined }}
+      >
+        <div className="p-4 border-b border-gray-800 flex items-center justify-between">
+          <span className="text-sm font-bold text-purple-400">🧰 打工人工具箱</span>
+          <button
+            className="text-gray-400 hover:text-white md:hidden text-lg leading-none"
+            onClick={() => setOpen(false)}
+          >✕</button>
+        </div>
+        <nav className="flex-1 py-2 overflow-y-auto">
+          {items.map(item => (
+            <button
+              key={item.id}
+              onClick={() => { setPage(item.id); setOpen(false); }}
+              className={`w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors ${
+                page === item.id
+                  ? 'bg-purple-900/50 text-purple-300 border-r-2 border-purple-500'
+                  : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+              }`}
+            >
+              <span className="text-base">{item.icon}</span>
+              {item.label}
+            </button>
+          ))}
+        </nav>
+        <div className="p-3 border-t border-gray-800 text-xs text-gray-600 text-center">
+          打工人工具箱 © 2026
+        </div>
+      </aside>
+    </>
+  );
+}
+
+// ================================================================
+// B. 圖片工具
+// ================================================================
+function ImageTool() {
+  const [subtab, setSubtab] = useState('resize');
+  // resize
+  const [srcImg, setSrcImg] = useState(null);
+  const [origW, setOrigW] = useState(0);
+  const [origH, setOrigH] = useState(0);
+  const [w, setW] = useState('');
+  const [h, setH] = useState('');
+  const [lockRatio, setLockRatio] = useState(true);
+  const [resizedUrl, setResizedUrl] = useState(null);
+  // compress
+  const [compSrc, setCompSrc] = useState(null);
+  const [quality, setQuality] = useState(80);
+  const [compUrl, setCompUrl] = useState(null);
+  const [compOrigSize, setCompOrigSize] = useState(0);
+  const [compNewSize, setCompNewSize] = useState(0);
+
+  const handleImgUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        setOrigW(img.width); setOrigH(img.height);
+        setW(String(img.width)); setH(String(img.height));
+        setSrcImg(ev.target.result);
+        setResizedUrl(null);
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleWChange = (val) => {
+    setW(val);
+    if (lockRatio && origW && origH)
+      setH(String(Math.round(Number(val) * origH / origW)));
+  };
+  const handleHChange = (val) => {
+    setH(val);
+    if (lockRatio && origW && origH)
+      setW(String(Math.round(Number(val) * origW / origH)));
+  };
+
+  const handleResize = () => {
+    if (!srcImg) return;
+    const nw = Number(w) || origW, nh = Number(h) || origH;
+    const canvas = document.createElement('canvas');
+    canvas.width = nw; canvas.height = nh;
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.onload = () => { ctx.drawImage(img, 0, 0, nw, nh); setResizedUrl(canvas.toDataURL('image/png')); };
+    img.src = srcImg;
+  };
+
+  const handleCompUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setCompOrigSize(file.size);
+    const reader = new FileReader();
+    reader.onload = (ev) => { setCompSrc(ev.target.result); setCompUrl(null); };
+    reader.readAsDataURL(file);
+  };
+
+  const handleCompress = () => {
+    if (!compSrc) return;
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width; canvas.height = img.height;
+      canvas.getContext('2d').drawImage(img, 0, 0);
+      const dataUrl = canvas.toDataURL('image/jpeg', quality / 100);
+      setCompUrl(dataUrl);
+      const b64 = dataUrl.split(',')[1];
+      setCompNewSize(Math.round(b64.length * 3 / 4));
+    };
+    img.src = compSrc;
+  };
+
+  const dlDataUrl = (url, name) => { const a = document.createElement('a'); a.href = url; a.download = name; a.click(); };
+
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-6">
+      <h2 className="text-xl font-bold text-white mb-4">🖼️ 圖片工具</h2>
+      <div className="flex gap-2 mb-6">
+        {[['resize','調整尺寸'],['compress','壓縮圖片']].map(([t,lbl]) => (
+          <button key={t} onClick={() => setSubtab(t)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${subtab===t?'bg-purple-600 text-white':'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}>
+            {lbl}
+          </button>
+        ))}
+      </div>
+
+      {subtab === 'resize' && (
+        <div className="space-y-4">
+          <label className="block">
+            <span className="text-sm text-gray-400 mb-1 block">上傳圖片</span>
+            <input type="file" accept="image/*" onChange={handleImgUpload}
+              className="block w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-700 file:text-white hover:file:bg-purple-600 cursor-pointer" />
+          </label>
+          {srcImg && (
+            <>
+              <img src={srcImg} alt="preview" className="max-h-48 rounded-lg object-contain bg-gray-800 p-2" />
+              <p className="text-xs text-gray-500">原始尺寸：{origW} × {origH} px</p>
+              <div className="flex items-end gap-3 flex-wrap">
+                <div>
+                  <span className="text-xs text-gray-400 block mb-1">寬度 (px)</span>
+                  <input type="number" value={w} onChange={e => handleWChange(e.target.value)} min="1"
+                    className="w-24 bg-gray-800 border border-gray-700 rounded px-2 py-1.5 text-sm text-white" />
+                </div>
+                <span className="text-gray-500 pb-1.5">×</span>
+                <div>
+                  <span className="text-xs text-gray-400 block mb-1">高度 (px)</span>
+                  <input type="number" value={h} onChange={e => handleHChange(e.target.value)} min="1"
+                    className="w-24 bg-gray-800 border border-gray-700 rounded px-2 py-1.5 text-sm text-white" />
+                </div>
+                <button onClick={() => setLockRatio(!lockRatio)}
+                  className={`px-3 py-1.5 rounded text-xs font-medium border ${lockRatio?'bg-purple-800 border-purple-600 text-purple-300':'bg-gray-800 border-gray-600 text-gray-400'}`}>
+                  {lockRatio ? '🔒 保持比例' : '🔓 自由比例'}
+                </button>
+              </div>
+              <button onClick={handleResize}
+                className="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-sm font-medium">
+                ✂️ 執行 Resize
+              </button>
+            </>
+          )}
+          {resizedUrl && (
+            <div className="space-y-2 mt-2">
+              <p className="text-sm text-green-400">✅ 完成！尺寸：{w} × {h} px</p>
+              <img src={resizedUrl} alt="resized" className="max-h-48 rounded-lg object-contain bg-gray-800 p-2" />
+              <button onClick={() => dlDataUrl(resizedUrl, 'resized.png')}
+                className="px-4 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg text-sm font-medium">
+                ⬇️ 下載 PNG
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {subtab === 'compress' && (
+        <div className="space-y-4">
+          <label className="block">
+            <span className="text-sm text-gray-400 mb-1 block">上傳圖片</span>
+            <input type="file" accept="image/*" onChange={handleCompUpload}
+              className="block w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-700 file:text-white hover:file:bg-purple-600 cursor-pointer" />
+          </label>
+          {compSrc && (
+            <>
+              <img src={compSrc} alt="preview" className="max-h-48 rounded-lg object-contain bg-gray-800 p-2" />
+              <p className="text-xs text-gray-500">原始大小：{fmtFileSize(compOrigSize)}</p>
+              <div>
+                <span className="text-sm text-gray-400">JPEG 品質：{quality}%</span>
+                <input type="range" min="10" max="100" step="5" value={quality}
+                  onChange={e => setQuality(Number(e.target.value))}
+                  className="w-full mt-1 accent-purple-500" />
+                <div className="flex justify-between text-xs text-gray-600"><span>低品質（小檔）</span><span>高品質（大檔）</span></div>
+              </div>
+              <button onClick={handleCompress}
+                className="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-sm font-medium">
+                🗜️ 執行壓縮
+              </button>
+            </>
+          )}
+          {compUrl && (
+            <div className="space-y-2 mt-2">
+              <p className="text-sm text-green-400">
+                ✅ {fmtFileSize(compOrigSize)} → {fmtFileSize(compNewSize)}（縮減 {Math.round((1 - compNewSize/compOrigSize)*100)}%）
+              </p>
+              <img src={compUrl} alt="compressed" className="max-h-48 rounded-lg object-contain bg-gray-800 p-2" />
+              <button onClick={() => dlDataUrl(compUrl, 'compressed.jpg')}
+                className="px-4 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg text-sm font-medium">
+                ⬇️ 下載 JPEG
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ================================================================
+// C. PDF 工具（pdf-lib）
+// ================================================================
+function PdfTool() {
+  const [subtab, setSubtab] = useState('merge');
+  // merge
+  const [mergeFiles, setMergeFiles] = useState([]);
+  const [mergeUrl, setMergeUrl]     = useState(null);
+  const [merging, setMerging]       = useState(false);
+  // split
+  const [splitFile, setSplitFile]     = useState(null);
+  const [splitN, setSplitN]           = useState(1);
+  const [splitResults, setSplitResults] = useState([]);
+  const [splitting, setSplitting]     = useState(false);
+
+  const handleMergeAdd = async (e) => {
+    const files = Array.from(e.target.files);
+    const loaded = await Promise.all(files.map(f => new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = ev => res({ name: f.name, arrayBuffer: ev.target.result });
+      r.onerror = rej;
+      r.readAsArrayBuffer(f);
+    })));
+    setMergeFiles(prev => [...prev, ...loaded]);
+    e.target.value = '';
+  };
+
+  const moveFile = (idx, dir) => {
+    setMergeFiles(prev => {
+      const arr = [...prev], ni = idx + dir;
+      if (ni < 0 || ni >= arr.length) return arr;
+      [arr[idx], arr[ni]] = [arr[ni], arr[idx]];
+      return arr;
+    });
+  };
+
+  const handleMerge = async () => {
+    if (mergeFiles.length < 2) return;
+    setMerging(true);
+    try {
+      const { PDFDocument } = window.PDFLib;
+      const merged = await PDFDocument.create();
+      for (const f of mergeFiles) {
+        const doc = await PDFDocument.load(f.arrayBuffer);
+        const pages = await merged.copyPages(doc, doc.getPageIndices());
+        pages.forEach(p => merged.addPage(p));
+      }
+      const bytes = await merged.save();
+      setMergeUrl(URL.createObjectURL(new Blob([bytes], { type:'application/pdf' })));
+    } catch(e) { alert('合併失敗：' + e.message); }
+    setMerging(false);
+  };
+
+  const handleSplitUpload = (e) => {
+    const file = e.target.files[0]; if (!file) return;
+    const r = new FileReader();
+    r.onload = ev => setSplitFile({ name: file.name, arrayBuffer: ev.target.result });
+    r.readAsArrayBuffer(file);
+    setSplitResults([]);
+  };
+
+  const handleSplit = async () => {
+    if (!splitFile) return;
+    setSplitting(true);
+    try {
+      const { PDFDocument } = window.PDFLib;
+      const src = await PDFDocument.load(splitFile.arrayBuffer);
+      const total = src.getPageCount();
+      const n = Math.max(1, Number(splitN));
+      const results = [];
+      for (let s = 0; s < total; s += n) {
+        const end = Math.min(s + n, total);
+        const chunk = await PDFDocument.create();
+        const pages = await chunk.copyPages(src, Array.from({ length: end - s }, (_, i) => s + i));
+        pages.forEach(p => chunk.addPage(p));
+        const bytes = await chunk.save();
+        results.push({ url: URL.createObjectURL(new Blob([bytes], { type:'application/pdf' })), label: `第 ${s+1}–${end} 頁` });
+      }
+      setSplitResults(results);
+    } catch(e) { alert('拆分失敗：' + e.message); }
+    setSplitting(false);
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-6">
+      <h2 className="text-xl font-bold text-white mb-4">📄 PDF 工具</h2>
+      <div className="flex gap-2 mb-6">
+        {[['merge','合併 PDF'],['split','拆分 PDF']].map(([t,lbl]) => (
+          <button key={t} onClick={() => setSubtab(t)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${subtab===t?'bg-purple-600 text-white':'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}>
+            {lbl}
+          </button>
+        ))}
+      </div>
+
+      {subtab === 'merge' && (
+        <div className="space-y-4">
+          <label className="block">
+            <span className="text-sm text-gray-400 mb-1 block">新增 PDF（可多選）</span>
+            <input type="file" accept="application/pdf" multiple onChange={handleMergeAdd}
+              className="block w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-700 file:text-white hover:file:bg-purple-600 cursor-pointer" />
+          </label>
+          {mergeFiles.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-xs text-gray-500">合併順序（↑↓ 調整）：</p>
+              {mergeFiles.map((f, i) => (
+                <div key={i} className="flex items-center gap-2 bg-gray-800 rounded-lg px-3 py-2">
+                  <span className="text-xs text-gray-300 flex-1 truncate">{i+1}. {f.name}</span>
+                  <button onClick={() => moveFile(i,-1)} disabled={i===0}
+                    className="text-gray-400 hover:text-white disabled:opacity-30 px-1 text-sm">↑</button>
+                  <button onClick={() => moveFile(i, 1)} disabled={i===mergeFiles.length-1}
+                    className="text-gray-400 hover:text-white disabled:opacity-30 px-1 text-sm">↓</button>
+                  <button onClick={() => setMergeFiles(prev => prev.filter((_,j) => j!==i))}
+                    className="text-red-500 hover:text-red-400 px-1 text-xs">✕</button>
+                </div>
+              ))}
+              <button onClick={handleMerge} disabled={mergeFiles.length < 2 || merging}
+                className="px-5 py-2 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white rounded-lg text-sm font-medium">
+                {merging ? '合併中...' : `🔗 合併 ${mergeFiles.length} 個 PDF`}
+              </button>
+            </div>
+          )}
+          {mergeUrl && (
+            <a href={mergeUrl} download="merged.pdf"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg text-sm font-medium">
+              ⬇️ 下載合併結果
+            </a>
+          )}
+        </div>
+      )}
+
+      {subtab === 'split' && (
+        <div className="space-y-4">
+          <label className="block">
+            <span className="text-sm text-gray-400 mb-1 block">上傳要拆分的 PDF</span>
+            <input type="file" accept="application/pdf" onChange={handleSplitUpload}
+              className="block w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-700 file:text-white hover:file:bg-purple-600 cursor-pointer" />
+          </label>
+          {splitFile && (
+            <>
+              <p className="text-xs text-green-400">✅ {splitFile.name}</p>
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-gray-400">每</span>
+                <input type="number" min="1" value={splitN} onChange={e => setSplitN(e.target.value)}
+                  className="w-20 bg-gray-800 border border-gray-700 rounded px-2 py-1.5 text-sm text-white" />
+                <span className="text-sm text-gray-400">頁拆一個檔案</span>
+              </div>
+              <button onClick={handleSplit} disabled={splitting}
+                className="px-5 py-2 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white rounded-lg text-sm font-medium">
+                {splitting ? '拆分中...' : '✂️ 執行拆分'}
+              </button>
+            </>
+          )}
+          {splitResults.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-sm text-green-400">✅ 共 {splitResults.length} 個檔案</p>
+              {splitResults.map((r, i) => (
+                <a key={i} href={r.url} download={`split_part${i+1}.pdf`}
+                  className="flex items-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm text-gray-300">
+                  ⬇️ {r.label}（part {i+1}）
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ================================================================
+// D. 匯率換算
+// ================================================================
+function CurrencyTool() {
+  const [rates, setRates]         = useState(DEFAULT_RATES);
+  const [fromCur, setFromCur]     = useState('USD');
+  const [toCur, setToCur]         = useState('TWD');
+  const [amount, setAmount]       = useState('1');
+  const [editMode, setEditMode]   = useState(false);
+  const [editRates, setEditRates] = useState({});
+  const [lastUpdate, setLastUpdate] = useState('');
+  const [saving, setSaving]       = useState(false);
+
+  const currencies = ['TWD', ...Object.keys(DEFAULT_RATES)];
+
+  useEffect(() => {
+    if (!_db) return;
+    const ref = _db.ref('/twTools_currency');
+    const handler = ref.on('value', snap => {
+      const data = snap.val();
+      if (data) {
+        if (data.rates) setRates(data.rates);
+        if (data.updatedAt) setLastUpdate(data.updatedAt);
+      }
+    });
+    return () => ref.off('value', handler);
+  }, []);
+
+  const converted = useMemo(() => {
+    const amt = parseFloat(amount) || 0;
+    if (fromCur === toCur) return amt;
+    const r = rates;
+    if (fromCur === 'TWD') return amt / r[toCur];
+    if (toCur   === 'TWD') return amt * r[fromCur];
+    return (amt * r[fromCur]) / r[toCur];
+  }, [amount, fromCur, toCur, rates]);
+
+  const handleSaveRates = async () => {
+    setSaving(true);
+    const now = new Date().toLocaleString('zh-TW', { timeZone:'Asia/Taipei' });
+    const newRates = {};
+    Object.keys(DEFAULT_RATES).forEach(k => { newRates[k] = parseFloat(editRates[k]) || rates[k]; });
+    setRates(newRates); setLastUpdate(now);
+    if (_db) await _db.ref('/twTools_currency').set({ rates: newRates, updatedAt: now });
+    setEditMode(false); setSaving(false);
+  };
+
+  const fmt = n => n.toLocaleString('zh-TW', { maximumFractionDigits: 6 });
+
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-6">
+      <div className="flex items-center justify-between mb-1">
+        <h2 className="text-xl font-bold text-white">💱 匯率換算</h2>
+        <button onClick={() => { setEditMode(true); setEditRates({...rates}); }}
+          className="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg text-xs">
+          ✏️ 更新匯率
+        </button>
+      </div>
+      {lastUpdate && <p className="text-xs text-gray-500 mb-4">匯率更新時間：{lastUpdate}</p>}
+
+      <div className="bg-gray-800/60 rounded-xl p-4 mb-6 space-y-4">
+        <div className="grid grid-cols-2 gap-3">
+          {[['from', fromCur, setFromCur],['to', toCur, setToCur]].map(([dir, val, setter]) => (
+            <div key={dir}>
+              <span className="text-xs text-gray-400 block mb-1">{dir === 'from' ? '從' : '到'}</span>
+              <select value={val} onChange={e => setter(e.target.value)}
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-sm text-white">
+                {currencies.map(c => (
+                  <option key={c} value={c}>{CURRENCY_FLAGS[c] || '🇹🇼'} {c} {CURRENCY_NAMES[c] || '台幣'}</option>
+                ))}
+              </select>
+            </div>
+          ))}
+        </div>
+        <div>
+          <span className="text-xs text-gray-400 block mb-1">金額</span>
+          <input type="number" value={amount} onChange={e => setAmount(e.target.value)} min="0"
+            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-sm text-white" />
+        </div>
+        <div className="bg-gray-700/50 rounded-xl p-4 text-center">
+          <p className="text-sm text-gray-400">{amount || 0} {fromCur} =</p>
+          <p className="text-3xl font-bold text-yellow-400 mt-1">{fmt(converted)} <span className="text-xl">{toCur}</span></p>
+        </div>
+      </div>
+
+      <div className="bg-gray-800/40 rounded-xl overflow-hidden">
+        <div className="px-4 py-2 bg-gray-800 text-xs text-gray-400 font-medium">
+          台幣 (TWD) 匯率參考（1 外幣 = ? 台幣）
+        </div>
+        <div className="divide-y divide-gray-700/50">
+          {Object.entries(rates).map(([code, rate]) => (
+            <div key={code} className="flex items-center px-4 py-2 hover:bg-gray-700/30">
+              <span className="text-base mr-2">{CURRENCY_FLAGS[code]}</span>
+              <span className="text-sm text-gray-300 w-12">{code}</span>
+              <span className="text-xs text-gray-500 flex-1">{CURRENCY_NAMES[code]}</span>
+              <span className="text-sm text-yellow-400 font-mono">{Number(rate).toFixed(4)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {editMode && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+          <div className="bg-gray-900 rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto border border-gray-700">
+            <div className="p-4 border-b border-gray-700 flex items-center justify-between sticky top-0 bg-gray-900">
+              <h3 className="font-bold text-white">✏️ 更新匯率（1 外幣 = ? TWD）</h3>
+              <button onClick={() => setEditMode(false)} className="text-gray-400 hover:text-white text-lg">✕</button>
+            </div>
+            <div className="p-4 space-y-3">
+              {Object.keys(DEFAULT_RATES).map(code => (
+                <div key={code} className="flex items-center gap-3">
+                  <span className="text-base">{CURRENCY_FLAGS[code]}</span>
+                  <span className="text-sm text-gray-300 w-10">{code}</span>
+                  <span className="text-xs text-gray-500 flex-1">{CURRENCY_NAMES[code]}</span>
+                  <input type="number" step="0.0001"
+                    value={editRates[code] ?? ''}
+                    onChange={e => setEditRates(prev => ({...prev, [code]: e.target.value}))}
+                    placeholder={String(rates[code])}
+                    className="w-24 bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm text-white" />
+                </div>
+              ))}
+              <button onClick={handleSaveRates} disabled={saving}
+                className="w-full mt-2 py-2.5 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white rounded-xl font-medium text-sm">
+                {saving ? '同步中...' : '✅ 儲存並同步所有使用者'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ================================================================
+// E. 單位換算
+// ================================================================
+function UnitTool() {
+  const [subtab, setSubtab]   = useState('length');
+  const [fromUnit, setFromUnit] = useState('m');
+  const [toUnit, setToUnit]   = useState('ft');
+  const [lenAmt, setLenAmt]   = useState('1');
+  const [tempVal, setTempVal] = useState('0');
+  const [fromTemp, setFromTemp] = useState('c');
+
+  const lenResult = useMemo(() => {
+    const amt = parseFloat(lenAmt) || 0;
+    const from = LENGTH_UNITS.find(u => u.id === fromUnit);
+    const to   = LENGTH_UNITS.find(u => u.id === toUnit);
+    if (!from || !to) return '0';
+    const r = amt * from.factor / to.factor;
+    return r.toPrecision(8).replace(/\.?0+$/, '');
+  }, [lenAmt, fromUnit, toUnit]);
+
+  const tempResults = useMemo(() => {
+    const v = parseFloat(tempVal) || 0;
+    let c, f, k;
+    if (fromTemp === 'c') { c = v; f = v*9/5+32; k = v+273.15; }
+    else if (fromTemp === 'f') { c = (v-32)*5/9; f = v; k = (v-32)*5/9+273.15; }
+    else { c = v-273.15; f = (v-273.15)*9/5+32; k = v; }
+    return { c: c.toFixed(4), f: f.toFixed(4), k: k.toFixed(4) };
+  }, [tempVal, fromTemp]);
+
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-6">
+      <h2 className="text-xl font-bold text-white mb-4">📏 單位換算</h2>
+      <div className="flex gap-2 mb-6">
+        {[['length','長度'],['temp','溫度']].map(([t,lbl]) => (
+          <button key={t} onClick={() => setSubtab(t)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${subtab===t?'bg-purple-600 text-white':'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}>
+            {lbl}
+          </button>
+        ))}
+      </div>
+
+      {subtab === 'length' && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-3">
+            {[['from', fromUnit, setFromUnit],['to', toUnit, setToUnit]].map(([dir, val, setter]) => (
+              <div key={dir}>
+                <span className="text-xs text-gray-400 block mb-1">{dir === 'from' ? '從' : '到'}</span>
+                <select value={val} onChange={e => setter(e.target.value)}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+                  {LENGTH_UNITS.map(u => <option key={u.id} value={u.id}>{u.label}</option>)}
+                </select>
+              </div>
+            ))}
+          </div>
+          <div>
+            <span className="text-xs text-gray-400 block mb-1">數值</span>
+            <input type="number" value={lenAmt} onChange={e => setLenAmt(e.target.value)}
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
+          </div>
+          <div className="bg-gray-800/60 rounded-xl p-4 text-center">
+            <p className="text-sm text-gray-400">{lenAmt || 0} {fromUnit} =</p>
+            <p className="text-3xl font-bold text-yellow-400 mt-1">{lenResult} <span className="text-xl">{toUnit}</span></p>
+          </div>
+          <div className="bg-gray-800/40 rounded-xl overflow-hidden">
+            <div className="px-4 py-2 bg-gray-800 text-xs text-gray-400 font-medium">
+              快速換算（{lenAmt || 1} {fromUnit}）
+            </div>
+            <div className="divide-y divide-gray-700/50">
+              {LENGTH_UNITS.filter(u => u.id !== fromUnit).map(u => {
+                const from = LENGTH_UNITS.find(x => x.id === fromUnit);
+                const val  = ((parseFloat(lenAmt)||1) * from.factor / u.factor).toPrecision(6).replace(/\.?0+$/, '');
+                return (
+                  <div key={u.id} className="flex items-center px-4 py-2 hover:bg-gray-700/30">
+                    <span className="text-sm text-gray-300 flex-1">{u.label}</span>
+                    <span className="text-sm text-yellow-400 font-mono">{val}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {subtab === 'temp' && (
+        <div className="space-y-4">
+          <div className="flex gap-2">
+            {[['c','°C 攝氏'],['f','°F 華氏'],['k','K 克耳文']].map(([id,lbl]) => (
+              <button key={id} onClick={() => setFromTemp(id)}
+                className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${fromTemp===id?'bg-purple-600 text-white':'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}>
+                {lbl}
+              </button>
+            ))}
+          </div>
+          <div>
+            <span className="text-xs text-gray-400 block mb-1">輸入值</span>
+            <input type="number" value={tempVal} onChange={e => setTempVal(e.target.value)}
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {[['c','°C','攝氏','text-orange-400'],['f','°F','華氏','text-blue-400'],['k','K','克耳文','text-purple-400']].map(([id,sym,name,cls]) => (
+              <div key={id} className={`bg-gray-800/60 rounded-xl p-4 text-center border-2 ${fromTemp===id?'border-purple-500':'border-transparent'}`}>
+                <p className="text-xs text-gray-500 mb-1">{name}</p>
+                <p className={`text-2xl font-bold ${cls}`}>{tempResults[id]}</p>
+                <p className="text-sm text-gray-500">{sym}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ================================================================
+// F. 颱風停班停課
+// ================================================================
+function TyphoonTool() {
+  const [statuses, setStatuses]     = useState(INIT_TYPHOON);
+  const [editMode, setEditMode]     = useState(false);
+  const [editStatuses, setEditStatuses] = useState({});
+  const [typhoonName, setTyphoonName] = useState('');
+  const [lastUpdate, setLastUpdate] = useState('');
+  const [saving, setSaving]         = useState(false);
+
+  useEffect(() => {
+    if (!_db) return;
+    const ref = _db.ref('/twTools_typhoon');
+    const handler = ref.on('value', snap => {
+      const data = snap.val();
+      if (data) {
+        if (data.statuses)    setStatuses(data.statuses);
+        if (data.typhoonName !== undefined) setTyphoonName(data.typhoonName);
+        if (data.updatedAt)   setLastUpdate(data.updatedAt);
+      }
+    });
+    return () => ref.off('value', handler);
+  }, []);
+
+  const handleSave = async () => {
+    setSaving(true);
+    const now = new Date().toLocaleString('zh-TW', { timeZone:'Asia/Taipei' });
+    setStatuses({...editStatuses}); setLastUpdate(now);
+    if (_db) await _db.ref('/twTools_typhoon').set({ statuses: editStatuses, typhoonName, updatedAt: now });
+    setEditMode(false); setSaving(false);
+  };
+
+  const anyOff = Object.values(statuses).some(s => s !== 'normal');
+
+  return (
+    <div className="max-w-3xl mx-auto px-4 py-6">
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-xl font-bold text-white">🌀 颱風停班停課</h2>
+        <div className="flex items-center gap-3">
+          <a href="https://www.cwa.gov.tw/V8/C/D/typhoon/typhoon_list.html" target="_blank" rel="noopener"
+            className="text-xs text-blue-400 hover:text-blue-300 underline">CWA 颱風資訊</a>
+          <button onClick={() => { setEditMode(true); setEditStatuses({...statuses}); }}
+            className="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg text-xs">
+            ✏️ 更新狀態
+          </button>
+        </div>
+      </div>
+      {typhoonName && <p className="text-sm text-yellow-400 mb-1">🌀 颱風名稱：{typhoonName}</p>}
+      {lastUpdate  && <p className="text-xs text-gray-500 mb-4">更新時間：{lastUpdate}</p>}
+
+      {!anyOff && (
+        <div className="bg-green-900/30 border border-green-800 rounded-xl p-4 text-center mb-6">
+          <p className="text-green-400 font-medium text-lg">✅ 目前所有縣市正常上班上課</p>
+        </div>
+      )}
+
+      {anyOff && (
+        <div className="bg-red-900/30 border border-red-800 rounded-xl p-4 mb-6">
+          <p className="text-red-400 font-bold mb-3 text-base">⚠️ 颱風警報！各縣市異常狀態：</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {TYPHOON_COUNTIES.filter(c => statuses[c] !== 'normal').map(county => {
+              const cfg = STATUS_CONFIG[statuses[county]] || STATUS_CONFIG.normal;
+              return (
+                <div key={county} className={`rounded-lg px-3 py-2 flex items-center gap-2 ${cfg.color}`}>
+                  <span>{cfg.badge}</span>
+                  <span className="font-medium text-sm">{county}</span>
+                  <span className="text-xs ml-auto opacity-80">{cfg.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      <div className="bg-gray-800/40 rounded-xl overflow-hidden">
+        <div className="px-4 py-2 bg-gray-800 text-xs text-gray-400 font-medium">各縣市狀態一覽</div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-gray-700/20">
+          {TYPHOON_COUNTIES.map(county => {
+            const cfg = STATUS_CONFIG[statuses[county]] || STATUS_CONFIG.normal;
+            return (
+              <div key={county}
+                className={`px-3 py-2.5 flex items-center gap-2 ${statuses[county]==='normal'?'bg-gray-800/60':cfg.color}`}>
+                <span className="text-sm">{cfg.badge}</span>
+                <div>
+                  <p className="text-xs font-medium text-white">{county}</p>
+                  <p className="text-xs opacity-70">{cfg.label}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {editMode && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+          <div className="bg-gray-900 rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto border border-gray-700">
+            <div className="p-4 border-b border-gray-700 flex items-center justify-between sticky top-0 bg-gray-900 z-10">
+              <h3 className="font-bold text-white">✏️ 更新颱風狀態</h3>
+              <button onClick={() => setEditMode(false)} className="text-gray-400 hover:text-white text-lg">✕</button>
+            </div>
+            <div className="p-4 space-y-4">
+              <div>
+                <label className="text-xs text-gray-400 block mb-1">颱風名稱（可留空）</label>
+                <input value={typhoonName} onChange={e => setTyphoonName(e.target.value)}
+                  placeholder="例：康芮、山陀兒"
+                  className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-1.5 text-sm text-white" />
+              </div>
+              <div className="space-y-2">
+                {TYPHOON_COUNTIES.map(county => (
+                  <div key={county} className="flex items-center gap-2">
+                    <span className="text-sm text-gray-300 w-20 shrink-0">{county}</span>
+                    <select
+                      value={editStatuses[county] || 'normal'}
+                      onChange={e => setEditStatuses(prev => ({...prev, [county]: e.target.value}))}
+                      className="flex-1 bg-gray-800 border border-gray-600 rounded px-2 py-1 text-xs text-white">
+                      {Object.entries(STATUS_CONFIG).map(([id, cfg]) => (
+                        <option key={id} value={id}>{cfg.badge} {cfg.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                ))}
+              </div>
+              <button onClick={handleSave} disabled={saving}
+                className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white rounded-xl font-medium text-sm">
+                {saving ? '同步中...' : '✅ 儲存並同步所有使用者'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ================================================================
+
+let _db = null;
+(function initFirebase() {
+  try {
+    if (FIREBASE_CONFIG.apiKey === 'YOUR_API_KEY') return; // 尚未設定
+    firebase.initializeApp(FIREBASE_CONFIG);
+    _db = firebase.database();
+    console.log('[Firebase] 已連線');
+  } catch(e) { console.warn('[Firebase] 初始化失敗', e); }
+})();
+
+function writeToFirebase(path, data) {
+  if (!_db) return;
+  try { _db.ref(path).set(data); } catch(e) { console.warn('[Firebase] 寫入失敗', e); }
+}
+
+// localStorage 讀寫（靜默處理 quota/隱私模式例外）
+function loadDraw(key, fallback) {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? { ...fallback, ...JSON.parse(saved) } : fallback;
+  } catch(e) { return fallback; }
+}
+function saveDraw(key, data) {
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
+}
+
+function App() {
+  const [type, setType]               = useState('super');
+  const [tab, setTab]                 = useState('check');
+  const [superDraw, setSuperDraw]     = useState(() => loadDraw('twLottery_super', INIT_SUPER));
+  const [bigDraw, setBigDraw]         = useState(() => loadDraw('twLottery_big',   INIT_BIG));
+
+  // 包裝 setter：更新 state，同時寫入 Firebase（全站共享）& localStorage（離線備援）
+  const updateSuperDraw = React.useCallback((updater) => {
+    setSuperDraw(prev => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      saveDraw('twLottery_super', next);
+      writeToFirebase('/superDraw', next);
+      return next;
+    });
+  }, []);
+  const updateBigDraw = React.useCallback((updater) => {
+    setBigDraw(prev => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      saveDraw('twLottery_big', next);
+      writeToFirebase('/bigDraw', next);
+      return next;
+    });
+  }, []);
+  const [fetchStatus, setFetchStatus] = useState('idle');
+  const [fetchLog, setFetchLog]       = useState('');
+  const [preset, setPreset]           = useState(null);
+  const [showEdit, setShowEdit]       = useState(false);
+  const [page, setPage]               = useState('lottery');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleTypeChange = (t) => { setType(t); setPreset(null); };
+
+  // Firebase 即時同步：有人更新後所有訪客都會自動收到
+  React.useEffect(() => {
+    if (!_db) return;
+    const superRef = _db.ref('/superDraw');
+    const bigRef   = _db.ref('/bigDraw');
+    const onSuper  = superRef.on('value', snap => {
+      const data = snap.val();
+      if (data) { setSuperDraw(prev => ({ ...prev, ...data })); saveDraw('twLottery_super', data); }
+    });
+    const onBig = bigRef.on('value', snap => {
+      const data = snap.val();
+      if (data) { setBigDraw(prev => ({ ...prev, ...data })); saveDraw('twLottery_big', data); }
+    });
+    return () => { superRef.off('value', onSuper); bigRef.off('value', onBig); };
+  }, []);
+
+  // 呼叫台灣彩券官方 JSON API
+  // endpoint: SuperLotto638Result（威力彩） / Lotto649Result（大樂透）
+  // 自動嘗試本月 → 上月（月初可能尚無本月資料）
+  const handleFetch = async () => {
+    setFetchStatus('loading');
+    setFetchLog('');
+    const isSuper    = type === 'super';
+    const endpoint   = isSuper ? 'SuperLotto638Result' : 'Lotto649Result';
+
+    const safeFetch = async (url) => {
+      const ctrl  = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 10000);
+      try {
+        const res = await fetch(url, {
+          signal: ctrl.signal,
+          headers: { 'Accept': 'application/json' },
+        });
+        clearTimeout(timer);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const raw = await res.json();
+        console.log('[TW Lottery] API raw response:', url, JSON.stringify(raw).substring(0, 400));
+        const row = extractLatestRow(raw);
+        console.log('[TW Lottery] extractLatestRow →', row ? JSON.stringify(row).substring(0, 200) : 'null | shape: ' + describeShape(raw));
+        return { row, shape: describeShape(raw) };
+      } catch (e) {
+        clearTimeout(timer);
+        throw e;
+      }
+    };
+
+    try {
+      // 嘗試本月，若無資料再試上月
+      let result = await safeFetch(buildApiUrl(endpoint));
+      if (!result.row) result = await safeFetch(prevMonthUrl(endpoint));
+      const row = result.row;
+      if (!row) throw new Error(`API 回傳結構無法解析。回應格式：${result.shape}（詳見 F12 Console → [TW Lottery]）`);
+
+      if (isSuper) {
+        const parsed = parseSuperRow(row);
+        updateSuperDraw(prev => ({ ...prev, ...parsed, jackpot: parsed.jackpot ?? prev.jackpot, nextDraw: prev.nextDraw }));
+      } else {
+        const parsed = parseBigRow(row);
+        updateBigDraw(prev => ({ ...prev, ...parsed, jackpot: parsed.jackpot ?? prev.jackpot, nextDraw: prev.nextDraw }));
+      }
+      setFetchStatus('success');
+      setTimeout(() => setFetchStatus('idle'), 4000);
+
+    } catch (err) {
+      console.warn('API fetch failed:', err.message);
+      const isCors = err instanceof TypeError || err.message === 'Failed to fetch' ||
+                     err.message.includes('CORS') || err.message.includes('Network');
+      setFetchLog(isCors
+        ? 'CORS 限制（瀏覽器安全策略）：官方 API 不允許跨域存取。請改用「✏️ 手動輸入」。'
+        : `錯誤：${err.message}`);
+      setFetchStatus('error');
+      setTimeout(() => { setFetchStatus('idle'); setFetchLog(''); }, 10000);
+    }
+  };
+
+  const handleUseNums = (nums) => { setPreset(nums); setTab('check'); };
+
+  const currentDraw = type === 'super' ? superDraw : bigDraw;
+
+  return (
+    <div className="flex min-h-screen bg-gray-950">
+      {/* ── 側邊導覽列 ── */}
+      <Sidebar page={page} setPage={setPage} open={sidebarOpen} setOpen={setSidebarOpen} />
+
+      {/* ── 主內容區（桌面向右偏移 w-56） ── */}
+      <div className="flex-1 md:ml-56 min-h-screen">
+
+        {/* 手機版漢堡按鈕（md 以上隱藏） */}
+        <button
+          className="md:hidden fixed top-3 left-3 z-20 p-2 bg-gray-800/90 rounded-lg text-gray-300 hover:text-white text-lg leading-none"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="開啟選單"
+        >☰</button>
+
+        {/* ── 台灣彩券頁 ── */}
+        {page === 'lottery' && (
+          <>
+            <Header type={type} setType={handleTypeChange} />
+            <Tabs active={tab} setActive={setTab} />
+
+            {/* 廣告版位 1：導覽列下方，內容上方（橫幅廣告）*/}
+            {/* 將 slot 換成你在 AdSense 後台建立的廣告單元 ID */}
+            <AdBanner slot="1111111111" />
+
+            <main className="pb-12">
+              {tab === 'check'   && <CheckTab type={type} superDraw={superDraw} bigDraw={bigDraw} preset={preset} clearPreset={() => setPreset(null)} />}
+              {tab === 'results' && (
+                <ResultsTab
+                  type={type} superDraw={superDraw} bigDraw={bigDraw}
+                  fetchStatus={fetchStatus} fetchLog={fetchLog}
+                  onFetch={handleFetch}
+                  onManualEdit={() => setShowEdit(true)}
+                />
+              )}
+              {tab === 'predict' && <PredictTab type={type} onUseNums={handleUseNums} />}
+              {tab === 'stats'   && <StatsTab type={type} />}
+            </main>
+
+            {/* 廣告版位 2：內容下方，頁尾上方（橫幅廣告）*/}
+            <AdBanner slot="2222222222" />
+
+            <footer className="text-center text-xs text-gray-800 py-4 border-t border-gray-900">
+              資料參考：
+              <a href="https://www.taiwanlottery.com" target="_blank" rel="noopener" className="text-gray-700 underline">台灣彩券官網</a>
+              　·　本站僅供娛樂，不構成任何財務建議
+            </footer>
+
+            {showEdit && (
+              <EditDrawModal
+                type={type}
+                draw={currentDraw}
+                onSave={type === 'super' ? updateSuperDraw : updateBigDraw}
+                onClose={() => setShowEdit(false)}
+              />
+            )}
+          </>
+        )}
+
+        {/* ── 其他工具頁 ── */}
+        {page === 'image'    && <ImageTool />}
+        {page === 'pdf'      && <PdfTool />}
+        {page === 'currency' && <CurrencyTool />}
+        {page === 'unit'     && <UnitTool />}
+        {page === 'typhoon'  && <TyphoonTool />}
+
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
