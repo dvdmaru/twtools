@@ -1721,6 +1721,29 @@ function ImageTool() {
           )}
         </div>
       )}
+
+      <div className="bg-gray-800/30 rounded-xl p-4 mt-6 border border-gray-700/50">
+        <h3 className="text-sm font-semibold text-gray-300 mb-3">📖 使用說明</h3>
+        <div className="text-xs text-gray-400 space-y-3">
+          <div>
+            <p className="font-medium text-gray-300 mb-1.5">調整尺寸（Resize）</p>
+            <ol className="space-y-1 list-decimal list-inside">
+              <li>切換至「調整尺寸」分頁，點選上傳圖片（支援 PNG、JPG、WebP 等格式）</li>
+              <li>輸入目標寬度或高度（預設鎖定長寬比，避免變形）</li>
+              <li>點「✂️ 執行 Resize」，完成後點按鈕下載 PNG 檔</li>
+            </ol>
+          </div>
+          <div>
+            <p className="font-medium text-gray-300 mb-1.5">壓縮圖片（Compress）</p>
+            <ol className="space-y-1 list-decimal list-inside">
+              <li>切換至「壓縮圖片」分頁，上傳圖片</li>
+              <li>拖曳品質滑桿（建議 70–85%，在畫質與檔案大小間取得最佳平衡）</li>
+              <li>點「🗜️ 執行壓縮」，畫面顯示縮減百分比後即可下載 JPEG</li>
+            </ol>
+          </div>
+        </div>
+        <p className="text-xs text-gray-600 mt-3">🔒 本工具完全在瀏覽器本地端處理，圖片不會上傳至任何伺服器，可放心使用</p>
+      </div>
     </div>
   );
 }
@@ -1891,6 +1914,29 @@ function PdfTool() {
           )}
         </div>
       )}
+
+      <div className="bg-gray-800/30 rounded-xl p-4 mt-6 border border-gray-700/50">
+        <h3 className="text-sm font-semibold text-gray-300 mb-3">📖 使用說明</h3>
+        <div className="text-xs text-gray-400 space-y-3">
+          <div>
+            <p className="font-medium text-gray-300 mb-1.5">合併 PDF</p>
+            <ol className="space-y-1 list-decimal list-inside">
+              <li>切換至「合併 PDF」分頁，點選上傳（可一次選多個檔案）</li>
+              <li>使用 ↑↓ 按鈕調整合併順序，也可點 ✕ 移除不需要的檔案</li>
+              <li>點「🔗 合併」按鈕，完成後下載 merged.pdf</li>
+            </ol>
+          </div>
+          <div>
+            <p className="font-medium text-gray-300 mb-1.5">拆分 PDF</p>
+            <ol className="space-y-1 list-decimal list-inside">
+              <li>切換至「拆分 PDF」分頁，上傳要拆分的 PDF 檔</li>
+              <li>設定每幾頁拆成一個檔案（例如：每 1 頁、每 5 頁）</li>
+              <li>點「✂️ 執行拆分」，逐一下載各分割結果檔</li>
+            </ol>
+          </div>
+        </div>
+        <p className="text-xs text-gray-600 mt-3">🔒 使用 <a href="https://pdf-lib.js.org" target="_blank" rel="noopener" className="underline hover:text-gray-400">pdf-lib</a> 在瀏覽器本地端處理，PDF 內容不會上傳至任何伺服器</p>
+      </div>
     </div>
   );
 }
@@ -1907,18 +1953,50 @@ function CurrencyTool() {
   const [editRates, setEditRates] = useState({});
   const [lastUpdate, setLastUpdate] = useState('');
   const [saving, setSaving]       = useState(false);
+  const [autoFetching, setAutoFetching] = useState(false);
+
+  const STALE_HOURS_MS = 20 * 60 * 60 * 1000;
+
+  const fetchAutoRates = async () => {
+    setAutoFetching(true);
+    try {
+      const res  = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/twd.json');
+      const data = await res.json(); // data.twd = { usd: 0.030, jpy: 4.6, ... }
+      const twdRates = data.twd;
+      const newRates = {};
+      Object.keys(DEFAULT_RATES).forEach(code => {
+        const lower = code.toLowerCase();
+        if (twdRates[lower] && twdRates[lower] > 0) {
+          newRates[code] = parseFloat((1 / twdRates[lower]).toFixed(4));
+        } else {
+          newRates[code] = DEFAULT_RATES[code]; // fallback
+        }
+      });
+      const now          = new Date();
+      const updatedAt    = now.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
+      const updatedAtISO = now.toISOString();
+      setRates(newRates);
+      setLastUpdate(updatedAt);
+      if (_db) await _db.ref('/twTools_currency').set({ rates: newRates, updatedAt, updatedAtISO });
+    } catch(e) { console.warn('匯率自動更新失敗:', e); }
+    setAutoFetching(false);
+  };
 
   const currencies = ['TWD', ...Object.keys(DEFAULT_RATES)];
 
   useEffect(() => {
     if (!_db) return;
     const ref = _db.ref('/twTools_currency');
+    let fetched = false;
     const handler = ref.on('value', snap => {
       const data = snap.val();
+      const isStale = !data || !data.updatedAtISO
+        || (Date.now() - new Date(data.updatedAtISO).getTime()) > STALE_HOURS_MS;
       if (data) {
-        if (data.rates) setRates(data.rates);
+        if (data.rates)     setRates(data.rates);
         if (data.updatedAt) setLastUpdate(data.updatedAt);
       }
+      if (isStale && !fetched) { fetched = true; fetchAutoRates(); }
     });
     return () => ref.off('value', handler);
   }, []);
@@ -1934,11 +2012,13 @@ function CurrencyTool() {
 
   const handleSaveRates = async () => {
     setSaving(true);
-    const now = new Date().toLocaleString('zh-TW', { timeZone:'Asia/Taipei' });
+    const now          = new Date();
+    const updatedAt    = now.toLocaleString('zh-TW', { timeZone:'Asia/Taipei' });
+    const updatedAtISO = now.toISOString();
     const newRates = {};
     Object.keys(DEFAULT_RATES).forEach(k => { newRates[k] = parseFloat(editRates[k]) || rates[k]; });
-    setRates(newRates); setLastUpdate(now);
-    if (_db) await _db.ref('/twTools_currency').set({ rates: newRates, updatedAt: now });
+    setRates(newRates); setLastUpdate(updatedAt);
+    if (_db) await _db.ref('/twTools_currency').set({ rates: newRates, updatedAt, updatedAtISO });
     setEditMode(false); setSaving(false);
   };
 
@@ -1953,7 +2033,12 @@ function CurrencyTool() {
           ✏️ 更新匯率
         </button>
       </div>
-      {lastUpdate && <p className="text-xs text-gray-500 mb-4">匯率更新時間：{lastUpdate}</p>}
+      <div className="flex items-center gap-2 mb-4 min-h-[1.25rem]">
+        {autoFetching
+          ? <p className="text-xs text-blue-400 animate-pulse">⟳ 自動更新匯率中（ECB 資料）...</p>
+          : lastUpdate && <p className="text-xs text-gray-500">匯率更新時間：{lastUpdate}</p>
+        }
+      </div>
 
       <div className="bg-gray-800/60 rounded-xl p-4 mb-6 space-y-4">
         <div className="grid grid-cols-2 gap-3">
@@ -1980,7 +2065,7 @@ function CurrencyTool() {
         </div>
       </div>
 
-      <div className="bg-gray-800/40 rounded-xl overflow-hidden">
+      <div className="bg-gray-800/40 rounded-xl overflow-hidden mb-6">
         <div className="px-4 py-2 bg-gray-800 text-xs text-gray-400 font-medium">
           台幣 (TWD) 匯率參考（1 外幣 = ? 台幣）
         </div>
@@ -1994,6 +2079,17 @@ function CurrencyTool() {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="bg-gray-800/30 rounded-xl p-4 mb-6 border border-gray-700/50">
+        <h3 className="text-sm font-semibold text-gray-300 mb-3">📖 使用說明</h3>
+        <ol className="space-y-1.5 text-xs text-gray-400 list-decimal list-inside">
+          <li>從下拉選單選擇「來源幣別」與「目標幣別」，支援 TWD、USD、JPY、EUR、GBP、CNY 等 16 種主要貨幣</li>
+          <li>輸入金額，換算結果即時顯示於黃色框中，無需按確認</li>
+          <li>下方匯率表顯示各幣別對台幣（TWD）的參考匯率（1 外幣 = ? TWD）</li>
+          <li>匯率每日台北時間 20:00 後自動從 ECB 資料更新；也可點「✏️ 更新匯率」手動調整並同步所有使用者</li>
+        </ol>
+        <p className="text-xs text-gray-600 mt-3">資料來源：<a href="https://github.com/fawazahmed0/exchange-api" target="_blank" rel="noopener" className="underline hover:text-gray-400">fawazahmed0/exchange-api</a>（歐洲央行 ECB 匯率資料，每日更新）</p>
       </div>
 
       {editMode && (
@@ -2137,6 +2233,28 @@ function UnitTool() {
           </div>
         </div>
       )}
+
+      <div className="bg-gray-800/30 rounded-xl p-4 mt-6 border border-gray-700/50">
+        <h3 className="text-sm font-semibold text-gray-300 mb-3">📖 使用說明</h3>
+        <div className="text-xs text-gray-400 space-y-3">
+          <div>
+            <p className="font-medium text-gray-300 mb-1.5">長度換算</p>
+            <ol className="space-y-1 list-decimal list-inside">
+              <li>切換至「長度換算」分頁，從兩個下拉選單分別選擇「來源單位」與「目標單位」</li>
+              <li>在數值欄位輸入數字，換算結果即時顯示，無需按確認</li>
+              <li>下方快速換算表同步顯示該數值對所有其他單位的換算結果</li>
+            </ol>
+          </div>
+          <div>
+            <p className="font-medium text-gray-300 mb-1.5">溫度換算</p>
+            <ol className="space-y-1 list-decimal list-inside">
+              <li>切換至「溫度換算」分頁，點選輸入溫標（攝氏 °C、華氏 °F 或克耳文 K）</li>
+              <li>輸入數值，三種溫標的對應值同步顯示在下方三格中</li>
+            </ol>
+          </div>
+        </div>
+        <p className="text-xs text-gray-600 mt-3">換算公式依 SI 國際單位制（ISO 80000）計算，完全在瀏覽器本地端執行</p>
+      </div>
     </div>
   );
 }
@@ -2272,6 +2390,28 @@ function TyphoonTool() {
           </div>
         </div>
       )}
+
+      <div className="bg-gray-800/30 rounded-xl p-4 mt-6 border border-gray-700/50">
+        <h3 className="text-sm font-semibold text-gray-300 mb-3">📖 使用說明</h3>
+        <div className="text-xs text-gray-400 space-y-3">
+          <div>
+            <p className="font-medium text-gray-300 mb-1.5">查看停班停課狀態</p>
+            <ol className="space-y-1 list-decimal list-inside">
+              <li>頁面顯示全台各縣市目前的停班停課狀態，色彩標示如下：</li>
+              <li>🟢 正常上班上課（綠色）；🟡 停止上班（黃色）；🔴 停止上課（橘色）；🔴 全面停班停課（紅色）</li>
+              <li>有颱風時，頂部會顯示颱風名稱；無颱風時顯示「目前無颱風警報」</li>
+            </ol>
+          </div>
+          <div>
+            <p className="font-medium text-gray-300 mb-1.5">管理員更新資訊</p>
+            <ol className="space-y-1 list-decimal list-inside">
+              <li>點選右上角「✏️ 更新」按鈕，輸入颱風名稱並設定各縣市狀態</li>
+              <li>點「✅ 儲存並同步所有使用者」後，所有人的頁面即時更新</li>
+            </ol>
+          </div>
+        </div>
+        <p className="text-xs text-gray-600 mt-3">資料由人工更新，請同時參考 <a href="https://www.cwa.gov.tw" target="_blank" rel="noopener" className="underline hover:text-gray-400">中央氣象署（CWA）</a> 官方公告為準</p>
+      </div>
     </div>
   );
 }
