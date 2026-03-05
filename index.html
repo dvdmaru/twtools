@@ -1495,6 +1495,7 @@ function Sidebar({ page, setPage, open, setOpen }) {
     { id:'currency', icon:'💱', label:'匯率換算' },
     { id:'unit',     icon:'📏', label:'單位換算' },
     { id:'typhoon',  icon:'🌀', label:'颱風停班停課' },
+    { id:'blog',     icon:'📝', label:'知識文章' },
   ];
   return (
     <>
@@ -2417,6 +2418,300 @@ function TyphoonTool() {
 }
 
 // ================================================================
+// G. 知識文章（部落格）
+// ================================================================
+const BLOG_ARTICLES = [
+  {
+    id: 'typhoon-holiday',
+    title: '颱風假怎麼放？台灣停班停課制度完整解說',
+    date: '2026-01-20',
+    category: '生活知識',
+    readTime: '5 分鐘',
+    summary: '每逢颱風季，最牽動台灣人神經的就是「明天要不要上班上學」。本文帶你搞懂台灣停班停課的決定機制、各縣市差異，以及颱風假期間該注意的事項。',
+    content: () => (
+      <div className="space-y-6 text-gray-300 leading-relaxed">
+        <p>每逢颱風季節，台灣人最熟悉的情景就是睡前盯著手機，等待各縣市政府宣布隔天是否停班停課。颱風假雖然人人期待，但背後有一套嚴謹的決策機制，了解這套制度，能幫助你提前做好準備。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">誰來決定停班停課？</h2>
+        <p>台灣的停班停課決定由各地方政府自行判斷，並非中央統一公告。負責決定的機關是各縣市的「地方災害應變中心」，通常由縣市首長或副首長主持。這也是為什麼同一個颱風，台北市停班停課，但新北市卻可能正常上班的情況。</p>
+        <p>主要的判斷依據包括：當地的預測風速（陸上颱風警報）、累積雨量、交通道路狀況，以及颱風行進路徑對當地的實際影響程度。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">停班停課的三種狀態</h2>
+        <p>地方政府通常會公告下列三種狀態之一：</p>
+        <ul className="list-disc list-inside space-y-2 pl-2">
+          <li><strong className="text-white">停止上班及上課</strong>：公私立機關學校全面停班停課，員工無需出勤，學生不用到校。</li>
+          <li><strong className="text-white">停止上課（不停班）</strong>：學生不用上學，但一般公務員及上班族仍須正常出勤，除非雇主另有公告。</li>
+          <li><strong className="text-white">停止上班（不停課）</strong>：較少見的狀態，通常出現在需要持續服務的特殊情境。</li>
+        </ul>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">什麼時候宣布？</h2>
+        <p>各縣市政府通常在前一天傍晚（約 18:00 至 22:00 之間）宣布隔天上午是否停班停課；若颱風影響時程跨越下午，則會另行宣布下午場次。行政院人事行政總處（DGPA）官網設有即時的停班停課查詢頁面，是最權威的參考來源。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">颱風假有薪嗎？</h2>
+        <p>依據《天然災害發生事業單位勞工出勤管理及工資給付要點》，颱風假期間，雇主不得強迫勞工出勤；若勞工自願出勤，雇主應加給工資（至少給付當日薪資的一倍以上，也就是俗稱的雙倍薪）。各地方政府公告停班時，員工即享有天災假，薪資照給，不得扣薪。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">如何快速查詢即時狀態？</h2>
+        <p>你可以使用本站的「<strong className="text-purple-300">颱風停班停課查詢工具</strong>」，即時顯示全台 22 縣市的最新狀態，讓你一眼掌握各地情況，不再需要逐一查詢各縣市政府網站。</p>
+      </div>
+    )
+  },
+  {
+    id: 'lottery-guide',
+    title: '威力彩、大樂透怎麼玩？台灣彩券購買對獎完全攻略',
+    date: '2026-01-25',
+    category: '生活知識',
+    readTime: '6 分鐘',
+    summary: '台灣彩券種類繁多，威力彩、大樂透、今彩539各有不同玩法。本文完整介紹各彩種的規則、開獎時間，以及對獎、領獎的正確流程。',
+    content: () => (
+      <div className="space-y-6 text-gray-300 leading-relaxed">
+        <p>台灣彩券由台灣銀行發行，包含多種彩票遊戲，其中以威力彩、大樂透、今彩539最受歡迎。本文帶你從買彩券到領獎，一次搞懂完整流程。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">三大主力彩種介紹</h2>
+        <p><strong className="text-white">威力彩</strong>：每週一、四晚上 21:30 開獎。玩法為從 1 至 38 中選 6 個號碼，再從 1 至 8 中選 1 個第二區號碼。頭獎獎金無上限累積，是台灣史上最高獎金紀錄的保持者，曾突破 30 億元。</p>
+        <p><strong className="text-white">大樂透</strong>：每週二、五晚上 21:30 開獎。從 1 至 49 中選 6 個號碼，另有對獎號碼。頭獎中獎機率約 1/1,398 萬，頭獎保障 800 萬元起跳。</p>
+        <p><strong className="text-white">今彩539</strong>：每天晚上 20:30 開獎。從 1 至 39 中選 5 個號碼，中獎機率較高，頭獎約 800 萬元，是許多彩迷的日常選擇。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">如何購買？</h2>
+        <p>彩券可在全台彩券行、便利商店（7-11、全家等）以及台灣彩券官方 APP 購買。電腦型彩票每張售價 50 元，可選擇自行選號或電腦隨機選號（Quick Pick）。也可以使用「連續購買」功能，一次購買多期。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">開獎時間一覽</h2>
+        <ul className="list-disc list-inside space-y-2 pl-2">
+          <li>週一、週四 21:30：威力彩</li>
+          <li>週二、週五 21:30：大樂透</li>
+          <li>每天 20:30：今彩539、38樂合彩</li>
+          <li>每天 12:00：日日彩</li>
+        </ul>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">怎麼對獎？</h2>
+        <p>最方便的方式是使用台灣彩券官方 APP 掃描彩票條碼，即可自動對獎。也可以使用本站「<strong className="text-purple-300">台灣彩券開獎查詢工具</strong>」查看最新開獎號碼，手動比對。電視開獎結束後，台灣彩券官網也會立即更新當期號碼。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">中獎後如何領獎？</h2>
+        <p>獎金在 2,000 元以下，可至任一彩券行兌領；2,000 元至 200,000 元，可至台灣銀行各分行辦理；超過 200,000 元，需至台灣銀行總行或指定分行，並準備身分證正本辦理。領獎期限為開獎日起算 60 天內，請勿逾期。獎金超過 2,000 元需依規定扣繳 20% 稅款（中華民國境內居住者），領獎前請先確認金額。</p>
+      </div>
+    )
+  },
+  {
+    id: 'currency-exchange',
+    title: '換匯不吃虧！台幣兌換外幣的完整指南',
+    date: '2026-02-01',
+    category: '財務理財',
+    readTime: '5 分鐘',
+    summary: '出國旅遊、海外購物，換匯都是必要的功課。本文教你看懂匯率報價，比較各種換匯管道的優缺點，讓你每次換匯都能省到最多。',
+    content: () => (
+      <div className="space-y-6 text-gray-300 leading-relaxed">
+        <p>不論是出國旅遊、海外留學，還是網購外幣商品，換匯都是一門實用的學問。匯率的差異看似微小，但換大額金額時，差個 1% 就可能差出幾百甚至幾千元台幣。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">看懂匯率報價</h2>
+        <p>銀行的匯率牌告通常會列出「即期買入」、「即期賣出」、「現金買入」、「現金賣出」四種報價。對一般消費者來說：</p>
+        <ul className="list-disc list-inside space-y-2 pl-2">
+          <li><strong className="text-white">你要換外幣（台幣換美金）</strong>：看「現金賣出」或「即期賣出」</li>
+          <li><strong className="text-white">你要換回台幣（美金換台幣）</strong>：看「現金買入」或「即期買入」</li>
+        </ul>
+        <p>「即期」比「現金」匯率通常更優，因為現金鈔票有保管運輸成本。如果你是透過銀行帳戶直接轉帳，用即期匯率更划算。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">各換匯管道比較</h2>
+        <p><strong className="text-white">銀行臨櫃</strong>：匯率透明、金額彈性，但須支付手續費（約 100 元）。部分銀行的財富管理客戶可享優惠匯率。</p>
+        <p><strong className="text-white">銀行 APP 線上換匯</strong>：手續費通常比臨櫃低，部分銀行甚至免手續費，且可 24 小時操作，是目前許多人最常用的方式。</p>
+        <p><strong className="text-white">機場換匯</strong>：方便但匯率最差，通常比銀行差 1% 至 2%，建議只在急需現金時少量兌換。</p>
+        <p><strong className="text-white">當地 ATM 提款</strong>：在歐美日等地，持台灣的國際提款卡直接提當地貨幣，有時匯率接近銀行即期匯率，但需注意手續費（每筆約 75-150 元台幣）。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">常見幣別換算提示</h2>
+        <p>美元（USD）是全球最通用的外幣，台幣兌美元匯率約在 30 至 32 之間（市場波動，僅供參考）。日圓（JPY）近年匯率大幅變動，旅日前務必確認即時匯率。歐元（EUR）和英鎊（GBP）匯率相對較高，換匯前建議多比較幾家銀行。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">即時匯率查詢</h2>
+        <p>本站「<strong className="text-purple-300">匯率換算工具</strong>」每日自動更新匯率資料，支援台幣（TWD）與數十種主要貨幣互換，快速計算出你需要的金額，出發前不妨先查一查。</p>
+      </div>
+    )
+  },
+  {
+    id: 'unit-conversion',
+    title: '公尺、英尺、英吋換算懶人包：旅遊購物必備對照表',
+    date: '2026-02-08',
+    category: '實用工具',
+    readTime: '4 分鐘',
+    summary: '台灣日常使用公制，但買鞋、買螢幕、看美規家具都會遇到英制單位。本文整理最常用的長度換算關係，讓你一次記住，不再被英尺、英吋搞混。',
+    content: () => (
+      <div className="space-y-6 text-gray-300 leading-relaxed">
+        <p>台灣日常生活使用公制（SI 制），但在購物、旅遊或閱讀進口商品規格時，常常遇到英制單位。英吋的螢幕、英尺的室內設計、英里的路程……一不小心就會搞混。本文幫你整理最常用的換算關係。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">公制與英制的基本換算</h2>
+        <ul className="list-disc list-inside space-y-2 pl-2">
+          <li><strong className="text-white">1 英吋（inch）= 2.54 公分（cm）</strong></li>
+          <li><strong className="text-white">1 英尺（foot）= 30.48 公分 = 12 英吋</strong></li>
+          <li><strong className="text-white">1 碼（yard）= 91.44 公分 = 3 英尺</strong></li>
+          <li><strong className="text-white">1 英里（mile）= 1.609 公里（km）</strong></li>
+          <li><strong className="text-white">1 公尺（m）≈ 3.281 英尺 ≈ 39.37 英吋</strong></li>
+        </ul>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">生活情境換算應用</h2>
+        <p><strong className="text-white">買鞋尺碼</strong>：美規男鞋 9 號約等於 UK 8.5 號，腳長約 27 公分。記住「美規鞋號 × 2.54 ÷ 3 + 約 15 公分」的估算方式，可以快速換算。</p>
+        <p><strong className="text-white">螢幕與電視尺寸</strong>：螢幕尺寸是指對角線長度，單位為英吋。55 吋電視的對角線約 139.7 公分（55 × 2.54），購買前先量好牆面寬度，再換算吋數是否合適。</p>
+        <p><strong className="text-white">身高換算</strong>：在美國填表格常需要英尺+英吋的格式。170 公分約等於 5 英尺 7 英吋（5'7"），180 公分約等於 5 英尺 11 英吋（5'11"）。</p>
+        <p><strong className="text-white">室內設計與家具</strong>：美規家具尺寸常以英吋標示。一般標準門寬 32 英吋（約 81 公分），標準天花板高 8 英尺（約 243 公分）。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">重量與面積也常搞混</h2>
+        <p>除了長度，重量方面「1 磅（lb）= 453.6 公克」，美國超市食品常以磅標示。面積方面「1 坪 ≈ 3.3 平方公尺」是台灣房地產最常用的單位，而「1 英畝（acre）≈ 4,047 平方公尺 ≈ 1,224.2 坪」常出現在外國地產資訊中。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">快速換算工具</h2>
+        <p>記不住換算公式沒關係，本站「<strong className="text-purple-300">單位換算工具</strong>」支援長度、重量、溫度等多種單位換算，輸入數值即時顯示結果，還有快速對照表一目了然。</p>
+      </div>
+    )
+  },
+  {
+    id: 'temperature-conversion',
+    title: '攝氏換華氏一次搞定：溫度換算公式與日常對照表',
+    date: '2026-02-15',
+    category: '實用工具',
+    readTime: '4 分鐘',
+    summary: '攝氏（°C）、華氏（°F）、克耳文（K）三種溫度單位各有使用場合。本文說明換算公式，並整理日常生活中最常見的溫度對照，讓你看數字就知道冷不冷。',
+    content: () => (
+      <div className="space-y-6 text-gray-300 leading-relaxed">
+        <p>台灣和大多數國家使用攝氏（°C）表示溫度，但美國、部分加勒比海國家仍使用華氏（°F）。看美劇時聽到「it's 95 degrees outside」，你知道那有多熱嗎？答案是約 35°C，台灣盛夏的溫度。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">三種溫度單位的換算公式</h2>
+        <ul className="list-disc list-inside space-y-2 pl-2">
+          <li><strong className="text-white">攝氏 → 華氏</strong>：°F = °C × 9/5 + 32</li>
+          <li><strong className="text-white">華氏 → 攝氏</strong>：°C = (°F − 32) × 5/9</li>
+          <li><strong className="text-white">攝氏 → 克耳文</strong>：K = °C + 273.15</li>
+          <li><strong className="text-white">克耳文 → 攝氏</strong>：°C = K − 273.15</li>
+        </ul>
+        <p>克耳文（K）是科學上使用的絕對溫度，0K 為「絕對零度」，是理論上物質所能達到的最低溫（約 -273.15°C），常見於物理和化學的計算。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">日常生活溫度對照</h2>
+        <ul className="list-disc list-inside space-y-2 pl-2">
+          <li>0°C / 32°F：水的冰點，台灣冬天玉山山頂的溫度</li>
+          <li>20°C / 68°F：舒適的室內溫度，台灣春秋兩季氣溫</li>
+          <li>36.5°C / 97.7°F：正常人體體溫</li>
+          <li>38°C / 100.4°F：發燒的標準（口溫）</li>
+          <li>100°C / 212°F：水的沸點（海平面標準大氣壓下）</li>
+        </ul>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">烹飪溫度換算</h2>
+        <p>許多進口食譜或烤箱使用華氏標示溫度，以下是常見烹飪溫度對照：</p>
+        <ul className="list-disc list-inside space-y-2 pl-2">
+          <li>325°F ≈ 163°C：低溫烘烤（蛋糕、鬆軟料理）</li>
+          <li>350°F ≈ 177°C：最常見的烘焙溫度</li>
+          <li>400°F ≈ 204°C：中高溫烤箱（烤雞、蔬菜）</li>
+          <li>450°F ≈ 232°C：高溫烘烤（披薩、酥脆料理）</li>
+        </ul>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">旅行時的溫度判斷技巧</h2>
+        <p>到美國旅遊時，有個簡單的估算技巧：把華氏溫度減去 30，再除以 2，就能粗估攝氏溫度。例如 80°F → (80-30)/2 = 25°C，雖然不夠精準（正確答案是 26.7°C），但對於快速判斷穿衣厚薄已經非常夠用。</p>
+        <p>需要精準換算時，使用本站「<strong className="text-purple-300">單位換算工具</strong>」中的溫度換算功能，輸入數值即時顯示三種溫標，快速又準確。</p>
+      </div>
+    )
+  },
+  {
+    id: 'invoice-lottery',
+    title: '統一發票對獎教學：中獎後怎麼領錢？完整流程說明',
+    date: '2026-02-22',
+    category: '生活知識',
+    readTime: '5 分鐘',
+    summary: '台灣獨特的統一發票獎是全民都能參與的抽獎活動，每兩個月開獎一次。本文教你如何對獎、確認中獎、以及領取獎金的完整流程。',
+    content: () => (
+      <div className="space-y-6 text-gray-300 leading-relaxed">
+        <p>統一發票是台灣特有的稅務制度，透過「發票對獎」的設計，鼓勵消費者向商家索取發票，藉此協助政府稽查稅收。每兩個月開獎一次，頭獎高達 1,000 萬元，是台灣最廣泛參與的「抽獎活動」。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">開獎時間與期別</h2>
+        <p>統一發票每兩個月開獎一次，一年共六期，開獎日固定在每奇數月的 25 日：</p>
+        <ul className="list-disc list-inside space-y-2 pl-2">
+          <li>1-2 月份發票 → 3 月 25 日開獎</li>
+          <li>3-4 月份發票 → 5 月 25 日開獎</li>
+          <li>5-6 月份發票 → 7 月 25 日開獎</li>
+          <li>7-8 月份發票 → 9 月 25 日開獎</li>
+          <li>9-10 月份發票 → 11 月 25 日開獎</li>
+          <li>11-12 月份發票 → 隔年 1 月 25 日開獎</li>
+        </ul>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">獎項結構與中獎金額</h2>
+        <ul className="list-disc list-inside space-y-2 pl-2">
+          <li><strong className="text-white">特別獎</strong>（2 組，8 碼全中）：1,000 萬元</li>
+          <li><strong className="text-white">特獎</strong>（3 組，8 碼全中）：200 萬元</li>
+          <li><strong className="text-white">頭獎</strong>（普通發票，末 8 碼相符）：20 萬元</li>
+          <li><strong className="text-white">二獎</strong>（末 7 碼相符）：4 萬元</li>
+          <li><strong className="text-white">三獎</strong>（末 6 碼相符）：1 萬元</li>
+          <li><strong className="text-white">四獎</strong>（末 5 碼相符）：4,000 元</li>
+          <li><strong className="text-white">五獎</strong>（末 4 碼相符）：1,000 元</li>
+          <li><strong className="text-white">六獎</strong>（末 3 碼相符）：200 元</li>
+          <li><strong className="text-white">增開六獎</strong>（末 3 碼相符，另設 3 組）：200 元</li>
+        </ul>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">如何對獎？</h2>
+        <p>對獎最方便的方式是使用財政部的「統一發票兌獎 APP」，掃描發票條碼即可自動對獎，結果立即顯示。也可以手動比對：先確認發票是否在該期開獎日期範圍內，再從末 3 碼開始往前比對開獎號碼。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">中獎後如何領獎？</h2>
+        <p><strong className="text-white">200 元至 3,000 元以下</strong>：可至任一超商（7-11、全家、萊爾富、OK Mart）或郵局兌領，手持實體發票至服務台操作即可。</p>
+        <p><strong className="text-white">3,000 元至 5,000 元以下</strong>：可至郵局兌領，需攜帶發票及身分證。</p>
+        <p><strong className="text-white">5,000 元以上</strong>：需至各地國稅局或其所屬分局、稽徵所辦理兌領，需攜帶發票正本及身分證正本，超過 1 萬元需填寫中獎人資料。</p>
+        <p>注意：領獎期限為開獎日起算 6 個月內，請勿逾期，過期視同放棄。發票需保持整潔，勿塗改、破損。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">電子發票怎麼對獎？</h2>
+        <p>若使用悠遊卡、一卡通、手機載具存發票，可以至財政部電子發票整合服務平台或統一發票兌獎 APP 查詢，中獎後會自動通知，非常方便。</p>
+      </div>
+    )
+  }
+];
+
+function BlogPage({ setPage }) {
+  const [selectedId, setSelectedId] = React.useState(null);
+  const selected = selectedId ? BLOG_ARTICLES.find(a => a.id === selectedId) : null;
+
+  if (selected) {
+    return (
+      <div className="max-w-2xl mx-auto px-2 py-6">
+        <button
+          onClick={() => setSelectedId(null)}
+          className="mb-6 text-sm text-gray-500 hover:text-gray-300 flex items-center gap-1"
+        >
+          ← 返回文章列表
+        </button>
+        <div className="flex items-center gap-2 mb-2 flex-wrap">
+          <span className="text-xs bg-purple-900/50 text-purple-300 px-2 py-0.5 rounded-full">{selected.category}</span>
+          <span className="text-xs text-gray-500">{selected.date}</span>
+          <span className="text-xs text-gray-500">· {selected.readTime}閱讀</span>
+        </div>
+        <h1 className="text-2xl font-bold text-white mb-6 leading-snug">{selected.title}</h1>
+        <div className="prose prose-invert">
+          {selected.content()}
+        </div>
+        <div className="mt-12 pt-6 border-t border-gray-800 text-center">
+          <button
+            onClick={() => setSelectedId(null)}
+            className="text-sm text-gray-500 hover:text-gray-300"
+          >← 返回文章列表</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-2xl mx-auto px-2 py-6">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-white mb-2">知識文章</h1>
+        <p className="text-sm text-gray-400">生活實用知識與工具使用說明，幫助你更高效地處理日常大小事。</p>
+      </div>
+      <div className="space-y-4">
+        {BLOG_ARTICLES.map(article => (
+          <button
+            key={article.id}
+            onClick={() => setSelectedId(article.id)}
+            className="w-full text-left bg-gray-800/40 hover:bg-gray-800/70 border border-gray-700/50 hover:border-purple-700/50 rounded-xl p-5 transition-all"
+          >
+            <div className="flex items-center gap-2 mb-2 flex-wrap">
+              <span className="text-xs bg-purple-900/50 text-purple-300 px-2 py-0.5 rounded-full">{article.category}</span>
+              <span className="text-xs text-gray-500">{article.date}</span>
+              <span className="text-xs text-gray-500">· {article.readTime}閱讀</span>
+            </div>
+            <h2 className="text-base font-semibold text-white mb-1.5 leading-snug">{article.title}</h2>
+            <p className="text-sm text-gray-400 leading-relaxed line-clamp-2">{article.summary}</p>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ================================================================
 // 隱私權政策頁面
 // ================================================================
 function PrivacyPage({ setPage }) {
@@ -2690,6 +2985,7 @@ function App() {
         {page === 'currency' && <CurrencyTool />}
         {page === 'unit'     && <UnitTool />}
         {page === 'typhoon'  && <TyphoonTool />}
+        {page === 'blog'     && <BlogPage setPage={setPage} />}
         {page === 'privacy'  && <PrivacyPage setPage={setPage} />}
 
       </div>
