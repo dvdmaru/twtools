@@ -2741,6 +2741,89 @@ function BlogPage({ setPage }) {
 }
 
 // ================================================================
+// 關於我們頁面
+// ================================================================
+function AboutPage({ setPage }) {
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-10 text-gray-300">
+      <button onClick={() => setPage('blog')} className="mb-6 text-sm text-gray-500 hover:text-gray-300 flex items-center gap-1">
+        ← 返回首頁
+      </button>
+      <h1 className="text-2xl font-bold text-white mb-6">關於 twtools.cc</h1>
+
+      <section className="mb-8">
+        <h2 className="text-lg font-semibold text-purple-400 mb-3">我們是什麼？</h2>
+        <p className="text-sm leading-relaxed text-gray-400">
+          twtools.cc 是一個專為台灣上班族打造的免費線上工具箱，提供日常生活中最常用的實用工具，讓你不需要安裝任何軟體，開啟網頁就能使用。
+        </p>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-lg font-semibold text-purple-400 mb-3">提供哪些工具？</h2>
+        <ul className="text-sm text-gray-400 space-y-2">
+          <li>🎰 <strong className="text-gray-300">台灣彩券查詢</strong>：大樂透、威力彩開獎結果即時查詢與對獎</li>
+          <li>🖼️ <strong className="text-gray-300">圖片工具</strong>：免費線上圖片壓縮、格式轉換，不上傳至伺服器</li>
+          <li>📄 <strong className="text-gray-300">PDF 工具</strong>：PDF 合併、分割、壓縮等常用功能</li>
+          <li>💱 <strong className="text-gray-300">即時匯率換算</strong>：串接即時匯率 API，支援主流貨幣</li>
+          <li>📏 <strong className="text-gray-300">單位換算</strong>：長度、重量、面積、溫度等各類單位快速換算</li>
+          <li>🌀 <strong className="text-gray-300">颱風停班停課查詢</strong>：颱風假即時資訊一目了然</li>
+          <li>📝 <strong className="text-gray-300">知識文章</strong>：勞工權益、個人理財、生活省錢等上班族實用知識</li>
+        </ul>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-lg font-semibold text-purple-400 mb-3">我們的理念</h2>
+        <p className="text-sm leading-relaxed text-gray-400">
+          我們相信好用的工具應該免費、快速、不需要登入。twtools.cc 的所有工具都在瀏覽器本地運算，不會將你的資料上傳至任何伺服器。我們致力於提供台灣上班族最需要的數位工具，持續新增與改善功能。
+        </p>
+      </section>
+
+      <section className="mb-8">
+        <h2 className="text-lg font-semibold text-purple-400 mb-3">資料來源說明</h2>
+        <p className="text-sm leading-relaxed text-gray-400">
+          本站所有資訊僅供參考，不構成任何財務、法律或醫療建議。彩券開獎資料來源為台灣彩券官方網站，匯率資料來源為公開匯率 API，颱風停班停課資訊來源為各縣市政府公告。如有疑問，請以官方資訊為準。
+        </p>
+      </section>
+    </div>
+  );
+}
+
+// ================================================================
+// 聯絡我們頁面
+// ================================================================
+function ContactPage({ setPage }) {
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-10 text-gray-300">
+      <button onClick={() => setPage('blog')} className="mb-6 text-sm text-gray-500 hover:text-gray-300 flex items-center gap-1">
+        ← 返回首頁
+      </button>
+      <h1 className="text-2xl font-bold text-white mb-2">聯絡我們</h1>
+      <p className="text-sm text-gray-500 mb-8">有任何問題、建議或功能需求，歡迎透過下方表單告訴我們，我們會盡快回覆。</p>
+
+      <div className="rounded-xl overflow-hidden border border-gray-700">
+        <iframe
+          src="https://docs.google.com/forms/d/e/1FAIpQLSd2sTBrV1DDbLVhiWqnMJm9GZhMMXTEmv6-CLbliEDlggn3-g/viewform?embedded=true"
+          width="100%"
+          height="680"
+          frameBorder="0"
+          marginHeight="0"
+          marginWidth="0"
+          className="bg-white"
+          title="聯絡表單"
+        >
+          載入中…
+        </iframe>
+      </div>
+
+      <p className="text-xs text-gray-600 mt-4 text-center">
+        若表單無法顯示，請直接寄信至
+        <a href="mailto:contact@twtools.cc" className="underline hover:text-gray-400 ml-1">contact@twtools.cc</a>
+      </p>
+    </div>
+  );
+}
+
+// ================================================================
 // 隱私權政策頁面
 // ================================================================
 function PrivacyPage({ setPage }) {
@@ -3009,11 +3092,17 @@ function App() {
         {page === 'unit'     && <UnitTool />}
         {page === 'typhoon'  && <TyphoonTool />}
         {page === 'blog'     && <BlogPage setPage={setPage} />}
+        {page === 'about'    && <AboutPage setPage={setPage} />}
+        {page === 'contact'  && <ContactPage setPage={setPage} />}
         {page === 'privacy'  && <PrivacyPage setPage={setPage} />}
 
         {/* ── 全站頁尾（所有頁面皆顯示） ── */}
-        {page !== 'privacy' && (
+        {!['privacy','about','contact'].includes(page) && (
           <footer className="text-center text-xs text-gray-600 py-4 border-t border-gray-800 mt-8">
+            <button onClick={() => setPage('about')} className="underline hover:text-gray-400">關於我們</button>
+            　·
+            <button onClick={() => setPage('contact')} className="underline hover:text-gray-400">聯絡我們</button>
+            　·
             <button onClick={() => setPage('privacy')} className="underline hover:text-gray-400">隱私權政策</button>
             　·　© 2026 twtools.cc
           </footer>
