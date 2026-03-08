@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>twtools 後台管理</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', sans-serif; background: #0f172a; }
+
+    /* Quill dark theme */
+    .ql-toolbar.ql-snow {
+      background: #1e293b; border-color: #334155 !important;
+      border-radius: 8px 8px 0 0; padding: 8px 12px;
+    }
+    .ql-container.ql-snow {
+      background: #1e293b; border-color: #334155 !important;
+      border-radius: 0 0 8px 8px; font-size: 15px;
+    }
+    .ql-editor { min-height: 360px; color: #e2e8f0; line-height: 1.7; }
+    .ql-editor.ql-blank::before { color: #64748b; font-style: normal; }
+    .ql-toolbar .ql-stroke { stroke: #94a3b8 !important; }
+    .ql-toolbar .ql-fill { fill: #94a3b8 !important; }
+    .ql-toolbar button:hover .ql-stroke { stroke: #f1f5f9 !important; }
+    .ql-toolbar button.ql-active .ql-stroke { stroke: #a78bfa !important; }
+    .ql-toolbar .ql-picker-label { color: #94a3b8 !important; border-color: #475569 !important; }
+    .ql-toolbar .ql-picker-label .ql-stroke { stroke: #94a3b8 !important; }
+    .ql-toolbar .ql-picker-options { background: #1e293b !important; border-color: #334155 !important; }
+    .ql-toolbar .ql-picker-item { color: #94a3b8 !important; }
+    .ql-toolbar .ql-picker-item:hover { color: #f1f5f9 !important; background: #334155 !important; }
+    .ql-toolbar .ql-picker-item.ql-selected { color: #a78bfa !important; }
+    .ql-snow .ql-tooltip { background: #1e293b !important; border-color: #334155 !important; color: #e2e8f0 !important; }
+    .ql-snow .ql-tooltip input[type=text] { background: #0f172a !important; border-color: #334155 !important; color: #e2e8f0 !important; }
+    .ql-snow .ql-tooltip a { color: #a78bfa !important; }
+
+    /* Form fields */
+    .field { background: #1e293b; border: 1px solid #334155; color: #e2e8f0; border-radius: 8px; padding: 9px 14px; width: 100%; outline: none; transition: border-color 0.2s, box-shadow 0.2s; font-size: 14px; }
+    .field:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+    .field::placeholder { color: #64748b; }
+    select.field option { background: #1e293b; }
+
+    /* Nav buttons */
+    .nav-btn { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s; color: #94a3b8; width: 100%; text-align: left; background: transparent; border: none; }
+    .nav-btn:hover { background: #1e293b; color: #e2e8f0; }
+    .nav-btn.active { background: #1e293b; color: #a78bfa; }
+
+    /* Table row hover */
+    .art-row { transition: background 0.1s; }
+    .art-row:hover { background: #1e293b; }
+
+    /* Toast */
+    .toast-enter { animation: toastIn 0.3s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes toastIn { from { transform: translateX(110%) scale(0.9); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+    /* Disabled input */
+    .field:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Loading spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { animation: spin 0.8s linear infinite; display: inline-block; }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen">
+
+<!-- ============================
+     LOGIN SCREEN
+============================= -->
+<div id="login-screen" class="min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-sm">
+    <div class="bg-slate-800 rounded-2xl p-8 border border-slate-700 shadow-2xl">
+      <div class="text-center mb-7">
+        <div class="text-5xl mb-3">🛠️</div>
+        <h1 class="text-2xl font-bold text-slate-100">twtools 後台</h1>
+        <p class="text-slate-400 text-sm mt-1">文章管理系統</p>
+      </div>
+      <div class="space-y-3">
+        <input type="password" id="pwd-input" class="field text-center" placeholder="輸入管理員密碼"
+               onkeydown="if(event.key==='Enter') doLogin()" />
+        <button onclick="doLogin()" class="w-full bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white font-semibold py-2.5 rounded-xl transition text-sm">
+          登入
+        </button>
+        <p id="login-err" class="text-red-400 text-sm text-center hidden">密碼錯誤，請重試</p>
+      </div>
+    </div>
+    <p class="text-center text-slate-600 text-xs mt-4">twtools.cc 內部使用</p>
+  </div>
+</div>
+
+<!-- ============================
+     MAIN APP
+============================= -->
+<div id="main-app" style="display:none" class="flex min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="w-52 bg-slate-900 border-r border-slate-800 flex flex-col flex-shrink-0 fixed h-full">
+    <div class="p-4 border-b border-slate-800">
+      <div class="font-bold text-base text-slate-100">🛠️ twtools</div>
+      <div class="text-xs text-slate-500 mt-0.5">後台管理</div>
+    </div>
+    <nav class="flex-1 p-2 space-y-0.5 overflow-y-auto">
+      <button class="nav-btn" id="nav-list" onclick="showView('list')">📋 文章列表</button>
+      <button class="nav-btn" id="nav-editor" onclick="showView('editor')">✏️ 新增文章</button>
+      <button class="nav-btn" id="nav-settings" onclick="showView('settings')">⚙️ 設定</button>
+    </nav>
+    <div class="p-2 border-t border-slate-800 space-y-0.5">
+      <a href="/" target="_blank" class="nav-btn text-slate-500 hover:text-slate-300">🌐 前往主站</a>
+      <button class="nav-btn text-slate-500 hover:text-red-400" onclick="doLogout()">🚪 登出</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 overflow-auto ml-52">
+
+    <!-- ── 文章列表 ── -->
+    <div id="view-list" class="p-6 hidden">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-xl font-bold">📋 文章列表</h2>
+          <p class="text-slate-400 text-sm mt-0.5">管理所有已發布的文章</p>
+        </div>
+        <button onclick="showView('editor')"
+                class="bg-violet-600 hover:bg-violet-500 px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-1.5">
+          <span>＋</span> 新增文章
+        </button>
+      </div>
+
+      <!-- Loading -->
+      <div id="list-loading" class="text-center py-16 text-slate-400">
+        <div class="spinner text-2xl mb-2">⏳</div>
+        <p>載入文章中...</p>
+      </div>
+
+      <!-- Table -->
+      <div id="list-table" class="hidden">
+        <div class="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-slate-700 text-slate-400 text-xs uppercase tracking-wide">
+                <th class="text-left px-5 py-3">標題 / ID</th>
+                <th class="text-left px-4 py-3">分類</th>
+                <th class="text-left px-4 py-3">日期</th>
+                <th class="text-center px-4 py-3">來源</th>
+                <th class="text-right px-5 py-3">操作</th>
+              </tr>
+            </thead>
+            <tbody id="list-tbody"></tbody>
+          </table>
+        </div>
+        <p id="list-count" class="text-xs text-slate-500 mt-3 text-right px-1"></p>
+      </div>
+
+      <!-- Empty -->
+      <div id="list-empty" class="hidden text-center py-20 text-slate-400">
+        <div class="text-5xl mb-4">📭</div>
+        <p class="text-lg font-medium">還沒有任何文章</p>
+        <p class="text-sm mt-1">點擊右上角「新增文章」開始建立</p>
+      </div>
+    </div>
+
+    <!-- ── 文章編輯器 ── -->
+    <div id="view-editor" class="p-6 hidden">
+      <div class="flex items-center gap-3 mb-6">
+        <button onclick="showView('list')" class="text-slate-400 hover:text-slate-200 transition text-sm flex items-center gap-1">
+          ← 返回列表
+        </button>
+        <span class="text-slate-600">|</span>
+        <h2 class="text-xl font-bold" id="editor-heading">✏️ 新增文章</h2>
+      </div>
+
+      <div class="max-w-3xl space-y-5">
+        <!-- 標題 -->
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">文章標題 <span class="text-red-400">*</span></label>
+          <input type="text" id="f-title" class="field" placeholder="輸入文章標題..." oninput="autoGenId()" />
+        </div>
+
+        <!-- 分類 + 閱讀時間 -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-1.5">分類</label>
+            <select id="f-category" class="field">
+              <option>理財省錢</option>
+              <option>職場生活</option>
+              <option>AI 新聞</option>
+              <option>生活知識</option>
+              <option>稅務法規</option>
+              <option>節日活動</option>
+              <option>健康養生</option>
+              <option>其他</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-1.5">預計閱讀時間</label>
+            <select id="f-readtime" class="field">
+              <option>3 分鐘</option>
+              <option>5 分鐘</option>
+              <option>8 分鐘</option>
+              <option>10 分鐘</option>
+              <option>15 分鐘</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 摘要 -->
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">
+            文章摘要
+            <span class="text-slate-500 font-normal ml-1">（顯示在文章列表卡片，建議 30–60 字）</span>
+          </label>
+          <textarea id="f-summary" class="field" rows="2" placeholder="簡短描述文章內容..."></textarea>
+        </div>
+
+        <!-- 封面圖 -->
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">封面圖（選填）</label>
+          <div class="flex gap-2">
+            <input type="text" id="f-cover" class="field flex-1" placeholder="貼上圖片 URL，或點右側按鈕上傳" oninput="updateCoverPreview()" />
+            <label class="cursor-pointer bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 border border-slate-600 whitespace-nowrap flex-shrink-0">
+              📎 上傳
+              <input type="file" id="cover-file-input" accept="image/*" class="hidden" onchange="uploadCoverFile(this)" />
+            </label>
+          </div>
+          <div id="cover-preview" class="mt-2 hidden">
+            <img id="cover-img" src="" alt="封面預覽" class="h-36 rounded-xl object-cover border border-slate-700" />
+          </div>
+        </div>
+
+        <!-- 文章 ID -->
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">
+            文章 ID <span class="text-red-400">*</span>
+            <span class="text-slate-500 font-normal ml-1">（唯一識別碼，英文 kebab-case，發布後不可更改）</span>
+          </label>
+          <input type="text" id="f-id" class="field font-mono text-sm" placeholder="例：savings-tips-20260308" />
+        </div>
+
+        <!-- 富文本編輯器 -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-sm font-medium text-slate-300">文章內容 <span class="text-red-400">*</span></label>
+            <span class="text-xs text-slate-500">點工具列 🖼 插入圖片（需先設定 imgbb API Key）</span>
+          </div>
+          <div id="quill-container"></div>
+        </div>
+
+        <!-- 發布日期 -->
+        <div class="max-w-xs">
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">發布日期</label>
+          <input type="date" id="f-date" class="field" />
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex gap-3 pt-3 pb-8">
+          <button onclick="saveArticle()" id="save-btn"
+                  class="bg-violet-600 hover:bg-violet-500 active:bg-violet-700 px-7 py-2.5 rounded-xl font-semibold transition text-sm flex items-center gap-2">
+            💾 儲存並發布
+          </button>
+          <button onclick="showView('list')"
+                  class="bg-slate-700 hover:bg-slate-600 px-6 py-2.5 rounded-xl font-semibold transition text-sm">
+            取消
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 設定 ── -->
+    <div id="view-settings" class="p-6 hidden max-w-xl">
+      <h2 class="text-xl font-bold mb-6">⚙️ 設定</h2>
+      <div class="space-y-5">
+
+        <!-- imgbb Key -->
+        <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700">
+          <h3 class="font-semibold mb-1 flex items-center gap-2 text-slate-200">📎 imgbb 圖床 API Key</h3>
+          <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+            到 <a href="https://api.imgbb.com/" target="_blank" class="text-violet-400 underline hover:text-violet-300">api.imgbb.com</a> 免費申請帳號，
+            取得 API Key 後貼入下方。設定後可在編輯器中直接上傳圖片到 imgbb 免費圖床。
+          </p>
+          <div class="flex gap-2">
+            <input type="text" id="s-imgbb" class="field flex-1" placeholder="貼上 API Key..." />
+            <button onclick="saveImgbbKey()"
+                    class="bg-violet-600 hover:bg-violet-500 px-4 py-2 rounded-xl text-sm font-semibold transition whitespace-nowrap flex-shrink-0">
+              儲存
+            </button>
+          </div>
+          <p id="imgbb-status" class="text-xs text-slate-500 mt-2"></p>
+        </div>
+
+        <!-- Password info -->
+        <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700">
+          <h3 class="font-semibold mb-1 flex items-center gap-2 text-slate-200">🔐 管理員密碼</h3>
+          <p class="text-xs text-slate-400 mb-3 leading-relaxed">
+            密碼儲存在 <code class="text-violet-300 bg-slate-900 px-1 py-0.5 rounded">admin.html</code> 頂部的
+            <code class="text-violet-300 bg-slate-900 px-1 py-0.5 rounded">ADMIN_PASSWORD</code> 常數中，直接用文字編輯器修改即可。
+          </p>
+          <div class="bg-slate-900 rounded-xl p-3 text-xs font-mono text-green-400 border border-slate-700">
+            // 第 1 行 — 修改這裡<br/>
+            const ADMIN_PASSWORD = '<span id="show-pwd" class="text-yellow-400"></span>';
+          </div>
+        </div>
+
+        <!-- Firebase Status -->
+        <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700">
+          <h3 class="font-semibold mb-3 flex items-center gap-2 text-slate-200">🔥 Firebase 連線狀態</h3>
+          <div class="text-xs font-mono space-y-1.5 text-slate-400">
+            <div>資料庫：taiwan-lottery-535c2</div>
+            <div>文章路徑：/twTools_blog/articles</div>
+            <div id="fb-status" class="text-yellow-400 mt-2">⏳ 檢查連線中...</div>
+          </div>
+        </div>
+
+        <!-- Article Stats -->
+        <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700">
+          <h3 class="font-semibold mb-3 flex items-center gap-2 text-slate-200">📊 文章統計</h3>
+          <div id="stats" class="text-sm text-slate-400">載入中...</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed top-5 right-5 z-50" style="display:none">
+  <div id="toast-box" class="toast-enter flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium shadow-2xl border min-w-48">
+    <span id="toast-icon" class="text-lg"></span>
+    <span id="toast-msg"></span>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// ⚙️ CONFIG — 修改 ADMIN_PASSWORD 以更換登入密碼
+// ============================================================
+const ADMIN_PASSWORD = 'twtools2026';
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCDL-vcBH5nRs_FK4iWSqbVPJ7MMNqMmMU",
+  authDomain: "taiwan-lottery-535c2.firebaseapp.com",
+  databaseURL: "https://taiwan-lottery-535c2-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "taiwan-lottery-535c2",
+};
+const DB_PATH = '/twTools_blog/articles';
+const IMGBB_KEY = 'twtools_imgbb_key';
+const SESSION_KEY = 'twtools_admin_s';
+
+// ============================================================
+// FIREBASE
+// ============================================================
+firebase.initializeApp(FIREBASE_CONFIG);
+const db = firebase.database();
+
+// ============================================================
+// AUTH
+// ============================================================
+function doLogin() {
+  const val = document.getElementById('pwd-input').value;
+  if (val === ADMIN_PASSWORD) {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-app').style.display = 'flex';
+    initApp();
+  } else {
+    const err = document.getElementById('login-err');
+    err.classList.remove('hidden');
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-input').focus();
+    setTimeout(() => err.classList.add('hidden'), 3000);
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem(SESSION_KEY);
+  location.reload();
+}
+
+// Resume session
+if (sessionStorage.getItem(SESSION_KEY) === '1') {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('main-app').style.display = 'flex';
+  window.addEventListener('DOMContentLoaded', initApp);
+}
+
+// ============================================================
+// APP STATE
+// ============================================================
+let quill = null;
+let allArticles = {};  // id -> article object
+let editingId = null;  // null = new article
+let idManuallyEdited = false;
+
+// ============================================================
+// INIT
+// ============================================================
+function initApp() {
+  initQuill();
+  loadArticles();
+  showView('list');
+  setTodayDate();
+
+  // Imgbb key
+  const stored = localStorage.getItem(IMGBB_KEY) || '';
+  document.getElementById('s-imgbb').value = stored;
+  document.getElementById('imgbb-status').textContent = stored ? '✅ 已設定 API Key' : '尚未設定';
+
+  // Show password hint (partial)
+  const p = ADMIN_PASSWORD;
+  document.getElementById('show-pwd').textContent = p.slice(0,2) + '*'.repeat(Math.max(0, p.length-2));
+
+  // Firebase status
+  db.ref('.info/connected').on('value', snap => {
+    const el = document.getElementById('fb-status');
+    if (!el) return;
+    el.textContent = snap.val() ? '✅ 連線正常' : '❌ 連線中斷';
+    el.className = snap.val() ? 'text-green-400 mt-2' : 'text-red-400 mt-2';
+  });
+}
+
+function setTodayDate() {
+  const today = new Date().toISOString().split('T')[0];
+  const d = document.getElementById('f-date');
+  if (d) d.value = today;
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showView(view, articleId) {
+  ['list', 'editor', 'settings'].forEach(v => {
+    document.getElementById(`view-${v}`).classList.add('hidden');
+    const btn = document.getElementById(`nav-${v}`);
+    if (btn) btn.classList.remove('active');
+  });
+  document.getElementById(`view-${view}`).classList.remove('hidden');
+  const activeBtn = document.getElementById(`nav-${view}`);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  if (view === 'editor') {
+    resetEditorForm();
+    if (articleId) {
+      loadArticleIntoEditor(articleId);
+    }
+  }
+  if (view === 'settings') {
+    renderStats();
+  }
+}
+
+// ============================================================
+// QUILL EDITOR
+// ============================================================
+function initQuill() {
+  const toolbar = [
+    [{ 'header': [2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    ['blockquote', 'code-block'],
+    ['link', 'image'],
+    ['clean'],
+  ];
+
+  quill = new Quill('#quill-container', {
+    theme: 'snow',
+    placeholder: '開始撰寫文章內容...\n\n提示：可用 H2/H3 標題分段，圖片點工具列圖示插入',
+    modules: {
+      toolbar: {
+        container: toolbar,
+        handlers: { image: handleImageInsert }
+      }
+    }
+  });
+}
+
+async function handleImageInsert() {
+  const apiKey = localStorage.getItem(IMGBB_KEY);
+  if (!apiKey) {
+    const url = prompt(
+      '請輸入圖片 URL：\n\n（💡 提示：到「設定」填入 imgbb API Key，即可直接從電腦上傳圖片）'
+    );
+    if (url && url.trim()) insertImageToQuill(url.trim());
+    return;
+  }
+  // File upload
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = async () => {
+    if (!input.files || !input.files[0]) return;
+    try {
+      showToast('⏳', '圖片上傳中...', 'gray');
+      const url = await uploadToImgbb(input.files[0], apiKey);
+      insertImageToQuill(url);
+      showToast('✅', '圖片上傳成功', 'green');
+    } catch (e) {
+      showToast('❌', '上傳失敗：' + e.message, 'red');
+    }
+  };
+  input.click();
+}
+
+function insertImageToQuill(url) {
+  const range = quill.getSelection(true);
+  quill.insertEmbed(range ? range.index : 0, 'image', url, 'user');
+  quill.setSelection((range ? range.index : 0) + 1, 0, 'silent');
+}
+
+// ============================================================
+// IMAGE UPLOAD (imgbb)
+// ============================================================
+async function uploadToImgbb(file, apiKey) {
+  const form = new FormData();
+  form.append('image', file);
+  const resp = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+    method: 'POST', body: form
+  });
+  const data = await resp.json();
+  if (data.success) return data.data.url;
+  throw new Error(data.error?.message || `HTTP ${resp.status}`);
+}
+
+async function uploadCoverFile(input) {
+  const apiKey = localStorage.getItem(IMGBB_KEY);
+  if (!apiKey) {
+    showToast('⚠️', '請先到「設定」填入 imgbb API Key', 'yellow');
+    return;
+  }
+  if (!input.files || !input.files[0]) return;
+  try {
+    showToast('⏳', '封面圖上傳中...', 'gray');
+    const url = await uploadToImgbb(input.files[0], apiKey);
+    document.getElementById('f-cover').value = url;
+    updateCoverPreview();
+    showToast('✅', '封面圖上傳成功', 'green');
+  } catch (e) {
+    showToast('❌', '上傳失敗：' + e.message, 'red');
+  }
+}
+
+function updateCoverPreview() {
+  const url = document.getElementById('f-cover').value.trim();
+  const preview = document.getElementById('cover-preview');
+  const img = document.getElementById('cover-img');
+  if (url) {
+    img.src = url;
+    preview.classList.remove('hidden');
+  } else {
+    preview.classList.add('hidden');
+  }
+}
+
+// ============================================================
+// AUTO-GENERATE ID
+// ============================================================
+function autoGenId() {
+  if (editingId || idManuallyEdited) return;
+  const title = document.getElementById('f-title').value.trim();
+  if (!title) { document.getElementById('f-id').value = ''; return; }
+  const date = document.getElementById('f-date').value.replace(/-/g, '');
+  // Simple slug: remove special chars, take first 30 chars
+  const slug = title
+    .toLowerCase()
+    .replace(/[！-～\s、。，？！：；「」『』【】〔〕《》〈〉…—]/g, '-')
+    .replace(/[^a-z0-9\u4e00-\u9fff-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .substring(0, 25);
+  document.getElementById('f-id').value = slug ? `${slug}-${date}` : `article-${date}`;
+}
+
+// Allow manual ID edit
+document.addEventListener('DOMContentLoaded', () => {
+  const idField = document.getElementById('f-id');
+  if (idField) {
+    idField.addEventListener('input', () => { idManuallyEdited = true; });
+  }
+});
+
+// ============================================================
+// FIREBASE: LOAD ARTICLES
+// ============================================================
+function loadArticles() {
+  document.getElementById('list-loading').classList.remove('hidden');
+  document.getElementById('list-table').classList.add('hidden');
+  document.getElementById('list-empty').classList.add('hidden');
+
+  db.ref(DB_PATH).once('value')
+    .then(snap => {
+      allArticles = snap.val() || {};
+      renderList();
+    })
+    .catch(e => {
+      document.getElementById('list-loading').innerHTML = `<p class="text-red-400">❌ 載入失敗：${e.message}</p>`;
+    })
+    .finally(() => {
+      document.getElementById('list-loading').classList.add('hidden');
+    });
+}
+
+function renderList() {
+  const tbody = document.getElementById('list-tbody');
+  const keys = Object.keys(allArticles).sort((a, b) =>
+    (allArticles[b].date || '').localeCompare(allArticles[a].date || '')
+  );
+
+  if (keys.length === 0) {
+    document.getElementById('list-empty').classList.remove('hidden');
+    document.getElementById('list-table').classList.add('hidden');
+    return;
+  }
+
+  document.getElementById('list-table').classList.remove('hidden');
+  document.getElementById('list-empty').classList.add('hidden');
+  document.getElementById('list-count').textContent = `共 ${keys.length} 篇文章`;
+
+  tbody.innerHTML = keys.map(id => {
+    const a = allArticles[id];
+    const isFirebase = !!(a.contentHtml);
+    const categoryColors = {
+      '理財省錢': 'bg-emerald-900 text-emerald-300',
+      '職場生活': 'bg-blue-900 text-blue-300',
+      'AI 新聞': 'bg-violet-900 text-violet-300',
+      '生活知識': 'bg-amber-900 text-amber-300',
+    };
+    const catClass = categoryColors[a.category] || 'bg-slate-700 text-slate-300';
+    return `
+      <tr class="art-row border-b border-slate-700/50 last:border-0">
+        <td class="px-5 py-3.5">
+          <div class="font-medium text-sm text-slate-100 leading-snug">${esc(a.title || '（無標題）')}</div>
+          <div class="text-xs text-slate-500 font-mono mt-0.5">${esc(id)}</div>
+        </td>
+        <td class="px-4 py-3.5">
+          <span class="text-xs px-2 py-0.5 rounded-full font-medium ${catClass}">${esc(a.category || '—')}</span>
+        </td>
+        <td class="px-4 py-3.5 text-xs text-slate-400 whitespace-nowrap">${esc(a.date || '—')}</td>
+        <td class="px-4 py-3.5 text-center">
+          <span class="text-xs ${isFirebase ? 'text-violet-400' : 'text-slate-500'}">
+            ${isFirebase ? '🔥 Firebase' : '💾 靜態'}
+          </span>
+        </td>
+        <td class="px-5 py-3.5 text-right whitespace-nowrap">
+          <button onclick="showView('editor','${escAttr(id)}')"
+                  class="text-xs bg-slate-700 hover:bg-slate-600 active:bg-slate-800 px-3 py-1.5 rounded-lg mr-2 transition font-medium">
+            ✏️ 編輯
+          </button>
+          <button onclick="confirmDelete('${escAttr(id)}')"
+                  class="text-xs bg-red-900/60 hover:bg-red-900 text-red-300 px-3 py-1.5 rounded-lg transition font-medium">
+            🗑️ 刪除
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// ============================================================
+// FIREBASE: SAVE ARTICLE
+// ============================================================
+async function saveArticle() {
+  const id       = document.getElementById('f-id').value.trim();
+  const title    = document.getElementById('f-title').value.trim();
+  const category = document.getElementById('f-category').value;
+  const readTime = document.getElementById('f-readtime').value;
+  const summary  = document.getElementById('f-summary').value.trim();
+  const date     = document.getElementById('f-date').value;
+  const coverUrl = document.getElementById('f-cover').value.trim();
+  const html     = quill.root.innerHTML;
+
+  // Validation
+  if (!id) { showToast('⚠️', '請填入文章 ID', 'yellow'); return; }
+  if (!/^[a-z0-9]/.test(id)) { showToast('⚠️', 'ID 必須以英文小寫或數字開頭', 'yellow'); return; }
+  if (!title) { showToast('⚠️', '請填入文章標題', 'yellow'); return; }
+  if (!html || html === '<p><br></p>') { showToast('⚠️', '請填入文章內容', 'yellow'); return; }
+
+  const article = { id, title, category, readTime, summary, date, contentHtml: html };
+  if (coverUrl) article.coverUrl = coverUrl;
+
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ 儲存中...';
+
+  try {
+    await db.ref(`${DB_PATH}/${id}`).set(article);
+    allArticles[id] = article;
+    showToast('✅', editingId ? '文章已更新！' : '文章已發布！', 'green');
+    showView('list');
+    renderList();
+  } catch (e) {
+    showToast('❌', '儲存失敗：' + e.message, 'red');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '💾 儲存並發布';
+  }
+}
+
+// ============================================================
+// FIREBASE: DELETE ARTICLE
+// ============================================================
+function confirmDelete(id) {
+  const a = allArticles[id];
+  if (!confirm(`確定要刪除這篇文章嗎？\n\n「${a?.title || id}」\n\n此操作無法復原。`)) return;
+  db.ref(`${DB_PATH}/${id}`).remove()
+    .then(() => {
+      delete allArticles[id];
+      renderList();
+      showToast('✅', '文章已刪除', 'green');
+    })
+    .catch(e => showToast('❌', '刪除失敗：' + e.message, 'red'));
+}
+
+// ============================================================
+// EDITOR: LOAD / RESET
+// ============================================================
+function loadArticleIntoEditor(id) {
+  const a = allArticles[id];
+  if (!a) { showToast('❌', '找不到文章', 'red'); return; }
+
+  editingId = id;
+  document.getElementById('editor-heading').textContent = '✏️ 編輯文章';
+
+  document.getElementById('f-id').value       = id;
+  document.getElementById('f-id').disabled    = true;  // ID cannot change
+  document.getElementById('f-title').value    = a.title    || '';
+  document.getElementById('f-category').value = a.category || '其他';
+  document.getElementById('f-readtime').value = a.readTime || '5 分鐘';
+  document.getElementById('f-summary').value  = a.summary  || '';
+  document.getElementById('f-date').value     = a.date     || '';
+  document.getElementById('f-cover').value    = a.coverUrl || '';
+  updateCoverPreview();
+
+  if (quill) {
+    if (a.contentHtml) {
+      quill.clipboard.dangerouslyPasteHTML(a.contentHtml);
+    } else {
+      quill.setText('');
+    }
+  }
+}
+
+function resetEditorForm() {
+  editingId = null;
+  idManuallyEdited = false;
+  document.getElementById('editor-heading').textContent = '✏️ 新增文章';
+  document.getElementById('f-id').value       = '';
+  document.getElementById('f-id').disabled    = false;
+  document.getElementById('f-title').value    = '';
+  document.getElementById('f-category').value = '理財省錢';
+  document.getElementById('f-readtime').value = '5 分鐘';
+  document.getElementById('f-summary').value  = '';
+  document.getElementById('f-cover').value    = '';
+  document.getElementById('cover-preview').classList.add('hidden');
+  setTodayDate();
+  if (quill) quill.setText('');
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+function saveImgbbKey() {
+  const key = document.getElementById('s-imgbb').value.trim();
+  if (key) {
+    localStorage.setItem(IMGBB_KEY, key);
+    document.getElementById('imgbb-status').textContent = '✅ 已儲存 API Key';
+    showToast('✅', 'imgbb API Key 已儲存', 'green');
+  } else {
+    localStorage.removeItem(IMGBB_KEY);
+    document.getElementById('imgbb-status').textContent = '尚未設定';
+    showToast('✅', 'API Key 已清除', 'green');
+  }
+}
+
+function renderStats() {
+  const keys = Object.keys(allArticles);
+  const byCategory = {};
+  keys.forEach(id => {
+    const cat = allArticles[id].category || '其他';
+    byCategory[cat] = (byCategory[cat] || 0) + 1;
+  });
+  const catLines = Object.entries(byCategory)
+    .sort((a, b) => b[1] - a[1])
+    .map(([k, v]) => `<span class="inline-flex items-center gap-1">${esc(k)} <span class="text-slate-300 font-semibold">${v}</span></span>`)
+    .join(' · ');
+
+  document.getElementById('stats').innerHTML = `
+    <p>總文章數：<span class="text-slate-200 font-semibold">${keys.length}</span> 篇</p>
+    <p class="mt-1.5 text-slate-400">${catLines || '無'}</p>
+  `;
+}
+
+// ============================================================
+// TOAST NOTIFICATION
+// ============================================================
+let _toastTimer = null;
+function showToast(icon, msg, type) {
+  const map = {
+    green:  'bg-emerald-900 border-emerald-700 text-emerald-100',
+    red:    'bg-red-900 border-red-700 text-red-100',
+    yellow: 'bg-amber-900 border-amber-700 text-amber-100',
+    gray:   'bg-slate-700 border-slate-600 text-slate-100',
+  };
+  const box = document.getElementById('toast-box');
+  document.getElementById('toast-icon').textContent = icon;
+  document.getElementById('toast-msg').textContent  = msg;
+  box.className = `toast-enter flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium shadow-2xl border min-w-48 ${map[type] || map.gray}`;
+
+  const toast = document.getElementById('toast');
+  toast.style.display = 'block';
+  if (_toastTimer) clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => { toast.style.display = 'none'; }, 3500);
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) {
+  return String(s || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+}
+</script>
+</body>
+</html>
