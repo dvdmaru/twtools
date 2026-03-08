@@ -1500,100 +1500,45 @@ const FIREBASE_CONFIG = {
 // A-0. 影片下載工具
 // ================================================================
 function VideoDownloaderTool() {
-  const [url, setUrl]           = useState('');
-  const [loading, setLoading]   = useState(false);
-  const [result, setResult]     = useState(null);
-  const [error, setError]       = useState('');
-  const [fallback, setFallback] = useState('');   // extracted URL for cobalt.tools fallback
-  const [quality, setQuality]   = useState('1080');
+  const [input, setInput]   = useState('');
+  const [copied, setCopied] = useState(false);
 
-  // 從分享文字中提取 URL（支援抖音/TikTok 分享文字貼入）
+  // 從分享文字中提取 URL（支援抖音 / TikTok 分享文字直接貼入）
   const extractUrl = (text) => {
-    const m = text.match(/https?:\/\/[^\s\u3000\u300a\u300b\uff08\uff09\u3010\u3011]+/i);
-    return m ? m[0].replace(/[）】\)\]]+$/, '') : text;
+    const m = text.match(/https?:\/\/[^\s\u3000\u300a\u300b\uff08\uff09\u3010\u3011\uff3b\uff3d]+/i);
+    return m ? m[0].replace(/[）】\)\]]+$/, '') : '';
   };
 
   const detectPlatform = (u) => {
-    if (/tiktok\.com|vm\.tiktok\.com/i.test(u))   return { name:'TikTok',    color:'text-pink-400',   bg:'bg-pink-950/40',   icon:'🎵' };
-    if (/douyin\.com|v\.douyin\.com/i.test(u))     return { name:'抖音',       color:'text-red-400',    bg:'bg-red-950/40',    icon:'🎵' };
-    if (/instagram\.com/i.test(u))                  return { name:'Instagram', color:'text-purple-400', bg:'bg-purple-950/40', icon:'📸' };
-    if (/youtube\.com|youtu\.be/i.test(u))          return { name:'YouTube',   color:'text-red-400',    bg:'bg-red-950/40',    icon:'▶️' };
-    if (/threads\.net/i.test(u))                    return { name:'Threads',   color:'text-gray-300',   bg:'bg-gray-800/60',   icon:'🧵' };
+    if (!u) return null;
+    if (/tiktok\.com|vm\.tiktok\.com/i.test(u))   return { name:'TikTok',    color:'text-pink-400',   bg:'bg-pink-950/40',   border:'border-pink-800/60',   icon:'🎵' };
+    if (/douyin\.com|v\.douyin\.com/i.test(u))     return { name:'抖音',       color:'text-red-400',    bg:'bg-red-950/40',    border:'border-red-800/60',    icon:'🎵' };
+    if (/instagram\.com/i.test(u))                  return { name:'Instagram', color:'text-purple-400', bg:'bg-purple-950/40', border:'border-purple-800/60', icon:'📸' };
+    if (/youtube\.com|youtu\.be/i.test(u))          return { name:'YouTube',   color:'text-red-400',    bg:'bg-red-950/40',    border:'border-red-800/60',    icon:'▶️' };
+    if (/threads\.net/i.test(u))                    return { name:'Threads',   color:'text-gray-300',   bg:'bg-gray-800/60',   border:'border-gray-700',      icon:'🧵' };
     return null;
   };
 
-  // 對輸入欄位的原始文字做平台偵測（含分享文字）
-  const platform = detectPlatform(url);
+  const raw          = input.trim();
+  const extractedUrl = extractUrl(raw) || (raw.startsWith('http') ? raw : '');
+  const isShareText  = !!(raw && extractedUrl && extractedUrl !== raw);
+  const platform     = detectPlatform(extractedUrl) || detectPlatform(raw);
+  const canGo        = !!(extractedUrl || raw.startsWith('http'));
 
-  const getErrorMsg = (code) => {
-    const map = {
-      'error.api.rate_exceeded':      '請求次數過多，請稍後再試',
-      'error.api.timed_out':          '請求超時，請稍後再試',
-      'error.content.unavailable':    '找不到媒體內容，請確認連結是否有效',
-      'error.content.private':        '該帳號為私人帳號，無法下載',
-      'error.content.age_restricted': '該內容有年齡限制，無法下載',
-      'error.link.invalid':           '連結格式不正確，請確認後重試',
-    };
-    return map[code] || '無法解析，請確認連結是否正確或稍後再試';
-  };
-
-  const handleFetch = async () => {
-    const raw = url.trim();
-    if (!raw) return;
-
-    // 1. 從分享文字中提取純 URL
-    const cleanUrl = extractUrl(raw);
-
-    setLoading(true);
-    setResult(null);
-    setError('');
-    setFallback('');
-
-    try {
-      // 2. 透過 corsproxy.io 繞過 CORS 限制
-      const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent('https://api.cobalt.tools/');
-      const res = await fetch(proxyUrl, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          url: cleanUrl,
-          videoQuality: quality,
-          filenameStyle: 'pretty',
-          downloadMode: 'auto',
-        }),
-      });
-      if (!res.ok) throw new Error('http_' + res.status);
-      const data = await res.json();
-      if (data.status === 'error') {
-        setError(getErrorMsg(data.error?.code));
-        setFallback(cleanUrl);
-      } else if (data.status === 'tunnel' || data.status === 'redirect') {
-        setResult({ type: 'single', url: data.url });
-      } else if (data.status === 'picker') {
-        setResult({ type: 'picker', items: data.picker });
-      } else {
-        setError('收到未知回應，請稍後再試');
-        setFallback(cleanUrl);
-      }
-    } catch (e) {
-      // 3. API 失敗時顯示備用方案（直接前往 cobalt.tools）
-      setError('解析失敗，請改用下方備用按鈕在 cobalt.tools 開啟。');
-      setFallback(cleanUrl);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const openFallback = () => {
-    // 複製 URL 到剪貼簿並開啟 cobalt.tools
-    if (fallback) {
-      try { navigator.clipboard.writeText(fallback); } catch(_) {}
-    }
+  const handleGo = async () => {
+    const urlToUse = extractedUrl || raw;
+    if (!urlToUse) return;
+    try { await navigator.clipboard.writeText(urlToUse); } catch(_) {}
+    setCopied(true);
+    setTimeout(() => setCopied(false), 6000);
     window.open('https://cobalt.tools', '_blank', 'noopener,noreferrer');
   };
+
+  // ── placeholder states (unused but needed to not break any JSX below) ──
+  const loading = false;
+  const result  = null;
+  const error   = '';
+  const quality = '1080';
 
   const PLATFORMS = [
     { name:'TikTok', icon:'🎵' }, { name:'抖音', icon:'🎵' },
@@ -1605,7 +1550,7 @@ function VideoDownloaderTool() {
     <div className="max-w-xl mx-auto px-4 py-10">
       <h1 className="text-2xl font-bold text-white mb-2">📹 影片下載</h1>
       <p className="text-gray-400 text-sm mb-5">
-        貼上影片連結（或 App 分享文字），無浮水印下載原始畫質。
+        貼上影片連結或 App 分享文字，自動提取連結並一鍵前往下載。
       </p>
 
       {/* 支援平台 badges */}
@@ -1622,111 +1567,73 @@ function VideoDownloaderTool() {
         <label className="text-xs text-gray-500 mb-2 block">影片連結或分享文字</label>
         <textarea
           rows={3}
-          value={url}
-          onChange={e => { setUrl(e.target.value); setResult(null); setError(''); setFallback(''); }}
-          onKeyDown={e => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleFetch())}
-          placeholder={"https://www.tiktok.com/@user/video/...\n（也支援直接貼上 App 分享文字）"}
+          value={input}
+          onChange={e => { setInput(e.target.value); setCopied(false); }}
+          placeholder={"https://www.tiktok.com/@user/video/...\n\n也可直接貼上 App 分享文字，會自動提取連結"}
           className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 resize-none"
         />
 
         {/* 平台偵測 badge */}
         {platform && (
-          <div className={`mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border border-current/20 ${platform.bg} ${platform.color}`}>
+          <div className={`mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${platform.border} ${platform.bg} ${platform.color}`}>
             {platform.icon} 偵測到 {platform.name}
           </div>
         )}
 
-        {/* YouTube 畫質選擇 */}
-        {platform?.name === 'YouTube' && (
-          <div className="mt-3">
-            <label className="text-xs text-gray-500 mb-1.5 block">影片畫質</label>
-            <div className="flex gap-2">
-              {[['720','720p'],['1080','1080p'],['2160','4K']].map(([v, label]) => (
-                <button
-                  key={v}
-                  onClick={() => setQuality(v)}
-                  className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-                    quality === v ? 'bg-red-600 text-white' : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
-                  }`}
-                >{label}</button>
-              ))}
-            </div>
+        {/* 分享文字提取結果預覽 */}
+        {isShareText && (
+          <div className="mt-3 bg-gray-800/60 rounded-lg px-3 py-2 border border-gray-700">
+            <p className="text-xs text-gray-500 mb-1">已從分享文字提取連結：</p>
+            <p className="text-xs text-blue-400 break-all font-mono leading-relaxed">{extractedUrl}</p>
           </div>
         )}
       </div>
 
-      {/* 解析按鈕 */}
+      {/* 主按鈕 */}
       <button
-        onClick={handleFetch}
-        disabled={!url.trim() || loading}
-        className="w-full py-3 rounded-xl font-semibold text-sm transition-all bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 disabled:opacity-40 disabled:cursor-not-allowed text-white"
+        onClick={handleGo}
+        disabled={!canGo}
+        className={`w-full py-3.5 rounded-xl font-semibold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed text-white ${
+          copied
+            ? 'bg-green-600 hover:bg-green-500'
+            : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500'
+        }`}
       >
-        {loading ? '⏳ 解析中...' : '🔍 解析下載連結'}
+        {copied ? '✅ 連結已複製！請在新分頁貼上' : '⬇️ 複製連結並前往下載'}
       </button>
 
-      {/* 錯誤訊息 + 備用按鈕 */}
-      {error && (
-        <div className="mt-4 bg-red-950/50 border border-red-800 rounded-lg p-3">
-          <p className="text-red-300 text-sm mb-2">⚠️ {error}</p>
-          {fallback && (
-            <button
-              onClick={openFallback}
-              className="w-full py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium transition-colors"
-            >
-              🔗 在 cobalt.tools 開啟（連結已複製）
-            </button>
-          )}
+      {/* 複製成功提示 */}
+      {copied && (
+        <div className="mt-3 bg-green-950/60 border border-green-800 rounded-lg px-4 py-3">
+          <p className="text-green-300 text-sm font-medium mb-1">✅ cobalt.tools 已在新分頁開啟</p>
+          <p className="text-green-400/70 text-xs">請在搜尋欄貼上（Ctrl+V ／ ⌘V），按 Enter 即可下載</p>
         </div>
       )}
 
-      {/* 結果：單一檔案 */}
-      {result?.type === 'single' && (
-        <div className="mt-4 bg-green-950/50 border border-green-800 rounded-xl p-4">
-          <p className="text-green-300 text-sm mb-3">✅ 解析成功！</p>
-          <a
-            href={result.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block w-full text-center py-2.5 rounded-lg bg-green-700 hover:bg-green-600 text-white text-sm font-semibold transition-colors"
-          >
-            ⬇️ 點此下載影片
-          </a>
-          <p className="text-xs text-gray-500 mt-2 text-center">
-            若沒有自動下載，請長按連結或右鍵選「另存新檔」
-          </p>
-        </div>
-      )}
-
-      {/* 結果：多個選項（如 Instagram 輪播） */}
-      {result?.type === 'picker' && (
-        <div className="mt-4 bg-gray-900 border border-gray-700 rounded-xl p-4">
-          <p className="text-gray-300 text-sm mb-3">找到多個媒體，請選擇：</p>
-          <div className="grid grid-cols-2 gap-2">
-            {result.items.map((item, i) => (
-              <a
-                key={i}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-lg overflow-hidden bg-gray-800 hover:bg-gray-700 transition-colors block"
-              >
-                {item.thumb && (
-                  <img src={item.thumb} alt="" className="w-full aspect-video object-cover opacity-80" />
-                )}
-                <div className="p-2 text-center text-xs text-gray-300">
-                  {item.type === 'video' ? '🎬 影片' : '🎵 音訊'} {i + 1}
-                </div>
-              </a>
+      {/* 使用步驟說明（未複製時顯示） */}
+      {!copied && (
+        <div className="mt-4 bg-gray-900/60 rounded-xl p-4 border border-gray-800">
+          <p className="text-xs text-gray-500 font-medium mb-2.5">使用方式</p>
+          <div className="space-y-2">
+            {[
+              ['1', '貼上影片連結，或直接貼 App 分享文字'],
+              ['2', '點擊「複製連結並前往下載」'],
+              ['3', '在 cobalt.tools 貼上連結，按 Enter 下載'],
+            ].map(([n, text]) => (
+              <div key={n} className="flex items-start gap-2.5">
+                <span className="flex-shrink-0 w-5 h-5 rounded-full bg-purple-900/60 border border-purple-700/50 text-purple-400 text-xs flex items-center justify-center font-bold">{n}</span>
+                <span className="text-xs text-gray-400 leading-5">{text}</span>
+              </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* 說明 */}
-      <div className="mt-6 bg-gray-900/60 rounded-lg p-3 border border-gray-800">
+      {/* 免責聲明 */}
+      <div className="mt-4 bg-gray-900/40 rounded-lg px-3 py-2.5 border border-gray-800/60">
         <p className="text-xs text-gray-600 leading-relaxed">
-          📌 僅供個人合法使用。私人帳號、受版權保護或地區限制的內容可能無法下載。
-          本工具使用 <a href="https://cobalt.tools" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400">cobalt.tools</a> API，不儲存任何影片或使用者資料。
+          📌 僅供個人合法使用。私人帳號或受版權保護的內容可能無法下載。
+          下載服務由 <a href="https://cobalt.tools" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400">cobalt.tools</a> 提供，本站不儲存任何影片或個人資料。
         </p>
       </div>
     </div>
