@@ -2752,14 +2752,14 @@ function PrivacyPage({ setPage }) {
   );
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
-      <button onClick={() => setPage('lottery')} className="mb-6 text-sm text-gray-500 hover:text-gray-300 flex items-center gap-1">
-        ← 返回首頁
+      <button onClick={() => setPage('blog')} className="mb-6 text-sm text-gray-500 hover:text-gray-300 flex items-center gap-1">
+        ← 返回工具箱
       </button>
       <h1 className="text-2xl font-bold text-white mb-2">隱私權政策</h1>
       <p className="text-sm text-gray-500 mb-8">最後更新：2026 年 3 月　·　適用網站：twtools.cc</p>
 
       <Section title="1. 總覽">
-        <p>本網站（twtools.cc，以下稱「本站」）提供免費線上工具，包含圖片處理、PDF 工具、匯率換算、颱風停班停課查詢、單位換算及台灣彩券查詢。本站重視您的隱私，本政策說明我們如何處理與您相關的資料。</p>
+        <p>本網站（twtools.cc，以下稱「本站」）提供免費線上工具及內容，包含圖片處理、PDF 工具、匯率換算、颱風停班停課查詢、單位換算、台灣彩券查詢，以及上班族相關知識部落格文章。本站重視您的隱私，本政策說明我們如何處理與您相關的資料。</p>
       </Section>
 
       <Section title="2. 我們收集的資料">
@@ -2798,7 +2798,7 @@ function PrivacyPage({ setPage }) {
 
       <div className="mt-10 pt-6 border-t border-gray-800 text-center text-xs text-gray-600">
         © 2026 twtools.cc　·
-        <button onClick={() => setPage('lottery')} className="underline hover:text-gray-400">返回工具箱</button>
+        <button onClick={() => setPage('blog')} className="underline hover:text-gray-400 ml-1">返回工具箱</button>
       </div>
     </div>
   );
@@ -2985,16 +2985,10 @@ function App() {
             {/* 廣告版位 2：內容下方，頁尾上方（橫幅廣告）*/}
             <AdBanner slot="2222222222" />
 
-            <footer className="text-center text-xs text-gray-800 py-4 border-t border-gray-900 space-y-1">
-              <div>
-                資料參考：
-                <a href="https://www.taiwanlottery.com" target="_blank" rel="noopener" className="text-gray-700 underline">台灣彩券官網</a>
-                　·　本站僅供娛樂，不構成任何財務建議
-              </div>
-              <div>
-                <button onClick={() => setPage('privacy')} className="text-gray-700 underline hover:text-gray-500">隱私權政策</button>
-                　·　© 2026 twtools.cc
-              </div>
+            <footer className="text-center text-xs text-gray-700 py-3 border-t border-gray-900">
+              資料參考：
+              <a href="https://www.taiwanlottery.com" target="_blank" rel="noopener" className="text-gray-600 underline">台灣彩券官網</a>
+              　·　本站僅供娛樂，不構成任何財務建議
             </footer>
 
             {showEdit && (
@@ -3016,6 +3010,14 @@ function App() {
         {page === 'typhoon'  && <TyphoonTool />}
         {page === 'blog'     && <BlogPage setPage={setPage} />}
         {page === 'privacy'  && <PrivacyPage setPage={setPage} />}
+
+        {/* ── 全站頁尾（所有頁面皆顯示） ── */}
+        {page !== 'privacy' && (
+          <footer className="text-center text-xs text-gray-600 py-4 border-t border-gray-800 mt-8">
+            <button onClick={() => setPage('privacy')} className="underline hover:text-gray-400">隱私權政策</button>
+            　·　© 2026 twtools.cc
+          </footer>
+        )}
 
       </div>
     </div>
