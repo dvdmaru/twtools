@@ -1500,21 +1500,29 @@ const FIREBASE_CONFIG = {
 // A-0. 影片下載工具
 // ================================================================
 function VideoDownloaderTool() {
-  const [url, setUrl]       = useState('');
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
-  const [error, setError]   = useState('');
-  const [quality, setQuality] = useState('1080');
+  const [url, setUrl]           = useState('');
+  const [loading, setLoading]   = useState(false);
+  const [result, setResult]     = useState(null);
+  const [error, setError]       = useState('');
+  const [fallback, setFallback] = useState('');   // extracted URL for cobalt.tools fallback
+  const [quality, setQuality]   = useState('1080');
+
+  // 從分享文字中提取 URL（支援抖音/TikTok 分享文字貼入）
+  const extractUrl = (text) => {
+    const m = text.match(/https?:\/\/[^\s\u3000\u300a\u300b\uff08\uff09\u3010\u3011]+/i);
+    return m ? m[0].replace(/[）】\)\]]+$/, '') : text;
+  };
 
   const detectPlatform = (u) => {
     if (/tiktok\.com|vm\.tiktok\.com/i.test(u))   return { name:'TikTok',    color:'text-pink-400',   bg:'bg-pink-950/40',   icon:'🎵' };
-    if (/douyin\.com/i.test(u))                     return { name:'抖音',       color:'text-red-400',    bg:'bg-red-950/40',    icon:'🎵' };
+    if (/douyin\.com|v\.douyin\.com/i.test(u))     return { name:'抖音',       color:'text-red-400',    bg:'bg-red-950/40',    icon:'🎵' };
     if (/instagram\.com/i.test(u))                  return { name:'Instagram', color:'text-purple-400', bg:'bg-purple-950/40', icon:'📸' };
     if (/youtube\.com|youtu\.be/i.test(u))          return { name:'YouTube',   color:'text-red-400',    bg:'bg-red-950/40',    icon:'▶️' };
     if (/threads\.net/i.test(u))                    return { name:'Threads',   color:'text-gray-300',   bg:'bg-gray-800/60',   icon:'🧵' };
     return null;
   };
 
+  // 對輸入欄位的原始文字做平台偵測（含分享文字）
   const platform = detectPlatform(url);
 
   const getErrorMsg = (code) => {
@@ -1530,20 +1538,28 @@ function VideoDownloaderTool() {
   };
 
   const handleFetch = async () => {
-    const trimmed = url.trim();
-    if (!trimmed) return;
+    const raw = url.trim();
+    if (!raw) return;
+
+    // 1. 從分享文字中提取純 URL
+    const cleanUrl = extractUrl(raw);
+
     setLoading(true);
     setResult(null);
     setError('');
+    setFallback('');
+
     try {
-      const res = await fetch('https://api.cobalt.tools/', {
+      // 2. 透過 corsproxy.io 繞過 CORS 限制
+      const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent('https://api.cobalt.tools/');
+      const res = await fetch(proxyUrl, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          url: trimmed,
+          url: cleanUrl,
           videoQuality: quality,
           filenameStyle: 'pretty',
           downloadMode: 'auto',
@@ -1553,18 +1569,30 @@ function VideoDownloaderTool() {
       const data = await res.json();
       if (data.status === 'error') {
         setError(getErrorMsg(data.error?.code));
+        setFallback(cleanUrl);
       } else if (data.status === 'tunnel' || data.status === 'redirect') {
         setResult({ type: 'single', url: data.url });
       } else if (data.status === 'picker') {
         setResult({ type: 'picker', items: data.picker });
       } else {
         setError('收到未知回應，請稍後再試');
+        setFallback(cleanUrl);
       }
     } catch (e) {
-      setError('連線失敗，請確認網路後再試');
+      // 3. API 失敗時顯示備用方案（直接前往 cobalt.tools）
+      setError('解析失敗，請改用下方備用按鈕在 cobalt.tools 開啟。');
+      setFallback(cleanUrl);
     } finally {
       setLoading(false);
     }
+  };
+
+  const openFallback = () => {
+    // 複製 URL 到剪貼簿並開啟 cobalt.tools
+    if (fallback) {
+      try { navigator.clipboard.writeText(fallback); } catch(_) {}
+    }
+    window.open('https://cobalt.tools', '_blank', 'noopener,noreferrer');
   };
 
   const PLATFORMS = [
@@ -1577,7 +1605,7 @@ function VideoDownloaderTool() {
     <div className="max-w-xl mx-auto px-4 py-10">
       <h1 className="text-2xl font-bold text-white mb-2">📹 影片下載</h1>
       <p className="text-gray-400 text-sm mb-5">
-        貼上影片連結，無浮水印下載原始畫質。
+        貼上影片連結（或 App 分享文字），無浮水印下載原始畫質。
       </p>
 
       {/* 支援平台 badges */}
@@ -1591,14 +1619,14 @@ function VideoDownloaderTool() {
 
       {/* 輸入欄 */}
       <div className="bg-gray-900 rounded-xl p-4 border border-gray-800 mb-4">
-        <label className="text-xs text-gray-500 mb-2 block">影片連結</label>
-        <input
-          type="text"
+        <label className="text-xs text-gray-500 mb-2 block">影片連結或分享文字</label>
+        <textarea
+          rows={3}
           value={url}
-          onChange={e => { setUrl(e.target.value); setResult(null); setError(''); }}
-          onKeyDown={e => e.key === 'Enter' && handleFetch()}
-          placeholder="https://www.tiktok.com/@user/video/..."
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500"
+          onChange={e => { setUrl(e.target.value); setResult(null); setError(''); setFallback(''); }}
+          onKeyDown={e => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleFetch())}
+          placeholder={"https://www.tiktok.com/@user/video/...\n（也支援直接貼上 App 分享文字）"}
+          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 resize-none"
         />
 
         {/* 平台偵測 badge */}
@@ -1636,10 +1664,18 @@ function VideoDownloaderTool() {
         {loading ? '⏳ 解析中...' : '🔍 解析下載連結'}
       </button>
 
-      {/* 錯誤訊息 */}
+      {/* 錯誤訊息 + 備用按鈕 */}
       {error && (
-        <div className="mt-4 bg-red-950/50 border border-red-800 rounded-lg p-3 text-red-300 text-sm">
-          ⚠️ {error}
+        <div className="mt-4 bg-red-950/50 border border-red-800 rounded-lg p-3">
+          <p className="text-red-300 text-sm mb-2">⚠️ {error}</p>
+          {fallback && (
+            <button
+              onClick={openFallback}
+              className="w-full py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium transition-colors"
+            >
+              🔗 在 cobalt.tools 開啟（連結已複製）
+            </button>
+          )}
         </div>
       )}
 
