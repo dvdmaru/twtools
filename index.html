@@ -75,6 +75,17 @@
     /* Sidebar */
     aside { transition: transform 0.28s cubic-bezier(.4,0,.2,1); }
     @media (min-width: 768px) { aside { transform: translateX(0) !important; } }
+    /* Blog content styles (for dangerouslySetInnerHTML articles) */
+    .blog-content h2 { font-size: 1.1rem; font-weight: 700; color: #c4b5fd; margin-top: 1.75rem; margin-bottom: 0.6rem; }
+    .blog-content h3 { font-size: 1rem; font-weight: 600; color: #a78bfa; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+    .blog-content p { margin-bottom: 0.75rem; line-height: 1.7; }
+    .blog-content ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+    .blog-content ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+    .blog-content li { margin-bottom: 0.375rem; line-height: 1.6; }
+    .blog-content strong { color: #f9fafb; font-weight: 600; }
+    .blog-content em { color: #d1d5db; }
+    .blog-content a { color: #a78bfa; text-decoration: underline; }
+    .blog-content hr { border-color: #374151; margin: 1.25rem 0; }
   </style>
 </head>
 <body class="min-h-screen text-white">
@@ -2654,7 +2665,27 @@ const BLOG_ARTICLES = [
 
 function BlogPage({ setPage }) {
   const [selectedId, setSelectedId] = React.useState(null);
-  const selected = selectedId ? BLOG_ARTICLES.find(a => a.id === selectedId) : null;
+  const [fbArticles, setFbArticles]   = React.useState([]);
+  const [loading, setLoading]         = React.useState(true);
+
+  React.useEffect(() => {
+    if (!_db) { setLoading(false); return; }
+    _db.ref('/twTools_blog/articles').once('value').then(snap => {
+      const val = snap.val();
+      if (val) {
+        const arr = Object.values(val).sort((a, b) => b.date.localeCompare(a.date));
+        setFbArticles(arr);
+      }
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  const allArticles = React.useMemo(() => {
+    const fbIds = new Set(fbArticles.map(a => a.id));
+    const staticFiltered = BLOG_ARTICLES.filter(a => !fbIds.has(a.id));
+    return [...fbArticles, ...staticFiltered].sort((a, b) => b.date.localeCompare(a.date));
+  }, [fbArticles]);
+
+  const selected = selectedId ? allArticles.find(a => a.id === selectedId) : null;
 
   if (selected) {
     return (
@@ -2662,23 +2693,20 @@ function BlogPage({ setPage }) {
         <button
           onClick={() => setSelectedId(null)}
           className="mb-6 text-sm text-gray-500 hover:text-gray-300 flex items-center gap-1"
-        >
-          ← 返回文章列表
-        </button>
+        >← 返回文章列表</button>
         <div className="flex items-center gap-2 mb-2 flex-wrap">
           <span className="text-xs bg-purple-900/50 text-purple-300 px-2 py-0.5 rounded-full">{selected.category}</span>
           <span className="text-xs text-gray-500">{selected.date}</span>
           <span className="text-xs text-gray-500">· {selected.readTime}閱讀</span>
         </div>
         <h1 className="text-2xl font-bold text-white mb-6 leading-snug">{selected.title}</h1>
-        <div className="prose prose-invert">
-          {selected.content()}
-        </div>
+        {selected.contentHtml
+          ? <div className="space-y-4 text-gray-300 leading-relaxed blog-content"
+                 dangerouslySetInnerHTML={{ __html: selected.contentHtml }} />
+          : <div className="prose prose-invert">{selected.content()}</div>
+        }
         <div className="mt-12 pt-6 border-t border-gray-800 text-center">
-          <button
-            onClick={() => setSelectedId(null)}
-            className="text-sm text-gray-500 hover:text-gray-300"
-          >← 返回文章列表</button>
+          <button onClick={() => setSelectedId(null)} className="text-sm text-gray-500 hover:text-gray-300">← 返回文章列表</button>
         </div>
       </div>
     );
@@ -2688,10 +2716,11 @@ function BlogPage({ setPage }) {
     <div className="max-w-2xl mx-auto px-2 py-6">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-white mb-2">知識文章</h1>
-        <p className="text-sm text-gray-400">生活實用知識與工具使用說明，幫助你更高效地處理日常大小事。</p>
+        <p className="text-sm text-gray-400">每週更新：省錢攻略、職場小確幸、AI 科技新聞。</p>
       </div>
+      {loading && <p className="text-sm text-gray-600 text-center py-8">載入中…</p>}
       <div className="space-y-4">
-        {BLOG_ARTICLES.map(article => (
+        {allArticles.map(article => (
           <button
             key={article.id}
             onClick={() => setSelectedId(article.id)}
