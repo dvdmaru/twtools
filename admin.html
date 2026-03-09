@@ -9,6 +9,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', sans-serif; background: #0f172a; }
 
@@ -355,7 +356,8 @@ const SESSION_KEY = 'twtools_admin_s';
 // FIREBASE
 // ============================================================
 firebase.initializeApp(FIREBASE_CONFIG);
-const db = firebase.database();
+const db   = firebase.database();
+const auth = firebase.auth();
 
 // ============================================================
 // AUTH
@@ -366,6 +368,8 @@ function doLogin() {
     sessionStorage.setItem(SESSION_KEY, '1');
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('main-app').style.display = 'flex';
+    // 取得 Firebase auth token，讓資料庫寫入通過 auth != null 的規則
+    auth.signInAnonymously().catch(e => console.warn('Firebase auth 失敗:', e));
     initApp();
   } else {
     const err = document.getElementById('login-err');
@@ -377,6 +381,7 @@ function doLogin() {
 }
 
 function doLogout() {
+  auth.signOut().catch(() => {});
   sessionStorage.removeItem(SESSION_KEY);
   location.reload();
 }
