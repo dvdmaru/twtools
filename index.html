@@ -1636,6 +1636,37 @@ function VideoDownloaderTool() {
           下載服務由 <a href="https://cobalt.tools" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400">cobalt.tools</a> 提供，本站不儲存任何影片或個人資料。
         </p>
       </div>
+
+      {/* ── 工具介紹 ── */}
+      <div className="mt-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
+        <div>
+          <h3 className="text-sm font-semibold text-gray-300 mb-2">關於影片下載工具</h3>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            影片下載工具整合了 cobalt.tools 的強大下載能力，支援 YouTube、Instagram、TikTok（抖音）、X（前 Twitter）、Facebook 等主流社群平台的影片下載。使用方式非常簡單：貼上影片連結或含連結的分享文字，工具會自動提取 URL 並複製至剪貼簿，同時開啟 cobalt.tools 頁面，你只需貼上後按 Enter 即可下載。本工具作為 cobalt.tools 的便利入口，讓行動裝置上常見的「包含文字的分享連結」也能快速擷取純網址，省去手動複製貼上的繁瑣步驟。下載功能由 cobalt.tools 提供，本站不儲存任何影片資料或個人資訊。
+          </p>
+        </div>
+        <div>
+          <h3 className="text-sm font-semibold text-gray-300 mb-2">常見問題</h3>
+          <div className="space-y-3">
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：支援哪些平台？</p>
+              <p className="text-xs text-gray-500">透過 cobalt.tools，支援 YouTube、Instagram、TikTok、X（Twitter）、Facebook、Reddit、Twitch、SoundCloud 等數十個平台。完整清單請參考 cobalt.tools 官網。</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：為什麼要跳到 cobalt.tools 才能下載？</p>
+              <p className="text-xs text-gray-500">twtools.cc 是純靜態網站，沒有後端伺服器，無法直接呼叫需要 API 金鑰的外部服務。cobalt.tools 是免費且開源的影片下載服務，安全可靠，本工具作為快速跳轉的橋梁。</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：可以下載私人帳號或限時動態嗎？</p>
+              <p className="text-xs text-gray-500">通常無法。私人帳號的內容需要登入驗證才能存取，cobalt.tools 無法繞過此限制。部分平台的限時動態在過期後也無法下載。</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：下載的影片版權歸誰？</p>
+              <p className="text-xs text-gray-500">版權依然屬於原始創作者或平台。請僅用於個人收藏、學術研究等合法用途，勿將下載的影片重新上傳、販售或作為商業用途，以免侵犯著作權。</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -1901,6 +1932,37 @@ function ImageTool() {
           </div>
         </div>
         <p className="text-xs text-gray-600 mt-3">🔒 本工具完全在瀏覽器本地端處理，圖片不會上傳至任何伺服器，可放心使用</p>
+
+        {/* ── 工具介紹 ── */}
+        <div className="mt-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
+          <div>
+            <h3 className="text-sm font-semibold text-gray-300 mb-2">關於圖片工具</h3>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              圖片工具集合了日常最常用的圖片處理功能，包含格式轉換、背景移除與品質壓縮，全部在瀏覽器端完成，無須安裝任何軟體或上傳檔案至外部伺服器。格式轉換支援 PNG、JPEG、WebP、BMP、GIF 之間的互轉，讓你輕鬆因應不同平台的格式需求。AI 智慧去背採用 transformers.js 技術，直接在本機 GPU/CPU 上運行語義分割模型，精準辨別前景主體並移除背景，處理速度視裝置效能而定，一般在數秒至十秒內完成。圖片壓縮功能透過調整 JPEG 品質係數，在保留視覺畫質的前提下大幅縮小檔案體積，非常適合上傳至社群平台或網站前的預處理。所有運算均在本機瀏覽器執行，你的圖片資料絕對不會離開你的裝置。
+            </p>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-gray-300 mb-2">常見問題</h3>
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：格式轉換支援哪些格式？</p>
+                <p className="text-xs text-gray-500">支援 PNG、JPEG、WebP、BMP、GIF 之間的任意互轉。注意 GIF 動畫轉換後僅保留第一幀靜態畫面。</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：AI 去背需要網路嗎？</p>
+                <p className="text-xs text-gray-500">首次使用時需要網路下載 AI 模型（約 40–80 MB），之後會快取在瀏覽器中，離線也可使用。</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：壓縮後為什麼是 JPEG 格式？</p>
+                <p className="text-xs text-gray-500">JPEG 採用失真壓縮演算法，在相同品質設定下可獲得最高的壓縮率，最適合相片類圖片的體積最佳化。若需要保留透明度，建議使用 PNG 格式。</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：圖片有大小或解析度限制嗎？</p>
+                <p className="text-xs text-gray-500">無硬性限制，但過大的圖片（例如超過 4000×4000 像素）可能受裝置記憶體影響而處理較慢，建議超高解析度圖片使用桌機瀏覽器。</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -2094,6 +2156,37 @@ function PdfTool() {
           </div>
         </div>
         <p className="text-xs text-gray-600 mt-3">🔒 使用 <a href="https://pdf-lib.js.org" target="_blank" rel="noopener" className="underline hover:text-gray-400">pdf-lib</a> 在瀏覽器本地端處理，PDF 內容不會上傳至任何伺服器</p>
+
+        {/* ── 工具介紹 ── */}
+        <div className="mt-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
+          <div>
+            <h3 className="text-sm font-semibold text-gray-300 mb-2">關於 PDF 工具</h3>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              PDF 工具提供合併、拆分與壓縮三大核心功能，採用開源的 pdf-lib 函式庫在瀏覽器端直接運算，不需要 Adobe Acrobat 等付費軟體，也不會將你的文件上傳至任何雲端伺服器。合併功能可將多份 PDF 依自訂順序組合成單一文件，適合報告彙整、合約整合等情境。拆分功能讓你依照每 N 頁為單位切割龐大的 PDF，方便分別存檔或分頁傳送。壓縮功能透過圖片品質降低與物件清理，有效縮小 PDF 體積，特別適合需要透過電子郵件附件傳送或上傳至表單系統的場景。所有操作均在本機完成，保護文件中的敏感資訊不外洩。
+            </p>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-gray-300 mb-2">常見問題</h3>
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：合併時可以調整頁面順序嗎？</p>
+                <p className="text-xs text-gray-500">可以。上傳多個 PDF 後，可透過拖曳調整每個檔案的排列順序，最終合併結果會依你設定的順序輸出。</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：壓縮後 PDF 的文字還能複製嗎？</p>
+                <p className="text-xs text-gray-500">可以。本工具的壓縮主要針對內嵌圖片進行品質降低，文字圖層保持完整，選取複製功能不受影響。</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：加密（有密碼保護）的 PDF 可以處理嗎？</p>
+                <p className="text-xs text-gray-500">目前不支援加密的 PDF。若你的 PDF 開啟時需要輸入密碼，請先透過其他工具解除加密後再使用本工具處理。</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：檔案大小有上限嗎？</p>
+                <p className="text-xs text-gray-500">無明確上限，但受限於瀏覽器可用記憶體，過大的 PDF（例如超過 200 MB）建議在記憶體充足的桌機上操作，以免處理過程出現逾時或失敗。</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -2248,6 +2341,37 @@ function CurrencyTool() {
           <li>匯率每日台北時間 20:00 後自動從 ECB 資料更新；也可點「✏️ 更新匯率」手動調整並同步所有使用者</li>
         </ol>
         <p className="text-xs text-gray-600 mt-3">資料來源：<a href="https://github.com/fawazahmed0/exchange-api" target="_blank" rel="noopener" className="underline hover:text-gray-400">fawazahmed0/exchange-api</a>（歐洲央行 ECB 匯率資料，每日更新）</p>
+      </div>
+
+      {/* ── 工具介紹 ── */}
+      <div className="mt-2 mb-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
+        <div>
+          <h3 className="text-sm font-semibold text-gray-300 mb-2">關於匯率換算工具</h3>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            匯率換算工具整合歐洲央行（ECB）每日公布的參考匯率資料，支援台幣（TWD）、美元（USD）、日圓（JPY）、歐元（EUR）、英鎊（GBP）、人民幣（CNY）等 16 種主要貨幣的即時換算。匯率資料透過 fawazahmed0/exchange-api 開源專案每日更新，在台北時間每天 20:00 後自動同步最新數據，確保你取得的換算結果貼近當日市場行情。工具介面設計以直觀操作為優先，選好幣別、輸入金額後換算結果即時呈現，無需等待或按確認鍵。此外，下方匯率參考表以台幣為基準，一次顯示全部 16 種貨幣的兌換率，方便快速比較各國貨幣的相對強弱。
+          </p>
+        </div>
+        <div>
+          <h3 className="text-sm font-semibold text-gray-300 mb-2">常見問題</h3>
+          <div className="space-y-3">
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：匯率多久更新一次？</p>
+              <p className="text-xs text-gray-500">每日台北時間約 20:00 後自動從 ECB（歐洲央行）資料來源更新。ECB 採用的是每個交易日的參考匯率，非實時成交價，僅供參考估算。</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：為什麼結果和銀行牌告匯率不同？</p>
+              <p className="text-xs text-gray-500">本工具使用 ECB 參考匯率（中間價），銀行的買入／賣出價會加上手續費差價（點差），因此會有數字上的落差，屬正常現象。</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：可以自訂匯率嗎？</p>
+              <p className="text-xs text-gray-500">可以。點選右上角「✏️ 更新匯率」，輸入你想使用的匯率數值後儲存，更新後的數值會同步至所有使用此工具的使用者，方便團隊統一計算標準。</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：支援哪些貨幣？</p>
+              <p className="text-xs text-gray-500">目前支援 TWD、USD、JPY、EUR、GBP、CNY、AUD、CAD、CHF、HKD、KRW、MYR、SGD、THB、VND、PHP 共 16 種貨幣。</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {editMode && (
@@ -2413,6 +2537,37 @@ function UnitTool() {
         </div>
         <p className="text-xs text-gray-600 mt-3">換算公式依 SI 國際單位制（ISO 80000）計算，完全在瀏覽器本地端執行</p>
       </div>
+
+      {/* ── 工具介紹 ── */}
+      <div className="mt-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
+        <div>
+          <h3 className="text-sm font-semibold text-gray-300 mb-2">關於單位換算工具</h3>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            單位換算工具目前提供長度與溫度兩大類換算，所有計算均依循 SI 國際單位制（ISO 80000）標準公式，直接在瀏覽器本機運算，結果即時顯示，無任何延遲。長度換算支援公釐（mm）、公分（cm）、公尺（m）、公里（km）、英寸（in）、英尺（ft）、碼（yd）、英里（mi）等單位，並附有快速換算表，讓你一次看到該數值對應所有單位的數字。溫度換算則整合攝氏（°C）、華氏（°F）與克耳文（K）三種溫標，任意輸入其中一種，其餘兩種即時同步，特別適合理工研究、烹飪食譜、天氣查詢等跨國際標準的日常需求。
+          </p>
+        </div>
+        <div>
+          <h3 className="text-sm font-semibold text-gray-300 mb-2">常見問題</h3>
+          <div className="space-y-3">
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：英里和公里的換算比例是多少？</p>
+              <p className="text-xs text-gray-500">1 英里（mile）= 1.60934 公里（km）。反過來，1 公里 ≈ 0.62137 英里。這是英制與公制長度換算中最常用的關係式。</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：如何把攝氏換成華氏？</p>
+              <p className="text-xs text-gray-500">公式為：°F = °C × 9/5 + 32。例如攝氏 100°C（水的沸點）= 212°F；攝氏 37°C（人體體溫）= 98.6°F。</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：克耳文（K）和攝氏有什麼差別？</p>
+              <p className="text-xs text-gray-500">克耳文是熱力學絕對溫標，0 K 為絕對零度（理論上的最低溫）。換算關係：K = °C + 273.15，因此攝氏 0°C = 273.15 K。</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：未來會新增面積、重量等換算嗎？</p>
+              <p className="text-xs text-gray-500">工具持續開發中，面積（坪、平方公尺等）、重量（公斤、磅等）及其他常用類別的換算功能規劃在後續版本加入。</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -2569,6 +2724,37 @@ function TyphoonTool() {
           </div>
         </div>
         <p className="text-xs text-gray-600 mt-3">資料由人工更新，請同時參考 <a href="https://www.cwa.gov.tw" target="_blank" rel="noopener" className="underline hover:text-gray-400">中央氣象署（CWA）</a> 官方公告為準</p>
+      </div>
+
+      {/* ── 工具介紹 ── */}
+      <div className="mt-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
+        <div>
+          <h3 className="text-sm font-semibold text-gray-300 mb-2">關於颱風停班停課查詢工具</h3>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            颱風停班停課查詢工具提供台灣全台 22 縣市的停班停課狀態即時顯示，以直覺的色彩標示快速傳達各地的警戒等級。工具採用 Firebase 即時資料庫同步，管理員更新後所有使用者的頁面立即反映最新狀態，確保資訊傳遞的即時性。台灣的颱風停班停課制度由各縣市首長自行裁量，通常在預計颱風抵達前 24 小時宣布，因此各縣市的宣布時間與結果可能不一致。本工具匯整全台各地資訊於單一畫面，讓你不需逐一查閱各縣市政府公告，一眼即可掌握家人、同事所在地區的最新停班停課狀況。
+          </p>
+        </div>
+        <div>
+          <h3 className="text-sm font-semibold text-gray-300 mb-2">常見問題</h3>
+          <div className="space-y-3">
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：資訊多久更新一次？</p>
+              <p className="text-xs text-gray-500">本工具資料由管理員手動更新，並非自動爬取官方公告。颱風期間建議同時對照中央氣象署（CWA）及各縣市政府的官方公告，以官方資訊為最終依據。</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：停班和停課可以分開嗎？</p>
+              <p className="text-xs text-gray-500">可以。台灣各縣市首長有權獨立宣布僅停班、僅停課或全面停班停課，因此不同縣市的停班停課組合可能不同，本工具逐一呈現各縣市的實際狀態。</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：顯示「正常上班上課」是否代表絕對安全？</p>
+              <p className="text-xs text-gray-500">不一定。即使縣市政府尚未宣布停班停課，如有安全疑慮，勞工可依《天然災害發生事業單位勞工出勤管理及工資給付要點》向雇主申請不出勤，詳情請洽勞動部。</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：學校與機關的停課標準相同嗎？</p>
+              <p className="text-xs text-gray-500">不一定相同。各縣市可分別宣布機關停班及學校停課，大學通常自行決定是否停課，不受縣市政府公告約束，建議直接確認所屬學校的官方通知。</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -3193,9 +3379,8 @@ function App() {
             <Header type={type} setType={handleTypeChange} />
             <Tabs active={tab} setActive={setTab} />
 
-            {/* 廣告版位 1：導覽列下方，內容上方（橫幅廣告）*/}
-            {/* 將 slot 換成你在 AdSense 後台建立的廣告單元 ID */}
-            <AdBanner slot="1111111111" />
+            {/* 廣告版位 1：導覽列下方，內容上方（twtools-header）*/}
+            <AdBanner slot="4883916422" />
 
             <main className="pb-12">
               {tab === 'check'   && <CheckTab type={type} superDraw={superDraw} bigDraw={bigDraw} preset={preset} clearPreset={() => setPreset(null)} />}
@@ -3211,8 +3396,8 @@ function App() {
               {tab === 'stats'   && <StatsTab type={type} />}
             </main>
 
-            {/* 廣告版位 2：內容下方，頁尾上方（橫幅廣告）*/}
-            <AdBanner slot="2222222222" />
+            {/* 廣告版位 2：內容下方，頁尾上方（twtools-footer）*/}
+            <AdBanner slot="3570834754" />
 
             <footer className="text-center text-xs text-gray-700 py-3 border-t border-gray-900">
               資料參考：
