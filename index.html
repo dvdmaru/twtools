@@ -340,15 +340,21 @@ function Ball({ num, variant = 'neutral', size = 'md', onClick }) {
 // 將 data-ad-client 換成你的 ca-pub-ID，data-ad-slot 換成你的廣告單元 ID
 function AdBanner({ slot, label }) {
   const ref = React.useRef(null);
+  const [loaded, setLoaded] = React.useState(false);
   React.useEffect(() => {
     try {
       if (ref.current && ref.current.offsetWidth > 0) {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
       }
     } catch(e) {}
+    // 偵測廣告是否實際載入（高度 > 0）
+    const timer = setTimeout(() => {
+      if (ref.current && ref.current.offsetHeight > 0) setLoaded(true);
+    }, 2000);
+    return () => clearTimeout(timer);
   }, []);
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 py-1">
+    <div className="w-full max-w-2xl mx-auto px-4 py-1" style={{ overflow: 'hidden', maxHeight: loaded ? 'none' : 0, transition: 'max-height 0.3s' }}>
       <ins
         ref={ref}
         className="adsbygoogle"
