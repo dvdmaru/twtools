@@ -1522,8 +1522,13 @@ const FIREBASE_CONFIG = {
 // A-0. 影片下載工具
 // ================================================================
 function VideoDownloaderTool() {
-  const [input, setInput]   = useState('');
-  const [copied, setCopied] = useState(false);
+  const [input, setInput]     = useState('');
+  const [quality, setQuality] = useState('1080');
+  const [loading, setLoading] = useState(false);
+  const [error, setError]     = useState('');
+  const [result, setResult]   = useState(null);  // { url, filename, status, picker }
+
+  // ── Cloudflare Worker 端點（使用頂層常數）──
 
   // 從分享文字中提取 URL（支援抖音 / TikTok 分享文字直接貼入）
   const extractUrl = (text) => {
@@ -1538,6 +1543,8 @@ function VideoDownloaderTool() {
     if (/instagram\.com/i.test(u))                  return { name:'Instagram', color:'text-purple-400', bg:'bg-purple-950/40', border:'border-purple-800/60', icon:'📸' };
     if (/youtube\.com|youtu\.be/i.test(u))          return { name:'YouTube',   color:'text-red-400',    bg:'bg-red-950/40',    border:'border-red-800/60',    icon:'▶️' };
     if (/threads\.net/i.test(u))                    return { name:'Threads',   color:'text-gray-300',   bg:'bg-gray-800/60',   border:'border-gray-700',      icon:'🧵' };
+    if (/x\.com|twitter\.com/i.test(u))             return { name:'X',         color:'text-gray-200',   bg:'bg-gray-800/60',   border:'border-gray-600',      icon:'𝕏' };
+    if (/facebook\.com|fb\.watch/i.test(u))         return { name:'Facebook',  color:'text-blue-400',   bg:'bg-blue-950/40',   border:'border-blue-800/60',   icon:'📘' };
     return null;
   };
 
@@ -1547,32 +1554,71 @@ function VideoDownloaderTool() {
   const platform     = detectPlatform(extractedUrl) || detectPlatform(raw);
   const canGo        = !!(extractedUrl || raw.startsWith('http'));
 
-  const handleGo = async () => {
+  // ── 站內下載（透過 Cloudflare Worker）──
+  const handleDownload = async () => {
+    const urlToUse = extractedUrl || raw;
+    if (!urlToUse) return;
+    setLoading(true); setError(''); setResult(null);
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: urlToUse, quality }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        const msg = data.message || data.error || '下載失敗，請稍後再試';
+        setError(msg);
+        setLoading(false);
+        return;
+      }
+      // picker（多個選項，如 IG 輪播）
+      if (data.status === 'picker' && data.picker) {
+        setResult({ status:'picker', picker: data.picker, audio: data.audio });
+        setLoading(false);
+        return;
+      }
+      // tunnel / redirect / stream → 單一下載連結
+      setResult({ status: data.status, url: data.url, filename: data.filename });
+      setLoading(false);
+      // 自動觸發瀏覽器下載
+      const a = document.createElement('a');
+      a.href = data.url; a.download = data.filename || 'video.mp4';
+      a.target = '_blank'; a.rel = 'noopener noreferrer';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    } catch (e) {
+      setError('網路錯誤，請確認連線後再試');
+      setLoading(false);
+    }
+  };
+
+  // ── 備用：跳轉 cobalt.tools 手動下載 ──
+  const handleFallback = async () => {
     const urlToUse = extractedUrl || raw;
     if (!urlToUse) return;
     try { await navigator.clipboard.writeText(urlToUse); } catch(_) {}
-    setCopied(true);
-    setTimeout(() => setCopied(false), 6000);
     window.open('https://cobalt.tools', '_blank', 'noopener,noreferrer');
   };
-
-  // ── placeholder states (unused but needed to not break any JSX below) ──
-  const loading = false;
-  const result  = null;
-  const error   = '';
-  const quality = '1080';
 
   const PLATFORMS = [
     { name:'TikTok', icon:'🎵' }, { name:'抖音', icon:'🎵' },
     { name:'Instagram', icon:'📸' }, { name:'YouTube', icon:'▶️' },
-    { name:'Threads', icon:'🧵' },
+    { name:'Threads', icon:'🧵' }, { name:'X', icon:'𝕏' },
+    { name:'Facebook', icon:'📘' },
+  ];
+
+  const QUALITIES = [
+    { value:'720',  label:'720p' },
+    { value:'1080', label:'1080p' },
+    { value:'1440', label:'1440p' },
+    { value:'2160', label:'4K' },
   ];
 
   return (
     <div className="tool-page max-w-xl mx-auto px-4 py-10">
       <h1 className="text-2xl font-bold text-white mb-2">📹 影片下載</h1>
       <p className="text-gray-400 text-sm mb-5">
-        貼上影片連結或 App 分享文字，自動提取連結並一鍵前往下載。
+        貼上影片連結或 App 分享文字，一鍵站內下載，無需跳轉。
       </p>
 
       {/* 支援平台 badges */}
@@ -1590,7 +1636,7 @@ function VideoDownloaderTool() {
         <textarea
           rows={3}
           value={input}
-          onChange={e => { setInput(e.target.value); setCopied(false); }}
+          onChange={e => { setInput(e.target.value); setError(''); setResult(null); }}
           placeholder={"https://www.tiktok.com/@user/video/...\n\n也可直接貼上 App 分享文字，會自動提取連結"}
           className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 resize-none"
         />
@@ -1611,36 +1657,125 @@ function VideoDownloaderTool() {
         )}
       </div>
 
+      {/* 畫質選擇 */}
+      <div className="flex items-center gap-2 mb-4">
+        <span className="text-xs text-gray-500">畫質：</span>
+        <div className="flex gap-1.5">
+          {QUALITIES.map(q => (
+            <button
+              key={q.value}
+              onClick={() => setQuality(q.value)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                quality === q.value
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-gray-800 text-gray-400 border border-gray-700 hover:border-gray-600'
+              }`}
+            >
+              {q.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* 主按鈕 */}
       <button
-        onClick={handleGo}
-        disabled={!canGo}
+        onClick={handleDownload}
+        disabled={!canGo || loading}
         className={`w-full py-3.5 rounded-xl font-semibold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed text-white ${
-          copied
-            ? 'bg-green-600 hover:bg-green-500'
+          loading
+            ? 'bg-gray-600 cursor-wait'
             : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500'
         }`}
       >
-        {copied ? '✅ 連結已複製！請在新分頁貼上' : '⬇️ 複製連結並前往下載'}
+        {loading ? '⏳ 正在取得下載連結…' : '⬇️ 下載影片'}
       </button>
 
-      {/* 複製成功提示 */}
-      {copied && (
-        <div className="mt-3 bg-green-950/60 border border-green-800 rounded-lg px-4 py-3">
-          <p className="text-green-300 text-sm font-medium mb-1">✅ cobalt.tools 已在新分頁開啟</p>
-          <p className="text-green-400/70 text-xs">請在搜尋欄貼上（Ctrl+V ／ ⌘V），按 Enter 即可下載</p>
+      {/* 錯誤訊息 */}
+      {error && (
+        <div className="mt-3 bg-red-950/60 border border-red-800 rounded-lg px-4 py-3">
+          <p className="text-red-300 text-sm font-medium mb-1">❌ {error}</p>
+          <button
+            onClick={handleFallback}
+            className="mt-1.5 text-xs text-red-400/80 underline hover:text-red-300"
+          >
+            改用 cobalt.tools 手動下載 →
+          </button>
         </div>
       )}
 
-      {/* 使用步驟說明（未複製時顯示） */}
-      {!copied && (
+      {/* 下載成功（單一連結）*/}
+      {result && result.status !== 'picker' && result.url && (
+        <div className="mt-3 bg-green-950/60 border border-green-800 rounded-lg px-4 py-3">
+          <p className="text-green-300 text-sm font-medium mb-1">✅ 下載已開始</p>
+          <p className="text-green-400/70 text-xs mb-2">檔案：{result.filename}</p>
+          <a
+            href={result.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            download={result.filename}
+            className="inline-block text-xs text-green-400 underline hover:text-green-300"
+          >
+            若未自動下載，請點此
+          </a>
+        </div>
+      )}
+
+      {/* 下載成功（多選項 picker，如 IG 輪播）*/}
+      {result && result.status === 'picker' && result.picker && (
+        <div className="mt-3 bg-purple-950/40 border border-purple-800/60 rounded-lg px-4 py-3">
+          <p className="text-purple-300 text-sm font-medium mb-2">📎 偵測到多個檔案（輪播 / 圖文）</p>
+          <div className="space-y-2 max-h-64 overflow-y-auto">
+            {result.picker.map((item, i) => (
+              <a
+                key={i}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+                className="flex items-center gap-3 bg-gray-800/60 rounded-lg px-3 py-2 border border-gray-700 hover:border-purple-600 transition-colors"
+              >
+                {item.thumb && <img src={item.thumb} alt="" className="w-12 h-12 rounded object-cover flex-shrink-0" />}
+                <span className="text-xs text-gray-300">檔案 {i + 1}</span>
+                <span className="ml-auto text-xs text-purple-400">⬇️</span>
+              </a>
+            ))}
+          </div>
+          {result.audio && (
+            <a
+              href={result.audio}
+              target="_blank"
+              rel="noopener noreferrer"
+              download
+              className="mt-2 inline-block text-xs text-purple-400 underline hover:text-purple-300"
+            >
+              🎵 下載音訊
+            </a>
+          )}
+        </div>
+      )}
+
+      {/* 備用下載入口（固定顯示）*/}
+      {!loading && !error && (
+        <div className="mt-3 text-center">
+          <button
+            onClick={handleFallback}
+            disabled={!canGo}
+            className="text-xs text-gray-500 hover:text-gray-400 disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            🔗 改用 cobalt.tools 手動下載
+          </button>
+        </div>
+      )}
+
+      {/* 使用步驟說明 */}
+      {!result && !error && !loading && (
         <div className="mt-4 bg-gray-900/60 rounded-xl p-4 border border-gray-800">
           <p className="text-xs text-gray-500 font-medium mb-2.5">使用方式</p>
           <div className="space-y-2">
             {[
               ['1', '貼上影片連結，或直接貼 App 分享文字'],
-              ['2', '點擊「複製連結並前往下載」'],
-              ['3', '在 cobalt.tools 貼上連結，按 Enter 下載'],
+              ['2', '選擇畫質（預設 1080p）'],
+              ['3', '點擊「下載影片」，等待幾秒即自動下載'],
             ].map(([n, text]) => (
               <div key={n} className="flex items-start gap-2.5">
                 <span className="flex-shrink-0 w-5 h-5 rounded-full bg-purple-900/60 border border-purple-700/50 text-purple-400 text-xs flex items-center justify-center font-bold">{n}</span>
@@ -1655,7 +1790,7 @@ function VideoDownloaderTool() {
       <div className="mt-4 bg-gray-900/40 rounded-lg px-3 py-2.5 border border-gray-800/60">
         <p className="text-xs text-gray-600 leading-relaxed">
           📌 僅供個人合法使用。私人帳號或受版權保護的內容可能無法下載。
-          下載服務由 <a href="https://cobalt.tools" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400">cobalt.tools</a> 提供，本站不儲存任何影片或個人資料。
+          下載服務由 <a href="https://cobalt.tools" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400">cobalt.tools</a> 開源技術提供，本站不儲存任何影片或個人資料。
         </p>
       </div>
 
@@ -1664,7 +1799,7 @@ function VideoDownloaderTool() {
         <div>
           <h3 className="text-sm font-semibold text-gray-300 mb-2">關於影片下載工具</h3>
           <p className="text-xs text-gray-500 leading-relaxed">
-            影片下載工具整合了 cobalt.tools 的強大下載能力，支援 YouTube、Instagram、TikTok（抖音）、X（前 Twitter）、Facebook 等主流社群平台的影片下載。使用方式非常簡單：貼上影片連結或含連結的分享文字，工具會自動提取 URL 並複製至剪貼簿，同時開啟 cobalt.tools 頁面，你只需貼上後按 Enter 即可下載。本工具作為 cobalt.tools 的便利入口，讓行動裝置上常見的「包含文字的分享連結」也能快速擷取純網址，省去手動複製貼上的繁瑣步驟。下載功能由 cobalt.tools 提供，本站不儲存任何影片資料或個人資訊。
+            影片下載工具整合了 cobalt 開源技術，支援 YouTube、Instagram、TikTok（抖音）、X（前 Twitter）、Facebook 等主流社群平台的影片下載。使用方式非常簡單：貼上影片連結或含連結的分享文字，選擇畫質後按下「下載影片」，幾秒內即可自動下載——無需跳轉到其他網站。行動裝置上常見的「包含文字的分享連結」也能快速擷取純網址，省去手動複製貼上的繁瑣步驟。下載服務透過 cobalt 開源技術處理，本站不儲存任何影片資料或個人資訊。
           </p>
         </div>
         <div>
@@ -1672,15 +1807,15 @@ function VideoDownloaderTool() {
           <div className="space-y-3">
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：支援哪些平台？</p>
-              <p className="text-xs text-gray-500">透過 cobalt.tools，支援 YouTube、Instagram、TikTok、X（Twitter）、Facebook、Reddit、Twitch、SoundCloud 等數十個平台。完整清單請參考 cobalt.tools 官網。</p>
+              <p className="text-xs text-gray-500">支援 YouTube、Instagram、TikTok、X（Twitter）、Facebook、Reddit、Twitch、SoundCloud 等數十個平台。完整清單請參考 cobalt.tools 官網。</p>
             </div>
             <div>
-              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：為什麼要跳到 cobalt.tools 才能下載？</p>
-              <p className="text-xs text-gray-500">twtools.cc 是純靜態網站，沒有後端伺服器，無法直接呼叫需要 API 金鑰的外部服務。cobalt.tools 是免費且開源的影片下載服務，安全可靠，本工具作為快速跳轉的橋梁。</p>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：下載失敗怎麼辦？</p>
+              <p className="text-xs text-gray-500">可嘗試更換畫質（較低畫質成功率較高），或點擊「改用 cobalt.tools 手動下載」作為備用方案。部分平台可能因為 API 限制而暫時無法下載。</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：可以下載私人帳號或限時動態嗎？</p>
-              <p className="text-xs text-gray-500">通常無法。私人帳號的內容需要登入驗證才能存取，cobalt.tools 無法繞過此限制。部分平台的限時動態在過期後也無法下載。</p>
+              <p className="text-xs text-gray-500">通常無法。私人帳號的內容需要登入驗證才能存取，下載服務無法繞過此限制。部分平台的限時動態在過期後也無法下載。</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：下載的影片版權歸誰？</p>
@@ -2228,19 +2363,31 @@ function CurrencyTool() {
   const [saving, setSaving]       = useState(false);
   const [autoFetching, setAutoFetching] = useState(false);
 
-  const STALE_HOURS_MS = 20 * 60 * 60 * 1000;
+  const STALE_HOURS_MS = 6 * 60 * 60 * 1000; // 6 小時後自動更新
 
   const fetchAutoRates = async () => {
     setAutoFetching(true);
     try {
-      const res  = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/twd.json');
-      const data = await res.json(); // data.twd = { usd: 0.030, jpy: 4.6, ... }
-      const twdRates = data.twd;
+      /* ── 主要來源：ExchangeRate-API（免費、即時、CORS 友好） ── */
+      let twdRates = null;
+      const apis = [
+        'https://api.exchangerate-api.com/v4/latest/TWD',
+        'https://open.er-api.com/v6/latest/TWD',
+      ];
+      for (const url of apis) {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) continue;
+          const data = await res.json();
+          if (data.rates) { twdRates = data.rates; break; }
+        } catch(_) { /* 嘗試下一個 */ }
+      }
+      if (!twdRates) throw new Error('所有匯率 API 皆無回應');
+      /* twdRates = { USD: 0.0314, JPY: 4.72, ... } → 1 TWD = X 外幣 */
       const newRates = {};
       Object.keys(DEFAULT_RATES).forEach(code => {
-        const lower = code.toLowerCase();
-        if (twdRates[lower] && twdRates[lower] > 0) {
-          newRates[code] = parseFloat((1 / twdRates[lower]).toFixed(4));
+        if (twdRates[code] && twdRates[code] > 0) {
+          newRates[code] = parseFloat((1 / twdRates[code]).toFixed(4));
         } else {
           newRates[code] = DEFAULT_RATES[code]; // fallback
         }
@@ -2291,7 +2438,9 @@ function CurrencyTool() {
     const newRates = {};
     Object.keys(DEFAULT_RATES).forEach(k => { newRates[k] = parseFloat(editRates[k]) || rates[k]; });
     setRates(newRates); setLastUpdate(updatedAt);
-    if (_db) await _db.ref('/twTools_currency').set({ rates: newRates, updatedAt, updatedAtISO });
+    try {
+      if (_db) await _db.ref('/twTools_currency').set({ rates: newRates, updatedAt, updatedAtISO });
+    } catch(e) { console.warn('匯率同步至 Firebase 失敗（本機仍已更新）:', e); }
     setEditMode(false); setSaving(false);
   };
 
@@ -2308,7 +2457,7 @@ function CurrencyTool() {
       </div>
       <div className="flex items-center gap-2 mb-4 min-h-[1.25rem]">
         {autoFetching
-          ? <p className="text-xs text-blue-400 animate-pulse">⟳ 自動更新匯率中（ECB 資料）...</p>
+          ? <p className="text-xs text-blue-400 animate-pulse">⟳ 自動更新匯率中...</p>
           : lastUpdate && <p className="text-xs text-gray-500">匯率更新時間：{lastUpdate}</p>
         }
       </div>
@@ -2604,17 +2753,59 @@ function TyphoonTool() {
   const [typhoonName, setTyphoonName] = useState('');
   const [lastUpdate, setLastUpdate] = useState('');
   const [saving, setSaving]         = useState(false);
+  const [autoFetching, setAutoFetching] = useState(false);
+  const [dataSource, setDataSource] = useState(''); // 'dgpa' | 'manual' | ''
+
+  const TYPHOON_STALE_MS = 30 * 60 * 1000; // 30 分鐘自動更新
+
+  /* ── 自動從 Cloudflare Worker 抓取 DGPA 資料 ── */
+  const fetchDGPA = async () => {
+    setAutoFetching(true);
+    try {
+      const res = await fetch(WORKER_URL + '/typhoon');
+      if (!res.ok) throw new Error('Worker 回應異常');
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.message || '解析失敗');
+      const newStatuses = data.statuses || {};
+      const name = data.typhoonName || '';
+      const now = new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
+      setStatuses(newStatuses);
+      setTyphoonName(name);
+      setLastUpdate(now);
+      setDataSource('dgpa');
+      // 同步到 Firebase 讓其他使用者也能看到
+      if (_db) {
+        try {
+          await _db.ref('/twTools_typhoon').set({
+            statuses: newStatuses, typhoonName: name,
+            updatedAt: now, updatedAtISO: new Date().toISOString(),
+            source: 'dgpa',
+          });
+        } catch(e) { console.warn('颱風資料同步 Firebase 失敗:', e); }
+      }
+    } catch(e) {
+      console.warn('DGPA 自動抓取失敗:', e);
+      // 失敗時不覆蓋現有資料
+    }
+    setAutoFetching(false);
+  };
 
   useEffect(() => {
     if (!_db) return;
     const ref = _db.ref('/twTools_typhoon');
+    let fetched = false;
     const handler = ref.on('value', snap => {
       const data = snap.val();
       if (data) {
         if (data.statuses)    setStatuses(data.statuses);
         if (data.typhoonName !== undefined) setTyphoonName(data.typhoonName);
         if (data.updatedAt)   setLastUpdate(data.updatedAt);
+        if (data.source)      setDataSource(data.source);
       }
+      // 超過 30 分鐘或無資料時自動更新
+      const isStale = !data || !data.updatedAtISO
+        || (Date.now() - new Date(data.updatedAtISO).getTime()) > TYPHOON_STALE_MS;
+      if (isStale && !fetched) { fetched = true; fetchDGPA(); }
     });
     return () => ref.off('value', handler);
   }, []);
@@ -2622,8 +2813,11 @@ function TyphoonTool() {
   const handleSave = async () => {
     setSaving(true);
     const now = new Date().toLocaleString('zh-TW', { timeZone:'Asia/Taipei' });
-    setStatuses({...editStatuses}); setLastUpdate(now);
-    if (_db) await _db.ref('/twTools_typhoon').set({ statuses: editStatuses, typhoonName, updatedAt: now });
+    setStatuses({...editStatuses}); setLastUpdate(now); setDataSource('manual');
+    if (_db) await _db.ref('/twTools_typhoon').set({
+      statuses: editStatuses, typhoonName, updatedAt: now,
+      updatedAtISO: new Date().toISOString(), source: 'manual',
+    });
     setEditMode(false); setSaving(false);
   };
 
@@ -2636,14 +2830,24 @@ function TyphoonTool() {
         <div className="flex items-center gap-3">
           <a href="https://www.cwa.gov.tw/V8/C/D/typhoon/typhoon_list.html" target="_blank" rel="noopener"
             className="text-xs text-blue-400 hover:text-blue-300 underline">CWA 颱風資訊</a>
+          <button onClick={fetchDGPA} disabled={autoFetching}
+            className="px-3 py-1.5 bg-blue-700 hover:bg-blue-600 disabled:opacity-50 text-white rounded-lg text-xs">
+            {autoFetching ? '⟳ 更新中...' : '🔄 即時更新'}
+          </button>
           <button onClick={() => { setEditMode(true); setEditStatuses({...statuses}); }}
             className="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg text-xs">
-            ✏️ 更新狀態
+            ✏️ 手動編輯
           </button>
         </div>
       </div>
       {typhoonName && <p className="text-sm text-yellow-400 mb-1">🌀 颱風名稱：{typhoonName}</p>}
-      {lastUpdate  && <p className="text-xs text-gray-500 mb-4">更新時間：{lastUpdate}</p>}
+      {lastUpdate && (
+        <p className="text-xs text-gray-500 mb-1">更新時間：{lastUpdate}
+          {dataSource === 'dgpa' && <span className="ml-2 text-blue-400">（自動：DGPA）</span>}
+          {dataSource === 'manual' && <span className="ml-2 text-yellow-400">（手動更新）</span>}
+        </p>
+      )}
+      {autoFetching && <p className="text-xs text-blue-400 animate-pulse mb-1">⟳ 正在從行政院人事行政總處取得最新資料...</p>}
 
       {!anyOff && (
         <div className="bg-green-900/30 border border-green-800 rounded-xl p-4 text-center mb-6">
@@ -2738,14 +2942,15 @@ function TyphoonTool() {
             </ol>
           </div>
           <div>
-            <p className="font-medium text-gray-300 mb-1.5">管理員更新資訊</p>
+            <p className="font-medium text-gray-300 mb-1.5">資料來源與更新方式</p>
             <ol className="space-y-1 list-decimal list-inside">
-              <li>點選右上角「✏️ 更新」按鈕，輸入颱風名稱並設定各縣市狀態</li>
-              <li>點「✅ 儲存並同步所有使用者」後，所有人的頁面即時更新</li>
+              <li>系統每 30 分鐘自動從行政院人事行政總處（DGPA）抓取最新停班停課公告</li>
+              <li>點「🔄 即時更新」可手動觸發立即從 DGPA 取得最新資料</li>
+              <li>管理員也可點「✏️ 手動編輯」自行設定各縣市狀態（例如搶先更新）</li>
             </ol>
           </div>
         </div>
-        <p className="text-xs text-gray-600 mt-3">資料由人工更新，請同時參考 <a href="https://www.cwa.gov.tw" target="_blank" rel="noopener" className="underline hover:text-gray-400">中央氣象署（CWA）</a> 官方公告為準</p>
+        <p className="text-xs text-gray-600 mt-3">資料自動取自行政院人事行政總處（DGPA），每 30 分鐘更新。請同時參考 <a href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener" className="underline hover:text-gray-400">DGPA 官方公告</a> 為準</p>
       </div>
 
       {/* ── 工具介紹 ── */}
@@ -2761,7 +2966,7 @@ function TyphoonTool() {
           <div className="space-y-3">
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：資訊多久更新一次？</p>
-              <p className="text-xs text-gray-500">本工具資料由管理員手動更新，並非自動爬取官方公告。颱風期間建議同時對照中央氣象署（CWA）及各縣市政府的官方公告，以官方資訊為最終依據。</p>
+              <p className="text-xs text-gray-500">系統每 30 分鐘自動從行政院人事行政總處（DGPA）抓取最新資料，也可點「🔄 即時更新」手動觸發。颱風期間建議同時對照 DGPA 及各縣市政府的官方公告，以官方資訊為最終依據。</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：停班和停課可以分開嗎？</p>
@@ -3242,6 +3447,9 @@ function PrivacyPage({ setPage }) {
 }
 
 // ================================================================
+
+// ── Cloudflare Worker 端點（全域常數，供 VideoDownloaderTool / TyphoonTool 共用）──
+const WORKER_URL = 'https://twtools-dl.charlie-chien.workers.dev';
 
 let _db = null;
 (function initFirebase() {
