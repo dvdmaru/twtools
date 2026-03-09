@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- 首頁 / 主工具頁 -->
+  <!-- 首頁（台灣彩券 / 工具入口）-->
   <url>
     <loc>https://twtools.cc/</loc>
-    <lastmod>2026-03-08</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-03-09</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
