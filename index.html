@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>打工人工具箱 | 圖片壓縮、PDF合併、匯率換算、颱風停班停課</title>
   <meta name="description" content="免費線上工具箱：圖片壓縮與調整尺寸、PDF合併與分割、即時匯率換算（TWD基準）、單位換算、颱風停班停課查詢、台灣彩券號碼查詢。無需安裝，開啟即用。">
   <meta name="keywords" content="圖片壓縮,PDF合併,PDF分割,匯率換算,颱風停班,颱風停課,單位換算,台灣彩券,威力彩,大樂透,影片下載,TikTok下載,Instagram下載,YouTube下載,抖音下載,免費工具">
@@ -81,6 +81,18 @@
     @media (min-width: 480px) { .num-grid { grid-template-columns: repeat(10, minmax(0, 1fr)); } }
     /* 工具頁面手機版頂部安全區（避免被漢堡按鈕遮住） */
     @media (max-width: 767px) { .tool-page { padding-top: 4rem !important; } }
+    /* iOS Safari: 確保固定導覽列穩定 */
+    @supports (-webkit-touch-callout: none) {
+      .mobile-topnav {
+        position: -webkit-sticky;
+        position: fixed;
+        top: 0;
+        /* 加入安全區域（瀏海/動態島） */
+        padding-top: env(safe-area-inset-top, 0px);
+      }
+    }
+    /* 強制手機頂部 nav 高度一致 */
+    .mobile-topnav { height: 3.5rem; }
     /* Blog content styles (for dangerouslySetInnerHTML articles) */
     .blog-content h2 { font-size: 1.1rem; font-weight: 700; color: #c4b5fd; margin-top: 1.75rem; margin-bottom: 0.6rem; }
     .blog-content h3 { font-size: 1rem; font-weight: 600; color: #a78bfa; margin-top: 1.25rem; margin-bottom: 0.5rem; }
@@ -337,29 +349,28 @@ function Ball({ num, variant = 'neutral', size = 'md', onClick }) {
 }
 
 // ── Google AdSense 廣告版位元件 ──
-// 將 data-ad-client 換成你的 ca-pub-ID，data-ad-slot 換成你的廣告單元 ID
+// 將 AD_CLIENT 換成你的 ca-pub-ID，廣告才會顯示
+const AD_CLIENT = "ca-pub-XXXXXXXXXXXXXXXX";  // ← 換成真實 ID 後廣告才會啟用
+const AD_ENABLED = AD_CLIENT !== "ca-pub-XXXXXXXXXXXXXXXX";
+
 function AdBanner({ slot, label }) {
   const ref = React.useRef(null);
-  const [loaded, setLoaded] = React.useState(false);
   React.useEffect(() => {
+    if (!AD_ENABLED) return;
     try {
       if (ref.current && ref.current.offsetWidth > 0) {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
       }
     } catch(e) {}
-    // 偵測廣告是否實際載入（高度 > 0）
-    const timer = setTimeout(() => {
-      if (ref.current && ref.current.offsetHeight > 0) setLoaded(true);
-    }, 2000);
-    return () => clearTimeout(timer);
   }, []);
+  if (!AD_ENABLED) return null;  // 未設定真實 ID → 不渲染，不佔空間
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 py-1" style={{ overflow: 'hidden', maxHeight: loaded ? 'none' : 0, transition: 'max-height 0.3s' }}>
+    <div className="w-full max-w-2xl mx-auto px-4 py-1">
       <ins
         ref={ref}
         className="adsbygoogle"
         style={{ display: 'block' }}
-        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+        data-ad-client={AD_CLIENT}
         data-ad-slot={slot}
         data-ad-format="auto"
         data-full-width-responsive="true"
@@ -369,7 +380,7 @@ function AdBanner({ slot, label }) {
 }
 
 // ── 標頭 ──
-function Header({ type, setType }) {
+function Header({ type, setType, drawDate }) {
   return (
     <header className="bg-gray-900/90 backdrop-blur border-b border-gray-800 px-4 py-4 sticky top-14 md:top-0 z-20">
       <div className="max-w-2xl mx-auto">
@@ -380,7 +391,7 @@ function Header({ type, setType }) {
           </div>
           <div className="text-right text-xs text-gray-600">
             <div>資料更新</div>
-            <div className="text-gray-400">2026/03/02</div>
+            <div className="text-gray-400">{drawDate ? drawDate.replace(/-/g, '/') : '載入中...'}</div>
           </div>
         </div>
         <div className="flex gap-2">
@@ -3378,7 +3389,7 @@ function App() {
       <div className="flex-1 md:ml-56 min-h-screen w-full overflow-x-hidden">
 
         {/* 手機版固定頂部導覽列（md 以上隱藏） */}
-        <nav className="md:hidden fixed top-0 inset-x-0 h-14 z-10 bg-gray-900 border-b border-gray-800 flex items-center px-4">
+        <nav className="mobile-topnav md:hidden fixed top-0 inset-x-0 h-14 z-10 bg-gray-900 border-b border-gray-800 flex items-center px-4">
           <button
             className="w-10 h-10 flex items-center justify-center rounded-lg bg-purple-900/60 text-purple-200 hover:bg-purple-800/80 text-xl leading-none"
             onClick={() => setSidebarOpen(true)}
@@ -3390,7 +3401,7 @@ function App() {
         {/* ── 台灣彩券頁 ── */}
         {page === 'lottery' && (
           <div className="pt-14 md:pt-0">
-            <Header type={type} setType={handleTypeChange} />
+            <Header type={type} setType={handleTypeChange} drawDate={currentDraw.date} />
             <Tabs active={tab} setActive={setTab} />
 
             {/* 廣告版位 1：導覽列下方，內容上方（twtools-header）*/}
