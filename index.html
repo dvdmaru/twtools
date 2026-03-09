@@ -94,7 +94,7 @@
     .blog-content hr { border-color: #374151; margin: 1.25rem 0; }
   </style>
 </head>
-<body class="min-h-screen text-white">
+<body class="min-h-screen text-white overflow-x-hidden">
 <div id="root"></div>
 
 <script type="text/babel">
@@ -3369,7 +3369,7 @@ function App() {
       <Sidebar page={page} setPage={setPage} open={sidebarOpen} setOpen={setSidebarOpen} />
 
       {/* ── 主內容區（桌面向右偏移 w-56） ── */}
-      <div className="flex-1 md:ml-56 min-h-screen">
+      <div className="flex-1 md:ml-56 min-h-screen w-full overflow-x-hidden">
 
         {/* 手機版固定頂部導覽列（md 以上隱藏） */}
         <nav className="md:hidden fixed top-0 inset-x-0 h-14 z-10 bg-gray-900 border-b border-gray-800 flex items-center px-4">
