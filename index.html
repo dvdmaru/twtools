@@ -109,6 +109,171 @@
 <body class="min-h-screen text-white overflow-x-hidden">
 <div id="root"></div>
 
+<!-- ============================================================
+     靜態 SEO 內容（雙層策略）
+     1. #seo-fallback：所有爬蟲都能看到的靜態 HTML，React 掛載後用 JS 隱藏
+     2. <noscript>：完全不執行 JS 的爬蟲看到的備份
+     ============================================================ -->
+<div id="seo-fallback" style="max-width:960px;margin:0 auto;padding:2rem 1.5rem;color:#d1d5db;font-family:'Noto Sans TC',system-ui,sans-serif;line-height:1.8;">
+
+  <h1 style="font-size:2rem;font-weight:900;color:#fff;margin-bottom:0.5rem;">打工人工具箱 — 免費線上工具集合</h1>
+  <p style="color:#9ca3af;margin-bottom:2rem;">twtools.cc 提供圖片壓縮、PDF 合併分割、即時匯率換算、颱風停班停課查詢、台灣彩券開獎查詢、影片下載等免費線上工具。所有工具無需安裝，開啟瀏覽器即可使用。</p>
+
+  <article style="margin-bottom:2.5rem;">
+    <h2 style="font-size:1.4rem;font-weight:700;color:#c4b5fd;margin-bottom:0.75rem;">🖼️ 圖片壓縮與調整尺寸</h2>
+    <p>上傳圖片後可自由調整壓縮品質與輸出尺寸，支援 JPG、PNG、WebP 格式。壓縮過程完全在瀏覽器端完成，你的圖片不會離開電腦，隱私安全有保障。支援批次處理，一次可壓縮多張圖片。適合縮小圖片以便上傳社群媒體、寄送 Email 或放上網站。</p>
+    <p><strong style="color:#a78bfa;">使用方式：</strong>點擊上傳或拖曳圖片 → 調整品質滑桿與目標尺寸 → 點擊下載。</p>
+  </article>
+
+  <article style="margin-bottom:2.5rem;">
+    <h2 style="font-size:1.4rem;font-weight:700;color:#c4b5fd;margin-bottom:0.75rem;">📄 PDF 合併與分割</h2>
+    <p>使用開源 pdf-lib 技術在瀏覽器端處理 PDF。合併功能將多個 PDF 合而為一；分割功能可擷取指定頁面。所有操作在本機完成，檔案絕不上傳伺服器。</p>
+    <p><strong style="color:#a78bfa;">合併：</strong>上傳多個 PDF → 調整順序 → 合併下載。<strong style="color:#a78bfa;">分割：</strong>上傳 PDF → 輸入頁碼範圍（如 1-3, 5, 8）→ 分割下載。</p>
+  </article>
+
+  <article style="margin-bottom:2.5rem;">
+    <h2 style="font-size:1.4rem;font-weight:700;color:#c4b5fd;margin-bottom:0.75rem;">💱 即時匯率換算（TWD 基準）</h2>
+    <p>以新台幣為基準的即時匯率換算工具，支援美元、日圓、歐元、人民幣、港幣、韓元、英鎊、澳幣、加幣、新加坡幣等多種貨幣。匯率資料來自 ExchangeRate-API，每日更新。適合出國旅遊查匯率、海外購物換算價格、外幣投資參考。</p>
+  </article>
+
+  <article style="margin-bottom:2.5rem;">
+    <h2 style="font-size:1.4rem;font-weight:700;color:#c4b5fd;margin-bottom:0.75rem;">📐 單位換算</h2>
+    <p>快速轉換日常常用度量單位。支援長度（公分、公尺、公里、英吋、英尺、英里）與溫度（攝氏、華氏、克氏）互換。輸入數值即時顯示結果。</p>
+  </article>
+
+  <article style="margin-bottom:2.5rem;">
+    <h2 style="font-size:1.4rem;font-weight:700;color:#c4b5fd;margin-bottom:0.75rem;">🌀 颱風停班停課查詢</h2>
+    <p>即時顯示全台 22 縣市的停班停課狀態，資料來源為行政院人事行政總處（DGPA）官方公告。以色彩標示各縣市狀態：綠色正常上班上課、紅色停止上班及上課、橘色僅停課、黃色研判中。</p>
+    <p>台灣的停班停課由各縣市政府自行裁量，主要依據預測風速、累積雨量、交通狀況及颱風路徑判斷。本工具匯整全台資訊於單一畫面，讓你不需逐一查閱各縣市公告。</p>
+  </article>
+
+  <article style="margin-bottom:2.5rem;">
+    <h2 style="font-size:1.4rem;font-weight:700;color:#c4b5fd;margin-bottom:0.75rem;">🎰 台灣彩券 — 威力彩與大樂透</h2>
+    <p>提供威力彩（Super Lotto 638）與大樂透（Lotto 649）的完整功能：最新開獎結果即時查詢、自動對獎（輸入號碼自動比對）、歷史號碼統計分析（出現頻率、冷熱號、遺漏期數）、以及基於歷史頻率的智慧選號建議。</p>
+  </article>
+
+  <article style="margin-bottom:2.5rem;">
+    <h2 style="font-size:1.4rem;font-weight:700;color:#c4b5fd;margin-bottom:0.75rem;">📹 影片下載</h2>
+    <p>支援 YouTube、Instagram、TikTok、Twitter/X、Facebook 等主流平台的影片下載。貼上連結即可取得無浮水印影片，支援 360p 至 1080p 多種畫質選擇。透過開源 cobalt 技術實現，不儲存使用者資料。</p>
+  </article>
+
+  <article style="margin-bottom:2.5rem;">
+    <h2 style="font-size:1.4rem;font-weight:700;color:#c4b5fd;margin-bottom:0.75rem;">📝 知識文章</h2>
+    <p>我們撰寫了一系列實用教學文章，涵蓋圖片壓縮原理與技巧、PDF 處理教學、匯率換算注意事項、颱風停班停課制度解析等主題，幫助使用者更好地運用各項工具。所有文章定期更新，確保資訊的正確性。</p>
+  </article>
+
+  <section style="margin-bottom:2.5rem;">
+    <h2 style="font-size:1.4rem;font-weight:700;color:#a78bfa;margin-bottom:1rem;">精選文章</h2>
+
+    <article style="margin-bottom:1.5rem;padding:1rem;border:1px solid #374151;border-radius:0.75rem;">
+      <h3 style="font-size:1.1rem;font-weight:600;color:#e5e7eb;margin-bottom:0.5rem;">颱風假怎麼放？台灣停班停課制度完整解說</h3>
+      <p style="font-size:0.875rem;color:#9ca3af;">每逢颱風季，最牽動台灣人神經的就是「明天要不要上班上學」。台灣的停班停課並非由中央統一公告，而是由各縣市首長自行裁量。本文帶你搞懂決策機制、各縣市差異，以及勞工在颱風天不出勤的權益保障。</p>
+    </article>
+
+    <article style="margin-bottom:1.5rem;padding:1rem;border:1px solid #374151;border-radius:0.75rem;">
+      <h3 style="font-size:1.1rem;font-weight:600;color:#e5e7eb;margin-bottom:0.5rem;">圖片壓縮完全指南：原理、最佳實務與常見格式比較</h3>
+      <p style="font-size:0.875rem;color:#9ca3af;">網站載入速度與使用者體驗息息相關，而圖片通常佔據網頁總大小的一半以上。了解 JPEG 失真壓縮、PNG 無損壓縮與 WebP 新世代格式各自的適用場景，搭配品質滑桿的最佳設定建議，讓你在畫質與檔案大小之間取得完美平衡。</p>
+    </article>
+
+    <article style="margin-bottom:1.5rem;padding:1rem;border:1px solid #374151;border-radius:0.75rem;">
+      <h3 style="font-size:1.1rem;font-weight:600;color:#e5e7eb;margin-bottom:0.5rem;">PDF 合併與分割教學：不用安裝軟體的線上解決方案</h3>
+      <p style="font-size:0.875rem;color:#9ca3af;">不論是整合多份報告、拆分大型文件、還是擷取特定頁面，PDF 處理是辦公室與學校的高頻需求。本文介紹如何使用瀏覽器端的 pdf-lib 技術，在不上傳檔案的前提下完成各種 PDF 操作，同時保障文件中的敏感資訊安全。</p>
+    </article>
+
+    <article style="margin-bottom:1.5rem;padding:1rem;border:1px solid #374151;border-radius:0.75rem;">
+      <h3 style="font-size:1.1rem;font-weight:600;color:#e5e7eb;margin-bottom:0.5rem;">出國換匯攻略：銀行牌告匯率、中間價與即時匯率的差異</h3>
+      <p style="font-size:0.875rem;color:#9ca3af;">規劃出國旅遊時，匯率換算是必做功課。但你知道銀行的「現金買入價」和「即期賣出價」差在哪嗎？本文解釋匯率中間價（ECB 參考匯率）、銀行牌告價與線上換匯平台之間的關係，教你選擇最佳換匯時機與管道。</p>
+    </article>
+
+    <article style="padding:1rem;border:1px solid #374151;border-radius:0.75rem;">
+      <h3 style="font-size:1.1rem;font-weight:600;color:#e5e7eb;margin-bottom:0.5rem;">威力彩與大樂透中獎機率解析：數學告訴你的真相</h3>
+      <p style="font-size:0.875rem;color:#9ca3af;">威力彩頭獎機率約為 1/2,209 萬，大樂透頭獎機率約為 1/1,398 萬。本文從組合數學的角度出發，逐步拆解各獎項的計算方式，並比較兩種彩券的期望值，讓你用理性的態度看待彩券投注與中獎機率。</p>
+    </article>
+  </section>
+
+  <footer style="border-top:1px solid #374151;padding-top:1.5rem;margin-top:2rem;color:#6b7280;font-size:0.875rem;">
+    <p>© 2026 打工人工具箱 twtools.cc — 免費、開源、尊重隱私的線上工具集合。</p>
+    <p>圖片壓縮與 PDF 處理完全在瀏覽器端進行，檔案不上傳伺服器。匯率與颱風資料使用 Firebase 即時資料庫同步，不儲存任何個人資訊。</p>
+  </footer>
+
+</div>
+<script>
+// React 掛載成功後隱藏靜態 SEO fallback
+(function(){var f=document.getElementById('seo-fallback');if(f){var obs=new MutationObserver(function(){if(document.getElementById('root').children.length>0){f.style.display='none';obs.disconnect();}});obs.observe(document.getElementById('root'),{childList:true});}})();
+</script>
+
+<!-- ============================================================
+     靜態 SEO 內容（供不執行 JS 的爬蟲 / AdSense 審核機器人閱讀）
+     React 掛載後 #root 會覆蓋視覺，但這段 HTML 保留在 DOM 中供爬蟲索引
+     ============================================================ -->
+<noscript>
+<div style="max-width:960px;margin:0 auto;padding:2rem;color:#e5e7eb;font-family:system-ui,sans-serif;line-height:1.8;">
+
+  <h1 style="font-size:2rem;font-weight:900;color:#fff;margin-bottom:1rem;">打工人工具箱 — 免費線上工具集合</h1>
+  <p>打工人工具箱（twtools.cc）是一個專為台灣使用者打造的免費線上工具網站。所有工具直接在瀏覽器中運行，不需要安裝任何軟體，也不會上傳你的檔案到伺服器。以下是我們提供的完整工具與功能說明。</p>
+
+  <hr style="border-color:#374151;margin:2rem 0;">
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#c4b5fd;">🖼️ 圖片壓縮與調整尺寸</h2>
+  <p>上傳圖片後，可以自由調整壓縮品質（1%–100%）和輸出尺寸。支援 JPG、PNG、WebP 格式，壓縮過程完全在瀏覽器端完成，你的圖片不會離開你的電腦。適合需要縮小圖片檔案大小以便上傳社群媒體、寄送 Email 或放上網站的使用者。</p>
+  <h3 style="font-size:1.1rem;color:#a78bfa;margin-top:1rem;">使用方式</h3>
+  <p>1. 點擊上傳區域或拖曳圖片進入。2. 調整品質滑桿與目標尺寸。3. 點擊下載取得壓縮後的圖片。支援批次處理，一次可壓縮多張圖片。</p>
+
+  <hr style="border-color:#374151;margin:2rem 0;">
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#c4b5fd;">📄 PDF 合併與分割</h2>
+  <p>使用開源的 pdf-lib 技術，在瀏覽器中直接處理 PDF 檔案。合併功能可以將多個 PDF 檔案合而為一，分割功能可以從 PDF 中擷取指定頁面。所有操作都在本機完成，檔案絕不上傳至伺服器，保障你的文件隱私安全。</p>
+  <h3 style="font-size:1.1rem;color:#a78bfa;margin-top:1rem;">使用方式</h3>
+  <p>合併：上傳多個 PDF → 調整順序 → 點擊合併下載。分割：上傳一個 PDF → 輸入要擷取的頁碼範圍（例如 1-3, 5, 8）→ 點擊分割下載。</p>
+
+  <hr style="border-color:#374151;margin:2rem 0;">
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#c4b5fd;">💱 即時匯率換算</h2>
+  <p>以新台幣（TWD）為基準的即時匯率換算工具。支援美元、日圓、歐元、人民幣、港幣、韓元、英鎊、澳幣、加幣、新加坡幣等多種常用貨幣。匯率資料來自 ExchangeRate-API，每日更新。適合出國旅遊前查詢匯率、海外購物換算價格、或是外幣投資參考。</p>
+  <h3 style="font-size:1.1rem;color:#a78bfa;margin-top:1rem;">資料來源</h3>
+  <p>匯率資料由 ExchangeRate-API 提供，為市場中間價，僅供參考。實際兌換匯率以銀行臨櫃或線上換匯報價為準。</p>
+
+  <hr style="border-color:#374151;margin:2rem 0;">
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#c4b5fd;">📐 單位換算</h2>
+  <p>快速轉換日常常用的度量單位。目前支援長度單位（公分、公尺、公里、英吋、英尺、英里）與溫度單位（攝氏、華氏、克氏）的互相轉換。輸入數值即時顯示結果，不需按下任何按鈕。</p>
+
+  <hr style="border-color:#374151;margin:2rem 0;">
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#c4b5fd;">🌀 颱風停班停課查詢</h2>
+  <p>每到颱風季節，最關心的就是明天要不要上班上課。本工具即時顯示全台 22 縣市的停班停課狀態，資料來源為行政院人事行政總處（DGPA）官方公告。以直覺的色彩標示快速傳達各縣市的狀態：綠色代表正常上班上課、紅色代表停止上班及上課、橘色代表僅停止上課、黃色代表研判中。</p>
+  <h3 style="font-size:1.1rem;color:#a78bfa;margin-top:1rem;">颱風假制度說明</h3>
+  <p>台灣的停班停課決定由各縣市政府自行裁量，並非中央統一公告。主要判斷依據包括預測風速、累積雨量、交通道路狀況，以及颱風行進路徑對當地的實際影響程度。通常在預計颱風抵達前一天晚間宣布，各縣市的宣布時間與結果可能不一致。</p>
+
+  <hr style="border-color:#374151;margin:2rem 0;">
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#c4b5fd;">🎰 台灣彩券 — 威力彩與大樂透</h2>
+  <p>提供台灣彩券威力彩（Super Lotto 638）與大樂透（Lotto 649）的最新開獎結果查詢、自動對獎、號碼統計分析與智慧選號功能。</p>
+  <h3 style="font-size:1.1rem;color:#a78bfa;margin-top:1rem;">功能說明</h3>
+  <p>開獎結果：即時顯示最新一期的開獎號碼與獎金資訊。自動對獎：輸入你的投注號碼，系統自動比對最新開獎結果並告訴你中了幾獎。統計分析：分析歷史開獎資料中各號碼的出現頻率、冷熱號分布、連續未開出期數等。智慧選號：基於歷史頻率加權的隨機選號建議，僅供娛樂參考。</p>
+
+  <hr style="border-color:#374151;margin:2rem 0;">
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#c4b5fd;">📹 影片下載</h2>
+  <p>支援 YouTube、Instagram、TikTok、Twitter/X、Facebook 等主流平台的影片下載。只要貼上影片連結，即可取得無浮水印的影片檔案。支援多種畫質選擇（360p、480p、720p、1080p）。本工具透過開源的 cobalt 技術實現，不儲存任何使用者資料。</p>
+  <h3 style="font-size:1.1rem;color:#a78bfa;margin-top:1rem;">使用方式</h3>
+  <p>1. 複製你想下載的影片網址。2. 貼到輸入框中。3. 選擇畫質後點擊下載。如果平台提供多個檔案（例如 Instagram 輪播貼文），系統會列出所有可下載的項目供你選擇。</p>
+
+  <hr style="border-color:#374151;margin:2rem 0;">
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#c4b5fd;">📝 知識文章</h2>
+  <p>我們撰寫了一系列實用的教學文章，幫助你更好地使用各項工具。內容涵蓋圖片壓縮的原理與技巧、PDF 文件處理教學、匯率換算的注意事項、颱風停班停課制度解析等主題。所有文章定期更新，確保資訊的時效性與正確性。</p>
+
+  <hr style="border-color:#374151;margin:2rem 0;">
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#a78bfa;">關於打工人工具箱</h2>
+  <p>打工人工具箱的理念很簡單：提供免費、好用、無廣告干擾的線上工具。我們相信日常工具不應該需要付費訂閱或忍受滿版廣告。所有工具都經過行動裝置優化，在手機、平板和桌面電腦上都能順暢使用。</p>
+  <p>隱私是我們的核心原則。圖片壓縮與 PDF 處理完全在你的瀏覽器中進行，檔案不會上傳到任何伺服器。匯率與颱風資料使用 Firebase 即時資料庫同步，不儲存任何個人資訊。</p>
+  <p>如果你覺得這個工具箱好用，歡迎分享給朋友。有任何建議或問題，請透過聯絡我們頁面與我們聯繫。</p>
+
+</div>
+</noscript>
+
 <script type="text/babel">
 const { useState, useEffect, useMemo, useCallback } = React;
 
