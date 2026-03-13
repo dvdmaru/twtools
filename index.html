@@ -3239,6 +3239,96 @@ function DateCalculatorTool() {
 }
 
 // ================================================================
+// G-0. 連假資料（8 國 / 2026 年）
+// ================================================================
+const HOLIDAY_COUNTRIES = [
+  { code: 'TW', flag: '🇹🇼', name: '台灣' },
+  { code: 'CN', flag: '🇨🇳', name: '中國' },
+  { code: 'HK', flag: '🇭🇰', name: '香港' },
+  { code: 'SG', flag: '🇸🇬', name: '新加坡' },
+  { code: 'MY', flag: '🇲🇾', name: '馬來西亞' },
+  { code: 'TH', flag: '🇹🇭', name: '泰國' },
+  { code: 'JP', flag: '🇯🇵', name: '日本' },
+  { code: 'KR', flag: '🇰🇷', name: '韓國' },
+];
+
+const LONG_HOLIDAYS = {
+  TW: [
+    { name: '🧧 春節', start: '2026-02-14', end: '2026-02-22', days: 9 },
+    { name: '✊ 228和平紀念日', start: '2026-02-27', end: '2026-03-01', days: 3 },
+    { name: '🌸 兒童節／清明節', start: '2026-04-03', end: '2026-04-06', days: 4 },
+    { name: '👷 勞動節', start: '2026-05-01', end: '2026-05-03', days: 3 },
+    { name: '🐉 端午節', start: '2026-06-19', end: '2026-06-21', days: 3 },
+    { name: '🥮 中秋節', start: '2026-09-25', end: '2026-09-28', days: 4 },
+    { name: '🎆 國慶日', start: '2026-10-09', end: '2026-10-11', days: 3 },
+    { name: '🎄 行憲紀念日', start: '2026-12-25', end: '2026-12-27', days: 3 },
+  ],
+  CN: [
+    { name: '🎆 元旦', start: '2026-01-01', end: '2026-01-03', days: 3 },
+    { name: '🧧 春節', start: '2026-02-15', end: '2026-02-23', days: 9 },
+    { name: '🌿 清明節', start: '2026-04-04', end: '2026-04-06', days: 3 },
+    { name: '👷 勞動節', start: '2026-05-01', end: '2026-05-05', days: 5 },
+    { name: '🐉 端午節', start: '2026-06-19', end: '2026-06-21', days: 3 },
+    { name: '🥮 中秋節', start: '2026-09-25', end: '2026-09-27', days: 3 },
+    { name: '🇨🇳 國慶節', start: '2026-10-01', end: '2026-10-07', days: 7 },
+  ],
+  HK: [
+    { name: '🧧 農曆新年', start: '2026-02-17', end: '2026-02-19', days: 3 },
+    { name: '✝️ 復活節及清明節', start: '2026-04-03', end: '2026-04-07', days: 5 },
+    { name: '🪷 佛誕', start: '2026-05-23', end: '2026-05-25', days: 3 },
+    { name: '🐉 端午節', start: '2026-06-19', end: '2026-06-21', days: 3 },
+    { name: '🥮 中秋節翌日', start: '2026-09-25', end: '2026-09-27', days: 3 },
+    { name: '🍂 重陽節', start: '2026-10-17', end: '2026-10-19', days: 3 },
+    { name: '🎄 聖誕節', start: '2026-12-25', end: '2026-12-27', days: 3 },
+  ],
+  SG: [
+    { name: '🌙 開齋節', start: '2026-03-20', end: '2026-03-22', days: 3 },
+    { name: '✝️ 耶穌受難日', start: '2026-04-03', end: '2026-04-05', days: 3 },
+    { name: '👷 勞動節', start: '2026-05-01', end: '2026-05-03', days: 3 },
+    { name: '🪷 衛塞節', start: '2026-05-30', end: '2026-06-01', days: 3 },
+    { name: '🇸🇬 國慶日', start: '2026-08-08', end: '2026-08-10', days: 3 },
+    { name: '🪔 屠妖節', start: '2026-11-07', end: '2026-11-09', days: 3 },
+    { name: '🎄 聖誕節', start: '2026-12-25', end: '2026-12-27', days: 3 },
+  ],
+  MY: [
+    { name: '🌙 開齋節', start: '2026-03-20', end: '2026-03-22', days: 3 },
+    { name: '👷🪷 勞動節+衛塞節', start: '2026-05-01', end: '2026-05-04', days: 4 },
+    { name: '👑 元首誕辰', start: '2026-05-30', end: '2026-06-01', days: 3 },
+    { name: '🇲🇾 國慶日', start: '2026-08-29', end: '2026-08-31', days: 3 },
+    { name: '🎄 聖誕節', start: '2026-12-25', end: '2026-12-27', days: 3 },
+  ],
+  TH: [
+    { name: '🎆 元旦', start: '2026-01-01', end: '2026-01-04', days: 4 },
+    { name: '💦 潑水節', start: '2026-04-11', end: '2026-04-15', days: 5 },
+    { name: '👷 勞動節', start: '2026-05-01', end: '2026-05-03', days: 3 },
+    { name: '🪷 衛塞節', start: '2026-05-09', end: '2026-05-11', days: 3 },
+    { name: '👑 拉瑪五世紀念日', start: '2026-10-23', end: '2026-10-25', days: 3 },
+    { name: '👑 拉瑪九世誕辰', start: '2026-12-05', end: '2026-12-07', days: 3 },
+  ],
+  JP: [
+    { name: '🎆 元旦', start: '2026-01-01', end: '2026-01-04', days: 4 },
+    { name: '🎌 成人之日', start: '2026-01-10', end: '2026-01-12', days: 3 },
+    { name: '👑 天皇誕辰', start: '2026-02-21', end: '2026-02-23', days: 3 },
+    { name: '🌸 春分之日', start: '2026-03-20', end: '2026-03-22', days: 3 },
+    { name: '🌈 黃金週', start: '2026-05-02', end: '2026-05-06', days: 5 },
+    { name: '🏖️ 海之日', start: '2026-07-18', end: '2026-07-20', days: 3 },
+    { name: '🍁 銀色週', start: '2026-09-19', end: '2026-09-23', days: 5 },
+    { name: '🏃 體育之日', start: '2026-10-10', end: '2026-10-12', days: 3 },
+    { name: '🙏 勤勞感謝之日', start: '2026-11-21', end: '2026-11-23', days: 3 },
+  ],
+  KR: [
+    { name: '🧧 설날 (春節)', start: '2026-02-14', end: '2026-02-18', days: 5 },
+    { name: '🇰🇷 三一節', start: '2026-02-28', end: '2026-03-02', days: 3 },
+    { name: '🪷 釋迦誕辰', start: '2026-05-23', end: '2026-05-25', days: 3 },
+    { name: '🎆 光復節', start: '2026-08-15', end: '2026-08-17', days: 3 },
+    { name: '🥮 추석 (中秋)', start: '2026-09-24', end: '2026-09-27', days: 4 },
+    { name: '🏔️ 開天節', start: '2026-10-03', end: '2026-10-05', days: 3 },
+    { name: '📖 韓文日', start: '2026-10-09', end: '2026-10-11', days: 3 },
+    { name: '🎄 聖誕節', start: '2026-12-25', end: '2026-12-27', days: 3 },
+  ],
+};
+
+// ================================================================
 // G. 倒數計時器
 // ================================================================
 function CountdownTool() {
@@ -3249,6 +3339,8 @@ function CountdownTool() {
   const [selectedPreset, setSelectedPreset] = useState(null);
   const [now, setNow] = useState(new Date());
   const [finished, setFinished] = useState(false);
+  const [country, setCountry] = useState('TW');
+  const [selectedHoliday, setSelectedHoliday] = useState(null);
 
   const presets = useMemo(() => {
     const y = now.getFullYear();
@@ -3285,6 +3377,12 @@ function CountdownTool() {
   }, [now.getFullYear()]);
 
   const targetDate = useMemo(() => {
+    if (mode === 'holidays' && selectedHoliday !== null) {
+      const holidays = LONG_HOLIDAYS[country] || [];
+      const h = holidays[selectedHoliday];
+      if (!h) return null;
+      return new Date(h.start + 'T00:00:00');
+    }
     if (mode === 'preset' && selectedPreset !== null) {
       return presets[selectedPreset]?.date || null;
     }
@@ -3292,14 +3390,21 @@ function CountdownTool() {
       return new Date(customDate + 'T' + (customTime || '00:00') + ':00');
     }
     return null;
-  }, [mode, selectedPreset, customDate, customTime, presets]);
+  }, [mode, selectedPreset, selectedHoliday, country, customDate, customTime, presets]);
 
   const targetName = useMemo(() => {
+    if (mode === 'holidays' && selectedHoliday !== null) {
+      const holidays = LONG_HOLIDAYS[country] || [];
+      const h = holidays[selectedHoliday];
+      if (!h) return null;
+      const c = HOLIDAY_COUNTRIES.find(x => x.code === country);
+      return (c ? c.flag + ' ' : '') + h.name;
+    }
     if (mode === 'preset' && selectedPreset !== null) {
       return presets[selectedPreset]?.name || '';
     }
     return customName || '自訂倒數';
-  }, [mode, selectedPreset, customName, presets]);
+  }, [mode, selectedPreset, selectedHoliday, country, customName, presets]);
 
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 1000);
@@ -3345,13 +3450,60 @@ function CountdownTool() {
     <div className="tool-page max-w-2xl mx-auto px-4 py-6">
       <h2 className="text-xl font-bold text-white mb-4">⏳ 倒數計時器</h2>
       <div className="flex gap-2 mb-6">
-        {[['preset','預設節日'],['custom','自訂日期']].map(([t,lbl]) => (
-          <button key={t} onClick={() => { setMode(t); setFinished(false); }}
+        {[['holidays','🏖️ 連假倒數'],['preset','預設節日'],['custom','自訂日期']].map(([t,lbl]) => (
+          <button key={t} onClick={() => { setMode(t); setFinished(false); setSelectedPreset(null); setSelectedHoliday(null); }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode===t?'bg-purple-600 text-white':'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}>
             {lbl}
           </button>
         ))}
       </div>
+
+
+      {mode === 'holidays' && (
+        <div className="mb-4">
+          {/* Country selector */}
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {HOLIDAY_COUNTRIES.map(c => (
+              <button key={c.code}
+                onClick={() => { setCountry(c.code); setSelectedHoliday(null); setFinished(false); }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${country===c.code ? 'bg-purple-600 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}>
+                {c.flag} {c.name}
+              </button>
+            ))}
+          </div>
+          {/* Holiday cards */}
+          <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
+            {(LONG_HOLIDAYS[country] || []).map((h, i) => {
+              const startD = new Date(h.start + 'T00:00:00');
+              const endD = new Date(h.end + 'T23:59:59');
+              const isPast = now > endD;
+              const isOngoing = now >= startD && now <= endD;
+              const isUpcoming = now < startD;
+              const daysUntil = isUpcoming ? Math.ceil((startD - now) / (1000*60*60*24)) : 0;
+              return (
+                <button key={i} disabled={isPast}
+                  onClick={() => { if (!isPast) { setSelectedHoliday(i); setFinished(false); } }}
+                  className={`w-full p-3 rounded-xl text-left transition-colors flex items-center justify-between ${
+                    isPast ? 'bg-gray-800/40 border border-gray-800 opacity-50 cursor-not-allowed' :
+                    selectedHoliday===i ? 'bg-purple-600/30 border-purple-500 border' :
+                    isOngoing ? 'bg-green-900/30 border border-green-700/60 hover:bg-green-900/40' :
+                    'bg-gray-800 border border-gray-700 hover:bg-gray-700'
+                  }`}>
+                  <div>
+                    <p className="text-sm font-medium text-white">{h.name}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">{h.start.slice(5)} ~ {h.end.slice(5)}（{h.days}天）</p>
+                  </div>
+                  <div className="text-right shrink-0 ml-2">
+                    {isPast && <span className="text-xs text-gray-600">已結束</span>}
+                    {isOngoing && <span className="text-xs text-green-400 font-medium animate-pulse">🎉 放假中</span>}
+                    {isUpcoming && <span className="text-xs text-yellow-400 font-medium">還有 {daysUntil} 天</span>}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {mode === 'preset' && (
         <div className="grid grid-cols-2 gap-2 mb-4">
@@ -3428,13 +3580,21 @@ function CountdownTool() {
 
       {!countdown && (
         <div className="bg-gray-800/40 rounded-xl p-6 text-center text-gray-500 text-sm">
-          {mode === 'preset' ? '請選擇一個節日開始倒數' : '請設定目標日期'}
+          {mode === 'holidays' ? '請選擇一個連假開始倒數' : mode === 'preset' ? '請選擇一個節日開始倒數' : '請設定目標日期'}
         </div>
       )}
 
       <div className="bg-gray-800/30 rounded-xl p-4 mt-6 border border-gray-700/50">
         <h3 className="text-sm font-semibold text-gray-300 mb-3">📖 使用說明</h3>
         <div className="text-xs text-gray-400 space-y-3">
+          <div>
+            <p className="font-medium text-gray-300 mb-1.5">🏖️ 連假倒數</p>
+            <ol className="space-y-1 list-decimal list-inside">
+              <li>選擇國家/地區（台灣、中國、香港、新加坡、馬來西亞、泰國、日本、韓國）</li>
+              <li>瀏覽該國 2026 年所有 ≥3 天的連續假期，即時顯示「放假中🎉」或「還有 N 天」</li>
+              <li>點選任一連假卡片，即開始倒數計時</li>
+            </ol>
+          </div>
           <div>
             <p className="font-medium text-gray-300 mb-1.5">預設節日</p>
             <ol className="space-y-1 list-decimal list-inside">
@@ -3458,7 +3618,7 @@ function CountdownTool() {
         <div>
           <h3 className="text-sm font-semibold text-gray-300 mb-2">關於倒數計時器</h3>
           <p className="text-xs text-gray-500 leading-relaxed">
-            倒數計時器提供兩種模式：預設節日快速倒數與自訂日期精確倒數。預設節日涵蓋跨年、農曆新年、聖誕節、情人節、中秋節、雙十一等，系統自動判斷最近一次的節日日期。自訂模式可設定任意日期與時間（精確到分鐘），適合倒數生日、旅行出發、考試、專案截止日、婚禮等個人重要時刻。倒數以每秒更新的方式呈現天、時、分、秒，並支援瀏覽器通知（需授權），時間到會推播提醒。亦可複製分享連結，讓朋友一起倒數。
+            倒數計時器提供三種模式：連假倒數（8 國 2026 年 ≥3 天連假一覽）、預設節日快速倒數與自訂日期精確倒數。預設節日涵蓋跨年、農曆新年、聖誕節、情人節、中秋節、雙十一等，系統自動判斷最近一次的節日日期。自訂模式可設定任意日期與時間（精確到分鐘），適合倒數生日、旅行出發、考試、專案截止日、婚禮等個人重要時刻。倒數以每秒更新的方式呈現天、時、分、秒，並支援瀏覽器通知（需授權），時間到會推播提醒。亦可複製分享連結，讓朋友一起倒數。
           </p>
         </div>
         <div>
@@ -3467,6 +3627,10 @@ function CountdownTool() {
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：關閉瀏覽器後倒數會繼續嗎？</p>
               <p className="text-xs text-gray-500">倒數計時器基於目標日期計算剩餘時間，因此重新開啟頁面後會自動顯示正確的剩餘時間，不會因關閉瀏覽器而歸零。但到期通知需要頁面保持開啟才能觸發。</p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-0.5">Q：連假倒數的資料來源？</p>
+              <p className="text-xs text-gray-500">資料根據各國官方公告的 2026 年國定假日整理，篩選連續 ≥3 天的假期（含週末銜接）。伊斯蘭曆相關假日（如開齋節）為預估日期，實際可能微調。</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：農曆新年的日期準確嗎？</p>
