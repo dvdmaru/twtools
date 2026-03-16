@@ -6303,6 +6303,15 @@ function ResumeTool() {
         </div>
       )}
 
+      {/* Privacy notice */}
+      <div className="px-4 py-1.5 bg-gray-900/80 border-b border-gray-800">
+        <p className="text-xs text-gray-600">
+          🔒 {L
+            ? 'Privacy: Your resume data is stored entirely in your browser\'s local storage and is never uploaded to any server. When using AI polish features, only the selected text is sent to the AI service via encrypted connection — it is not stored or used for training.'
+            : '隱私說明：您的履歷資料完全儲存在瀏覽器本機，不會上傳至任何伺服器。使用 AI 潤飾功能時，僅該段文字會透過加密連線傳送至 AI 服務處理，不會被儲存或用於模型訓練。'}
+        </p>
+      </div>
+
       {/* Mobile tabs */}
       <div className="md:hidden flex border-b border-gray-800">
         <button
