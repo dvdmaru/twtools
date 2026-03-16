@@ -54,6 +54,11 @@
   </script>
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script>
+  <!-- html2pdf.js for Resume Builder -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+  <!-- Google Fonts for Resume Preview -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -374,7 +379,7 @@
 </noscript>
 
 <script type="text/babel">
-const { useState, useEffect, useMemo, useCallback } = React;
+const { useState, useEffect, useMemo, useCallback, useRef } = React;
 
 // ================================================================
 // i18n — 多語系支援
@@ -392,6 +397,7 @@ const translations = {
     'sidebar.blog': '知識文章',
     'sidebar.datecalc': '日期計算器',
     'sidebar.countdown': '倒數計時器',
+    'sidebar.resume': '履歷產生器',
     'sidebar.footer': '打工人工具箱 © 2026',
 
     // ── Common ──
@@ -809,6 +815,7 @@ const translations = {
     'sidebar.blog': 'Articles',
     'sidebar.datecalc': 'Date Calculator',
     'sidebar.countdown': 'Countdown',
+    'sidebar.resume': 'Resume Builder',
     'sidebar.footer': 'TWTools © 2026',
 
     // ── Common ──
@@ -3072,6 +3079,7 @@ function Sidebar({ page, setPage, open, setOpen }) {
     { id:'blog',     icon:'📝', label: t('sidebar.blog') },
     { id:'datecalc', icon:'📅', label: t('sidebar.datecalc') },
     { id:'countdown',icon:'⏳', label: t('sidebar.countdown') },
+    { id:'resume',   icon:'📋', label: t('sidebar.resume') },
   ];
   return (
     <>
@@ -5483,6 +5491,858 @@ function saveDraw(key, data) {
   try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
 }
 
+// ================================================================
+// K. 履歷產生器 (Resume Builder)
+//    Inspired by magic-resume (https://github.com/JOYCEQL/magic-resume)
+// ================================================================
+
+const _genId = () => `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+
+const RESUME_SECTION_LABELS = {
+  'zh-TW': {
+    basics: '基本資料', summary: '自我介紹', experience: '工作經歷',
+    education: '學歷', skills: '專業技能', projects: '專案經歷',
+    languages: '語言能力', certifications: '證照',
+    present: '至今', unnamed: '（未命名）',
+  },
+  'zh-CN': {
+    basics: '基本资料', summary: '自我介绍', experience: '工作经历',
+    education: '学历', skills: '专业技能', projects: '项目经历',
+    languages: '语言能力', certifications: '证书',
+    present: '至今', unnamed: '（未命名）',
+  },
+};
+
+const RESUME_TEMPLATES = {
+  classic:  { id: 'classic',  name: { 'zh': '經典', 'en': 'Classic' },  desc: { 'zh': '傳統專業排版', 'en': 'Traditional professional layout' } },
+  modern:   { id: 'modern',   name: { 'zh': '現代', 'en': 'Modern' },   desc: { 'zh': '左側色塊 + 雙欄', 'en': 'Sidebar + two-column' } },
+  minimal:  { id: 'minimal',  name: { 'zh': '簡約', 'en': 'Minimal' },  desc: { 'zh': '極簡留白設計', 'en': 'Clean whitespace design' } },
+};
+
+const RESUME_COLORS = [
+  { id: 'blue',   hex: '#2563eb', label: '藍 Blue' },
+  { id: 'purple', hex: '#7c3aed', label: '紫 Purple' },
+  { id: 'green',  hex: '#059669', label: '綠 Green' },
+  { id: 'red',    hex: '#dc2626', label: '紅 Red' },
+  { id: 'orange', hex: '#ea580c', label: '橙 Orange' },
+  { id: 'teal',   hex: '#0d9488', label: '青 Teal' },
+  { id: 'gray',   hex: '#4b5563', label: '灰 Gray' },
+  { id: 'rose',   hex: '#e11d48', label: '玫瑰 Rose' },
+];
+
+const EMPTY_RESUME = {
+  resumeLang: 'zh-TW',
+  templateId: 'classic',
+  accentColor: '#2563eb',
+  basics: { name: '', title: '', email: '', phone: '', location: '', website: '', linkedin: '', github: '', photo: '' },
+  summary: '',
+  education: [],
+  experience: [],
+  skills: [{ id: _genId(), category: '', items: [] }],
+  projects: [],
+  languages: [],
+  certifications: [],
+};
+
+/* ── Collapsible Section Wrapper ── */
+function RSection({ title, count, defaultOpen, children, onAdd, addLabel }) {
+  const [open, setOpen] = useState(defaultOpen ?? true);
+  return (
+    <div className="mb-3 border border-gray-800 rounded-lg overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-3 py-2 bg-gray-900/80 hover:bg-gray-800 text-sm font-semibold text-gray-200"
+      >
+        <span className="flex items-center gap-2">
+          <span className={`transition-transform ${open ? 'rotate-90' : ''}`}>▶</span>
+          {title}
+          {count != null && <span className="text-xs text-gray-500 font-normal">({count})</span>}
+        </span>
+        {onAdd && (
+          <span
+            onClick={e => { e.stopPropagation(); onAdd(); }}
+            className="text-xs px-2 py-0.5 rounded bg-purple-800/60 hover:bg-purple-700 text-purple-200"
+          >{addLabel || '+ 新增'}</span>
+        )}
+      </button>
+      {open && <div className="p-3 space-y-3 bg-gray-950/50">{children}</div>}
+    </div>
+  );
+}
+
+/* ── Small reusable input ── */
+function RInput({ label, value, onChange, placeholder, type, className }) {
+  return (
+    <label className={`block ${className || ''}`}>
+      <span className="text-xs text-gray-500">{label}</span>
+      <input
+        type={type || 'text'}
+        value={value || ''}
+        onChange={e => onChange(e.target.value)}
+        placeholder={placeholder || ''}
+        className="w-full mt-0.5 px-2 py-1.5 bg-gray-900 border border-gray-800 rounded text-sm text-gray-200 placeholder-gray-600 focus:border-purple-600 focus:outline-none"
+      />
+    </label>
+  );
+}
+
+function RTextarea({ label, value, onChange, placeholder, rows }) {
+  return (
+    <label className="block">
+      <span className="text-xs text-gray-500">{label}</span>
+      <textarea
+        value={value || ''}
+        onChange={e => onChange(e.target.value)}
+        placeholder={placeholder || ''}
+        rows={rows || 3}
+        className="w-full mt-0.5 px-2 py-1.5 bg-gray-900 border border-gray-800 rounded text-sm text-gray-200 placeholder-gray-600 focus:border-purple-600 focus:outline-none resize-y"
+      />
+    </label>
+  );
+}
+
+/* ── Item Card with delete/move ── */
+function RItemCard({ children, onDelete, onMoveUp, onMoveDown, canUp, canDown }) {
+  return (
+    <div className="relative border border-gray-800 rounded-lg p-3 bg-gray-900/40">
+      <div className="absolute top-1 right-1 flex gap-1">
+        {canUp && <button type="button" onClick={onMoveUp} className="text-gray-600 hover:text-gray-300 text-xs p-1">▲</button>}
+        {canDown && <button type="button" onClick={onMoveDown} className="text-gray-600 hover:text-gray-300 text-xs p-1">▼</button>}
+        <button type="button" onClick={onDelete} className="text-red-700 hover:text-red-400 text-xs p-1">✕</button>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+/* ── AI Helper（透過 Cloudflare Worker 代理，免設定 API Key） ── */
+async function callResumeAi(prompt, route) {
+  const res = await fetch(WORKER_URL + (route || '/ai/polish'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt }),
+  });
+  const data = await res.json();
+  if (!res.ok || !data.ok) {
+    throw new Error(data.message || data.error || 'AI 服務暫時無法使用');
+  }
+  return data.text || '';
+}
+
+/* ── Shared Preview Sub-components ── */
+function PvSection({ label, color, children }) {
+  return (
+    <div className="mb-4">
+      <h2 style={{ fontSize: '11pt', fontWeight: 700, color, borderBottom: `1.5px solid ${color}33`, paddingBottom: '3px', marginBottom: '8px', letterSpacing: '0.5px' }}>{label}</h2>
+      {children}
+    </div>
+  );
+}
+function PvExpItem({ item, present, sub }) {
+  return (
+    <div style={{ marginTop: sub ? '6px' : 0 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+        <span style={{ fontSize: '9.5pt', fontWeight: 700, color: '#1f2937' }}>{item.position || item.school || item.name}{(item.company || item.field || item.role) ? ` — ${item.company || item.field || item.role}` : ''}</span>
+        <span style={{ fontSize: '8pt', color: '#9ca3af', flexShrink: 0, marginLeft: '8px' }}>
+          {item.startDate}{item.startDate && ' – '}{item.current ? present : item.endDate}
+        </span>
+      </div>
+      {item.degree && <p style={{ fontSize: '8pt', color: '#9ca3af' }}>{item.degree}</p>}
+      {item.technologies?.length > 0 && <p style={{ fontSize: '8pt', color: '#6b7280', marginTop: '2px' }}>{item.technologies.join(' · ')}</p>}
+      {item.description && <p style={{ fontSize: '8.5pt', color: '#374151', whiteSpace: 'pre-wrap', lineHeight: 1.5, marginTop: '2px' }}>{item.description}</p>}
+      {item.url && !item.description && <span style={{ fontSize: '8pt', color: '#6b7280' }}>{item.url}</span>}
+    </div>
+  );
+}
+
+/* ── Resume Preview Component (Template-aware) ── */
+function ResumePreview({ data, previewRef }) {
+  const SL = RESUME_SECTION_LABELS[data.resumeLang] || RESUME_SECTION_LABELS['zh-TW'];
+  const b = data.basics;
+  const ac = data.accentColor || '#2563eb';
+  const tpl = data.templateId || 'classic';
+  const baseFont = "'Noto Sans TC', 'Noto Sans SC', 'Helvetica Neue', sans-serif";
+  const pageStyle = { width: '210mm', minHeight: '297mm', fontFamily: baseFont, fontSize: '10pt', backgroundColor: '#fff', color: '#1f2937' };
+
+  /* ── Shared content blocks ── */
+  const contactItems = [
+    b.email && `✉ ${b.email}`, b.phone && `☎ ${b.phone}`, b.location && `📍 ${b.location}`,
+    b.website && `🌐 ${b.website}`, b.linkedin && `LinkedIn: ${b.linkedin}`, b.github && `GitHub: ${b.github}`,
+  ].filter(Boolean);
+
+  const sectionContent = (sectionKey) => {
+    if (sectionKey === 'summary' && data.summary)
+      return <PvSection label={SL.summary} color={ac}><p style={{ fontSize: '8.5pt', color: '#374151', whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>{data.summary}</p></PvSection>;
+    if (sectionKey === 'experience' && data.experience.length > 0)
+      return <PvSection label={SL.experience} color={ac}>{data.experience.map((it, i) => <PvExpItem key={it.id} item={it} present={SL.present} sub={i > 0} />)}</PvSection>;
+    if (sectionKey === 'education' && data.education.length > 0)
+      return <PvSection label={SL.education} color={ac}>{data.education.map((it, i) => <PvExpItem key={it.id} item={it} present={SL.present} sub={i > 0} />)}</PvSection>;
+    if (sectionKey === 'skills' && data.skills.some(s => s.items.length > 0))
+      return <PvSection label={SL.skills} color={ac}>{data.skills.filter(s => s.items.length > 0).map(cat => (
+        <div key={cat.id} style={{ marginBottom: '4px' }}>
+          {cat.category && <span style={{ fontSize: '9pt', fontWeight: 600, color: '#374151' }}>{cat.category}：</span>}
+          <span style={{ fontSize: '8.5pt', color: '#6b7280' }}>{cat.items.join('、')}</span>
+        </div>
+      ))}</PvSection>;
+    if (sectionKey === 'projects' && data.projects.length > 0)
+      return <PvSection label={SL.projects} color={ac}>{data.projects.map((it, i) => <PvExpItem key={it.id} item={it} present={SL.present} sub={i > 0} />)}</PvSection>;
+    if (sectionKey === 'languages' && data.languages.length > 0)
+      return <PvSection label={SL.languages} color={ac}><div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>{data.languages.map(it => (
+        <span key={it.id} style={{ fontSize: '8.5pt', color: '#374151' }}>{it.name}{it.level ? ` — ${it.level}` : ''}</span>
+      ))}</div></PvSection>;
+    if (sectionKey === 'certifications' && data.certifications.length > 0)
+      return <PvSection label={SL.certifications} color={ac}>{data.certifications.map(it => (
+        <div key={it.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+          <span style={{ fontSize: '8.5pt', color: '#374151' }}>{it.name}{it.issuer ? ` — ${it.issuer}` : ''}{it.url && ' ↗'}</span>
+          <span style={{ fontSize: '8pt', color: '#9ca3af' }}>{it.date}</span>
+        </div>
+      ))}</PvSection>;
+    return null;
+  };
+
+  const creditFooter = (
+    <div style={{ marginTop: '24px', paddingTop: '8px', borderTop: '1px solid #e5e7eb', textAlign: 'center', fontSize: '7pt', color: '#bbb' }}>
+      Powered by twtools.cc · Inspired by <a href="https://github.com/JOYCEQL/magic-resume" style={{ color: '#aaa' }}>magic-resume</a>
+    </div>
+  );
+
+  const allSections = ['summary', 'experience', 'education', 'skills', 'projects', 'languages', 'certifications'];
+
+  /* ── Template: Classic ── */
+  if (tpl === 'classic') {
+    return (
+      <div ref={previewRef} style={{ ...pageStyle, padding: '32px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '16px' }}>
+          {b.photo && <img src={b.photo} alt="" style={{ width: '72px', height: '72px', borderRadius: '50%', objectFit: 'cover', border: `2px solid ${ac}33`, flexShrink: 0 }} />}
+          <div style={{ flex: 1 }}>
+            <h1 style={{ fontSize: '22pt', fontWeight: 700, color: '#111827', margin: 0 }}>{b.name || SL.unnamed}</h1>
+            {b.title && <p style={{ fontSize: '11pt', color: ac, fontWeight: 500, marginTop: '2px' }}>{b.title}</p>}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '6px', fontSize: '8pt', color: '#6b7280' }}>
+              {contactItems.map((c, i) => <span key={i}>{c}</span>)}
+            </div>
+          </div>
+        </div>
+        {allSections.map(s => <React.Fragment key={s}>{sectionContent(s)}</React.Fragment>)}
+        {creditFooter}
+      </div>
+    );
+  }
+
+  /* ── Template: Modern (sidebar layout) ── */
+  if (tpl === 'modern') {
+    const sidebarSections = ['skills', 'languages', 'certifications'];
+    const mainSections = ['summary', 'experience', 'education', 'projects'];
+    return (
+      <div ref={previewRef} style={{ ...pageStyle, display: 'flex' }}>
+        {/* Left sidebar */}
+        <div style={{ width: '35%', backgroundColor: ac, color: '#fff', padding: '28px 20px', minHeight: '297mm' }}>
+          {b.photo && <img src={b.photo} alt="" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', border: '3px solid rgba(255,255,255,0.4)', margin: '0 auto 16px', display: 'block' }} />}
+          <h1 style={{ fontSize: '18pt', fontWeight: 700, textAlign: 'center', margin: '0 0 4px' }}>{b.name || SL.unnamed}</h1>
+          {b.title && <p style={{ fontSize: '10pt', textAlign: 'center', opacity: 0.9, margin: '0 0 16px' }}>{b.title}</p>}
+          <div style={{ fontSize: '8pt', lineHeight: 1.8, opacity: 0.85, marginBottom: '20px' }}>
+            {contactItems.map((c, i) => <div key={i}>{c}</div>)}
+          </div>
+          {sidebarSections.map(s => {
+            const content = sectionContent(s);
+            return content ? <div key={s} style={{ marginBottom: '12px' }}><div style={{ fontSize: '10pt', fontWeight: 700, borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: '4px', marginBottom: '8px' }}>{SL[s]}</div>
+              {s === 'skills' && data.skills.filter(sk => sk.items.length > 0).map(cat => (
+                <div key={cat.id} style={{ marginBottom: '6px' }}>
+                  {cat.category && <div style={{ fontSize: '8.5pt', fontWeight: 600 }}>{cat.category}</div>}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '3px' }}>
+                    {cat.items.map((sk, j) => <span key={j} style={{ fontSize: '7.5pt', padding: '1px 6px', borderRadius: '3px', backgroundColor: 'rgba(255,255,255,0.2)' }}>{sk}</span>)}
+                  </div>
+                </div>
+              ))}
+              {s === 'languages' && data.languages.map(it => (
+                <div key={it.id} style={{ fontSize: '8.5pt', marginBottom: '3px' }}>{it.name}{it.level ? ` — ${it.level}` : ''}</div>
+              ))}
+              {s === 'certifications' && data.certifications.map(it => (
+                <div key={it.id} style={{ fontSize: '8pt', marginBottom: '3px' }}>{it.name}{it.date ? ` (${it.date})` : ''}</div>
+              ))}
+            </div> : null;
+          })}
+        </div>
+        {/* Right main content */}
+        <div style={{ width: '65%', padding: '28px 24px' }}>
+          {mainSections.map(s => <React.Fragment key={s}>{sectionContent(s)}</React.Fragment>)}
+          {creditFooter}
+        </div>
+      </div>
+    );
+  }
+
+  /* ── Template: Minimal ── */
+  return (
+    <div ref={previewRef} style={{ ...pageStyle, padding: '40px 48px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+        {b.photo && <img src={b.photo} alt="" style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', margin: '0 auto 8px', display: 'block' }} />}
+        <h1 style={{ fontSize: '24pt', fontWeight: 300, color: '#111827', margin: 0, letterSpacing: '2px' }}>{b.name || SL.unnamed}</h1>
+        {b.title && <p style={{ fontSize: '10pt', color: ac, fontWeight: 400, marginTop: '4px', letterSpacing: '1px' }}>{b.title}</p>}
+        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '16px', marginTop: '10px', fontSize: '8pt', color: '#9ca3af' }}>
+          {contactItems.map((c, i) => <span key={i}>{c}</span>)}
+        </div>
+      </div>
+      <div style={{ borderTop: `2px solid ${ac}`, marginBottom: '20px' }} />
+      {allSections.map(s => <React.Fragment key={s}>{sectionContent(s)}</React.Fragment>)}
+      {creditFooter}
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────── */
+/*  Main ResumeTool Component                   */
+/* ──────────────────────────────────────────── */
+function ResumeTool() {
+  const { lang } = useLang();
+  const L = lang === 'en';
+  const previewRef = useRef(null);
+
+  // ── State ──
+  const [resume, setResume] = useState(() => {
+    try {
+      const saved = localStorage.getItem('twtools_resume');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // merge with defaults for any missing fields
+        return { ...EMPTY_RESUME, ...parsed, basics: { ...EMPTY_RESUME.basics, ...parsed.basics } };
+      }
+    } catch {}
+    return { ...EMPTY_RESUME };
+  });
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState('');
+  const [mobileTab, setMobileTab] = useState('editor'); // 'editor' | 'preview'
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+
+  // ── Auto-save ──
+  const saveTimerRef = useRef(null);
+  useEffect(() => {
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      localStorage.setItem('twtools_resume', JSON.stringify(resume));
+    }, 500);
+    return () => clearTimeout(saveTimerRef.current);
+  }, [resume]);
+
+  // ── Updaters ──
+  const updateBasics = useCallback((key, val) => {
+    setResume(prev => ({ ...prev, basics: { ...prev.basics, [key]: val } }));
+  }, []);
+  const updateField = useCallback((field, val) => {
+    setResume(prev => ({ ...prev, [field]: val }));
+  }, []);
+  const updateListItem = useCallback((field, id, key, val) => {
+    setResume(prev => ({
+      ...prev,
+      [field]: prev[field].map(item => item.id === id ? { ...item, [key]: val } : item),
+    }));
+  }, []);
+  const addListItem = useCallback((field, template) => {
+    setResume(prev => ({
+      ...prev,
+      [field]: [...prev[field], { id: _genId(), ...template }],
+    }));
+  }, []);
+  const removeListItem = useCallback((field, id) => {
+    setResume(prev => ({ ...prev, [field]: prev[field].filter(item => item.id !== id) }));
+  }, []);
+  const moveListItem = useCallback((field, idx, dir) => {
+    setResume(prev => {
+      const arr = [...prev[field]];
+      const newIdx = idx + dir;
+      if (newIdx < 0 || newIdx >= arr.length) return prev;
+      [arr[idx], arr[newIdx]] = [arr[newIdx], arr[idx]];
+      return { ...prev, [field]: arr };
+    });
+  }, []);
+
+  // ── Photo upload ──
+  const handlePhotoUpload = useCallback((e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => updateBasics('photo', ev.target.result);
+    reader.readAsDataURL(file);
+  }, [updateBasics]);
+
+  // ── Skills helpers ──
+  const updateSkillCategory = useCallback((id, val) => {
+    setResume(prev => ({
+      ...prev,
+      skills: prev.skills.map(s => s.id === id ? { ...s, category: val } : s),
+    }));
+  }, []);
+  const updateSkillItems = useCallback((id, val) => {
+    // val is comma-separated string → array
+    setResume(prev => ({
+      ...prev,
+      skills: prev.skills.map(s => s.id === id ? { ...s, items: val.split(/[,，]/).map(v => v.trim()).filter(Boolean) } : s),
+    }));
+  }, []);
+  const addSkillCategory = useCallback(() => {
+    setResume(prev => ({ ...prev, skills: [...prev.skills, { id: _genId(), category: '', items: [] }] }));
+  }, []);
+  const removeSkillCategory = useCallback((id) => {
+    setResume(prev => ({ ...prev, skills: prev.skills.filter(s => s.id !== id) }));
+  }, []);
+
+  // ── Project technologies helper ──
+  const updateProjectTech = useCallback((id, val) => {
+    setResume(prev => ({
+      ...prev,
+      projects: prev.projects.map(p => p.id === id ? { ...p, technologies: val.split(/[,，]/).map(v => v.trim()).filter(Boolean) } : p),
+    }));
+  }, []);
+
+  // ── PDF Export ──
+  const exportPdf = useCallback(async () => {
+    if (!previewRef.current) return;
+    if (!window.html2pdf) {
+      alert(L ? 'html2pdf.js not loaded. Please refresh.' : 'html2pdf.js 尚未載入，請重新整理頁面。');
+      return;
+    }
+    const name = resume.basics.name || 'resume';
+    const date = new Date().toISOString().slice(0, 10);
+    const filename = `${name}_resume_${date}.pdf`;
+    try {
+      await window.html2pdf().set({
+        margin: 0,
+        filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      }).from(previewRef.current).save();
+    } catch (err) {
+      alert((L ? 'PDF export failed: ' : 'PDF 匯出失敗：') + err.message);
+    }
+  }, [resume.basics.name, L]);
+
+  // ── AI Functions ──
+  const aiPolish = useCallback(async (text, field, id, subField) => {
+    if (!text?.trim()) return;
+    setAiLoading(true);
+    setAiError('');
+    try {
+      const rlang = resume.resumeLang === 'zh-CN' ? '简体中文' : '繁體中文';
+      const result = await callResumeAi(
+        `請用${rlang}潤飾以下履歷文字，讓它更專業、簡潔、有力。只回傳潤飾後的文字，不要加任何解釋：\n\n${text}`,
+        '/ai/polish',
+      );
+      if (result) {
+        if (field === 'summary') {
+          updateField('summary', result);
+        } else if (id && subField) {
+          updateListItem(field, id, subField, result);
+        }
+      }
+    } catch (err) {
+      setAiError(err.message);
+    } finally {
+      setAiLoading(false);
+    }
+  }, [resume.resumeLang, updateField, updateListItem]);
+
+  const aiGenerateSummary = useCallback(async () => {
+    setAiLoading(true);
+    setAiError('');
+    try {
+      const rlang = resume.resumeLang === 'zh-CN' ? '简体中文' : '繁體中文';
+      const ctx = [];
+      if (resume.basics.title) ctx.push(`職稱：${resume.basics.title}`);
+      if (resume.experience.length) {
+        ctx.push('工作經歷：' + resume.experience.map(e => `${e.position}@${e.company}`).join('、'));
+      }
+      if (resume.skills.some(s => s.items.length)) {
+        ctx.push('技能：' + resume.skills.flatMap(s => s.items).join('、'));
+      }
+      if (resume.education.length) {
+        ctx.push('學歷：' + resume.education.map(e => `${e.school} ${e.field}`).join('、'));
+      }
+      const result = await callResumeAi(
+        `根據以下履歷資訊，用${rlang}撰寫一段 100-150 字的專業自我介紹。只回傳自我介紹內容：\n\n${ctx.join('\n')}`,
+        '/ai/summary',
+      );
+      if (result) updateField('summary', result);
+    } catch (err) {
+      setAiError(err.message);
+    } finally {
+      setAiLoading(false);
+    }
+  }, [resume, updateField]);
+
+  // ── Reset ──
+  const handleReset = useCallback(() => {
+    setResume({ ...EMPTY_RESUME, skills: [{ id: _genId(), category: '', items: [] }] });
+    setShowResetConfirm(false);
+  }, []);
+
+  // ── Section Labels for current resume language ──
+  const SL = RESUME_SECTION_LABELS[resume.resumeLang] || RESUME_SECTION_LABELS['zh-TW'];
+
+  // ──────────── RENDER ────────────
+  const editorPanel = (
+    <div className="flex-1 overflow-y-auto p-3 space-y-2" style={{ maxHeight: 'calc(100vh - 140px)' }}>
+      {/* Basics */}
+      <RSection title={L ? 'Basic Info' : SL.basics} defaultOpen={true}>
+        <div className="grid grid-cols-2 gap-2">
+          <RInput label={L ? 'Name' : '姓名'} value={resume.basics.name} onChange={v => updateBasics('name', v)} placeholder="王小明" />
+          <RInput label={L ? 'Job Title' : '職稱'} value={resume.basics.title} onChange={v => updateBasics('title', v)} placeholder="前端工程師" />
+          <RInput label="Email" value={resume.basics.email} onChange={v => updateBasics('email', v)} placeholder="email@example.com" type="email" />
+          <RInput label={L ? 'Phone' : '電話'} value={resume.basics.phone} onChange={v => updateBasics('phone', v)} placeholder="0912-345-678" />
+          <RInput label={L ? 'Location' : '所在地'} value={resume.basics.location} onChange={v => updateBasics('location', v)} placeholder="台北市" />
+          <RInput label={L ? 'Website' : '網站'} value={resume.basics.website} onChange={v => updateBasics('website', v)} placeholder="https://..." />
+          <RInput label="LinkedIn" value={resume.basics.linkedin} onChange={v => updateBasics('linkedin', v)} placeholder="linkedin.com/in/..." />
+          <RInput label="GitHub" value={resume.basics.github} onChange={v => updateBasics('github', v)} placeholder="github.com/..." />
+        </div>
+        <div className="mt-2">
+          <span className="text-xs text-gray-500">{L ? 'Photo' : '照片'}</span>
+          <div className="flex items-center gap-3 mt-1">
+            {resume.basics.photo && (
+              <img src={resume.basics.photo} alt="" className="w-12 h-12 rounded-full object-cover border border-gray-700" />
+            )}
+            <label className="cursor-pointer text-xs px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg">
+              {L ? 'Upload' : '上傳照片'}
+              <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
+            </label>
+            {resume.basics.photo && (
+              <button onClick={() => updateBasics('photo', '')} className="text-xs text-red-600 hover:text-red-400">{L ? 'Remove' : '移除'}</button>
+            )}
+          </div>
+        </div>
+      </RSection>
+
+      {/* Summary */}
+      <RSection title={L ? 'Summary' : SL.summary} defaultOpen={true}>
+        <RTextarea
+          label={L ? 'Self Introduction' : '自我介紹'}
+          value={resume.summary}
+          onChange={v => updateField('summary', v)}
+          placeholder={L ? 'Briefly describe your professional background and career goals...' : '簡述你的專業背景與職涯目標...'}
+          rows={4}
+        />
+        <div className="flex gap-2 mt-1">
+          <button
+            onClick={() => aiPolish(resume.summary, 'summary')}
+            disabled={aiLoading}
+            className="text-xs px-2 py-1 bg-purple-900/60 hover:bg-purple-800 text-purple-200 rounded disabled:opacity-50"
+          >🤖 {L ? 'AI Polish' : 'AI 潤飾'}</button>
+          <button
+            onClick={aiGenerateSummary}
+            disabled={aiLoading}
+            className="text-xs px-2 py-1 bg-purple-900/60 hover:bg-purple-800 text-purple-200 rounded disabled:opacity-50"
+          >✨ {L ? 'AI Generate' : 'AI 生成自傳'}</button>
+        </div>
+      </RSection>
+
+      {/* Experience */}
+      <RSection
+        title={L ? 'Work Experience' : SL.experience}
+        count={resume.experience.length}
+        onAdd={() => addListItem('experience', { company: '', position: '', startDate: '', endDate: '', current: false, description: '' })}
+        addLabel={L ? '+ Add' : '+ 新增'}
+      >
+        {resume.experience.map((item, idx) => (
+          <RItemCard
+            key={item.id}
+            onDelete={() => removeListItem('experience', item.id)}
+            onMoveUp={() => moveListItem('experience', idx, -1)}
+            onMoveDown={() => moveListItem('experience', idx, 1)}
+            canUp={idx > 0}
+            canDown={idx < resume.experience.length - 1}
+          >
+            <div className="grid grid-cols-2 gap-2 pr-16">
+              <RInput label={L ? 'Company' : '公司'} value={item.company} onChange={v => updateListItem('experience', item.id, 'company', v)} />
+              <RInput label={L ? 'Position' : '職稱'} value={item.position} onChange={v => updateListItem('experience', item.id, 'position', v)} />
+              <RInput label={L ? 'Start Date' : '開始日期'} value={item.startDate} onChange={v => updateListItem('experience', item.id, 'startDate', v)} placeholder="2023/01" />
+              <div>
+                <RInput label={L ? 'End Date' : '結束日期'} value={item.current ? '' : item.endDate} onChange={v => updateListItem('experience', item.id, 'endDate', v)} placeholder="2024/06" />
+                <label className="flex items-center gap-1 mt-1">
+                  <input type="checkbox" checked={item.current || false} onChange={e => updateListItem('experience', item.id, 'current', e.target.checked)} className="accent-purple-600" />
+                  <span className="text-xs text-gray-500">{L ? 'Current' : '在職中'}</span>
+                </label>
+              </div>
+            </div>
+            <div className="mt-2">
+              <RTextarea label={L ? 'Description' : '工作描述'} value={item.description} onChange={v => updateListItem('experience', item.id, 'description', v)}
+                placeholder={L ? '• Describe your key achievements...' : '• 描述你的主要成就與貢獻...'} rows={3} />
+              <button
+                onClick={() => aiPolish(item.description, 'experience', item.id, 'description')}
+                disabled={aiLoading}
+                className="text-xs px-2 py-1 mt-1 bg-purple-900/60 hover:bg-purple-800 text-purple-200 rounded disabled:opacity-50"
+              >🤖 {L ? 'AI Polish' : 'AI 潤飾'}</button>
+            </div>
+          </RItemCard>
+        ))}
+        {resume.experience.length === 0 && <p className="text-xs text-gray-600 text-center py-2">{L ? 'No items yet' : '尚無資料，點擊上方「+ 新增」開始添加'}</p>}
+      </RSection>
+
+      {/* Education */}
+      <RSection
+        title={L ? 'Education' : SL.education}
+        count={resume.education.length}
+        onAdd={() => addListItem('education', { school: '', degree: '', field: '', startDate: '', endDate: '', description: '' })}
+        addLabel={L ? '+ Add' : '+ 新增'}
+      >
+        {resume.education.map((item, idx) => (
+          <RItemCard
+            key={item.id}
+            onDelete={() => removeListItem('education', item.id)}
+            onMoveUp={() => moveListItem('education', idx, -1)}
+            onMoveDown={() => moveListItem('education', idx, 1)}
+            canUp={idx > 0}
+            canDown={idx < resume.education.length - 1}
+          >
+            <div className="grid grid-cols-2 gap-2 pr-16">
+              <RInput label={L ? 'School' : '學校'} value={item.school} onChange={v => updateListItem('education', item.id, 'school', v)} />
+              <RInput label={L ? 'Field' : '科系'} value={item.field} onChange={v => updateListItem('education', item.id, 'field', v)} />
+              <RInput label={L ? 'Degree' : '學位'} value={item.degree} onChange={v => updateListItem('education', item.id, 'degree', v)} placeholder={L ? "Bachelor's" : '學士'} />
+              <div className="grid grid-cols-2 gap-2">
+                <RInput label={L ? 'Start' : '開始'} value={item.startDate} onChange={v => updateListItem('education', item.id, 'startDate', v)} placeholder="2019/09" />
+                <RInput label={L ? 'End' : '結束'} value={item.endDate} onChange={v => updateListItem('education', item.id, 'endDate', v)} placeholder="2023/06" />
+              </div>
+            </div>
+            <div className="mt-2">
+              <RTextarea label={L ? 'Description (optional)' : '描述（選填）'} value={item.description} onChange={v => updateListItem('education', item.id, 'description', v)} rows={2} />
+            </div>
+          </RItemCard>
+        ))}
+        {resume.education.length === 0 && <p className="text-xs text-gray-600 text-center py-2">{L ? 'No items yet' : '尚無資料，點擊上方「+ 新增」開始添加'}</p>}
+      </RSection>
+
+      {/* Skills */}
+      <RSection
+        title={L ? 'Skills' : SL.skills}
+        count={resume.skills.length}
+        onAdd={addSkillCategory}
+        addLabel={L ? '+ Category' : '+ 分類'}
+      >
+        {resume.skills.map((cat, idx) => (
+          <RItemCard
+            key={cat.id}
+            onDelete={() => removeSkillCategory(cat.id)}
+            canUp={false} canDown={false}
+          >
+            <div className="space-y-2 pr-8">
+              <RInput label={L ? 'Category' : '技能分類'} value={cat.category} onChange={v => updateSkillCategory(cat.id, v)} placeholder={L ? 'e.g. Frontend' : '如：前端開發'} />
+              <RInput label={L ? 'Skills (comma separated)' : '技能（逗號分隔）'} value={cat.items.join('、')} onChange={v => updateSkillItems(cat.id, v)}
+                placeholder={L ? 'React, TypeScript, Tailwind CSS' : 'React、TypeScript、Tailwind CSS'} />
+            </div>
+          </RItemCard>
+        ))}
+      </RSection>
+
+      {/* Projects */}
+      <RSection
+        title={L ? 'Projects' : SL.projects}
+        count={resume.projects.length}
+        onAdd={() => addListItem('projects', { name: '', role: '', url: '', startDate: '', endDate: '', description: '', technologies: [] })}
+        addLabel={L ? '+ Add' : '+ 新增'}
+      >
+        {resume.projects.map((item, idx) => (
+          <RItemCard
+            key={item.id}
+            onDelete={() => removeListItem('projects', item.id)}
+            onMoveUp={() => moveListItem('projects', idx, -1)}
+            onMoveDown={() => moveListItem('projects', idx, 1)}
+            canUp={idx > 0}
+            canDown={idx < resume.projects.length - 1}
+          >
+            <div className="grid grid-cols-2 gap-2 pr-16">
+              <RInput label={L ? 'Project Name' : '專案名稱'} value={item.name} onChange={v => updateListItem('projects', item.id, 'name', v)} />
+              <RInput label={L ? 'Role' : '擔任角色'} value={item.role} onChange={v => updateListItem('projects', item.id, 'role', v)} />
+              <RInput label="URL" value={item.url} onChange={v => updateListItem('projects', item.id, 'url', v)} placeholder="https://..." />
+              <div className="grid grid-cols-2 gap-2">
+                <RInput label={L ? 'Start' : '開始'} value={item.startDate} onChange={v => updateListItem('projects', item.id, 'startDate', v)} />
+                <RInput label={L ? 'End' : '結束'} value={item.endDate} onChange={v => updateListItem('projects', item.id, 'endDate', v)} />
+              </div>
+            </div>
+            <div className="mt-2">
+              <RInput label={L ? 'Technologies (comma separated)' : '技術標籤（逗號分隔）'} value={(item.technologies || []).join('、')} onChange={v => updateProjectTech(item.id, v)}
+                placeholder="React、Node.js、PostgreSQL" />
+              <div className="mt-2">
+                <RTextarea label={L ? 'Description' : '描述'} value={item.description} onChange={v => updateListItem('projects', item.id, 'description', v)} rows={2} />
+                <button
+                  onClick={() => aiPolish(item.description, 'projects', item.id, 'description')}
+                  disabled={aiLoading}
+                  className="text-xs px-2 py-1 mt-1 bg-purple-900/60 hover:bg-purple-800 text-purple-200 rounded disabled:opacity-50"
+                >🤖 {L ? 'AI Polish' : 'AI 潤飾'}</button>
+              </div>
+            </div>
+          </RItemCard>
+        ))}
+        {resume.projects.length === 0 && <p className="text-xs text-gray-600 text-center py-2">{L ? 'No items yet' : '尚無資料'}</p>}
+      </RSection>
+
+      {/* Languages */}
+      <RSection
+        title={L ? 'Languages' : SL.languages}
+        count={resume.languages.length}
+        onAdd={() => addListItem('languages', { name: '', level: '' })}
+        addLabel={L ? '+ Add' : '+ 新增'}
+      >
+        {resume.languages.map((item, idx) => (
+          <RItemCard
+            key={item.id}
+            onDelete={() => removeListItem('languages', item.id)}
+            canUp={false} canDown={false}
+          >
+            <div className="grid grid-cols-2 gap-2 pr-8">
+              <RInput label={L ? 'Language' : '語言'} value={item.name} onChange={v => updateListItem('languages', item.id, 'name', v)} placeholder={L ? 'English' : '英語'} />
+              <label className="block">
+                <span className="text-xs text-gray-500">{L ? 'Level' : '程度'}</span>
+                <select
+                  value={item.level || ''}
+                  onChange={e => updateListItem('languages', item.id, 'level', e.target.value)}
+                  className="w-full mt-0.5 px-2 py-1.5 bg-gray-900 border border-gray-800 rounded text-sm text-gray-200 focus:border-purple-600 focus:outline-none"
+                >
+                  <option value="">{L ? 'Select...' : '請選擇...'}</option>
+                  <option value={L ? 'Native' : '母語'}>{L ? 'Native' : '母語'}</option>
+                  <option value={L ? 'Fluent' : '精通'}>{L ? 'Fluent' : '精通'}</option>
+                  <option value={L ? 'Advanced' : '流利'}>{L ? 'Advanced' : '流利'}</option>
+                  <option value={L ? 'Intermediate' : '中等'}>{L ? 'Intermediate' : '中等'}</option>
+                  <option value={L ? 'Basic' : '基礎'}>{L ? 'Basic' : '基礎'}</option>
+                </select>
+              </label>
+            </div>
+          </RItemCard>
+        ))}
+      </RSection>
+
+      {/* Certifications */}
+      <RSection
+        title={L ? 'Certifications' : SL.certifications}
+        count={resume.certifications.length}
+        onAdd={() => addListItem('certifications', { name: '', issuer: '', date: '', url: '' })}
+        addLabel={L ? '+ Add' : '+ 新增'}
+      >
+        {resume.certifications.map((item, idx) => (
+          <RItemCard
+            key={item.id}
+            onDelete={() => removeListItem('certifications', item.id)}
+            canUp={false} canDown={false}
+          >
+            <div className="grid grid-cols-2 gap-2 pr-8">
+              <RInput label={L ? 'Certificate Name' : '證照名稱'} value={item.name} onChange={v => updateListItem('certifications', item.id, 'name', v)} />
+              <RInput label={L ? 'Issuer' : '發證單位'} value={item.issuer} onChange={v => updateListItem('certifications', item.id, 'issuer', v)} />
+              <RInput label={L ? 'Date' : '取得日期'} value={item.date} onChange={v => updateListItem('certifications', item.id, 'date', v)} placeholder="2024/01" />
+              <RInput label={L ? 'URL (optional)' : '連結（選填）'} value={item.url} onChange={v => updateListItem('certifications', item.id, 'url', v)} />
+            </div>
+          </RItemCard>
+        ))}
+      </RSection>
+    </div>
+  );
+
+  const previewPanel = (
+    <div className="flex-1 overflow-auto bg-gray-800 p-4 flex justify-center" style={{ maxHeight: 'calc(100vh - 140px)' }}>
+      <div className="transform origin-top" style={{ transform: 'scale(0.65)', transformOrigin: 'top center' }}>
+        <ResumePreview data={resume} previewRef={previewRef} />
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="flex flex-col h-full">
+      {/* Toolbar */}
+      <div className="flex items-center justify-between px-4 py-2 bg-gray-900 border-b border-gray-800 flex-wrap gap-2">
+        <div className="flex items-center gap-3">
+          <h2 className="text-sm font-bold text-gray-200">📋 {L ? 'Resume Builder' : '履歷產生器'}</h2>
+          <span className="text-xs text-gray-600">
+            Inspired by <a href="https://github.com/JOYCEQL/magic-resume" target="_blank" rel="noopener" className="text-gray-500 hover:text-gray-300 underline">magic-resume</a>
+          </span>
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Template selector */}
+          <select
+            value={resume.templateId || 'classic'}
+            onChange={e => updateField('templateId', e.target.value)}
+            className="text-xs px-2 py-1 bg-gray-800 border border-gray-700 rounded text-gray-300 focus:outline-none"
+          >
+            {Object.values(RESUME_TEMPLATES).map(t => (
+              <option key={t.id} value={t.id}>{t.name[lang === 'en' ? 'en' : 'zh']}</option>
+            ))}
+          </select>
+          {/* Color picker */}
+          <div className="flex items-center gap-1">
+            {RESUME_COLORS.map(c => (
+              <button
+                key={c.id}
+                onClick={() => updateField('accentColor', c.hex)}
+                title={c.label}
+                className="w-4 h-4 rounded-full border-2 transition-transform hover:scale-125"
+                style={{ backgroundColor: c.hex, borderColor: resume.accentColor === c.hex ? '#fff' : 'transparent' }}
+              />
+            ))}
+          </div>
+          {/* Resume content language toggle */}
+          <select
+            value={resume.resumeLang}
+            onChange={e => updateField('resumeLang', e.target.value)}
+            className="text-xs px-2 py-1 bg-gray-800 border border-gray-700 rounded text-gray-300 focus:outline-none"
+          >
+            <option value="zh-TW">繁體中文</option>
+            <option value="zh-CN">简体中文</option>
+          </select>
+          <button
+            onClick={exportPdf}
+            className="text-xs px-3 py-1 bg-purple-700 hover:bg-purple-600 text-white rounded-lg font-medium"
+          >📄 {L ? 'Export PDF' : '匯出 PDF'}</button>
+          <button
+            onClick={() => setShowResetConfirm(true)}
+            className="text-xs px-2 py-1 text-red-600 hover:text-red-400 border border-red-900 hover:border-red-700 rounded"
+          >{L ? 'Reset' : '重置'}</button>
+        </div>
+      </div>
+
+      {/* AI status bar */}
+      {(aiLoading || aiError) && (
+        <div className={`px-4 py-1.5 text-xs ${aiError ? 'bg-red-900/50 text-red-300' : 'bg-purple-900/50 text-purple-300'}`}>
+          {aiLoading ? (L ? '🤖 AI is thinking...' : '🤖 AI 處理中...') : `❌ ${aiError}`}
+          {aiError && <button onClick={() => setAiError('')} className="ml-2 underline">{L ? 'Dismiss' : '關閉'}</button>}
+        </div>
+      )}
+
+      {/* Mobile tabs */}
+      <div className="md:hidden flex border-b border-gray-800">
+        <button
+          onClick={() => setMobileTab('editor')}
+          className={`flex-1 py-2 text-sm text-center ${mobileTab === 'editor' ? 'text-purple-300 border-b-2 border-purple-500' : 'text-gray-500'}`}
+        >{L ? 'Editor' : '編輯'}</button>
+        <button
+          onClick={() => setMobileTab('preview')}
+          className={`flex-1 py-2 text-sm text-center ${mobileTab === 'preview' ? 'text-purple-300 border-b-2 border-purple-500' : 'text-gray-500'}`}
+        >{L ? 'Preview' : '預覽'}</button>
+      </div>
+
+      {/* Desktop: side by side */}
+      <div className="hidden md:flex flex-1 min-h-0">
+        <div className="w-5/12 border-r border-gray-800 flex flex-col">{editorPanel}</div>
+        <div className="w-7/12 flex flex-col">{previewPanel}</div>
+      </div>
+
+      {/* Mobile: tabs */}
+      <div className="md:hidden flex-1 min-h-0">
+        {mobileTab === 'editor' ? editorPanel : previewPanel}
+      </div>
+
+      {/* Modals */}
+      {showResetConfirm && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" onClick={() => setShowResetConfirm(false)}>
+          <div className="bg-gray-900 border border-gray-700 rounded-xl max-w-sm w-full p-5 text-center" onClick={e => e.stopPropagation()}>
+            <p className="text-gray-200 mb-4">{L ? 'Are you sure you want to reset all resume data?' : '確定要重置所有履歷資料嗎？此操作無法復原。'}</p>
+            <div className="flex justify-center gap-3">
+              <button onClick={() => setShowResetConfirm(false)} className="px-4 py-1.5 text-sm text-gray-400 hover:text-white">{L ? 'Cancel' : '取消'}</button>
+              <button onClick={handleReset} className="px-4 py-1.5 text-sm bg-red-700 hover:bg-red-600 text-white rounded-lg">{L ? 'Reset' : '確定重置'}</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 function App() {
   const { lang, setLang, t } = useLang();
   const [type, setType]               = useState('super');
@@ -5716,6 +6576,7 @@ function App() {
         {page === 'video'    && <VideoDownloaderTool />}
         {page === 'datecalc' && <DateCalculatorTool />}
         {page === 'countdown'&& <CountdownTool />}
+        {page === 'resume'   && <ResumeTool />}
         {page === 'blog'     && <BlogPage setPage={setPage} />}
         {page === 'about'    && <AboutPage setPage={setPage} />}
         {page === 'contact'  && <ContactPage setPage={setPage} />}
