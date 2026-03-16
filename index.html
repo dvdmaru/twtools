@@ -1541,7 +1541,7 @@ function Ball({ num, variant = 'neutral', size = 'md', onClick }) {
     'unmatched':   'bg-gray-700 text-gray-500',
     'sel-super':   'bg-gradient-to-br from-violet-500 to-purple-700 text-white glow-purple',
     'sel-big':     'bg-gradient-to-br from-pink-500 to-rose-700 text-white glow-pink',
-    'empty':       'bg-gray-800 text-gray-600 cursor-pointer hover:bg-gray-700 hover:text-gray-300',
+    'empty':       'bg-gray-800 text-gray-500 cursor-pointer hover:bg-gray-700 hover:text-gray-300',
     'neutral':     'bg-gray-700 text-gray-300',
   }[variant] || 'bg-gray-700 text-gray-300';
 
@@ -1595,9 +1595,9 @@ function Header({ type, setType, drawDate }) {
         <div className="flex items-center justify-between mb-3">
           <div>
             <h1 className="text-xl font-black tracking-tight">{lang === 'en' ? '🎰 Taiwan Lottery' : '🎰 台灣彩券查詢'}</h1>
-            <p className="text-xs text-gray-500 mt-0.5">{lang === 'en' ? 'Check · Results · Predict · Stats' : '對獎 · 開獎 · 預測 · 統計'}</p>
+            <p className="text-xs text-gray-400 mt-0.5">{lang === 'en' ? 'Check · Results · Predict · Stats' : '對獎 · 開獎 · 預測 · 統計'}</p>
           </div>
-          <div className="text-right text-xs text-gray-600">
+          <div className="text-right text-xs text-gray-400">
             <div>{lang === 'en' ? 'Data Updated' : '資料更新'}</div>
             <div className="text-gray-400">{drawDate ? drawDate.replace(/-/g, '/') : (lang === 'en' ? 'Loading...' : '載入中...')}</div>
           </div>
@@ -1764,7 +1764,7 @@ function CheckTab({ type, superDraw, bigDraw, preset, clearPreset }) {
               {lang === 'en' ? `Check Period: Draw #${draw.period}` : `對比期別：第 ${draw.period} 期`}
               {activeDraw && <span className="ml-2 text-xs text-amber-400 font-normal">{lang === 'en' ? '(History)' : '（歷史期別）'}</span>}
             </div>
-            <div className="text-xs text-gray-500 mt-0.5">{draw.date}</div>
+            <div className="text-xs text-gray-400 mt-0.5">{draw.date}</div>
           </div>
           <div className="flex items-center gap-2">
             {activeDraw && (
@@ -1784,12 +1784,12 @@ function CheckTab({ type, superDraw, bigDraw, preset, clearPreset }) {
         <div className="px-4 pb-3 flex gap-2 flex-wrap items-center">
           {drawNums.map(n => <Ball key={n} num={n} variant={ballVar} />)}
           {type === 'super' && <>
-            <span className="text-gray-600 font-bold px-1">+</span>
+            <span className="text-gray-500 font-bold px-1">+</span>
             <Ball num={draw.zone2} variant="super-z2" />
-            <span className="text-xs text-gray-600 ml-1">{t('lottery.zone2')}</span>
+            <span className="text-xs text-gray-400 ml-1">{t('lottery.zone2')}</span>
           </>}
           {type === 'big' && <>
-            <span className="text-gray-600 font-bold px-1">{t('lottery.special')}</span>
+            <span className="text-gray-500 font-bold px-1">{t('lottery.special')}</span>
             <Ball num={draw.special} variant="special" />
           </>}
         </div>
@@ -1837,18 +1837,18 @@ function CheckTab({ type, superDraw, bigDraw, preset, clearPreset }) {
                   >
                     <div className="flex justify-between items-center mb-1.5">
                       <span className={`text-xs font-bold ${textClr}`}>{lang === 'en' ? `#${row.period}` : `第 ${row.period} 期`}</span>
-                      <span className="text-xs text-gray-500">{row.date}</span>
+                      <span className="text-xs text-gray-400">{row.date}</span>
                     </div>
                     <div className="flex gap-1.5 flex-wrap items-center">
                       {(type === 'super' ? row.zone1 : row.numbers).map(n => (
                         <Ball key={n} num={n} variant={ballVar} size="sm" />
                       ))}
                       {type === 'super' && row.zone2 != null && <>
-                        <span className="text-gray-600 text-xs px-0.5">+</span>
+                        <span className="text-gray-500 text-xs px-0.5">+</span>
                         <Ball num={row.zone2} variant="super-z2" size="sm" />
                       </>}
                       {type === 'big' && row.special != null && <>
-                        <span className="text-gray-600 text-xs px-0.5">{t('lottery.special')}</span>
+                        <span className="text-gray-500 text-xs px-0.5">{t('lottery.special')}</span>
                         <Ball num={row.special} variant="special" size="sm" />
                       </>}
                     </div>
@@ -1904,14 +1904,14 @@ function CheckTab({ type, superDraw, bigDraw, preset, clearPreset }) {
       {/* 我的號碼預覽 */}
       {userNums.length > 0 && (
         <div className="bg-gray-800/60 rounded-2xl p-4 border border-gray-700">
-          <div className="text-xs text-gray-500 mb-2">{t('lottery.my_numbers')}</div>
+          <div className="text-xs text-gray-400 mb-2">{t('lottery.my_numbers')}</div>
           <div className="flex gap-2 flex-wrap items-center">
             {userNums.map(n => {
               const mv = checked ? (drawNums.includes(n) ? 'matched' : 'unmatched') : ballVar;
               return <Ball key={n} num={n} variant={mv} />;
             })}
             {type === 'super' && z2 && <>
-              <span className="text-gray-600 font-bold px-1">+</span>
+              <span className="text-gray-500 font-bold px-1">+</span>
               <Ball num={z2} variant={checked ? (z2 === draw.zone2 ? 'matched' : 'unmatched') : 'super-z2'} />
             </>}
           </div>
@@ -1928,13 +1928,13 @@ function CheckTab({ type, superDraw, bigDraw, preset, clearPreset }) {
                 {lang === 'en' ? `Won ${result.prize}!` : `中 ${result.prize}！`}
               </div>
               {result.amt && <div className="text-lg text-gray-200 mt-1">{lang === 'en' ? `Fixed Prize: ${fmtAmt(result.amt)}` : `固定獎金：${fmtAmt(result.amt)}`}</div>}
-              {result.tier <= 4 && <div className="text-xs text-gray-500 mt-1">{lang === 'en' ? '(Prize amount varies by number of winners)' : '（頭獎至肆獎依各期中獎人數計算實際獎金）'}</div>}
+              {result.tier <= 4 && <div className="text-xs text-gray-400 mt-1">{lang === 'en' ? '(Prize amount varies by number of winners)' : '（頭獎至肆獎依各期中獎人數計算實際獎金）'}</div>}
             </>
           ) : (
             <>
               <div className="text-4xl mb-2">😔</div>
               <div className="text-xl font-bold text-gray-400">{lang === 'en' ? 'No Win This Draw' : '本期未中獎'}</div>
-              <div className="text-sm text-gray-600 mt-1">{lang === 'en' ? 'Better luck next time!' : '下期再試試！'}</div>
+              <div className="text-sm text-gray-400 mt-1">{lang === 'en' ? 'Better luck next time!' : '下期再試試！'}</div>
             </>
           )}
         </div>
@@ -1945,7 +1945,7 @@ function CheckTab({ type, superDraw, bigDraw, preset, clearPreset }) {
         <button
           onClick={doCheck}
           disabled={!isReady}
-          className={`flex-1 py-3.5 rounded-2xl font-bold text-base transition-all ${isReady ? `bg-gradient-to-r ${accentFrom} ${accentTo} text-white shadow-lg active:scale-95` : 'bg-gray-800 text-gray-600 cursor-not-allowed'}`}
+          className={`flex-1 py-3.5 rounded-2xl font-bold text-base transition-all ${isReady ? `bg-gradient-to-r ${accentFrom} ${accentTo} text-white shadow-lg active:scale-95` : 'bg-gray-800 text-gray-500 cursor-not-allowed'}`}
         >{lang === 'en' ? '🔍 Check Now' : '🔍 開始對獎'}</button>
         <button
           onClick={reset}
@@ -1985,7 +1985,7 @@ function ResultsTab({ type, superDraw, bigDraw, fetchStatus, fetchLog, onFetch, 
           <div className={`text-6xl font-black ${textClr} jackpot-pulse`}>
             {draw.jackpot}<span className="text-2xl ml-1">{t('lottery.billion')}</span>
           </div>
-          <div className="text-xs text-gray-500 mt-2">{lang === 'en' ? `Next Draw: ${draw.nextDraw}` : `下次開獎：${draw.nextDraw}`}</div>
+          <div className="text-xs text-gray-400 mt-2">{lang === 'en' ? `Next Draw: ${draw.nextDraw}` : `下次開獎：${draw.nextDraw}`}</div>
         </div>
       </div>
 
@@ -1994,7 +1994,7 @@ function ResultsTab({ type, superDraw, bigDraw, fetchStatus, fetchLog, onFetch, 
         <div className="flex justify-between items-center mb-3">
           <div>
             <div className="font-bold text-white">{t('lottery.latest_results')}</div>
-            <div className="text-xs text-gray-500">{lang === 'en' ? `Draw #${draw.period} · ${draw.date}` : `第 ${draw.period} 期 · ${draw.date}`}</div>
+            <div className="text-xs text-gray-400">{lang === 'en' ? `Draw #${draw.period} · ${draw.date}` : `第 ${draw.period} 期 · ${draw.date}`}</div>
           </div>
           <div className="flex gap-2">
             <button
@@ -2023,12 +2023,12 @@ function ResultsTab({ type, superDraw, bigDraw, fetchStatus, fetchLog, onFetch, 
         <div className="flex gap-2 flex-wrap items-center">
           {drawNums.map(n => <Ball key={n} num={n} variant={ballVar} />)}
           {type === 'super' && <>
-            <span className="text-gray-600 font-bold px-1">+</span>
+            <span className="text-gray-500 font-bold px-1">+</span>
             <Ball num={draw.zone2} variant="super-z2" />
-            <span className="text-xs text-gray-600 ml-1">{t('lottery.zone2')}</span>
+            <span className="text-xs text-gray-400 ml-1">{t('lottery.zone2')}</span>
           </>}
           {type === 'big' && <>
-            <span className="text-gray-600 font-bold px-1">{t('lottery.special')}</span>
+            <span className="text-gray-500 font-bold px-1">{t('lottery.special')}</span>
             <Ball num={draw.special} variant="special" />
           </>}
         </div>
@@ -2051,7 +2051,7 @@ function ResultsTab({ type, superDraw, bigDraw, fetchStatus, fetchLog, onFetch, 
             <div key={i} className={`flex justify-between items-center px-3 py-2 rounded-xl ${i === 0 ? `bg-yellow-900/20 border border-yellow-700/40` : 'bg-gray-700/40'}`}>
               <div className="flex items-center gap-2.5">
                 <span className={`text-sm font-bold ${p.color}`}>{p.name}</span>
-                <span className="text-xs text-gray-500">{p.desc}</span>
+                <span className="text-xs text-gray-400">{p.desc}</span>
               </div>
               <span className={`text-sm font-semibold ${i === 0 ? 'text-yellow-400' : 'text-gray-300'}`}>
                 {p.fixed && p.amt ? fmtAmt(p.amt) : (lang === 'en' ? 'Varies' : '變動')}
@@ -2170,7 +2170,7 @@ function PredictTab({ type, onUseNums }) {
           >
             <div className="text-2xl mb-1">{m.icon}</div>
             <div className="font-bold text-sm text-white">{m.label}</div>
-            <div className="text-xs text-gray-500 mt-0.5">{m.desc}</div>
+            <div className="text-xs text-gray-400 mt-0.5">{m.desc}</div>
           </button>
         ))}
       </div>
@@ -2189,9 +2189,9 @@ function PredictTab({ type, onUseNums }) {
           <div className="flex gap-2 flex-wrap items-center">
             {result.nums.map(n => <Ball key={n} num={n} variant={ballVar} />)}
             {type === 'super' && result.z2 && <>
-              <span className="text-gray-600 font-bold px-1">+</span>
+              <span className="text-gray-500 font-bold px-1">+</span>
               <Ball num={result.z2} variant="super-z2" />
-              <span className="text-xs text-gray-600 ml-1">{t('lottery.zone2')}</span>
+              <span className="text-xs text-gray-400 ml-1">{t('lottery.zone2')}</span>
             </>}
           </div>
 
@@ -2240,9 +2240,9 @@ function StatsTab({ type }) {
       <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
         <div className="flex justify-between items-start mb-1">
           <div className="font-bold text-white">{t('lottery.frequency')}</div>
-          <div className="text-xs text-gray-600">{t('lottery.recent60')}</div>
+          <div className="text-xs text-gray-400">{t('lottery.recent60')}</div>
         </div>
-        <div className="text-xs text-gray-600 mb-3">{lang === 'en' ? '※ Historical frequency does not predict future results' : '※ 歷史頻率不代表未來出現機率，彩券每期獨立抽籤'}</div>
+        <div className="text-xs text-gray-400 mb-3">{lang === 'en' ? '※ Historical frequency does not predict future results' : '※ 歷史頻率不代表未來出現機率，彩券每期獨立抽籤'}</div>
 
         <div className="flex gap-1 mb-4">
           {[['hot','🔥 ' + t('lottery.view_most')],['cold','❄️ ' + t('lottery.view_least')],['all','📊 ' + t('lottery.view_all')]].map(([v,l]) => (
@@ -2305,7 +2305,7 @@ function StatsTab({ type }) {
             );
           })}
         </div>
-        <div className="flex justify-between mt-2 text-xs text-gray-600">
+        <div className="flex justify-between mt-2 text-xs text-gray-400">
           <span>{lang === 'en' ? 'Cold (lighter)' : '冷門（較淡）'}</span>
           <span>{lang === 'en' ? 'Hot (darker)' : '熱門（較深）'}</span>
         </div>
@@ -2313,7 +2313,7 @@ function StatsTab({ type }) {
 
       <div className="text-xs text-center text-gray-700 pb-2">
         {lang === 'en' ? 'Sample data for demonstration. For official stats, visit' : '統計資料為示範用途，實際頻率請參閱'}
-        <a href="https://www.taiwanlottery.com/lotto/history/history_result/" target="_blank" rel="noopener" className="text-gray-600 underline ml-1">{lang === 'en' ? 'Taiwan Lottery' : '台灣彩券官網'}</a>
+        <a href="https://www.taiwanlottery.com/lotto/history/history_result/" target="_blank" rel="noopener" className="text-gray-500 underline ml-1">{lang === 'en' ? 'Taiwan Lottery' : '台灣彩券官網'}</a>
       </div>
     </div>
   );
@@ -2415,7 +2415,7 @@ function EditDrawModal({ type, draw, onSave, onClose }) {
 
           {err && <div className="text-red-400 text-xs bg-red-950/30 rounded-lg p-2">⚠️ {err}</div>}
 
-          <div className="text-xs text-gray-600 bg-gray-800 rounded-lg p-3">
+          <div className="text-xs text-gray-400 bg-gray-800 rounded-lg p-3">
             {lang === 'en' ? '💡 Check draw numbers at: ' : '💡 開獎號碼請參閱：'}
             <a href="https://www.taiwanlottery.com/lotto/result/super_lotto638" target="_blank" rel="noopener" className="text-gray-400 underline ml-1">{lang === 'en' ? 'Super Lotto' : '威力彩官網'}</a>
             <span className="mx-1">·</span>
@@ -2863,7 +2863,7 @@ function VideoDownloaderTool() {
 
       {/* 輸入欄 */}
       <div className="bg-gray-900 rounded-xl p-4 border border-gray-800 mb-4">
-        <label className="text-xs text-gray-500 mb-2 block">{t("video.input_label")}</label>
+        <label className="text-xs text-gray-400 mb-2 block">{t("video.input_label")}</label>
         <textarea
           rows={3}
           value={input}
@@ -2882,7 +2882,7 @@ function VideoDownloaderTool() {
         {/* 分享文字提取結果預覽 */}
         {isShareText && (
           <div className="mt-3 bg-gray-800/60 rounded-lg px-3 py-2 border border-gray-700">
-            <p className="text-xs text-gray-500 mb-1">{lang === 'en' ? 'Extracted link from share text:' : '已從分享文字提取連結：'}</p>
+            <p className="text-xs text-gray-400 mb-1">{lang === 'en' ? 'Extracted link from share text:' : '已從分享文字提取連結：'}</p>
             <p className="text-xs text-blue-400 break-all font-mono leading-relaxed">{extractedUrl}</p>
           </div>
         )}
@@ -2890,7 +2890,7 @@ function VideoDownloaderTool() {
 
       {/* 畫質選擇 */}
       <div className="flex items-center gap-2 mb-4">
-        <span className="text-xs text-gray-500">{t('video.quality_label')}</span>
+        <span className="text-xs text-gray-400">{t('video.quality_label')}</span>
         <div className="flex gap-1.5">
           {QUALITIES.map(q => (
             <button
@@ -2991,7 +2991,7 @@ function VideoDownloaderTool() {
           <button
             onClick={handleFallback}
             disabled={!canGo}
-            className="text-xs text-gray-500 hover:text-gray-400 disabled:opacity-30 disabled:cursor-not-allowed"
+            className="text-xs text-gray-400 hover:text-gray-400 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             {t('video.fallback_cobalt_full')}
           </button>
@@ -3001,7 +3001,7 @@ function VideoDownloaderTool() {
       {/* 使用步驟說明 */}
       {!result && !error && !loading && (
         <div className="mt-4 bg-gray-900/60 rounded-xl p-4 border border-gray-800">
-          <p className="text-xs text-gray-500 font-medium mb-2.5">{t('video.usage_title')}</p>
+          <p className="text-xs text-gray-400 font-medium mb-2.5">{t('video.usage_title')}</p>
           <div className="space-y-2">
             {[
               ['1', t('video.step1')],
@@ -3019,7 +3019,7 @@ function VideoDownloaderTool() {
 
       {/* 免責聲明 */}
       <div className="mt-4 bg-gray-900/40 rounded-lg px-3 py-2.5 border border-gray-800/60">
-        <p className="text-xs text-gray-600 leading-relaxed">
+        <p className="text-xs text-gray-400 leading-relaxed">
           {lang === 'en'
             ? <>📌 For personal legal use only. Private or copyrighted content may not be downloadable. Powered by <a href="https://cobalt.tools" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400">cobalt.tools</a> open-source technology. No videos or personal data are stored.</>
             : <>📌 僅供個人合法使用。私人帳號或受版權保護的內容可能無法下載。下載服務由 <a href="https://cobalt.tools" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400">cobalt.tools</a> 開源技術提供，本站不儲存任何影片或個人資料。</>
@@ -3031,7 +3031,7 @@ function VideoDownloaderTool() {
       <div className="mt-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
         <div>
           <h3 className="text-sm font-semibold text-gray-300 mb-2">{t('video.about_title')}</h3>
-          <p className="text-xs text-gray-500 leading-relaxed">
+          <p className="text-xs text-gray-400 leading-relaxed">
             {lang === 'en'
               ? 'This tool integrates cobalt open-source technology to download videos from YouTube, Instagram, TikTok (Douyin), X (formerly Twitter), Facebook and more. Simply paste a video link or share text, choose quality, and click Download — no redirects needed. Share text from mobile apps is auto-parsed to extract the URL. Powered by cobalt, no videos or personal data are stored.'
               : '影片下載工具整合了 cobalt 開源技術，支援 YouTube、Instagram、TikTok（抖音）、X（前 Twitter）、Facebook 等主流社群平台的影片下載。使用方式非常簡單：貼上影片連結或含連結的分享文字，選擇畫質後按下「下載影片」，幾秒內即可自動下載——無需跳轉到其他網站。行動裝置上常見的「包含文字的分享連結」也能快速擷取純網址，省去手動複製貼上的繁瑣步驟。下載服務透過 cobalt 開源技術處理，本站不儲存任何影片資料或個人資訊。'}
@@ -3042,19 +3042,19 @@ function VideoDownloaderTool() {
           <div className="space-y-3">
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: Which platforms are supported?' : 'Q：支援哪些平台？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'YouTube, Instagram, TikTok, X (Twitter), Facebook, Reddit, Twitch, SoundCloud and dozens more. See cobalt.tools for the full list.' : '支援 YouTube、Instagram、TikTok、X（Twitter）、Facebook、Reddit、Twitch、SoundCloud 等數十個平台。完整清單請參考 cobalt.tools 官網。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'YouTube, Instagram, TikTok, X (Twitter), Facebook, Reddit, Twitch, SoundCloud and dozens more. See cobalt.tools for the full list.' : '支援 YouTube、Instagram、TikTok、X（Twitter）、Facebook、Reddit、Twitch、SoundCloud 等數十個平台。完整清單請參考 cobalt.tools 官網。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: What if download fails?' : 'Q：下載失敗怎麼辦？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Try a lower quality setting or use the "cobalt.tools manual download" fallback. Some platforms may be temporarily unavailable due to API limits.' : '可嘗試更換畫質（較低畫質成功率較高），或點擊「改用 cobalt.tools 手動下載」作為備用方案。部分平台可能因為 API 限制而暫時無法下載。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Try a lower quality setting or use the "cobalt.tools manual download" fallback. Some platforms may be temporarily unavailable due to API limits.' : '可嘗試更換畫質（較低畫質成功率較高），或點擊「改用 cobalt.tools 手動下載」作為備用方案。部分平台可能因為 API 限制而暫時無法下載。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: Can I download from private accounts or stories?' : 'Q：可以下載私人帳號或限時動態嗎？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Usually not. Private content requires login authentication which the service cannot bypass. Some stories also become unavailable after expiration.' : '通常無法。私人帳號的內容需要登入驗證才能存取，下載服務無法繞過此限制。部分平台的限時動態在過期後也無法下載。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Usually not. Private content requires login authentication which the service cannot bypass. Some stories also become unavailable after expiration.' : '通常無法。私人帳號的內容需要登入驗證才能存取，下載服務無法繞過此限制。部分平台的限時動態在過期後也無法下載。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: Who owns the copyright of downloaded videos?' : 'Q：下載的影片版權歸誰？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Copyright belongs to the original creator or platform. Use only for personal collection, academic research and other legal purposes. Do not re-upload, sell or use commercially.' : '版權依然屬於原始創作者或平台。請僅用於個人收藏、學術研究等合法用途，勿將下載的影片重新上傳、販售或作為商業用途，以免侵犯著作權。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Copyright belongs to the original creator or platform. Use only for personal collection, academic research and other legal purposes. Do not re-upload, sell or use commercially.' : '版權依然屬於原始創作者或平台。請僅用於個人收藏、學術研究等合法用途，勿將下載的影片重新上傳、販售或作為商業用途，以免侵犯著作權。'}</p>
             </div>
           </div>
         </div>
@@ -3125,7 +3125,7 @@ function Sidebar({ page, setPage, open, setOpen }) {
             </button>
           ))}
         </nav>
-        <div className="p-3 border-t border-gray-800 text-xs text-gray-600 text-center">
+        <div className="p-3 border-t border-gray-800 text-xs text-gray-400 text-center">
           {lang === 'en' ? 'TW Tools © 2026' : '打工人工具箱 © 2026'}
         </div>
       </aside>
@@ -3241,7 +3241,7 @@ function ImageTool() {
           {srcImg && (
             <>
               <img src={srcImg} alt="preview" className="max-h-48 rounded-lg object-contain bg-gray-800 p-2" />
-              <p className="text-xs text-gray-500">{t("image.original_size")}：{origW} × {origH} px</p>
+              <p className="text-xs text-gray-400">{t("image.original_size")}：{origW} × {origH} px</p>
               <div className="flex items-end gap-3 flex-wrap">
                 <div>
                   <span className="text-xs text-gray-400 block mb-1">{t("image.width")} (px)</span>
@@ -3290,13 +3290,13 @@ function ImageTool() {
           {compSrc && (
             <>
               <img src={compSrc} alt="preview" className="max-h-48 rounded-lg object-contain bg-gray-800 p-2" />
-              <p className="text-xs text-gray-500">{t("image.original_size")}：{fmtFileSize(compOrigSize)}</p>
+              <p className="text-xs text-gray-400">{t("image.original_size")}：{fmtFileSize(compOrigSize)}</p>
               <div>
                 <span className="text-sm text-gray-400">{t("image.quality")}：{quality}%</span>
                 <input type="range" min="10" max="100" step="5" value={quality}
                   onChange={e => setQuality(Number(e.target.value))}
                   className="w-full mt-1 accent-purple-500" />
-                <div className="flex justify-between text-xs text-gray-600"><span>{lang === "en" ? "Low (small)" : "低品質（小檔）"}</span><span>{lang === "en" ? "High (large)" : "高品質（大檔）"}</span></div>
+                <div className="flex justify-between text-xs text-gray-400"><span>{lang === "en" ? "Low (small)" : "低品質（小檔）"}</span><span>{lang === "en" ? "High (large)" : "高品質（大檔）"}</span></div>
               </div>
               <button onClick={handleCompress}
                 className="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-sm font-medium">
@@ -3351,13 +3351,13 @@ function ImageTool() {
             </ol>
           </div>
         </div>
-        <p className="text-xs text-gray-600 mt-3">{t('common.privacy_text')}</p>
+        <p className="text-xs text-gray-400 mt-3">{t('common.privacy_text')}</p>
 
         {/* ── 工具介紹 ── */}
         <div className="mt-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
           <div>
             <h3 className="text-sm font-semibold text-gray-300 mb-2">{t('image.about_title')}</h3>
-            <p className="text-xs text-gray-500 leading-relaxed">
+            <p className="text-xs text-gray-400 leading-relaxed">
               {lang === 'en'
                 ? 'Image Tools combines the most common image processing features: format conversion, background removal, and compression — all running entirely in your browser with no software installation or server upload required. Format conversion supports PNG, JPEG, WebP, BMP, and GIF. AI background removal uses transformers.js to run a segmentation model locally on your GPU/CPU, typically completing in seconds. Compression adjusts JPEG quality to significantly reduce file size while preserving visual quality. All processing happens locally — your images never leave your device.'
                 : '圖片工具集合了日常最常用的圖片處理功能，包含格式轉換、背景移除與品質壓縮，全部在瀏覽器端完成，無須安裝任何軟體或上傳檔案至外部伺服器。格式轉換支援 PNG、JPEG、WebP、BMP、GIF 之間的互轉，讓你輕鬆因應不同平台的格式需求。AI 智慧去背採用 transformers.js 技術，直接在本機 GPU/CPU 上運行語義分割模型，精準辨別前景主體並移除背景，處理速度視裝置效能而定，一般在數秒至十秒內完成。圖片壓縮功能透過調整 JPEG 品質係數，在保留視覺畫質的前提下大幅縮小檔案體積，非常適合上傳至社群平台或網站前的預處理。所有運算均在本機瀏覽器執行，你的圖片資料絕對不會離開你的裝置。'}
@@ -3368,19 +3368,19 @@ function ImageTool() {
             <div className="space-y-3">
               <div>
                 <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'What formats are supported for conversion?' : '格式轉換支援哪些格式？'}</p>
-                <p className="text-xs text-gray-500">{lang === 'en' ? 'Supports conversion between PNG, JPEG, WebP, BMP, and GIF. Note: animated GIFs will only retain the first frame after conversion.' : '支援 PNG、JPEG、WebP、BMP、GIF 之間的任意互轉。注意 GIF 動畫轉換後僅保留第一幀靜態畫面。'}</p>
+                <p className="text-xs text-gray-400">{lang === 'en' ? 'Supports conversion between PNG, JPEG, WebP, BMP, and GIF. Note: animated GIFs will only retain the first frame after conversion.' : '支援 PNG、JPEG、WebP、BMP、GIF 之間的任意互轉。注意 GIF 動畫轉換後僅保留第一幀靜態畫面。'}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Does AI background removal require internet?' : 'AI 去背需要網路嗎？'}</p>
-                <p className="text-xs text-gray-500">{lang === 'en' ? 'Internet is needed the first time to download the AI model (~40–80 MB). After that, it\'s cached in the browser and works offline.' : '首次使用時需要網路下載 AI 模型（約 40–80 MB），之後會快取在瀏覽器中，離線也可使用。'}</p>
+                <p className="text-xs text-gray-400">{lang === 'en' ? 'Internet is needed the first time to download the AI model (~40–80 MB). After that, it\'s cached in the browser and works offline.' : '首次使用時需要網路下載 AI 模型（約 40–80 MB），之後會快取在瀏覽器中，離線也可使用。'}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Why is the compressed output in JPEG format?' : '壓縮後為什麼是 JPEG 格式？'}</p>
-                <p className="text-xs text-gray-500">{lang === 'en' ? 'JPEG uses lossy compression to achieve the highest compression ratio at any given quality level, making it ideal for photos. If you need transparency, use PNG instead.' : 'JPEG 採用失真壓縮演算法，在相同品質設定下可獲得最高的壓縮率，最適合相片類圖片的體積最佳化。若需要保留透明度，建議使用 PNG 格式。'}</p>
+                <p className="text-xs text-gray-400">{lang === 'en' ? 'JPEG uses lossy compression to achieve the highest compression ratio at any given quality level, making it ideal for photos. If you need transparency, use PNG instead.' : 'JPEG 採用失真壓縮演算法，在相同品質設定下可獲得最高的壓縮率，最適合相片類圖片的體積最佳化。若需要保留透明度，建議使用 PNG 格式。'}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Are there size or resolution limits?' : '圖片有大小或解析度限制嗎？'}</p>
-                <p className="text-xs text-gray-500">{lang === 'en' ? 'No hard limits, but very large images (e.g., over 4000×4000 pixels) may process slowly due to device memory constraints. Desktop browsers are recommended for ultra-high resolution images.' : '無硬性限制，但過大的圖片（例如超過 4000×4000 像素）可能受裝置記憶體影響而處理較慢，建議超高解析度圖片使用桌機瀏覽器。'}</p>
+                <p className="text-xs text-gray-400">{lang === 'en' ? 'No hard limits, but very large images (e.g., over 4000×4000 pixels) may process slowly due to device memory constraints. Desktop browsers are recommended for ultra-high resolution images.' : '無硬性限制，但過大的圖片（例如超過 4000×4000 像素）可能受裝置記憶體影響而處理較慢，建議超高解析度圖片使用桌機瀏覽器。'}</p>
               </div>
             </div>
           </div>
@@ -3495,7 +3495,7 @@ function PdfTool() {
           </label>
           {mergeFiles.length > 0 && (
             <div className="space-y-2">
-              <p className="text-xs text-gray-500">{t('pdf.merge_order')}</p>
+              <p className="text-xs text-gray-400">{t('pdf.merge_order')}</p>
               {mergeFiles.map((f, i) => (
                 <div key={i} className="flex items-center gap-2 bg-gray-800 rounded-lg px-3 py-2">
                   <span className="text-xs text-gray-300 flex-1 truncate">{i+1}. {f.name}</span>
@@ -3590,7 +3590,7 @@ function PdfTool() {
             </ol>
           </div>
         </div>
-        <p className="text-xs text-gray-600 mt-3">{lang === 'en'
+        <p className="text-xs text-gray-400 mt-3">{lang === 'en'
             ? <>🔒 Processed locally using <a href="https://pdf-lib.js.org" target="_blank" rel="noopener" className="underline hover:text-gray-400">pdf-lib</a> — your PDF content is never uploaded to any server</>
             : <>🔒 使用 <a href="https://pdf-lib.js.org" target="_blank" rel="noopener" className="underline hover:text-gray-400">pdf-lib</a> 在瀏覽器本地端處理，PDF 內容不會上傳至任何伺服器</>
           }</p>
@@ -3599,7 +3599,7 @@ function PdfTool() {
         <div className="mt-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
           <div>
             <h3 className="text-sm font-semibold text-gray-300 mb-2">{lang === 'en' ? 'About PDF Tools' : '關於 PDF 工具'}</h3>
-            <p className="text-xs text-gray-500 leading-relaxed">
+            <p className="text-xs text-gray-400 leading-relaxed">
               {lang === 'en'
                 ? 'PDF Tools provides three core features: merge, split, and compress — all powered by the open-source pdf-lib library running directly in your browser. No Adobe Acrobat or paid software needed, and your files are never uploaded to any cloud server. Merge combines multiple PDFs in custom order into a single document. Split divides large PDFs into smaller files by page count. Compress reduces file size by optimizing embedded images — ideal for email attachments or form uploads. All operations are performed locally to protect sensitive document content.'
                 : 'PDF 工具提供合併、拆分與壓縮三大核心功能，採用開源的 pdf-lib 函式庫在瀏覽器端直接運算，不需要 Adobe Acrobat 等付費軟體，也不會將你的文件上傳至任何雲端伺服器。合併功能可將多份 PDF 依自訂順序組合成單一文件，適合報告彙整、合約整合等情境。拆分功能讓你依照每 N 頁為單位切割龐大的 PDF，方便分別存檔或分頁傳送。壓縮功能透過圖片品質降低與物件清理，有效縮小 PDF 體積，特別適合需要透過電子郵件附件傳送或上傳至表單系統的場景。所有操作均在本機完成，保護文件中的敏感資訊不外洩。'}
@@ -3610,19 +3610,19 @@ function PdfTool() {
             <div className="space-y-3">
               <div>
                 <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Can I reorder pages when merging?' : '合併時可以調整頁面順序嗎？'}</p>
-                <p className="text-xs text-gray-500">{lang === 'en' ? 'Yes. After uploading multiple PDFs, use the arrows to reorder files. The merged output follows your custom order.' : '可以。上傳多個 PDF 後，可透過拖曳調整每個檔案的排列順序，最終合併結果會依你設定的順序輸出。'}</p>
+                <p className="text-xs text-gray-400">{lang === 'en' ? 'Yes. After uploading multiple PDFs, use the arrows to reorder files. The merged output follows your custom order.' : '可以。上傳多個 PDF 後，可透過拖曳調整每個檔案的排列順序，最終合併結果會依你設定的順序輸出。'}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Can I still copy text after compression?' : '壓縮後 PDF 的文字還能複製嗎？'}</p>
-                <p className="text-xs text-gray-500">{lang === 'en' ? 'Yes. Compression mainly targets embedded images. The text layer remains intact and fully selectable.' : '可以。本工具的壓縮主要針對內嵌圖片進行品質降低，文字圖層保持完整，選取複製功能不受影響。'}</p>
+                <p className="text-xs text-gray-400">{lang === 'en' ? 'Yes. Compression mainly targets embedded images. The text layer remains intact and fully selectable.' : '可以。本工具的壓縮主要針對內嵌圖片進行品質降低，文字圖層保持完整，選取複製功能不受影響。'}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Can it handle encrypted (password-protected) PDFs?' : '加密（有密碼保護）的 PDF 可以處理嗎？'}</p>
-                <p className="text-xs text-gray-500">{lang === 'en' ? 'Encrypted PDFs are not currently supported. Please remove the encryption using another tool before processing.' : '目前不支援加密的 PDF。若你的 PDF 開啟時需要輸入密碼，請先透過其他工具解除加密後再使用本工具處理。'}</p>
+                <p className="text-xs text-gray-400">{lang === 'en' ? 'Encrypted PDFs are not currently supported. Please remove the encryption using another tool before processing.' : '目前不支援加密的 PDF。若你的 PDF 開啟時需要輸入密碼，請先透過其他工具解除加密後再使用本工具處理。'}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Is there a file size limit?' : '檔案大小有上限嗎？'}</p>
-                <p className="text-xs text-gray-500">{lang === 'en' ? 'No explicit limit, but very large PDFs (e.g., over 200 MB) may require a desktop browser with sufficient memory to avoid timeouts.' : '無明確上限，但受限於瀏覽器可用記憶體，過大的 PDF（例如超過 200 MB）建議在記憶體充足的桌機上操作，以免處理過程出現逾時或失敗。'}</p>
+                <p className="text-xs text-gray-400">{lang === 'en' ? 'No explicit limit, but very large PDFs (e.g., over 200 MB) may require a desktop browser with sufficient memory to avoid timeouts.' : '無明確上限，但受限於瀏覽器可用記憶體，過大的 PDF（例如超過 200 MB）建議在記憶體充足的桌機上操作，以免處理過程出現逾時或失敗。'}</p>
               </div>
             </div>
           </div>
@@ -3742,7 +3742,7 @@ function CurrencyTool() {
       <div className="flex items-center gap-2 mb-4 min-h-[1.25rem]">
         {autoFetching
           ? <p className="text-xs text-blue-400 animate-pulse">{t('currency.auto_updating')}</p>
-          : lastUpdate && <p className="text-xs text-gray-500">{t('currency.update_time_label')}：{lastUpdate}</p>
+          : lastUpdate && <p className="text-xs text-gray-400">{t('currency.update_time_label')}：{lastUpdate}</p>
         }
       </div>
 
@@ -3780,7 +3780,7 @@ function CurrencyTool() {
             <div key={code} className="flex items-center px-4 py-2 hover:bg-gray-700/30">
               <span className="text-base mr-2">{CURRENCY_FLAGS[code]}</span>
               <span className="text-sm text-gray-300 w-12">{code}</span>
-              <span className="text-xs text-gray-500 flex-1">{getCurrencyNames(t)[code]}</span>
+              <span className="text-xs text-gray-400 flex-1">{getCurrencyNames(t)[code]}</span>
               <span className="text-sm text-yellow-400 font-mono">{Number(rate).toFixed(4)}</span>
             </div>
           ))}
@@ -3802,7 +3802,7 @@ function CurrencyTool() {
             <li>匯率每日台北時間 20:00 後自動從 ECB 資料更新；也可點「✏️ 更新匯率」手動調整並同步所有使用者</li>
           </>)}
         </ol>
-        <p className="text-xs text-gray-600 mt-3">{lang === 'en'
+        <p className="text-xs text-gray-400 mt-3">{lang === 'en'
             ? <>Source: <a href="https://github.com/fawazahmed0/exchange-api" target="_blank" rel="noopener" className="underline hover:text-gray-400">fawazahmed0/exchange-api</a> (ECB exchange rates, updated daily)</>
             : <>資料來源：<a href="https://github.com/fawazahmed0/exchange-api" target="_blank" rel="noopener" className="underline hover:text-gray-400">fawazahmed0/exchange-api</a>（歐洲央行 ECB 匯率資料，每日更新）</>
           }</p>
@@ -3812,7 +3812,7 @@ function CurrencyTool() {
       <div className="mt-2 mb-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
         <div>
           <h3 className="text-sm font-semibold text-gray-300 mb-2">{lang === 'en' ? 'About Currency Converter' : '關於匯率換算工具'}</h3>
-          <p className="text-xs text-gray-500 leading-relaxed">
+          <p className="text-xs text-gray-400 leading-relaxed">
             {lang === 'en'
               ? 'The Currency Converter integrates daily reference rates from the European Central Bank (ECB), supporting instant conversion between 16 major currencies including TWD, USD, JPY, EUR, GBP, and CNY. Rates are updated daily via the fawazahmed0/exchange-api open-source project, syncing automatically after 20:00 Taipei time. The interface prioritizes simplicity — select currencies, enter an amount, and see instant results. The reference rate table below uses TWD as the base, displaying all 16 currencies at a glance for quick comparison.'
               : '匯率換算工具整合歐洲央行（ECB）每日公布的參考匯率資料，支援台幣（TWD）、美元（USD）、日圓（JPY）、歐元（EUR）、英鎊（GBP）、人民幣（CNY）等 16 種主要貨幣的即時換算。匯率資料透過 fawazahmed0/exchange-api 開源專案每日更新，在台北時間每天 20:00 後自動同步最新數據，確保你取得的換算結果貼近當日市場行情。工具介面設計以直觀操作為優先，選好幣別、輸入金額後換算結果即時呈現，無需等待或按確認鍵。此外，下方匯率參考表以台幣為基準，一次顯示全部 16 種貨幣的兌換率，方便快速比較各國貨幣的相對強弱。'}
@@ -3823,19 +3823,19 @@ function CurrencyTool() {
           <div className="space-y-3">
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'How often are rates updated?' : '匯率多久更新一次？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Rates auto-update daily from ECB after ~20:00 Taipei time. ECB provides reference rates (not real-time trading prices), intended for estimation only.' : '每日台北時間約 20:00 後自動從 ECB（歐洲央行）資料來源更新。ECB 採用的是每個交易日的參考匯率，非實時成交價，僅供參考估算。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Rates auto-update daily from ECB after ~20:00 Taipei time. ECB provides reference rates (not real-time trading prices), intended for estimation only.' : '每日台北時間約 20:00 後自動從 ECB（歐洲央行）資料來源更新。ECB 採用的是每個交易日的參考匯率，非實時成交價，僅供參考估算。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Why do results differ from bank rates?' : '為什麼結果和銀行牌告匯率不同？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'This tool uses ECB mid-rate reference rates. Banks add their own buy/sell spread (fees), so differences are normal.' : '本工具使用 ECB 參考匯率（中間價），銀行的買入／賣出價會加上手續費差價（點差），因此會有數字上的落差，屬正常現象。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'This tool uses ECB mid-rate reference rates. Banks add their own buy/sell spread (fees), so differences are normal.' : '本工具使用 ECB 參考匯率（中間價），銀行的買入／賣出價會加上手續費差價（點差），因此會有數字上的落差，屬正常現象。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Can I set custom rates?' : '可以自訂匯率嗎？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Yes. Click "✏️ Edit Rates" in the top right, enter your custom values and save. Updated rates sync to all users for consistent calculations.' : '可以。點選右上角「✏️ 更新匯率」，輸入你想使用的匯率數值後儲存，更新後的數值會同步至所有使用此工具的使用者，方便團隊統一計算標準。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Yes. Click "✏️ Edit Rates" in the top right, enter your custom values and save. Updated rates sync to all users for consistent calculations.' : '可以。點選右上角「✏️ 更新匯率」，輸入你想使用的匯率數值後儲存，更新後的數值會同步至所有使用此工具的使用者，方便團隊統一計算標準。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Which currencies are supported?' : '支援哪些貨幣？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Currently supports 16 currencies: TWD, USD, JPY, EUR, GBP, CNY, AUD, CAD, CHF, HKD, KRW, MYR, SGD, THB, VND, and PHP.' : '目前支援 TWD、USD、JPY、EUR、GBP、CNY、AUD、CAD、CHF、HKD、KRW、MYR、SGD、THB、VND、PHP 共 16 種貨幣。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Currently supports 16 currencies: TWD, USD, JPY, EUR, GBP, CNY, AUD, CAD, CHF, HKD, KRW, MYR, SGD, THB, VND, and PHP.' : '目前支援 TWD、USD、JPY、EUR、GBP、CNY、AUD、CAD、CHF、HKD、KRW、MYR、SGD、THB、VND、PHP 共 16 種貨幣。'}</p>
             </div>
           </div>
         </div>
@@ -3853,7 +3853,7 @@ function CurrencyTool() {
                 <div key={code} className="flex items-center gap-3">
                   <span className="text-base">{CURRENCY_FLAGS[code]}</span>
                   <span className="text-sm text-gray-300 w-10">{code}</span>
-                  <span className="text-xs text-gray-500 flex-1">{getCurrencyNames(t)[code]}</span>
+                  <span className="text-xs text-gray-400 flex-1">{getCurrencyNames(t)[code]}</span>
                   <input type="number" step="0.0001"
                     value={editRates[code] ?? ''}
                     onChange={e => setEditRates(prev => ({...prev, [code]: e.target.value}))}
@@ -3977,9 +3977,9 @@ function UnitTool() {
           <div className="grid grid-cols-3 gap-2">
             {[['c','°C',lang==='en'?'Celsius':'攝氏','text-orange-400'],['f','°F',lang==='en'?'Fahrenheit':'華氏','text-blue-400'],['k','K',lang==='en'?'Kelvin':'克耳文','text-purple-400']].map(([id,sym,name,cls]) => (
               <div key={id} className={`bg-gray-800/60 rounded-xl p-3 text-center border-2 ${fromTemp===id?'border-purple-500':'border-transparent'}`}>
-                <p className="text-xs text-gray-500 mb-1">{name}</p>
+                <p className="text-xs text-gray-400 mb-1">{name}</p>
                 <p className={`text-lg font-bold ${cls} break-all`}>{tempResults[id]}</p>
-                <p className="text-xs text-gray-500">{sym}</p>
+                <p className="text-xs text-gray-400">{sym}</p>
               </div>
             ))}
           </div>
@@ -4005,14 +4005,14 @@ function UnitTool() {
             </ol>
           </div>
         </div>
-        <p className="text-xs text-gray-600 mt-3">{lang === 'en' ? 'Formulas follow SI (ISO 80000), calculated entirely in-browser' : '換算公式依 SI 國際單位制（ISO 80000）計算，完全在瀏覽器本地端執行'}</p>
+        <p className="text-xs text-gray-400 mt-3">{lang === 'en' ? 'Formulas follow SI (ISO 80000), calculated entirely in-browser' : '換算公式依 SI 國際單位制（ISO 80000）計算，完全在瀏覽器本地端執行'}</p>
       </div>
 
       {/* ── 工具介紹 ── */}
       <div className="mt-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
         <div>
           <h3 className="text-sm font-semibold text-gray-300 mb-2">{lang === 'en' ? 'About Unit Converter' : '關於單位換算工具'}</h3>
-          <p className="text-xs text-gray-500 leading-relaxed">
+          <p className="text-xs text-gray-400 leading-relaxed">
             {lang === 'en' ? 'The Unit Converter currently supports length and temperature conversions, all following SI (ISO 80000) standard formulas calculated locally in-browser with instant results. Length supports mm, cm, m, km, in, ft, yd, mi with a quick-convert table showing all units at once. Temperature integrates Celsius (°C), Fahrenheit (°F), and Kelvin (K) — enter any one and the other two update instantly. Ideal for engineering, cooking, weather checks, and everyday cross-standard needs.' : '單位換算工具目前提供長度與溫度兩大類換算，所有計算均依循 SI 國際單位制（ISO 80000）標準公式，直接在瀏覽器本機運算，結果即時顯示，無任何延遲。長度換算支援公釐（mm）、公分（cm）、公尺（m）、公里（km）、英寸（in）、英尺（ft）、碼（yd）、英里（mi）等單位，並附有快速換算表，讓你一次看到該數值對應所有單位的數字。溫度換算則整合攝氏（°C）、華氏（°F）與克耳文（K）三種溫標，任意輸入其中一種，其餘兩種即時同步，特別適合理工研究、烹飪食譜、天氣查詢等跨國際標準的日常需求。'}
           </p>
         </div>
@@ -4021,19 +4021,19 @@ function UnitTool() {
           <div className="space-y-3">
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: What is the mile-to-kilometer ratio?' : 'Q：英里和公里的換算比例是多少？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? '1 mile = 1.60934 km. Conversely, 1 km ≈ 0.62137 mi. This is the most commonly used imperial-metric length conversion.' : '1 英里（mile）= 1.60934 公里（km）。反過來，1 公里 ≈ 0.62137 英里。這是英制與公制長度換算中最常用的關係式。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? '1 mile = 1.60934 km. Conversely, 1 km ≈ 0.62137 mi. This is the most commonly used imperial-metric length conversion.' : '1 英里（mile）= 1.60934 公里（km）。反過來，1 公里 ≈ 0.62137 英里。這是英制與公制長度換算中最常用的關係式。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: How to convert Celsius to Fahrenheit?' : 'Q：如何把攝氏換成華氏？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Formula: °F = °C × 9/5 + 32. For example, 100°C (boiling point) = 212°F; 37°C (body temp) = 98.6°F.' : '公式為：°F = °C × 9/5 + 32。例如攝氏 100°C（水的沸點）= 212°F；攝氏 37°C（人體體溫）= 98.6°F。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Formula: °F = °C × 9/5 + 32. For example, 100°C (boiling point) = 212°F; 37°C (body temp) = 98.6°F.' : '公式為：°F = °C × 9/5 + 32。例如攝氏 100°C（水的沸點）= 212°F；攝氏 37°C（人體體溫）= 98.6°F。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: What is the difference between Kelvin and Celsius?' : 'Q：克耳文（K）和攝氏有什麼差別？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Kelvin is the thermodynamic absolute temperature scale, where 0 K is absolute zero. Conversion: K = °C + 273.15, so 0°C = 273.15 K.' : '克耳文是熱力學絕對溫標，0 K 為絕對零度（理論上的最低溫）。換算關係：K = °C + 273.15，因此攝氏 0°C = 273.15 K。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Kelvin is the thermodynamic absolute temperature scale, where 0 K is absolute zero. Conversion: K = °C + 273.15, so 0°C = 273.15 K.' : '克耳文是熱力學絕對溫標，0 K 為絕對零度（理論上的最低溫）。換算關係：K = °C + 273.15，因此攝氏 0°C = 273.15 K。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: Will area, weight, and other conversions be added?' : 'Q：未來會新增面積、重量等換算嗎？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Area (ping, m², etc.), weight (kg, lb, etc.), and other common categories are planned for future releases.' : '工具持續開發中，面積（坪、平方公尺等）、重量（公斤、磅等）及其他常用類別的換算功能規劃在後續版本加入。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Area (ping, m², etc.), weight (kg, lb, etc.), and other common categories are planned for future releases.' : '工具持續開發中，面積（坪、平方公尺等）、重量（公斤、磅等）及其他常用類別的換算功能規劃在後續版本加入。'}</p>
             </div>
           </div>
         </div>
@@ -4148,15 +4148,15 @@ function DateCalculatorTool() {
               </div>
               <div className="grid grid-cols-2 gap-2 text-center">
                 <div className="bg-gray-900/60 rounded-lg p-2">
-                  <p className="text-xs text-gray-500">{lang === 'en' ? '≈' : '約'}</p>
+                  <p className="text-xs text-gray-400">{lang === 'en' ? '≈' : '約'}</p>
                   <p className="text-sm font-bold text-blue-400">{lang === 'en' ? `${betweenResult.weeks}w ${betweenResult.remainDays}d` : `${betweenResult.weeks} 週 ${betweenResult.remainDays} 天`}</p>
                 </div>
                 <div className="bg-gray-900/60 rounded-lg p-2">
-                  <p className="text-xs text-gray-500">{lang === 'en' ? '≈' : '約'}</p>
+                  <p className="text-xs text-gray-400">{lang === 'en' ? '≈' : '約'}</p>
                   <p className="text-sm font-bold text-blue-400">{lang === 'en' ? `${betweenResult.months} months` : `${betweenResult.months} 個月`}</p>
                 </div>
                 <div className="bg-gray-900/60 rounded-lg p-2 col-span-2">
-                  <p className="text-xs text-gray-500">{t('datecalc.workdays')}</p>
+                  <p className="text-xs text-gray-400">{t('datecalc.workdays')}</p>
                   <p className="text-sm font-bold text-green-400">{betweenResult.workDays} {t('datecalc.days')}</p>
                 </div>
               </div>
@@ -4242,13 +4242,13 @@ function DateCalculatorTool() {
             </ol>
           </div>
         </div>
-        <p className="text-xs text-gray-600 mt-3">{lang === 'en' ? 'All calculations run locally in-browser with leap year support' : '日期計算完全在瀏覽器端執行，支援閏年與各月份天數差異'}</p>
+        <p className="text-xs text-gray-400 mt-3">{lang === 'en' ? 'All calculations run locally in-browser with leap year support' : '日期計算完全在瀏覽器端執行，支援閏年與各月份天數差異'}</p>
       </div>
 
       <div className="mt-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
         <div>
           <h3 className="text-sm font-semibold text-gray-300 mb-2">{lang === 'en' ? 'About Date Calculator' : '關於日期計算器'}</h3>
-          <p className="text-xs text-gray-500 leading-relaxed">
+          <p className="text-xs text-gray-400 leading-relaxed">
             {lang === 'en' ? 'The Date Calculator offers three modes: calculate days between two dates, add days to a date, or subtract days from a date. It supports leap years and cross-month calculations, showing total days, weeks, months, and business days. Useful for contract deadlines, due dates, project timelines, visa expiry, and more. All calculations run locally in-browser — no server connection needed.' : '日期計算器提供三種計算模式：計算兩個日期之間的天數差距、從某日期往後加天數、從某日期往前減天數。支援閏年判斷與跨月份計算，結果同時呈現總天數、週數、月數及工作日數。常用於計算合約到期日、預產期、退伍日、專案工期、簽證效期等，也可以快速算出「從今天起 90 天後是哪天」這類實用問題。所有運算在瀏覽器本地完成，不需連線。'}
           </p>
         </div>
@@ -4257,15 +4257,15 @@ function DateCalculatorTool() {
           <div className="space-y-3">
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: How are leap years determined?' : 'Q：閏年怎麼判斷？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'A year divisible by 4 but not by 100, or divisible by 400, is a leap year (Feb has 29 days). This tool handles leap years automatically.' : '西元年份能被 4 整除且不被 100 整除，或能被 400 整除的年份為閏年。閏年 2 月有 29 天，平年 2 月只有 28 天。本工具已自動處理閏年計算。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'A year divisible by 4 but not by 100, or divisible by 400, is a leap year (Feb has 29 days). This tool handles leap years automatically.' : '西元年份能被 4 整除且不被 100 整除，或能被 400 整除的年份為閏年。閏年 2 月有 29 天，平年 2 月只有 28 天。本工具已自動處理閏年計算。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: How are business days calculated?' : 'Q：工作日是怎麼算的？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Business days exclude Saturdays and Sundays but not public holidays (which vary by year). Subtract public holidays manually if needed.' : '工作日計算排除所有星期六與星期日，但不扣除國定假日（因各年度假日不同）。若需要精確的上班天數，請自行扣除當期國定假日。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Business days exclude Saturdays and Sundays but not public holidays (which vary by year). Subtract public holidays manually if needed.' : '工作日計算排除所有星期六與星期日，但不扣除國定假日（因各年度假日不同）。若需要精確的上班天數，請自行扣除當期國定假日。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: Can it calculate lunar calendar dates?' : 'Q：可以計算農曆日期嗎？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Currently only supports the Gregorian calendar. Lunar calendar support is planned for a future release.' : '目前僅支援西曆（公曆）計算。農曆換算功能規劃在後續版本加入。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Currently only supports the Gregorian calendar. Lunar calendar support is planned for a future release.' : '目前僅支援西曆（公曆）計算。農曆換算功能規劃在後續版本加入。'}</p>
             </div>
           </div>
         </div>
@@ -4534,7 +4534,7 @@ function CountdownTool() {
                     <p className="text-xs text-gray-400 mt-0.5">{h.start.slice(5)} ~ {h.end.slice(5)}{lang === 'en' ? ` (${h.days}d)` : `（${h.days}天）`}</p>
                   </div>
                   <div className="text-right shrink-0 ml-2">
-                    {isPast && <span className="text-xs text-gray-600">{lang === 'en' ? 'Ended' : '已結束'}</span>}
+                    {isPast && <span className="text-xs text-gray-400">{lang === 'en' ? 'Ended' : '已結束'}</span>}
                     {isOngoing && <span className="text-xs text-green-400 font-medium animate-pulse">{lang === 'en' ? '🎉 On Holiday' : '🎉 放假中'}</span>}
                     {isUpcoming && <span className="text-xs text-yellow-400 font-medium">{lang === 'en' ? `${daysUntil}d away` : `還有 ${daysUntil} 天`}</span>}
                   </div>
@@ -4598,7 +4598,7 @@ function CountdownTool() {
               ].map(([val, unit], i) => (
                 <div key={i} className="bg-gray-900/60 rounded-lg p-3">
                   <p className="text-2xl sm:text-3xl font-bold text-yellow-400 font-mono">{String(val).padStart(2,'0')}</p>
-                  <p className="text-xs text-gray-500 mt-1">{unit}</p>
+                  <p className="text-xs text-gray-400 mt-1">{unit}</p>
                 </div>
               ))}
             </div>
@@ -4652,13 +4652,13 @@ function CountdownTool() {
             </ol>
           </div>
         </div>
-        <p className="text-xs text-gray-600 mt-3">{lang === 'en' ? 'Countdown runs entirely in-browser — no server needed. Keep the tab open to continue.' : '倒數計時完全在瀏覽器端執行，不需連線，分頁保持開啟即持續計時'}</p>
+        <p className="text-xs text-gray-400 mt-3">{lang === 'en' ? 'Countdown runs entirely in-browser — no server needed. Keep the tab open to continue.' : '倒數計時完全在瀏覽器端執行，不需連線，分頁保持開啟即持續計時'}</p>
       </div>
 
       <div className="mt-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
         <div>
           <h3 className="text-sm font-semibold text-gray-300 mb-2">{lang === 'en' ? 'About Countdown Timer' : '關於倒數計時器'}</h3>
-          <p className="text-xs text-gray-500 leading-relaxed">
+          <p className="text-xs text-gray-400 leading-relaxed">
             {lang === 'en' ? 'The Countdown Timer offers three modes: Holiday Countdown (8 countries, 2026 holidays ≥3 days), Preset Events (New Year, CNY, Christmas, Valentine\'s, Mid-Autumn, Singles\' Day, etc.), and Custom Date countdown (down to the minute). Perfect for birthdays, trips, exams, project deadlines, weddings, and more. The timer updates every second showing days, hours, minutes, and seconds, with optional browser notifications and shareable links.' : '倒數計時器提供三種模式：連假倒數（8 國 2026 年 ≥3 天連假一覽）、預設節日快速倒數與自訂日期精確倒數。預設節日涵蓋跨年、農曆新年、聖誕節、情人節、中秋節、雙十一等，系統自動判斷最近一次的節日日期。自訂模式可設定任意日期與時間（精確到分鐘），適合倒數生日、旅行出發、考試、專案截止日、婚禮等個人重要時刻。倒數以每秒更新的方式呈現天、時、分、秒，並支援瀏覽器通知（需授權），時間到會推播提醒。亦可複製分享連結，讓朋友一起倒數。'}
           </p>
         </div>
@@ -4667,19 +4667,19 @@ function CountdownTool() {
           <div className="space-y-3">
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: Does the countdown continue after closing the browser?' : 'Q：關閉瀏覽器後倒數會繼續嗎？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'The countdown calculates remaining time from the target date, so reopening the page shows the correct time. However, browser notifications require the tab to stay open.' : '倒數計時器基於目標日期計算剩餘時間，因此重新開啟頁面後會自動顯示正確的剩餘時間，不會因關閉瀏覽器而歸零。但到期通知需要頁面保持開啟才能觸發。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'The countdown calculates remaining time from the target date, so reopening the page shows the correct time. However, browser notifications require the tab to stay open.' : '倒數計時器基於目標日期計算剩餘時間，因此重新開啟頁面後會自動顯示正確的剩餘時間，不會因關閉瀏覽器而歸零。但到期通知需要頁面保持開啟才能觸發。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: Where does the holiday data come from?' : 'Q：連假倒數的資料來源？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Data is compiled from official 2026 public holiday announcements for each country, filtered for ≥3 consecutive days (including weekend links). Islamic calendar holidays (e.g. Eid) are estimated.' : '資料根據各國官方公告的 2026 年國定假日整理，篩選連續 ≥3 天的假期（含週末銜接）。伊斯蘭曆相關假日（如開齋節）為預估日期，實際可能微調。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Data is compiled from official 2026 public holiday announcements for each country, filtered for ≥3 consecutive days (including weekend links). Islamic calendar holidays (e.g. Eid) are estimated.' : '資料根據各國官方公告的 2026 年國定假日整理，篩選連續 ≥3 天的假期（含週末銜接）。伊斯蘭曆相關假日（如開齋節）為預估日期，實際可能微調。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: Is the Lunar New Year date accurate?' : 'Q：農曆新年的日期準確嗎？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Built-in Lunar New Year dates for 2026–2030 ensure accuracy. Years outside this range use approximations.' : '系統內建 2026–2030 年的農曆春節日期資料，確保這段期間的農曆新年倒數是精確的。超出此範圍的年份會使用近似值。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Built-in Lunar New Year dates for 2026–2030 ensure accuracy. Years outside this range use approximations.' : '系統內建 2026–2030 年的農曆春節日期資料，確保這段期間的農曆新年倒數是精確的。超出此範圍的年份會使用近似值。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">{lang === 'en' ? 'Q: Can I count down to multiple events simultaneously?' : 'Q：可以同時倒數多個事件嗎？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Currently shows one countdown at a time. Switching events replaces the current one. Multi-event countdown is planned for a future release.' : '目前一次顯示一個倒數，切換預設節日或輸入新日期會替換當前倒數。多事件同時倒數功能規劃在後續版本加入。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Currently shows one countdown at a time. Switching events replaces the current one. Multi-event countdown is planned for a future release.' : '目前一次顯示一個倒數，切換預設節日或輸入新日期會替換當前倒數。多事件同時倒數功能規劃在後續版本加入。'}</p>
             </div>
           </div>
         </div>
@@ -4789,7 +4789,7 @@ function TyphoonTool() {
       </div>
       {typhoonName && <p className="text-sm text-yellow-400 mb-1">{t('typhoon.typhoon_name')}{typhoonName}</p>}
       {lastUpdate && (
-        <p className="text-xs text-gray-500 mb-1">{t('typhoon.update_time')}{lastUpdate}
+        <p className="text-xs text-gray-400 mb-1">{t('typhoon.update_time')}{lastUpdate}
           {dataSource === 'dgpa' && <span className="ml-2 text-blue-400">{t('typhoon.source_auto')}</span>}
           {dataSource === 'manual' && <span className="ml-2 text-yellow-400">{t('typhoon.source_manual')}</span>}
         </p>
@@ -4909,7 +4909,7 @@ function TyphoonTool() {
             </ol>
           </div>
         </div>
-        <p className="text-xs text-gray-600 mt-3">{lang === 'en'
+        <p className="text-xs text-gray-400 mt-3">{lang === 'en'
             ? <>Data from DGPA, updated every 24 hours. Please also refer to the <a href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener" className="underline hover:text-gray-400">official DGPA announcement</a>.</>
             : <>資料自動取自行政院人事行政總處（DGPA），每 24 小時更新。請同時參考 <a href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener" className="underline hover:text-gray-400">DGPA 官方公告</a> 為準</>
           }</p>
@@ -4919,7 +4919,7 @@ function TyphoonTool() {
       <div className="mt-6 bg-gray-900/40 rounded-xl p-5 border border-gray-800/60 space-y-4">
         <div>
           <h3 className="text-sm font-semibold text-gray-300 mb-2">{t('typhoon.about_title')}</h3>
-          <p className="text-xs text-gray-500 leading-relaxed">
+          <p className="text-xs text-gray-400 leading-relaxed">
             {lang === 'en'
               ? 'This tool displays real-time work and school suspension status for all 22 cities and counties in Taiwan with intuitive color coding. Powered by Firebase real-time sync, updates from admins are instantly reflected for all users. Taiwan\'s typhoon day-off decisions are made independently by each city/county mayor, typically announced 24 hours before a typhoon\'s expected arrival. This tool consolidates all regional information on a single screen so you can quickly check the status for any area.'
               : '颱風停班停課查詢工具提供台灣全台 22 縣市的停班停課狀態即時顯示，以直覺的色彩標示快速傳達各地的警戒等級。工具採用 Firebase 即時資料庫同步，管理員更新後所有使用者的頁面立即反映最新狀態，確保資訊傳遞的即時性。台灣的颱風停班停課制度由各縣市首長自行裁量，通常在預計颱風抵達前 24 小時宣布，因此各縣市的宣布時間與結果可能不一致。本工具匯整全台各地資訊於單一畫面，讓你不需逐一查閱各縣市政府公告，一眼即可掌握家人、同事所在地區的最新停班停課狀況。'}
@@ -4930,25 +4930,25 @@ function TyphoonTool() {
           <div className="space-y-3">
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{t('typhoon.faq1_q')}</p>
-              <p className="text-xs text-gray-500">{lang === 'en'
+              <p className="text-xs text-gray-400">{lang === 'en'
                 ? 'The system fetches data from DGPA every 24 hours. You can also click "🔄 Update Now" for an immediate refresh. During typhoons, please also check DGPA and your local government\'s official announcements.'
                 : '系統每 24 小時自動從行政院人事行政總處（DGPA）抓取最新資料，也可點「🔄 即時更新」手動觸發。颱風期間建議同時對照 DGPA 及各縣市政府的官方公告，以官方資訊為最終依據。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Can work and school suspensions be separate?' : '停班和停課可以分開嗎？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en'
+              <p className="text-xs text-gray-400">{lang === 'en'
                 ? 'Yes. Each city/county mayor in Taiwan can independently announce work suspension only, school suspension only, or both. This tool shows the actual status for each city/county individually.'
                 : '可以。台灣各縣市首長有權獨立宣布僅停班、僅停課或全面停班停課，因此不同縣市的停班停課組合可能不同，本工具逐一呈現各縣市的實際狀態。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Does "Normal" mean it\'s absolutely safe?' : '顯示「正常上班上課」是否代表絕對安全？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en'
+              <p className="text-xs text-gray-400">{lang === 'en'
                 ? 'Not necessarily. Even without an official suspension, workers with safety concerns may apply for leave under Taiwan\'s Natural Disaster Leave Guidelines. Contact the Ministry of Labor for details.'
                 : '不一定。即使縣市政府尚未宣布停班停課，如有安全疑慮，勞工可依《天然災害發生事業單位勞工出勤管理及工資給付要點》向雇主申請不出勤，詳情請洽勞動部。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Are school and government suspension standards the same?' : '學校與機關的停課標準相同嗎？'}</p>
-              <p className="text-xs text-gray-500">{lang === 'en'
+              <p className="text-xs text-gray-400">{lang === 'en'
                 ? 'Not necessarily. Cities can announce work and school suspensions separately. Universities usually make their own decisions independent of government announcements — check your school\'s official notice directly.'
                 : '不一定相同。各縣市可分別宣布機關停班及學校停課，大學通常自行決定是否停課，不受縣市政府公告約束，建議直接確認所屬學校的官方通知。'}</p>
             </div>
@@ -5262,12 +5262,12 @@ function BlogPage({ setPage }) {
       <div className="tool-page max-w-2xl mx-auto px-2 py-6">
         <button
           onClick={() => setSelectedId(null)}
-          className="mb-6 text-sm text-gray-500 hover:text-gray-300 flex items-center gap-1"
+          className="mb-6 text-sm text-gray-400 hover:text-gray-300 flex items-center gap-1"
         >{t('blog.back')}</button>
         <div className="flex items-center gap-2 mb-2 flex-wrap">
           <span className="text-xs bg-purple-900/50 text-purple-300 px-2 py-0.5 rounded-full">{selected.category}</span>
-          <span className="text-xs text-gray-500">{selected.date}</span>
-          <span className="text-xs text-gray-500">· {selected.readTime}{t('blog.reading')}</span>
+          <span className="text-xs text-gray-400">{selected.date}</span>
+          <span className="text-xs text-gray-400">· {selected.readTime}{t('blog.reading')}</span>
         </div>
         <h1 className="text-2xl font-bold text-white mb-6 leading-snug">{selected.title}</h1>
         {selected.contentHtml
@@ -5276,7 +5276,7 @@ function BlogPage({ setPage }) {
           : <div className="prose prose-invert">{selected.content()}</div>
         }
         <div className="mt-12 pt-6 border-t border-gray-800 text-center">
-          <button onClick={() => setSelectedId(null)} className="text-sm text-gray-500 hover:text-gray-300">{t('blog.back')}</button>
+          <button onClick={() => setSelectedId(null)} className="text-sm text-gray-400 hover:text-gray-300">{t('blog.back')}</button>
         </div>
       </div>
     );
@@ -5288,7 +5288,7 @@ function BlogPage({ setPage }) {
         <h1 className="text-2xl font-bold text-white mb-2">{t('blog.title')}</h1>
         <p className="text-sm text-gray-400">{t('blog.subtitle')}</p>
       </div>
-      {loading && <p className="text-sm text-gray-600 text-center py-8">{t('blog.loading')}</p>}
+      {loading && <p className="text-sm text-gray-400 text-center py-8">{t('blog.loading')}</p>}
       <div className="space-y-4">
         {allArticles.map(article => (
           <button
@@ -5298,8 +5298,8 @@ function BlogPage({ setPage }) {
           >
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               <span className="text-xs bg-purple-900/50 text-purple-300 px-2 py-0.5 rounded-full">{article.category}</span>
-              <span className="text-xs text-gray-500">{article.date}</span>
-              <span className="text-xs text-gray-500">· {article.readTime}{t('blog.reading')}</span>
+              <span className="text-xs text-gray-400">{article.date}</span>
+              <span className="text-xs text-gray-400">· {article.readTime}{t('blog.reading')}</span>
             </div>
             <h2 className="text-base font-semibold text-white mb-1.5 leading-snug">{article.title}</h2>
             <p className="text-sm text-gray-400 leading-relaxed line-clamp-2">{article.summary}</p>
@@ -5317,7 +5317,7 @@ function AboutPage({ setPage }) {
   const { lang, t } = useLang();
   return (
     <div className="tool-page max-w-2xl mx-auto px-4 py-10 text-gray-300">
-      <button onClick={() => setPage('blog')} className="mb-6 text-sm text-gray-500 hover:text-gray-300 flex items-center gap-1">
+      <button onClick={() => setPage('blog')} className="mb-6 text-sm text-gray-400 hover:text-gray-300 flex items-center gap-1">
         {t('common.back_home')}
       </button>
       <h1 className="text-2xl font-bold text-white mb-6">{t('about.page_title')}</h1>
@@ -5366,11 +5366,11 @@ function ContactPage({ setPage }) {
   const { lang, t } = useLang();
   return (
     <div className="tool-page max-w-2xl mx-auto px-4 py-10 text-gray-300">
-      <button onClick={() => setPage('blog')} className="mb-6 text-sm text-gray-500 hover:text-gray-300 flex items-center gap-1">
+      <button onClick={() => setPage('blog')} className="mb-6 text-sm text-gray-400 hover:text-gray-300 flex items-center gap-1">
         {t('common.back_home')}
       </button>
       <h1 className="text-2xl font-bold text-white mb-2">{t('footer.contact')}</h1>
-      <p className="text-sm text-gray-500 mb-8">{ t('contact.subtitle')}</p>
+      <p className="text-sm text-gray-400 mb-8">{ t('contact.subtitle')}</p>
 
       <div className="rounded-xl overflow-hidden border border-gray-700">
         <iframe
@@ -5387,7 +5387,7 @@ function ContactPage({ setPage }) {
         </iframe>
       </div>
 
-      <p className="text-xs text-gray-600 mt-4 text-center">
+      <p className="text-xs text-gray-400 mt-4 text-center">
         {t('contact.fallback')}
         <a href="mailto:contact@twtools.cc" className="underline hover:text-gray-400 ml-1">contact@twtools.cc</a>
       </p>
@@ -5408,11 +5408,11 @@ function PrivacyPage({ setPage }) {
   );
   return (
     <div className="tool-page max-w-3xl mx-auto px-4 py-10">
-      <button onClick={() => setPage('blog')} className="mb-6 text-sm text-gray-500 hover:text-gray-300 flex items-center gap-1">
+      <button onClick={() => setPage('blog')} className="mb-6 text-sm text-gray-400 hover:text-gray-300 flex items-center gap-1">
         {t('common.back_toolbox')}
       </button>
       <h1 className="text-2xl font-bold text-white mb-2">{t('footer.privacy')}</h1>
-      <p className="text-sm text-gray-500 mb-8">{lang === 'en' ? 'Last updated: March 2026 · Applies to: twtools.cc' : '最後更新：2026 年 3 月　·　適用網站：twtools.cc'}</p>
+      <p className="text-sm text-gray-400 mb-8">{lang === 'en' ? 'Last updated: March 2026 · Applies to: twtools.cc' : '最後更新：2026 年 3 月　·　適用網站：twtools.cc'}</p>
 
       <Section title={lang === 'en' ? '1. Overview' : '1. 總覽'}>
         <p>{lang === 'en' ? 'This website (twtools.cc, hereinafter "the Site") provides free online tools and content, including image processing, PDF tools, currency exchange, typhoon day-off status, unit conversion, Taiwan lottery, and blog articles. We value your privacy and this policy explains how we handle your data.' : '本網站（twtools.cc，以下稱「本站」）提供免費線上工具及內容，包含圖片處理、PDF 工具、匯率換算、颱風停班停課查詢、單位換算、台灣彩券查詢，以及上班族相關知識部落格文章。本站重視您的隱私，本政策說明我們如何處理與您相關的資料。'}</p>
@@ -5452,7 +5452,7 @@ function PrivacyPage({ setPage }) {
         <p>{lang === 'en' ? 'If you have any questions about this privacy policy, please contact us through the feedback form on this site.' : '若您對本隱私權政策有任何疑問，歡迎透過本站頁面上的意見回饋管道聯絡我們。'}</p>
       </Section>
 
-      <div className="mt-10 pt-6 border-t border-gray-800 text-center text-xs text-gray-600">
+      <div className="mt-10 pt-6 border-t border-gray-800 text-center text-xs text-gray-400">
         © 2026 twtools.cc　·
         <button onClick={() => setPage('blog')} className="underline hover:text-gray-400 ml-1">{t('common.back_toolbox')}</button>
       </div>
@@ -5557,7 +5557,7 @@ function RSection({ title, count, defaultOpen, children, onAdd, addLabel }) {
         <span className="flex items-center gap-2">
           <span className={`transition-transform ${open ? 'rotate-90' : ''}`}>▶</span>
           {title}
-          {count != null && <span className="text-xs text-gray-500 font-normal">({count})</span>}
+          {count != null && <span className="text-xs text-gray-400 font-normal">({count})</span>}
         </span>
         {onAdd && (
           <span
@@ -5575,7 +5575,7 @@ function RSection({ title, count, defaultOpen, children, onAdd, addLabel }) {
 function RInput({ label, value, onChange, placeholder, type, className }) {
   return (
     <label className={`block ${className || ''}`}>
-      <span className="text-xs text-gray-500">{label}</span>
+      <span className="text-xs text-gray-400">{label}</span>
       <input
         type={type || 'text'}
         value={value || ''}
@@ -5590,7 +5590,7 @@ function RInput({ label, value, onChange, placeholder, type, className }) {
 function RTextarea({ label, value, onChange, placeholder, rows }) {
   return (
     <label className="block">
-      <span className="text-xs text-gray-500">{label}</span>
+      <span className="text-xs text-gray-400">{label}</span>
       <textarea
         value={value || ''}
         onChange={e => onChange(e.target.value)}
@@ -5607,8 +5607,8 @@ function RItemCard({ children, onDelete, onMoveUp, onMoveDown, canUp, canDown })
   return (
     <div className="relative border border-gray-800 rounded-lg p-3 bg-gray-900/40">
       <div className="absolute top-1 right-1 flex gap-1">
-        {canUp && <button type="button" onClick={onMoveUp} className="text-gray-600 hover:text-gray-300 text-xs p-1">▲</button>}
-        {canDown && <button type="button" onClick={onMoveDown} className="text-gray-600 hover:text-gray-300 text-xs p-1">▼</button>}
+        {canUp && <button type="button" onClick={onMoveUp} className="text-gray-500 hover:text-gray-300 text-xs p-1">▲</button>}
+        {canDown && <button type="button" onClick={onMoveDown} className="text-gray-500 hover:text-gray-300 text-xs p-1">▼</button>}
         <button type="button" onClick={onDelete} className="text-red-700 hover:text-red-400 text-xs p-1">✕</button>
       </div>
       {children}
@@ -5996,7 +5996,7 @@ function ResumeTool() {
           <RInput label="GitHub" value={resume.basics.github} onChange={v => updateBasics('github', v)} placeholder="github.com/..." />
         </div>
         <div className="mt-2">
-          <span className="text-xs text-gray-500">{L ? 'Photo' : '照片'}</span>
+          <span className="text-xs text-gray-400">{L ? 'Photo' : '照片'}</span>
           <div className="flex items-center gap-3 mt-1">
             {resume.basics.photo && (
               <img src={resume.basics.photo} alt="" className="w-12 h-12 rounded-full object-cover border border-gray-700" />
@@ -6059,7 +6059,7 @@ function ResumeTool() {
                 <RInput label={L ? 'End Date' : '結束日期'} value={item.current ? '' : item.endDate} onChange={v => updateListItem('experience', item.id, 'endDate', v)} placeholder="2024/06" />
                 <label className="flex items-center gap-1 mt-1">
                   <input type="checkbox" checked={item.current || false} onChange={e => updateListItem('experience', item.id, 'current', e.target.checked)} className="accent-purple-600" />
-                  <span className="text-xs text-gray-500">{L ? 'Current' : '在職中'}</span>
+                  <span className="text-xs text-gray-400">{L ? 'Current' : '在職中'}</span>
                 </label>
               </div>
             </div>
@@ -6074,7 +6074,7 @@ function ResumeTool() {
             </div>
           </RItemCard>
         ))}
-        {resume.experience.length === 0 && <p className="text-xs text-gray-600 text-center py-2">{L ? 'No items yet' : '尚無資料，點擊上方「+ 新增」開始添加'}</p>}
+        {resume.experience.length === 0 && <p className="text-xs text-gray-400 text-center py-2">{L ? 'No items yet' : '尚無資料，點擊上方「+ 新增」開始添加'}</p>}
       </RSection>
 
       {/* Education */}
@@ -6107,7 +6107,7 @@ function ResumeTool() {
             </div>
           </RItemCard>
         ))}
-        {resume.education.length === 0 && <p className="text-xs text-gray-600 text-center py-2">{L ? 'No items yet' : '尚無資料，點擊上方「+ 新增」開始添加'}</p>}
+        {resume.education.length === 0 && <p className="text-xs text-gray-400 text-center py-2">{L ? 'No items yet' : '尚無資料，點擊上方「+ 新增」開始添加'}</p>}
       </RSection>
 
       {/* Skills */}
@@ -6171,7 +6171,7 @@ function ResumeTool() {
             </div>
           </RItemCard>
         ))}
-        {resume.projects.length === 0 && <p className="text-xs text-gray-600 text-center py-2">{L ? 'No items yet' : '尚無資料'}</p>}
+        {resume.projects.length === 0 && <p className="text-xs text-gray-400 text-center py-2">{L ? 'No items yet' : '尚無資料'}</p>}
       </RSection>
 
       {/* Languages */}
@@ -6190,7 +6190,7 @@ function ResumeTool() {
             <div className="grid grid-cols-2 gap-2 pr-8">
               <RInput label={L ? 'Language' : '語言'} value={item.name} onChange={v => updateListItem('languages', item.id, 'name', v)} placeholder={L ? 'English' : '英語'} />
               <label className="block">
-                <span className="text-xs text-gray-500">{L ? 'Level' : '程度'}</span>
+                <span className="text-xs text-gray-400">{L ? 'Level' : '程度'}</span>
                 <select
                   value={item.level || ''}
                   onChange={e => updateListItem('languages', item.id, 'level', e.target.value)}
@@ -6248,7 +6248,7 @@ function ResumeTool() {
       <div className="flex items-center justify-between px-4 py-2 bg-gray-900 border-b border-gray-800 flex-wrap gap-2">
         <div className="flex items-center gap-3">
           <h2 className="text-sm font-bold text-gray-200">📋 {L ? 'Resume Builder' : '履歷產生器'}</h2>
-          <span className="text-xs text-gray-600">
+          <span className="text-xs text-gray-400">
             Inspired by <a href="https://github.com/JOYCEQL/magic-resume" target="_blank" rel="noopener" className="text-gray-500 hover:text-gray-300 underline">magic-resume</a>
           </span>
         </div>
@@ -6305,7 +6305,7 @@ function ResumeTool() {
 
       {/* Privacy notice */}
       <div className="px-4 py-1.5 bg-gray-900/80 border-b border-gray-800">
-        <p className="text-xs text-gray-600">
+        <p className="text-xs text-gray-400">
           🔒 {L
             ? 'Privacy: Your resume data is stored entirely in your browser\'s local storage and is never uploaded to any server. When using AI polish features, only the selected text is sent to the AI service via encrypted connection — it is not stored or used for training.'
             : '隱私說明：您的履歷資料完全儲存在瀏覽器本機，不會上傳至任何伺服器。使用 AI 潤飾功能時，僅該段文字會透過加密連線傳送至 AI 服務處理，不會被儲存或用於模型訓練。'}
@@ -6561,7 +6561,7 @@ function App() {
 
             <footer className="text-center text-xs text-gray-700 py-3 border-t border-gray-900">
               {lang === 'en' ? 'Data reference: ' : '資料參考：'}
-              <a href="https://www.taiwanlottery.com" target="_blank" rel="noopener" className="text-gray-600 underline">{lang === 'en' ? 'Taiwan Lottery' : '台灣彩券官網'}</a>
+              <a href="https://www.taiwanlottery.com" target="_blank" rel="noopener" className="text-gray-500 underline">{lang === 'en' ? 'Taiwan Lottery' : '台灣彩券官網'}</a>
               　·　{lang === 'en' ? 'For entertainment only, not financial advice' : '本站僅供娛樂，不構成任何財務建議'}
             </footer>
 
@@ -6593,7 +6593,7 @@ function App() {
 
         {/* ── 全站頁尾（所有頁面皆顯示） ── */}
         {!['privacy','about','contact'].includes(page) && (
-          <footer className="text-center text-xs text-gray-600 py-4 border-t border-gray-800 mt-8">
+          <footer className="text-center text-xs text-gray-400 py-4 border-t border-gray-800 mt-8">
             <button onClick={() => setPage('about')} className="underline hover:text-gray-400">{t('footer.about')}</button>
             　·
             <button onClick={() => setPage('contact')} className="underline hover:text-gray-400">{t('contact.title')}</button>
