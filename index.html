@@ -421,6 +421,7 @@ const translations = {
     'common.second': '秒',
     'common.times': '次',
     'common.approx': '約',
+    'common.clear': '清除',
 
     // ── Currency Names ──
     'currency.USD': '美元', 'currency.EUR': '歐元', 'currency.JPY': '日圓',
@@ -534,6 +535,7 @@ const translations = {
 
     // ── PDF Tool ──
     'pdf.title': '📄 PDF 工具',
+    'pdf.merge': '合併 PDF',
     'pdf.tab_merge': '合併 PDF',
     'pdf.tab_split': '拆分 PDF',
     'pdf.select_files': '選擇 PDF 檔案',
@@ -604,6 +606,7 @@ const translations = {
     'datecalc.end_date': '結束日期',
     'datecalc.today': '今天',
     'datecalc.today_to_year': '今天 → 一年後',
+    'datecalc.days': '天',
     'datecalc.result_days': '{n} 天',
     'datecalc.result_weeks': '週',
     'datecalc.result_months': '個月',
@@ -681,6 +684,7 @@ const translations = {
     'lottery.super': '威力彩',
     'lottery.big': '大樂透',
     'lottery.tab_check': '🔍 對獎',
+    'lottery.latest_results': '最新開獎結果',
     'lottery.tab_results': '🏆 開獎',
     'lottery.tab_predict': '🎯 預測',
     'lottery.tab_stats': '📊 統計',
@@ -839,6 +843,7 @@ const translations = {
     'common.second': 's',
     'common.times': 'times',
     'common.approx': '≈',
+    'common.clear': 'Clear',
 
     // ── Currency Names ──
     'currency.USD': 'USD', 'currency.EUR': 'EUR', 'currency.JPY': 'JPY',
@@ -952,6 +957,7 @@ const translations = {
 
     // ── PDF Tool ──
     'pdf.title': '📄 PDF Tools',
+    'pdf.merge': 'Merge PDF',
     'pdf.tab_merge': 'Merge PDF',
     'pdf.tab_split': 'Split PDF',
     'pdf.select_files': 'Select PDF Files',
@@ -1022,6 +1028,7 @@ const translations = {
     'datecalc.end_date': 'End Date',
     'datecalc.today': 'Today',
     'datecalc.today_to_year': 'Today → 1 Year Later',
+    'datecalc.days': 'days',
     'datecalc.result_days': '{n} days',
     'datecalc.result_weeks': 'weeks',
     'datecalc.result_months': 'months',
@@ -1099,6 +1106,7 @@ const translations = {
     'lottery.super': 'Super Lotto',
     'lottery.big': 'Big Lotto',
     'lottery.tab_check': '🔍 Check',
+    'lottery.latest_results': 'Latest Results',
     'lottery.tab_results': '🏆 Results',
     'lottery.tab_predict': '🎯 Predict',
     'lottery.tab_stats': '📊 Stats',
@@ -4126,12 +4134,12 @@ function DateCalculatorTool() {
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <span className="text-xs text-gray-400 block mb-1">{t('datecalc.startDate')}</span>
+              <span className="text-xs text-gray-400 block mb-1">{t('datecalc.start_date')}</span>
               <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)}
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
             </div>
             <div>
-              <span className="text-xs text-gray-400 block mb-1">{t('datecalc.endDate')}</span>
+              <span className="text-xs text-gray-400 block mb-1">{t('datecalc.end_date')}</span>
               <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)}
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
             </div>
