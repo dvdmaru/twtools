@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>TW Tools — 台灣人的線上工具箱</title>
+  <title>TW Tools — 打工牛馬的線上工具箱</title>
   <meta name="description" content="免費線上工具箱：圖片壓縮與調整尺寸、PDF合併與分割、即時匯率換算（TWD基準）、單位換算、颱風停班停課查詢、台灣彩券號碼查詢、日期計算器、倒數計時器。無需安裝，開啟即用。">
   <meta name="keywords" content="圖片壓縮,PDF合併,PDF分割,匯率換算,颱風停班,颱風停課,單位換算,台灣彩券,威力彩,大樂透,影片下載,TikTok下載,Instagram下載,YouTube下載,抖音下載,免費工具">
   <meta name="author" content="twtools.cc">
@@ -56,6 +56,7 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script>
   <!-- html2pdf.js for Resume Builder -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <!-- Google Fonts for Resume Preview -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -444,6 +445,7 @@ const translations = {
     'unit.tab_temp': '溫度',
     'unit.from': '從',
     'unit.to': '到',
+    'unit.inputValue': '輸入數值',
     'unit.result': '結果',
     'unit.quick_convert': '快速對照表',
     'unit.instructions_title': '使用說明',
@@ -532,6 +534,27 @@ const translations = {
     'image.faq2_a': '輸入支援 JPG、PNG、WebP、GIF。輸出支援 JPG、PNG、WebP。',
     'image.faq3_q': '有檔案大小限制嗎？',
     'image.faq3_a': '無硬限制，但超大圖片（>20MB）可能因瀏覽器記憶體而變慢。',
+    'image.tab_convert': '格式轉換',
+    'image.select_files': '選擇圖片（可多選）',
+    'image.output_format': '輸出格式',
+    'image.custom_name': '自訂檔名前綴',
+    'image.custom_name_placeholder': '例：my-photo',
+    'image.batch_count': '{n} 張圖片',
+    'image.process': '開始處理',
+    'image.processing': '處理中…',
+    'image.download_zip': '⬇️ 下載 ZIP',
+    'image.download_all': '下載全部',
+    'image.remove': '移除',
+    'image.clear_all': '清除全部',
+    'image.done_count': '✅ 完成 {n} 張',
+    'image.quality_low': '低品質（小檔）',
+    'image.quality_high': '高品質（大檔）',
+    'image.free_ratio': '自由比例',
+    'image.convert_done': '✅ 轉換完成',
+    'image.resize_done': '✅ 調整完成',
+    'image.compress_done': '✅ 壓縮完成',
+    'image.instructions_convert': '格式轉換',
+    'image.instructions_convert_text': '上傳一或多張圖片，選擇輸出格式（JPG / PNG / WebP），一鍵批量轉換並下載 ZIP。',
 
     // ── PDF Tool ──
     'pdf.title': '📄 PDF 工具',
@@ -866,6 +889,7 @@ const translations = {
     'unit.tab_temp': 'Temperature',
     'unit.from': 'From',
     'unit.to': 'To',
+    'unit.inputValue': 'Enter Value',
     'unit.result': 'Result',
     'unit.quick_convert': 'Quick Reference',
     'unit.instructions_title': 'How to Use',
@@ -954,6 +978,27 @@ const translations = {
     'image.faq2_a': 'Input: JPG, PNG, WebP, GIF. Output: JPG, PNG, WebP.',
     'image.faq3_q': 'Is there a file size limit?',
     'image.faq3_a': 'No hard limit, but very large images (>20MB) may be slow due to browser memory.',
+    'image.tab_convert': 'Convert',
+    'image.select_files': 'Select Images (multiple)',
+    'image.output_format': 'Output Format',
+    'image.custom_name': 'Custom Filename Prefix',
+    'image.custom_name_placeholder': 'e.g. my-photo',
+    'image.batch_count': '{n} images',
+    'image.process': 'Process',
+    'image.processing': 'Processing…',
+    'image.download_zip': '⬇️ Download ZIP',
+    'image.download_all': 'Download All',
+    'image.remove': 'Remove',
+    'image.clear_all': 'Clear All',
+    'image.done_count': '✅ {n} done',
+    'image.quality_low': 'Low (small)',
+    'image.quality_high': 'High (large)',
+    'image.free_ratio': 'Free Ratio',
+    'image.convert_done': '✅ Converted',
+    'image.resize_done': '✅ Resized',
+    'image.compress_done': '✅ Compressed',
+    'image.instructions_convert': 'Format Conversion',
+    'image.instructions_convert_text': 'Upload one or more images, choose output format (JPG / PNG / WebP), batch convert and download as ZIP.',
 
     // ── PDF Tool ──
     'pdf.title': '📄 PDF Tools',
@@ -1271,7 +1316,7 @@ function LangProvider({ children }) {
     document.documentElement.lang = isEn ? 'en' : 'zh-TW';
     document.title = isEn
       ? 'TW Tools | Free Online Tools for Taiwan'
-      : 'TW Tools — 台灣人的線上工具箱';
+      : 'TW Tools — 打工牛馬的線上工具箱';
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.content = isEn
       ? 'Free online tools: image compression, PDF merge/split, currency exchange (TWD), unit converter, typhoon tracker, Taiwan lottery, date calculator, countdown timer.'
@@ -1279,7 +1324,7 @@ function LangProvider({ children }) {
     const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) ogTitle.content = isEn
       ? 'TW Tools | Free Online Tools'
-      : 'TW Tools — 台灣人的線上工具箱';
+      : 'TW Tools — 打工牛馬的線上工具箱';
     const ogDesc = document.querySelector('meta[property="og:description"]');
     if (ogDesc) ogDesc.content = isEn
       ? 'Image compression, PDF tools, currency exchange, typhoon tracker — all free, no install needed.'
@@ -1291,7 +1336,7 @@ function LangProvider({ children }) {
     if (jsonLd) {
       try {
         const data = JSON.parse(jsonLd.textContent);
-        data.name = isEn ? 'TW Tools' : 'TW Tools — 台灣人的線上工具箱';
+        data.name = isEn ? 'TW Tools' : 'TW Tools — 打工牛馬的線上工具箱';
         data.description = isEn
           ? 'Free online tools: image compression, PDF merge/split, currency exchange, typhoon tracker, Taiwan lottery, unit converter'
           : '免費線上工具：圖片壓縮、PDF合併分割、匯率換算、颱風停班停課、單位換算、台灣彩券查詢';
@@ -3146,184 +3191,319 @@ function Sidebar({ page, setPage, open, setOpen }) {
 // ================================================================
 function ImageTool() {
   const { lang, t } = useLang();
-  const [subtab, setSubtab] = useState('resize');
-  // resize
-  const [srcImg, setSrcImg] = useState(null);
-  const [origW, setOrigW] = useState(0);
-  const [origH, setOrigH] = useState(0);
-  const [w, setW] = useState('');
-  const [h, setH] = useState('');
-  const [lockRatio, setLockRatio] = useState(true);
-  const [resizedUrl, setResizedUrl] = useState(null);
-  // compress
-  const [compSrc, setCompSrc] = useState(null);
+  const L = lang === 'en';
+  const [subtab, setSubtab] = useState('convert');
+
+  /* ── 共用：批量檔案列表 ── */
+  const [files, setFiles] = useState([]);      // [{file, name, dataUrl, width, height}]
+  const [results, setResults] = useState([]);   // [{dataUrl, name, blob}]
+  const [processing, setProcessing] = useState(false);
+  const [baseName, setBaseName] = useState('');
+
+  /* ── Convert 專用 ── */
+  const [outFmt, setOutFmt] = useState('image/jpeg');
+  /* ── Compress 專用 ── */
   const [quality, setQuality] = useState(80);
-  const [compUrl, setCompUrl] = useState(null);
-  const [compOrigSize, setCompOrigSize] = useState(0);
-  const [compNewSize, setCompNewSize] = useState(0);
+  /* ── Resize 專用 ── */
+  const [resW, setResW] = useState('');
+  const [resH, setResH] = useState('');
+  const [lockRatio, setLockRatio] = useState(true);
 
-  const handleImgUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const img = new Image();
-      img.onload = () => {
-        setOrigW(img.width); setOrigH(img.height);
-        setW(String(img.width)); setH(String(img.height));
-        setSrcImg(ev.target.result);
-        setResizedUrl(null);
+  /* ── 上傳多張圖片 ── */
+  const handleFilesUpload = (e) => {
+    const newFiles = Array.from(e.target.files).filter(f => f.type.startsWith('image/'));
+    if (!newFiles.length) return;
+    const promises = newFiles.map(file => new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => resolve({ file, name: file.name, dataUrl: ev.target.result, width: img.width, height: img.height });
+        img.onerror = () => resolve(null);
+        img.src = ev.target.result;
       };
-      img.src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
+      reader.readAsDataURL(file);
+    }));
+    Promise.all(promises).then(items => {
+      const valid = items.filter(Boolean);
+      setFiles(prev => [...prev, ...valid]);
+      setResults([]);
+      if (subtab === 'resize' && valid.length && !resW && !resH) {
+        setResW(String(valid[0].width));
+        setResH(String(valid[0].height));
+      }
+    });
+    e.target.value = '';
   };
 
-  const handleWChange = (val) => {
-    setW(val);
-    if (lockRatio && origW && origH)
-      setH(String(Math.round(Number(val) * origH / origW)));
-  };
-  const handleHChange = (val) => {
-    setH(val);
-    if (lockRatio && origW && origH)
-      setW(String(Math.round(Number(val) * origW / origH)));
+  const removeFile = (idx) => { setFiles(prev => prev.filter((_, i) => i !== idx)); setResults([]); };
+  const clearAll = () => { setFiles([]); setResults([]); setResW(''); setResH(''); };
+
+  /* ── Canvas 工具 ── */
+  const fmtExt = (mime) => ({ 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp' }[mime] || '.png');
+  const dataUrlToBlob = (dataUrl) => {
+    const [header, b64] = dataUrl.split(',');
+    const mime = header.match(/:(.*?);/)[1];
+    const bin = atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: mime });
   };
 
-  const handleResize = () => {
-    if (!srcImg) return;
-    const nw = Number(w) || origW, nh = Number(h) || origH;
-    const canvas = document.createElement('canvas');
-    canvas.width = nw; canvas.height = nh;
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
-    img.onload = () => { ctx.drawImage(img, 0, 0, nw, nh); setResizedUrl(canvas.toDataURL('image/png')); };
-    img.src = srcImg;
-  };
-
-  const handleCompUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setCompOrigSize(file.size);
-    const reader = new FileReader();
-    reader.onload = (ev) => { setCompSrc(ev.target.result); setCompUrl(null); };
-    reader.readAsDataURL(file);
-  };
-
-  const handleCompress = () => {
-    if (!compSrc) return;
+  const processImage = (item, idx) => new Promise(resolve => {
     const img = new Image();
     img.onload = () => {
       const canvas = document.createElement('canvas');
-      canvas.width = img.width; canvas.height = img.height;
-      canvas.getContext('2d').drawImage(img, 0, 0);
-      const dataUrl = canvas.toDataURL('image/jpeg', quality / 100);
-      setCompUrl(dataUrl);
-      const b64 = dataUrl.split(',')[1];
-      setCompNewSize(Math.round(b64.length * 3 / 4));
+      let tw = img.width, th = img.height;
+      let fmt = outFmt, q = undefined;
+
+      if (subtab === 'resize') {
+        tw = Number(resW) || img.width;
+        th = Number(resH) || img.height;
+        fmt = outFmt;
+      }
+      if (subtab === 'compress') {
+        fmt = 'image/jpeg';
+        q = quality / 100;
+      }
+      if (subtab === 'convert') {
+        q = fmt === 'image/jpeg' ? 0.92 : undefined;
+      }
+
+      canvas.width = tw; canvas.height = th;
+      canvas.getContext('2d').drawImage(img, 0, 0, tw, th);
+      const dataUrl = canvas.toDataURL(fmt, q);
+      const pad = String(idx + 1).padStart(String(files.length).length < 3 ? 3 : String(files.length).length, '0');
+      const prefix = baseName.trim() || item.name.replace(/\.[^.]+$/, '');
+      const outName = files.length === 1 ? (prefix + fmtExt(fmt)) : (prefix + '-' + pad + fmtExt(fmt));
+      resolve({ dataUrl, name: outName, blob: dataUrlToBlob(dataUrl), origSize: item.file.size });
     };
-    img.src = compSrc;
+    img.onerror = () => resolve(null);
+    img.src = item.dataUrl;
+  });
+
+  /* ── 批量處理 ── */
+  const handleProcess = async () => {
+    if (!files.length || processing) return;
+    setProcessing(true);
+    setResults([]);
+    const out = [];
+    for (let i = 0; i < files.length; i++) {
+      const r = await processImage(files[i], i);
+      if (r) out.push(r);
+    }
+    setResults(out);
+    setProcessing(false);
   };
 
-  const dlDataUrl = (url, name) => { const a = document.createElement('a'); a.href = url; a.download = name; a.click(); };
+  /* ── 下載 ── */
+  const dlBlob = (blob, name) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = name; a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const dlZip = async () => {
+    if (!results.length) return;
+    if (results.length === 1) { dlBlob(results[0].blob, results[0].name); return; }
+    const zip = new JSZip();
+    results.forEach(r => zip.file(r.name, r.blob));
+    const blob = await zip.generateAsync({ type: 'blob' });
+    dlBlob(blob, (baseName.trim() || 'images') + '.zip');
+  };
+
+  /* ── Resize 寬高連動 ── */
+  const firstImg = files[0] || null;
+  const handleResWChange = (val) => {
+    setResW(val);
+    if (lockRatio && firstImg && firstImg.width && firstImg.height)
+      setResH(String(Math.round(Number(val) * firstImg.height / firstImg.width)));
+  };
+  const handleResHChange = (val) => {
+    setResH(val);
+    if (lockRatio && firstImg && firstImg.width && firstImg.height)
+      setResW(String(Math.round(Number(val) * firstImg.width / firstImg.height)));
+  };
+
+  /* ── 共用上傳區 ── */
+  const FileUploadArea = () => (
+    <div className="space-y-3">
+      <label className="block">
+        <span className="text-sm text-gray-400 mb-1 block">{t('image.select_files')}</span>
+        <input type="file" accept="image/*" multiple onChange={handleFilesUpload}
+          className="block w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-700 file:text-white hover:file:bg-purple-600 cursor-pointer" />
+      </label>
+      {files.length > 0 && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-gray-400">{t('image.batch_count').replace('{n}', files.length)}</span>
+            <button onClick={clearAll} className="text-xs text-red-400 hover:text-red-300">{t('image.clear_all')}</button>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-60 overflow-y-auto">
+            {files.map((f, i) => (
+              <div key={i} className="relative group bg-gray-800 rounded-lg p-1">
+                <img src={f.dataUrl} alt={f.name} className="h-20 w-full object-contain rounded" />
+                <p className="text-[10px] text-gray-400 truncate mt-0.5 px-1">{f.name}</p>
+                <button onClick={() => removeFile(i)}
+                  className="absolute top-1 right-1 bg-red-600/80 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  /* ── 自訂命名 ── */
+  const NameInput = () => (
+    <div>
+      <span className="text-xs text-gray-400 block mb-1">{t('image.custom_name')}</span>
+      <input type="text" value={baseName} onChange={e => setBaseName(e.target.value)}
+        placeholder={t('image.custom_name_placeholder')}
+        className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-1.5 text-sm text-white placeholder-gray-600" />
+      {files.length > 1 && baseName.trim() && (
+        <p className="text-[10px] text-gray-500 mt-1">{L ? 'Preview' : '預覽'}：{baseName.trim()}-001{fmtExt(subtab === 'compress' ? 'image/jpeg' : outFmt)}</p>
+      )}
+    </div>
+  );
+
+  /* ── 結果區 ── */
+  const ResultsArea = () => {
+    if (!results.length) return null;
+    const doneLabel = subtab === 'convert' ? t('image.convert_done') : subtab === 'resize' ? t('image.resize_done') : t('image.compress_done');
+    return (
+      <div className="space-y-3 mt-4 pt-4 border-t border-gray-700/50">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-green-400">{t('image.done_count').replace('{n}', results.length)}</span>
+          <button onClick={dlZip}
+            className="px-4 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg text-sm font-medium">
+            {results.length > 1 ? t('image.download_zip') : t('image.download')}
+          </button>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-60 overflow-y-auto">
+          {results.map((r, i) => (
+            <div key={i} className="bg-gray-800 rounded-lg p-1 cursor-pointer hover:ring-1 hover:ring-purple-500"
+              onClick={() => dlBlob(r.blob, r.name)}>
+              <img src={r.dataUrl} alt={r.name} className="h-20 w-full object-contain rounded" />
+              <p className="text-[10px] text-gray-400 truncate mt-0.5 px-1">{r.name}</p>
+              {r.origSize && subtab === 'compress' && (
+                <p className="text-[10px] text-green-400 px-1">{fmtFileSize(r.origSize)} → {fmtFileSize(r.blob.size)}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="tool-page max-w-2xl mx-auto px-4 py-6">
       <h2 className="text-xl font-bold text-white mb-4">{t('image.title')}</h2>
       <div className="flex gap-2 mb-6">
-        {[['resize', t('image.tab_resize')],['compress', t('image.tab_compress')]].map(([key,lbl]) => (
-          <button key={key} onClick={() => setSubtab(key)}
+        {[['convert', t('image.tab_convert')],['compress', t('image.tab_compress')],['resize', t('image.tab_resize')]].map(([key,lbl]) => (
+          <button key={key} onClick={() => { setSubtab(key); setResults([]); }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${subtab===key?'bg-purple-600 text-white':'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}>
             {lbl}
           </button>
         ))}
       </div>
 
+      {/* ── 格式轉換 ── */}
+      {subtab === 'convert' && (
+        <div className="space-y-4">
+          <FileUploadArea />
+          {files.length > 0 && (
+            <>
+              <div>
+                <span className="text-xs text-gray-400 block mb-1">{t('image.output_format')}</span>
+                <div className="flex gap-2">
+                  {[['image/jpeg','JPG'],['image/png','PNG'],['image/webp','WebP']].map(([m,lbl]) => (
+                    <button key={m} onClick={() => setOutFmt(m)}
+                      className={`px-4 py-1.5 rounded-lg text-sm font-medium border transition-colors ${outFmt===m?'bg-purple-700 border-purple-500 text-white':'bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700'}`}>
+                      {lbl}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <NameInput />
+              <button onClick={handleProcess} disabled={processing}
+                className="px-5 py-2 bg-purple-600 hover:bg-purple-500 disabled:bg-gray-700 disabled:text-gray-500 text-white rounded-lg text-sm font-medium">
+                {processing ? t('image.processing') : t('image.process')}
+              </button>
+            </>
+          )}
+          <ResultsArea />
+        </div>
+      )}
+
+      {/* ── 壓縮圖片 ── */}
+      {subtab === 'compress' && (
+        <div className="space-y-4">
+          <FileUploadArea />
+          {files.length > 0 && (
+            <>
+              <div>
+                <span className="text-sm text-gray-400">{t('image.quality')}：{quality}%</span>
+                <input type="range" min="10" max="100" step="5" value={quality}
+                  onChange={e => setQuality(Number(e.target.value))}
+                  className="w-full mt-1 accent-purple-500" />
+                <div className="flex justify-between text-xs text-gray-400">
+                  <span>{t('image.quality_low')}</span><span>{t('image.quality_high')}</span>
+                </div>
+              </div>
+              <NameInput />
+              <button onClick={handleProcess} disabled={processing}
+                className="px-5 py-2 bg-purple-600 hover:bg-purple-500 disabled:bg-gray-700 disabled:text-gray-500 text-white rounded-lg text-sm font-medium">
+                {processing ? t('image.processing') : t('image.tab_compress')}
+              </button>
+            </>
+          )}
+          <ResultsArea />
+        </div>
+      )}
+
+      {/* ── 調整尺寸 ── */}
       {subtab === 'resize' && (
         <div className="space-y-4">
-          <label className="block">
-            <span className="text-sm text-gray-400 mb-1 block">{t("image.select_file")}</span>
-            <input type="file" accept="image/*" onChange={handleImgUpload}
-              className="block w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-700 file:text-white hover:file:bg-purple-600 cursor-pointer" />
-          </label>
-          {srcImg && (
+          <FileUploadArea />
+          {files.length > 0 && (
             <>
-              <img src={srcImg} alt="preview" className="max-h-48 rounded-lg object-contain bg-gray-800 p-2" />
-              <p className="text-xs text-gray-400">{t("image.original_size")}：{origW} × {origH} px</p>
+              {firstImg && <p className="text-xs text-gray-400">{t('image.original_size')}：{firstImg.width} × {firstImg.height} px{files.length > 1 ? (L ? ' (first image)' : '（第一張）') : ''}</p>}
               <div className="flex items-end gap-3 flex-wrap">
                 <div>
-                  <span className="text-xs text-gray-400 block mb-1">{t("image.width")} (px)</span>
-                  <input type="number" value={w} onChange={e => handleWChange(e.target.value)} min="1"
+                  <span className="text-xs text-gray-400 block mb-1">{t('image.width')} (px)</span>
+                  <input type="number" value={resW} onChange={e => handleResWChange(e.target.value)} min="1"
                     className="w-24 bg-gray-800 border border-gray-700 rounded px-2 py-1.5 text-sm text-white" />
                 </div>
                 <span className="text-gray-500 pb-1.5">×</span>
                 <div>
-                  <span className="text-xs text-gray-400 block mb-1">{t("image.height")} (px)</span>
-                  <input type="number" value={h} onChange={e => handleHChange(e.target.value)} min="1"
+                  <span className="text-xs text-gray-400 block mb-1">{t('image.height')} (px)</span>
+                  <input type="number" value={resH} onChange={e => handleResHChange(e.target.value)} min="1"
                     className="w-24 bg-gray-800 border border-gray-700 rounded px-2 py-1.5 text-sm text-white" />
                 </div>
                 <button onClick={() => setLockRatio(!lockRatio)}
                   className={`px-3 py-1.5 rounded text-xs font-medium border ${lockRatio?'bg-purple-800 border-purple-600 text-purple-300':'bg-gray-800 border-gray-600 text-gray-400'}`}>
-                  {lockRatio ? t('image.lock_ratio') : '🔓 ' + (lang === 'en' ? 'Free' : '自由比例')}
+                  {lockRatio ? t('image.lock_ratio') : ('🔓 ' + t('image.free_ratio'))}
                 </button>
               </div>
-              <button onClick={handleResize}
-                className="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-sm font-medium">
-                {t("image.tab_resize")}
-              </button>
-            </>
-          )}
-          {resizedUrl && (
-            <div className="space-y-2 mt-2">
-              {lang === 'en'
-              ? <p className="text-sm text-green-400">✅ Done! Size: {w} × {h} px</p>
-              : <p className="text-sm text-green-400">✅ 完成！尺寸：{w} × {h} px</p>}
-              <img src={resizedUrl} alt="resized" className="max-h-48 rounded-lg object-contain bg-gray-800 p-2" />
-              <button onClick={() => dlDataUrl(resizedUrl, 'resized.png')}
-                className="px-4 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg text-sm font-medium">
-                {t('image.download_png')}
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {subtab === 'compress' && (
-        <div className="space-y-4">
-          <label className="block">
-            <span className="text-sm text-gray-400 mb-1 block">{t("image.select_file")}</span>
-            <input type="file" accept="image/*" onChange={handleCompUpload}
-              className="block w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-700 file:text-white hover:file:bg-purple-600 cursor-pointer" />
-          </label>
-          {compSrc && (
-            <>
-              <img src={compSrc} alt="preview" className="max-h-48 rounded-lg object-contain bg-gray-800 p-2" />
-              <p className="text-xs text-gray-400">{t("image.original_size")}：{fmtFileSize(compOrigSize)}</p>
               <div>
-                <span className="text-sm text-gray-400">{t("image.quality")}：{quality}%</span>
-                <input type="range" min="10" max="100" step="5" value={quality}
-                  onChange={e => setQuality(Number(e.target.value))}
-                  className="w-full mt-1 accent-purple-500" />
-                <div className="flex justify-between text-xs text-gray-400"><span>{lang === "en" ? "Low (small)" : "低品質（小檔）"}</span><span>{lang === "en" ? "High (large)" : "高品質（大檔）"}</span></div>
+                <span className="text-xs text-gray-400 block mb-1">{t('image.output_format')}</span>
+                <div className="flex gap-2">
+                  {[['image/jpeg','JPG'],['image/png','PNG'],['image/webp','WebP']].map(([m,lbl]) => (
+                    <button key={m} onClick={() => setOutFmt(m)}
+                      className={`px-4 py-1.5 rounded-lg text-sm font-medium border transition-colors ${outFmt===m?'bg-purple-700 border-purple-500 text-white':'bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700'}`}>
+                      {lbl}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <button onClick={handleCompress}
-                className="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-sm font-medium">
-                {t("image.tab_compress")}
+              <NameInput />
+              <button onClick={handleProcess} disabled={processing}
+                className="px-5 py-2 bg-purple-600 hover:bg-purple-500 disabled:bg-gray-700 disabled:text-gray-500 text-white rounded-lg text-sm font-medium">
+                {processing ? t('image.processing') : t('image.tab_resize')}
               </button>
             </>
           )}
-          {compUrl && (
-            <div className="space-y-2 mt-2">
-              <p className="text-sm text-green-400">
-                ✅ {fmtFileSize(compOrigSize)} → {fmtFileSize(compNewSize)}{lang === 'en' ? `(reduced ${Math.round((1 - compNewSize/compOrigSize)*100)}%)` : `（縮減 ${Math.round((1 - compNewSize/compOrigSize)*100)}%）`}
-              </p>
-              <img src={compUrl} alt="compressed" className="max-h-48 rounded-lg object-contain bg-gray-800 p-2" />
-              <button onClick={() => dlDataUrl(compUrl, 'compressed.jpg')}
-                className="px-4 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg text-sm font-medium">
-                {t('image.download_jpeg')}
-              </button>
-            </div>
-          )}
+          <ResultsArea />
         </div>
       )}
 
@@ -3331,30 +3511,46 @@ function ImageTool() {
         <h3 className="text-sm font-semibold text-gray-300 mb-3">{t('common.instructions')}</h3>
         <div className="text-xs text-gray-400 space-y-3">
           <div>
-            <p className="font-medium text-gray-300 mb-1.5">{t('image.instructions_resize')}</p>
+            <p className="font-medium text-gray-300 mb-1.5">{t('image.instructions_convert')}</p>
             <ol className="space-y-1 list-decimal list-inside">
-              {lang === 'en' ? (<>
-                <li>Switch to the "Resize" tab and upload an image (supports PNG, JPG, WebP, etc.)</li>
-                <li>Enter the target width or height (aspect ratio is locked by default)</li>
-                <li>Click "{t('image.tab_resize')}", then download the PNG</li>
+              {L ? (<>
+                <li>Switch to "Convert" tab, upload one or more images (supports JPG, PNG, WebP, GIF)</li>
+                <li>Select an output format (JPG / PNG / WebP)</li>
+                <li>Optionally set a custom filename prefix; click "Process" to batch convert</li>
+                <li>Download individually or as a ZIP archive</li>
               </>) : (<>
-                <li>切換至「調整尺寸」分頁，點選上傳圖片（支援 PNG、JPG、WebP 等格式）</li>
-                <li>輸入目標寬度或高度（預設鎖定長寬比，避免變形）</li>
-                <li>點「{t('image.tab_resize')}」，完成後點按鈕下載 PNG 檔</li>
+                <li>切換至「格式轉換」分頁，上傳一或多張圖片（支援 JPG、PNG、WebP、GIF）</li>
+                <li>選擇目標輸出格式（JPG / PNG / WebP）</li>
+                <li>可自訂檔名前綴，點「開始處理」批量轉換</li>
+                <li>單張直接下載，多張打包 ZIP 下載</li>
               </>)}
             </ol>
           </div>
           <div>
             <p className="font-medium text-gray-300 mb-1.5">{t('image.instructions_compress')}</p>
             <ol className="space-y-1 list-decimal list-inside">
-              {lang === 'en' ? (<>
-                <li>Switch to the "Compress" tab and upload an image</li>
-                <li>Drag the quality slider (70–85% recommended for the best balance between quality and file size)</li>
-                <li>Click "{t('image.tab_compress')}", then download the compressed JPEG</li>
+              {L ? (<>
+                <li>Switch to "Compress" tab, upload images</li>
+                <li>Drag the quality slider (70–85% recommended)</li>
+                <li>Click compress to process all images at once; download individually or as ZIP</li>
               </>) : (<>
                 <li>切換至「壓縮圖片」分頁，上傳圖片</li>
                 <li>拖曳品質滑桿（建議 70–85%，在畫質與檔案大小間取得最佳平衡）</li>
-                <li>點「{t('image.tab_compress')}」，畫面顯示縮減百分比後即可下載 JPEG</li>
+                <li>點擊壓縮批量處理，單張直接下載或多張 ZIP 下載</li>
+              </>)}
+            </ol>
+          </div>
+          <div>
+            <p className="font-medium text-gray-300 mb-1.5">{t('image.instructions_resize')}</p>
+            <ol className="space-y-1 list-decimal list-inside">
+              {L ? (<>
+                <li>Switch to "Resize" tab, upload images</li>
+                <li>Enter target width or height (aspect ratio locked by default based on first image)</li>
+                <li>Choose output format, set custom name, then process all at once</li>
+              </>) : (<>
+                <li>切換至「調整尺寸」分頁，上傳圖片</li>
+                <li>輸入目標寬度或高度（預設依第一張圖片鎖定長寬比）</li>
+                <li>選擇輸出格式、設定自訂檔名，批量處理後下載</li>
               </>)}
             </ol>
           </div>
@@ -3366,29 +3562,29 @@ function ImageTool() {
           <div>
             <h3 className="text-sm font-semibold text-gray-300 mb-2">{t('image.about_title')}</h3>
             <p className="text-xs text-gray-400 leading-relaxed">
-              {lang === 'en'
-                ? 'Image Tools combines the most common image processing features: format conversion, background removal, and compression — all running entirely in your browser with no software installation or server upload required. Format conversion supports PNG, JPEG, WebP, BMP, and GIF. AI background removal uses transformers.js to run a segmentation model locally on your GPU/CPU, typically completing in seconds. Compression adjusts JPEG quality to significantly reduce file size while preserving visual quality. All processing happens locally — your images never leave your device.'
-                : '圖片工具集合了日常最常用的圖片處理功能，包含格式轉換、背景移除與品質壓縮，全部在瀏覽器端完成，無須安裝任何軟體或上傳檔案至外部伺服器。格式轉換支援 PNG、JPEG、WebP、BMP、GIF 之間的互轉，讓你輕鬆因應不同平台的格式需求。AI 智慧去背採用 transformers.js 技術，直接在本機 GPU/CPU 上運行語義分割模型，精準辨別前景主體並移除背景，處理速度視裝置效能而定，一般在數秒至十秒內完成。圖片壓縮功能透過調整 JPEG 品質係數，在保留視覺畫質的前提下大幅縮小檔案體積，非常適合上傳至社群平台或網站前的預處理。所有運算均在本機瀏覽器執行，你的圖片資料絕對不會離開你的裝置。'}
+              {L
+                ? 'Image Tools combines format conversion, compression, and resizing — all running entirely in your browser with zero server uploads. Upload multiple images at once for batch processing. Supports JPG, PNG, and WebP output with custom filename prefixes and automatic numbering. Download results individually or as a ZIP archive.'
+                : '圖片工具集合了格式轉換、壓縮與調整尺寸三大功能，全部在瀏覽器端完成，無須上傳檔案至外部伺服器。支援一次上傳多張圖片批量處理，輸出格式支援 JPG、PNG、WebP，可自訂檔名前綴並自動編號。單張直接下載，多張打包 ZIP 下載。'}
             </p>
           </div>
           <div>
             <h3 className="text-sm font-semibold text-gray-300 mb-2">{t('common.faq')}</h3>
             <div className="space-y-3">
               <div>
-                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'What formats are supported for conversion?' : '格式轉換支援哪些格式？'}</p>
-                <p className="text-xs text-gray-400">{lang === 'en' ? 'Supports conversion between PNG, JPEG, WebP, BMP, and GIF. Note: animated GIFs will only retain the first frame after conversion.' : '支援 PNG、JPEG、WebP、BMP、GIF 之間的任意互轉。注意 GIF 動畫轉換後僅保留第一幀靜態畫面。'}</p>
+                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{L ? 'What formats are supported?' : '支援哪些格式？'}</p>
+                <p className="text-xs text-gray-400">{L ? 'Input: JPG, PNG, WebP, GIF, BMP. Output: JPG, PNG, WebP. Animated GIFs will retain only the first frame.' : '輸入支援 JPG、PNG、WebP、GIF、BMP。輸出支援 JPG、PNG、WebP。GIF 動畫僅保留第一幀。'}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Does AI background removal require internet?' : 'AI 去背需要網路嗎？'}</p>
-                <p className="text-xs text-gray-400">{lang === 'en' ? 'Internet is needed the first time to download the AI model (~40–80 MB). After that, it\'s cached in the browser and works offline.' : '首次使用時需要網路下載 AI 模型（約 40–80 MB），之後會快取在瀏覽器中，離線也可使用。'}</p>
+                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{L ? 'How does batch processing work?' : '批量處理怎麼運作？'}</p>
+                <p className="text-xs text-gray-400">{L ? 'Upload multiple images using the file picker (hold Ctrl/Cmd to select). All images are processed with the same settings. Results can be downloaded individually or as a single ZIP file.' : '透過檔案選擇器一次上傳多張圖片（按住 Ctrl/Cmd 多選），所有圖片套用相同設定處理，結果可單張下載或打包成 ZIP。'}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Why is the compressed output in JPEG format?' : '壓縮後為什麼是 JPEG 格式？'}</p>
-                <p className="text-xs text-gray-400">{lang === 'en' ? 'JPEG uses lossy compression to achieve the highest compression ratio at any given quality level, making it ideal for photos. If you need transparency, use PNG instead.' : 'JPEG 採用失真壓縮演算法，在相同品質設定下可獲得最高的壓縮率，最適合相片類圖片的體積最佳化。若需要保留透明度，建議使用 PNG 格式。'}</p>
+                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{L ? 'How does custom naming work?' : '自訂命名怎麼用？'}</p>
+                <p className="text-xs text-gray-400">{L ? 'Enter a filename prefix. For batch processing, files are auto-numbered: prefix-001.jpg, prefix-002.jpg, etc. If no prefix is set, the original filename is used.' : '輸入檔名前綴，批量處理時自動加編號：前綴-001.jpg、前綴-002.jpg⋯。未設定前綴則使用原始檔名。'}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Are there size or resolution limits?' : '圖片有大小或解析度限制嗎？'}</p>
-                <p className="text-xs text-gray-400">{lang === 'en' ? 'No hard limits, but very large images (e.g., over 4000×4000 pixels) may process slowly due to device memory constraints. Desktop browsers are recommended for ultra-high resolution images.' : '無硬性限制，但過大的圖片（例如超過 4000×4000 像素）可能受裝置記憶體影響而處理較慢，建議超高解析度圖片使用桌機瀏覽器。'}</p>
+                <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{L ? 'Are there size or resolution limits?' : '有檔案大小限制嗎？'}</p>
+                <p className="text-xs text-gray-400">{L ? 'No hard limits, but very large images (>20MB) may be slow due to browser memory. Desktop browsers recommended for ultra-high resolution.' : '無硬性限制，但超大圖片（>20MB）可能因瀏覽器記憶體而變慢，建議使用桌機瀏覽器。'}</p>
               </div>
             </div>
           </div>
@@ -4568,14 +4764,14 @@ function CountdownTool() {
       {mode === 'custom' && (
         <div className="space-y-3 mb-4">
           <div>
-            <span className="text-xs text-gray-400 block mb-1">{t('countdown.eventName')}</span>
+            <span className="text-xs text-gray-400 block mb-1">{t('countdown.event_name')}</span>
             <input type="text" value={customName} onChange={e => setCustomName(e.target.value)} placeholder={lang === 'en' ? 'e.g. Birthday, Trip departure' : '例如：生日、旅行出發'}
 
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <span className="text-xs text-gray-400 block mb-1">{t('countdown.targetDate')}</span>
+              <span className="text-xs text-gray-400 block mb-1">{t('countdown.target_date')}</span>
               <input type="date" value={customDate} onChange={e => { setCustomDate(e.target.value); setFinished(false); }}
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white" />
             </div>
@@ -4995,7 +5191,7 @@ const BLOG_ARTICLES = [
         <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">停班停課的三種狀態</h2>
         <p>地方政府通常會公告下列三種狀態之一：</p>
         <ul className="list-disc list-inside space-y-2 pl-2">
-          <li><strong className="text-white">{t('typhoon.offAll')}</strong>：公私立機關學校全面停班停課，員工無需出勤，學生不用到校。</li>
+          <li><strong className="text-white">{t('typhoon.status_off_all')}</strong>：公私立機關學校全面停班停課，員工無需出勤，學生不用到校。</li>
           <li><strong className="text-white">停止上課（不停班）</strong>：學生不用上學，但一般公務員及上班族仍須正常出勤，除非雇主另有公告。</li>
           <li><strong className="text-white">停止上班（不停課）</strong>：較少見的狀態，通常出現在需要持續服務的特殊情境。</li>
         </ul>
