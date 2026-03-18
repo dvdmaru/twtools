@@ -3262,8 +3262,9 @@ function ImageTool() {
         fmt = outFmt;
       }
       if (subtab === 'compress') {
-        fmt = 'image/jpeg';
-        q = quality / 100;
+        const origMime = item.file.type;
+        fmt = (origMime === 'image/png' || origMime === 'image/webp' || origMime === 'image/jpeg') ? origMime : 'image/jpeg';
+        q = (fmt === 'image/png') ? undefined : quality / 100;
       }
       if (subtab === 'convert') {
         q = fmt === 'image/jpeg' ? 0.92 : undefined;
