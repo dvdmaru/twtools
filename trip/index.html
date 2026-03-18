@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
 <script>
 tailwind.config = {
   theme: { extend: { colors: {
@@ -130,7 +131,12 @@ const T = {
     showAll: '全部天數',
     exportICS: '📅 匯出日曆 (.ics)',
     exportJSON: '💾 匯出資料 (.json)',
+    exportPDF: '📄 匯出 PDF',
     addToGCal: '📅 加入 Google 日曆',
+    searchFlights: '搜尋機票',
+    searchHotels: '搜尋住宿',
+    costEstimate: '參考',
+    costDisclaimer: '所有費用皆為 AI 估算，實際價格請以訂購平台為準',
     budgetDist: '預算分佈',
     dailyCost: '每日花費',
     totalLabel: '總計',
@@ -218,7 +224,12 @@ const T = {
     showAll: '全部天数',
     exportICS: '📅 导出日历 (.ics)',
     exportJSON: '💾 导出数据 (.json)',
+    exportPDF: '📄 导出 PDF',
     addToGCal: '📅 添加到 Google 日历',
+    searchFlights: '搜索机票',
+    searchHotels: '搜索住宿',
+    costEstimate: '参考',
+    costDisclaimer: '所有费用均为 AI 估算，实际价格请以预订平台为准',
     budgetDist: '预算分布',
     dailyCost: '每日花费',
     totalLabel: '总计',
@@ -306,7 +317,12 @@ const T = {
     showAll: 'All Days',
     exportICS: '📅 Export Calendar (.ics)',
     exportJSON: '💾 Export Data (.json)',
+    exportPDF: '📄 Export PDF',
     addToGCal: '📅 Add to Google Calendar',
+    searchFlights: 'Search Flights',
+    searchHotels: 'Search Hotels',
+    costEstimate: 'est.',
+    costDisclaimer: 'All costs are AI estimates. Check booking platforms for actual prices.',
     budgetDist: 'Budget Breakdown',
     dailyCost: 'Daily Costs',
     totalLabel: 'Total',
@@ -866,6 +882,22 @@ function makeGCalUrl(act, date) {
   return `https://calendar.google.com/calendar/render?${params}`;
 }
 
+// ── Booking Links ──
+function makeFlightUrl(origin, destination, startDate, endDate) {
+  // Google Flights
+  return `https://www.google.com/travel/flights?q=flights+from+${encodeURIComponent(origin)}+to+${encodeURIComponent(destination)}&d1=${startDate}&d2=${endDate}`;
+}
+
+function makeHotelUrl(destination, checkIn, checkOut) {
+  // Google Hotels
+  return `https://www.google.com/travel/hotels?q=hotels+in+${encodeURIComponent(destination)}&dates=${checkIn},${checkOut}`;
+}
+
+function makeMapUrl(name, city) {
+  // Google Maps search
+  return `https://www.google.com/maps/search/${encodeURIComponent(name + ' ' + city)}`;
+}
+
 // ── Results ──
 function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
   const t = useT();
@@ -939,6 +971,55 @@ function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(trip,null,2)],{type:'application/json'})); a.download = `${trip.tripTitle||'trip'}.json`; a.click();
   };
 
+  const exportPDF = () => {
+    const content = document.createElement('div');
+    content.style.cssText = 'font-family:sans-serif;padding:20px;max-width:800px;';
+
+    let html = `<h1 style="color:#0d9488;margin-bottom:4px">${trip.tripTitle || 'My Trip'}</h1>`;
+    html += `<p style="color:#666;font-size:14px">${tripData.startDate} ~ ${tripData.endDate} | ${sym}${Number(tripData.budget).toLocaleString()} ${tripData.currency} | ${tripData.travelers}${t.person}</p>`;
+    html += `<p style="color:#888;font-size:13px">${trip.summary || ''}</p><hr style="border:none;border-top:1px solid #eee;margin:16px 0">`;
+
+    days.forEach((day, i) => {
+      html += `<h2 style="color:#0d9488;font-size:16px;margin-top:20px">Day ${i+1} - ${day.dayTitle}</h2>`;
+      (day.activities || []).forEach(act => {
+        html += `<div style="padding:8px 0;border-bottom:1px solid #f1f1f1">`;
+        html += `<span style="color:#999;font-size:12px;margin-right:8px">${act.time}${act.endTime ? ' - '+act.endTime : ''}</span>`;
+        html += `<strong style="font-size:14px">${CATEGORY_ICONS[act.category]||'📍'} ${act.name}</strong>`;
+        if (act.nameEn) html += ` <span style="color:#aaa;font-size:12px">${act.nameEn}</span>`;
+        if (act.description) html += `<br><span style="color:#666;font-size:13px">${act.description}</span>`;
+        if (act.cost > 0) html += `<br><span style="color:#f97316;font-size:12px">~${sym}${act.cost.toLocaleString()}</span>`;
+        if (act.location?.address) html += ` <span style="color:#aaa;font-size:11px">📍${act.location.address}</span>`;
+        html += '</div>';
+      });
+      if (day.accommodation) {
+        html += `<div style="background:#f0fdfa;padding:8px 12px;border-radius:8px;margin-top:8px;font-size:13px">🏨 ${day.accommodation.name}${day.accommodation.cost > 0 ? ' — ~' + sym + day.accommodation.cost.toLocaleString() : ''}</div>`;
+      }
+    });
+
+    if (trip.totalBudget) {
+      html += `<hr style="border:none;border-top:1px solid #eee;margin:16px 0">`;
+      html += `<h2 style="color:#0d9488;font-size:16px">${t.budgetDist}</h2>`;
+      html += `<table style="width:100%;font-size:13px;border-collapse:collapse">`;
+      [['🍜',t.food,trip.totalBudget.food],['🚆',t.transport,trip.totalBudget.transport],['🎫',t.activities,trip.totalBudget.activities],['🏨',t.accommodation,trip.totalBudget.accommodation]].forEach(([icon,label,val]) => {
+        html += `<tr><td style="padding:4px 0">${icon} ${label}</td><td style="text-align:right;font-weight:600">~${sym}${(val||0).toLocaleString()}</td></tr>`;
+      });
+      html += `<tr style="border-top:1px solid #ddd;font-weight:700"><td style="padding:8px 0">${t.totalLabel}</td><td style="text-align:right">~${sym}${(trip.totalBudget.total||0).toLocaleString()}</td></tr>`;
+      html += '</table>';
+      html += `<p style="color:#999;font-size:11px;margin-top:8px">💡 ${t.costDisclaimer}</p>`;
+    }
+
+    html += `<p style="color:#ccc;font-size:10px;margin-top:24px;text-align:center">Generated by TripCraft — twtools.cc/trip</p>`;
+    content.innerHTML = html;
+
+    html2pdf().set({
+      margin: [10, 10, 10, 10],
+      filename: (trip.tripTitle || 'trip') + '.pdf',
+      image: { type: 'jpeg', quality: 0.95 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).from(content).save();
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-gradient-to-r from-brand-600 to-brand-800 text-white">
@@ -959,6 +1040,19 @@ function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
           <ul className="space-y-1">{trip.tips.map((tip,i) => <li key={i} className="text-sm text-amber-700">• {tip}</li>)}</ul>
         </div></div>
       )}
+      {/* 快速訂購連結 */}
+      <div className="max-w-6xl mx-auto px-4 mt-3">
+        <div className="flex flex-wrap gap-2">
+          <a href={makeFlightUrl('Taiwan', tripData.destination, tripData.startDate, tripData.endDate)} target="_blank" rel="noopener"
+            className="px-4 py-2 bg-white rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:border-brand-300 hover:shadow-sm transition-all flex items-center gap-2 no-underline">
+            ✈️ {t.searchFlights}
+          </a>
+          <a href={makeHotelUrl(tripData.destination, tripData.startDate, tripData.endDate)} target="_blank" rel="noopener"
+            className="px-4 py-2 bg-white rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:border-brand-300 hover:shadow-sm transition-all flex items-center gap-2 no-underline">
+            🏨 {t.searchHotels}
+          </a>
+        </div>
+      </div>
       <div className="max-w-6xl mx-auto px-4 mt-4">
         <div className="flex gap-1 bg-white rounded-xl p-1 border border-gray-200 mb-4 w-fit">
           {[['itinerary',t.tabItinerary],['map',t.tabMap],['budget',t.tabBudget]].map(([key,label]) => (
@@ -982,7 +1076,7 @@ function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
               </div>
               <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
                 <button onClick={exportICS} className="w-full py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 flex items-center justify-center gap-2">{t.exportICS}</button>
-                <button onClick={exportJSON} className="w-full py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 flex items-center justify-center gap-2">{t.exportJSON}</button>
+                <button onClick={exportPDF} className="w-full py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 flex items-center justify-center gap-2">{t.exportPDF}</button>
               </div>
             </div></div>
             <div className="lg:col-span-2">{days[selectedDay] && (
@@ -998,9 +1092,9 @@ function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-0.5"><span className="text-base">{CATEGORY_ICONS[act.category]||'📍'}</span><span className="font-semibold text-gray-800 text-sm truncate">{act.name}</span>{act.nameEn&&<span className="text-xs text-gray-400 truncate hidden sm:inline">{act.nameEn}</span>}</div>
                           {act.description&&<p className="text-xs text-gray-500 mb-1">{act.description}</p>}
-                          <div className="flex items-center gap-3 text-xs text-gray-400">
-                            {act.cost>0&&<span className="text-accent-600 font-medium">{act.costNote||`${sym}${act.cost}`}</span>}
-                            {act.location?.address&&<span className="truncate">📍 {act.location.address}</span>}
+                          <div className="flex items-center gap-3 text-xs text-gray-400 flex-wrap">
+                            {act.cost>0&&<span className="text-accent-600 font-medium">~{sym}{act.cost.toLocaleString()}（{t.costEstimate}）</span>}
+                            {act.location?.address&&<a href={makeMapUrl(act.name, tripData.destination)} target="_blank" rel="noopener" className="text-blue-500 hover:underline truncate">📍 {act.location.address}</a>}
                             <a href={makeGCalUrl(act, days[selectedDay].date)} target="_blank" rel="noopener"
                               className="text-brand-600 hover:underline ml-auto shrink-0">{t.addToGCal}</a>
                           </div>
