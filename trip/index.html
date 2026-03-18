@@ -3,9 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TripCraft - AI 旅遊規劃器</title>
-<meta name="description" content="AI 旅遊規劃器：輸入目的地、天數、預算，AI 自動產出完整行程表、地圖路線、預算追蹤。支援匯出日曆與 Google Calendar。">
+<title>旅圖 TripCraft — AI 旅遊規劃器 | 一鍵規劃，說走就走</title>
+<meta name="description" content="旅圖 TripCraft - AI 旅遊規劃器：輸入目的地、天數、預算，AI 自動產出完整行程表。支援地圖標示、消費等級參考、日曆匯出、Google 機票住宿搜尋連結。">
 <link rel="canonical" href="https://twtools.cc/trip/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://twtools.cc/trip/">
+<meta property="og:title" content="旅圖 TripCraft — AI 旅遊規劃器">
+<meta property="og:description" content="輸入目的地、天數、預算，AI 自動產出完整行程表。支援地圖標示、消費等級參考、日曆匯出、Google 機票住宿搜尋連結。">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="旅圖 TripCraft — AI 旅遊規劃器">
+<meta name="twitter:description" content="輸入目的地、天數、預算，AI 自動產出完整行程表。支援地圖、日曆匯出、訂購連結。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "旅圖 TripCraft",
+  "url": "https://twtools.cc/trip/",
+  "description": "AI 旅遊規劃器：輸入目的地、天數、預算，自動產出完整行程表、地圖路線、訂購連結",
+  "applicationCategory": "TravelApplication",
+  "operatingSystem": "Any",
+  "inLanguage": ["zh-TW", "zh-CN", "en"],
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" },
+  "featureList": ["AI 行程自動規劃", "互動式地圖", "Google 機票住宿搜尋", "PDF 日曆匯出", "三語支援"],
+  "isPartOf": { "@type": "WebSite", "name": "TWTools", "url": "https://twtools.cc" }
+}
+</script>
 <!-- Google Analytics (GA4) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script>
 <script>
@@ -69,8 +92,8 @@ const LANGS = {
 const T = {
   'zh-TW': {
     appName: 'TripCraft',
-    appTitle: 'AI 旅遊規劃器',
-    appSubtitle: '告訴我你的夢想旅程，AI 幫你搞定一切',
+    appTitle: '旅圖 TripCraft',
+    appSubtitle: '一鍵規劃，說走就走',
     step1Title: '你想去哪裡？',
     step1Desc: '輸入目的地城市，或從熱門選項中挑選',
     step1Placeholder: '例如：東京、京都、大阪',
@@ -147,6 +170,9 @@ const T = {
     food: '餐飲', transport: '交通', activities: '活動', accommodation: '住宿', misc: '其他',
     daysSection: '行程天數',
     poweredBy: 'Built with Claude API & Leaflet | TWTools.cc',
+    footerAbout: '關於旅圖',
+    footerPrivacy: '隱私權政策',
+    footerFeedback: '問題回報',
     interest_history: '歷史古蹟', interest_food: '美食探索', interest_nature: '自然風景',
     interest_shopping: '購物血拼', interest_culture: '文化體驗', interest_nightlife: '夜生活',
     interest_art: '藝術設計', interest_adventure: '冒險運動', interest_relaxation: '悠閒放鬆', interest_photo: '攝影打卡',
@@ -161,8 +187,8 @@ const T = {
   },
   'zh-CN': {
     appName: 'TripCraft',
-    appTitle: 'AI 旅行规划器',
-    appSubtitle: '告诉我你的梦想旅程，AI 帮你搞定一切',
+    appTitle: '旅图 TripCraft',
+    appSubtitle: '一键规划，说走就走',
     step1Title: '你想去哪里？',
     step1Desc: '输入目的地城市，或从热门选项中挑选',
     step1Placeholder: '例如：东京、京都、大阪',
@@ -239,6 +265,9 @@ const T = {
     food: '餐饮', transport: '交通', activities: '活动', accommodation: '住宿', misc: '其他',
     daysSection: '行程天数',
     poweredBy: 'Built with Claude API & Leaflet | TWTools.cc',
+    footerAbout: '关于旅图',
+    footerPrivacy: '隐私政策',
+    footerFeedback: '问题反馈',
     interest_history: '历史古迹', interest_food: '美食探索', interest_nature: '自然风景',
     interest_shopping: '购物血拼', interest_culture: '文化体验', interest_nightlife: '夜生活',
     interest_art: '艺术设计', interest_adventure: '冒险运动', interest_relaxation: '悠闲放松', interest_photo: '摄影打卡',
@@ -253,8 +282,8 @@ const T = {
   },
   'en': {
     appName: 'TripCraft',
-    appTitle: 'AI Trip Planner',
-    appSubtitle: 'Tell me your dream trip, AI plans it all',
+    appTitle: 'TripCraft',
+    appSubtitle: 'Plan your dream trip in one click',
     step1Title: 'Where do you want to go?',
     step1Desc: 'Enter a destination or pick from popular choices',
     step1Placeholder: 'e.g. Tokyo, Kyoto, Osaka',
@@ -331,6 +360,9 @@ const T = {
     food: 'Food', transport: 'Transport', activities: 'Activities', accommodation: 'Accommodation', misc: 'Other',
     daysSection: 'Trip Days',
     poweredBy: 'Built with Claude API & Leaflet | TWTools.cc',
+    footerAbout: 'About',
+    footerPrivacy: 'Privacy',
+    footerFeedback: 'Feedback',
     interest_history: 'History', interest_food: 'Food', interest_nature: 'Nature',
     interest_shopping: 'Shopping', interest_culture: 'Culture', interest_nightlife: 'Nightlife',
     interest_art: 'Art & Design', interest_adventure: 'Adventure', interest_relaxation: 'Relaxation', interest_photo: 'Photography',
@@ -1299,7 +1331,14 @@ function App() {
               {step===3 && <StepReview data={formData} onBack={() => setStep(2)} onGenerate={handleGenerate} apiKey={apiKey} setApiKey={setApiKey} quota={quota} />}
             </>
           )}
-          <p className="text-center text-xs text-gray-400 mt-12">{t.poweredBy}</p>
+          <div className="flex justify-center gap-4 text-xs text-gray-400 mt-8 mb-2">
+            <a href="/trip/about.html" className="hover:text-brand-500 no-underline">{t.footerAbout}</a>
+            <span>·</span>
+            <a href="/trip/privacy.html" className="hover:text-brand-500 no-underline">{t.footerPrivacy}</a>
+            <span>·</span>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSd_XdTrj_rdYmYrjW4MbD3EG4LM3hMLbw6Dg5p_wEEoQwisrA/viewform" target="_blank" rel="noopener" className="hover:text-brand-500 no-underline">{t.footerFeedback}</a>
+          </div>
+          <p className="text-center text-xs text-gray-400 mt-2">{t.poweredBy}</p>
         </div>
       </div>
     </I18nContext.Provider>
