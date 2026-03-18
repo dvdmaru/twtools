@@ -477,12 +477,25 @@ ${JSON.stringify(dayData, null, 2)}
 // Components
 // ═══════════════════════════════════════════
 
-function Logo() {
+function Logo({ white }) {
   return (
-    <div className="flex items-center gap-2">
-      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-lg">✈</div>
-      <span className="text-xl font-bold bg-gradient-to-r from-brand-600 to-brand-800 bg-clip-text text-transparent">TripCraft</span>
-    </div>
+    <a href="/" className="flex items-center gap-2 no-underline" title="TWTools.cc">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="36" height="36">
+        <defs><linearGradient id="lgo" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style={{stopColor:'#2dd4bf'}}/><stop offset="100%" style={{stopColor:'#0d9488'}}/></linearGradient></defs>
+        <rect width="40" height="40" rx="10" fill="url(#lgo)"/>
+        <g transform="translate(20,20) rotate(-30)"><path d="M-2,-12 L2,-12 L4,-2 L10,2 L10,4 L4,2 L2,10 L4,12 L4,14 L0,12 L-4,14 L-4,12 L-2,10 L-4,2 L-10,4 L-10,2 L-4,-2 Z" fill="white" opacity="0.95"/></g>
+        <circle cx="10" cy="32" r="1.5" fill="white" opacity="0.5"/><circle cx="15" cy="30" r="1" fill="white" opacity="0.4"/><circle cx="19" cy="29" r="0.8" fill="white" opacity="0.3"/>
+      </svg>
+      <span className={`text-xl font-bold ${white ? 'text-white' : 'bg-gradient-to-r from-brand-600 to-brand-800 bg-clip-text text-transparent'}`}>TripCraft</span>
+    </a>
+  );
+}
+
+function BackToTWTools() {
+  return (
+    <a href="https://twtools.cc" className="text-xs text-gray-400 hover:text-brand-500 flex items-center gap-1 no-underline transition-colors">
+      ← TWTools.cc
+    </a>
   );
 }
 
@@ -879,7 +892,7 @@ function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
     <div className="min-h-screen bg-gray-50">
       <div className="bg-gradient-to-r from-brand-600 to-brand-800 text-white">
         <div className="max-w-6xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between mb-4"><Logo /><div className="flex items-center gap-2">
+          <div className="flex items-center justify-between mb-4"><Logo white /><div className="flex items-center gap-2">
             <button onClick={onReset} className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium backdrop-blur transition-all">{t.resetBtn}</button>
           </div></div>
           <h1 className="text-2xl sm:text-3xl font-bold mb-1">{trip.tripTitle||'My Trip'}</h1>
@@ -1111,7 +1124,7 @@ function App() {
       <div className="min-h-screen bg-gradient-to-br from-brand-50 via-white to-accent-50">
         <div className="max-w-xl mx-auto px-4 py-8">
           <div className="flex justify-between items-start mb-6">
-            <div />
+            <BackToTWTools />
             <LangSwitcher lang={lang} setLang={setLang} />
           </div>
           <div className="text-center mb-8">
