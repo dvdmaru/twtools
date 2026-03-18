@@ -486,6 +486,47 @@ ${JSON.stringify(dayData, null, 2)}
 }
 
 // ═══════════════════════════════════════════
+// JSON Repair (處理被截斷的 AI 回應)
+// ═══════════════════════════════════════════
+function repairJSON(text) {
+  // 先嘗試直接解析
+  try { return JSON.parse(text); } catch(e) {}
+
+  // 提取 JSON 部分
+  let json = text.match(/\{[\s\S]*/)?.[0];
+  if (!json) throw new Error('No JSON found in response');
+
+  // 嘗試直接解析提取的部分
+  try { return JSON.parse(json); } catch(e) {}
+
+  // 修復被截斷的 JSON：補齊缺少的括號
+  // 移除最後一個不完整的屬性（可能在字串中間截斷）
+  json = json.replace(/,\s*"[^"]*"?\s*:?\s*[^,\}\]]*$/, '');
+  json = json.replace(/,\s*\{[^}]*$/, '');  // 移除不完整的物件
+  json = json.replace(/,\s*\[[^\]]*$/, '');  // 移除不完整的陣列
+  json = json.replace(/,\s*$/, '');           // 移除尾部逗號
+
+  // 計算並補齊缺少的括號
+  let brackets = 0, braces = 0, inStr = false, escape = false;
+  for (const ch of json) {
+    if (escape) { escape = false; continue; }
+    if (ch === '\\') { escape = true; continue; }
+    if (ch === '"') { inStr = !inStr; continue; }
+    if (inStr) continue;
+    if (ch === '{') braces++;
+    if (ch === '}') braces--;
+    if (ch === '[') brackets++;
+    if (ch === ']') brackets--;
+  }
+  json += ']'.repeat(Math.max(0, brackets));
+  json += '}'.repeat(Math.max(0, braces));
+
+  try { return JSON.parse(json); } catch(e) {
+    throw new Error('JSON 解析失敗，行程資料可能過長。請嘗試縮短天數或選擇「充實緊湊」節奏。');
+  }
+}
+
+// ═══════════════════════════════════════════
 // Components
 // ═══════════════════════════════════════════
 
@@ -858,9 +899,7 @@ function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
         }
       }
 
-      const jsonMatch = resultText.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) throw new Error('Unable to parse AI response');
-      const newDay = JSON.parse(jsonMatch[0]);
+      const newDay = repairJSON(resultText);
 
       // 更新行程
       const newDays = [...days];
@@ -1114,9 +1153,7 @@ function App() {
         }
       }
 
-      const jsonMatch = resultText.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) throw new Error('Unable to parse AI response');
-      setTrip(JSON.parse(jsonMatch[0]));
+      setTrip(repairJSON(resultText));
     } catch (e) {
       setError(e.message);
       setLoading(false);
