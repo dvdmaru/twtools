@@ -44,6 +44,63 @@
     ]
   }
   </script>
+  <!-- FAQPage 結構化資料（GEO：提升 AI 搜尋引擎擷取率） -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "如何線上壓縮圖片？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "在 twtools.cc 的圖片工具中，上傳圖片後可自由調整壓縮品質與輸出尺寸，支援 JPG、PNG、WebP 格式互轉。壓縮過程完全在瀏覽器端完成，圖片不會上傳至伺服器，隱私安全有保障。支援批量處理，可一次壓縮多張圖片並以 ZIP 打包下載。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "如何線上合併或分割 PDF？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "使用 twtools.cc 的 PDF 工具，透過開源 pdf-lib 技術在瀏覽器端處理。合併功能可將多個 PDF 合而為一並調整順序；分割功能可輸入頁碼範圍（如 1-3, 5, 8）擷取指定頁面。所有操作在本機完成，檔案不會上傳伺服器。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "今天有颱風停班停課嗎？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "twtools.cc 的颱風停班停課查詢工具即時顯示全台 22 縣市的停班停課狀態，資料來源為行政院人事行政總處（DGPA）官方公告。以色彩標示各縣市狀態：綠色正常上班上課、紅色停止上班及上課、橘色僅停課、黃色研判中。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "威力彩和大樂透的中獎機率是多少？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "威力彩（Super Lotto 638）頭獎機率約為 1/2,209 萬，大樂透（Lotto 649）頭獎機率約為 1/1,398 萬。twtools.cc 提供最新開獎結果即時查詢、自動對獎、歷史號碼統計分析（出現頻率、冷熱號、遺漏期數），以及基於歷史頻率的智慧選號建議。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "如何換算外幣匯率？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "twtools.cc 提供以新台幣（TWD）為基準的即時匯率換算工具，支援美元、日圓、歐元、人民幣、港幣、韓元等多種貨幣。匯率資料來自 ExchangeRate-API，每日更新。適合出國旅遊查匯率、海外購物換算價格。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "如何計算兩個日期之間的天數？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "twtools.cc 的日期計算器可計算兩個日期之間的天數差距、從指定日期往後加天數或往前減天數。支援閏年判斷，結果同時顯示總天數、週數、月數及工作日數（排除六日）。適合計算合約到期日、預產期、退伍日、專案工期等。所有計算在瀏覽器端執行，不需連線。"
+        }
+      }
+    ]
+  }
+  </script>
   <!-- Google Analytics (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script>
   <script>
@@ -399,7 +456,6 @@ const translations = {
     'sidebar.datecalc': '日期計算器',
     'sidebar.countdown': '倒數計時器',
     'sidebar.resume': '履歷產生器',
-    'sidebar.trip': '✈️ AI 旅行規劃',
     'sidebar.footer': '打工人工具箱 © 2026',
 
     // ── Common ──
@@ -844,7 +900,6 @@ const translations = {
     'sidebar.datecalc': 'Date Calculator',
     'sidebar.countdown': 'Countdown',
     'sidebar.resume': 'Resume Builder',
-    'sidebar.trip': '✈️ AI Trip Planner',
     'sidebar.footer': 'TWTools © 2026',
 
     // ── Common ──
@@ -3135,7 +3190,6 @@ function Sidebar({ page, setPage, open, setOpen }) {
     { id:'datecalc', icon:'📅', label: t('sidebar.datecalc') },
     { id:'countdown',icon:'⏳', label: t('sidebar.countdown') },
     { id:'resume',   icon:'📋', label: t('sidebar.resume') },
-    { id:'trip',     icon:'✈️', label: t('sidebar.trip'), href: '/trip/' },
   ];
   return (
     <>
@@ -3167,30 +3221,18 @@ function Sidebar({ page, setPage, open, setOpen }) {
         </div>
         <nav className="flex-1 py-2 overflow-y-auto">
           {items.map(item => (
-            item.href ? (
-              <a
-                key={item.id}
-                href={item.href}
-                className="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors text-gray-400 hover:bg-gray-800 hover:text-white"
-              >
-                <span className="text-base">{item.icon}</span>
-                {item.label}
-                <span className="ml-auto text-xs text-gray-600">↗</span>
-              </a>
-            ) : (
-              <button
-                key={item.id}
-                onClick={() => { setPage(item.id); setOpen(false); }}
-                className={`w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors ${
-                  page === item.id
-                    ? 'bg-purple-900/50 text-purple-300 border-r-2 border-purple-500'
-                    : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-                }`}
-              >
-                <span className="text-base">{item.icon}</span>
-                {item.label}
-              </button>
-            )
+            <button
+              key={item.id}
+              onClick={() => { setPage(item.id); setOpen(false); }}
+              className={`w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors ${
+                page === item.id
+                  ? 'bg-purple-900/50 text-purple-300 border-r-2 border-purple-500'
+                  : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+              }`}
+            >
+              <span className="text-base">{item.icon}</span>
+              {item.label}
+            </button>
           ))}
         </nav>
         <div className="p-3 border-t border-gray-800 text-xs text-gray-400 text-center">
@@ -4014,17 +4056,17 @@ function CurrencyTool() {
             <li>Select "From" and "To" currencies from the dropdowns — supports 16 major currencies including TWD, USD, JPY, EUR, GBP, CNY</li>
             <li>Enter an amount — the result updates instantly in the yellow box, no button press needed</li>
             <li>The rate table below shows TWD exchange rates (1 foreign currency = ? TWD)</li>
-            <li>Rates auto-update from ECB data daily after 20:00 Taipei time; you can also click "✏️ Edit Rates" to manually adjust</li>
+            <li>Rates auto-update from ExchangeRate-API daily after 20:00 Taipei time; you can also click "✏️ Edit Rates" to manually adjust</li>
           </>) : (<>
             <li>從下拉選單選擇「來源幣別」與「目標幣別」，支援 TWD、USD、JPY、EUR、GBP、CNY 等 16 種主要貨幣</li>
             <li>輸入金額，換算結果即時顯示於黃色框中，無需按確認</li>
             <li>下方匯率表顯示各幣別對台幣（TWD）的參考匯率（1 外幣 = ? TWD）</li>
-            <li>匯率每日台北時間 20:00 後自動從 ECB 資料更新；也可點「✏️ 更新匯率」手動調整並同步所有使用者</li>
+            <li>匯率每日台北時間 20:00 後自動從 ExchangeRate-API 更新；也可點「✏️ 更新匯率」手動調整並同步所有使用者</li>
           </>)}
         </ol>
         <p className="text-xs text-gray-400 mt-3">{lang === 'en'
-            ? <>Source: <a href="https://github.com/fawazahmed0/exchange-api" target="_blank" rel="noopener" className="underline hover:text-gray-400">fawazahmed0/exchange-api</a> (ECB exchange rates, updated daily)</>
-            : <>資料來源：<a href="https://github.com/fawazahmed0/exchange-api" target="_blank" rel="noopener" className="underline hover:text-gray-400">fawazahmed0/exchange-api</a>（歐洲央行 ECB 匯率資料，每日更新）</>
+            ? <>Source: <a href="https://www.exchangerate-api.com/" target="_blank" rel="noopener" className="underline hover:text-gray-400">ExchangeRate-API</a> (market mid-rate, updated daily). Rates are for reference only; actual exchange rates may differ at banks.</>
+            : <>資料來源：<a href="https://www.exchangerate-api.com/" target="_blank" rel="noopener" className="underline hover:text-gray-400">ExchangeRate-API</a>（市場中間價，每日更新）。匯率僅供參考，實際兌換請以銀行牌告為準。</>
           }</p>
       </div>
 
@@ -4034,8 +4076,8 @@ function CurrencyTool() {
           <h3 className="text-sm font-semibold text-gray-300 mb-2">{lang === 'en' ? 'About Currency Converter' : '關於匯率換算工具'}</h3>
           <p className="text-xs text-gray-400 leading-relaxed">
             {lang === 'en'
-              ? 'The Currency Converter integrates daily reference rates from the European Central Bank (ECB), supporting instant conversion between 16 major currencies including TWD, USD, JPY, EUR, GBP, and CNY. Rates are updated daily via the fawazahmed0/exchange-api open-source project, syncing automatically after 20:00 Taipei time. The interface prioritizes simplicity — select currencies, enter an amount, and see instant results. The reference rate table below uses TWD as the base, displaying all 16 currencies at a glance for quick comparison.'
-              : '匯率換算工具整合歐洲央行（ECB）每日公布的參考匯率資料，支援台幣（TWD）、美元（USD）、日圓（JPY）、歐元（EUR）、英鎊（GBP）、人民幣（CNY）等 16 種主要貨幣的即時換算。匯率資料透過 fawazahmed0/exchange-api 開源專案每日更新，在台北時間每天 20:00 後自動同步最新數據，確保你取得的換算結果貼近當日市場行情。工具介面設計以直觀操作為優先，選好幣別、輸入金額後換算結果即時呈現，無需等待或按確認鍵。此外，下方匯率參考表以台幣為基準，一次顯示全部 16 種貨幣的兌換率，方便快速比較各國貨幣的相對強弱。'}
+              ? 'The Currency Converter uses daily market mid-rates from ExchangeRate-API, supporting instant conversion between 16 major currencies including TWD, USD, JPY, EUR, GBP, and CNY. Rates sync automatically after 20:00 Taipei time each day. The interface prioritizes simplicity — select currencies, enter an amount, and see instant results. The reference rate table below uses TWD as the base, displaying all 16 currencies at a glance for quick comparison.'
+              : '匯率換算工具使用 ExchangeRate-API 提供的每日市場中間價，支援台幣（TWD）、美元（USD）、日圓（JPY）、歐元（EUR）、英鎊（GBP）、人民幣（CNY）等 16 種主要貨幣的即時換算。匯率資料在台北時間每天 20:00 後自動同步最新數據，確保你取得的換算結果貼近當日市場行情。工具介面設計以直觀操作為優先，選好幣別、輸入金額後換算結果即時呈現，無需等待或按確認鍵。此外，下方匯率參考表以台幣為基準，一次顯示全部 16 種貨幣的兌換率，方便快速比較各國貨幣的相對強弱。'}
           </p>
         </div>
         <div>
@@ -4043,11 +4085,11 @@ function CurrencyTool() {
           <div className="space-y-3">
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'How often are rates updated?' : '匯率多久更新一次？'}</p>
-              <p className="text-xs text-gray-400">{lang === 'en' ? 'Rates auto-update daily from ECB after ~20:00 Taipei time. ECB provides reference rates (not real-time trading prices), intended for estimation only.' : '每日台北時間約 20:00 後自動從 ECB（歐洲央行）資料來源更新。ECB 採用的是每個交易日的參考匯率，非實時成交價，僅供參考估算。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'Rates auto-update daily from ExchangeRate-API after ~20:00 Taipei time. These are market mid-rates (not real-time trading prices), intended for estimation only.' : '每日台北時間約 20:00 後自動從 ExchangeRate-API 更新。採用的是市場中間價（非實時成交價），僅供參考估算。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Why do results differ from bank rates?' : '為什麼結果和銀行牌告匯率不同？'}</p>
-              <p className="text-xs text-gray-400">{lang === 'en' ? 'This tool uses ECB mid-rate reference rates. Banks add their own buy/sell spread (fees), so differences are normal.' : '本工具使用 ECB 參考匯率（中間價），銀行的買入／賣出價會加上手續費差價（點差），因此會有數字上的落差，屬正常現象。'}</p>
+              <p className="text-xs text-gray-400">{lang === 'en' ? 'This tool uses market mid-rate reference rates from ExchangeRate-API. Banks add their own buy/sell spread (fees), so differences are normal.' : '本工具使用 ExchangeRate-API 提供的市場中間價，銀行的買入／賣出價會加上手續費差價（點差），因此會有數字上的落差，屬正常現象。'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 font-medium mb-0.5">Q：{lang === 'en' ? 'Can I set custom rates?' : '可以自訂匯率嗎？'}</p>
