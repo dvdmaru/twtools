@@ -456,6 +456,7 @@ const translations = {
     'sidebar.datecalc': '日期計算器',
     'sidebar.countdown': '倒數計時器',
     'sidebar.resume': '履歷產生器',
+    'sidebar.trip': '✈️ AI 旅行規劃',
     'sidebar.footer': '打工人工具箱 © 2026',
 
     // ── Common ──
@@ -900,6 +901,7 @@ const translations = {
     'sidebar.datecalc': 'Date Calculator',
     'sidebar.countdown': 'Countdown',
     'sidebar.resume': 'Resume Builder',
+    'sidebar.trip': '✈️ AI Trip Planner',
     'sidebar.footer': 'TWTools © 2026',
 
     // ── Common ──
@@ -3234,6 +3236,16 @@ function Sidebar({ page, setPage, open, setOpen }) {
               {item.label}
             </button>
           ))}
+          <a
+            href="/trip/"
+            target="_blank"
+            rel="noopener"
+            className="w-full text-left px-4 py-3 text-sm flex items-center gap-3 text-gray-400 hover:bg-gray-800 hover:text-white transition-colors border-t border-gray-800 mt-1"
+          >
+            <span className="text-base">✈️</span>
+            {t('sidebar.trip')}
+            <span className="ml-auto text-xs text-gray-500">↗</span>
+          </a>
         </nav>
         <div className="p-3 border-t border-gray-800 text-xs text-gray-400 text-center">
           {lang === 'en' ? 'TW Tools © 2026' : '打工人工具箱 © 2026'}
