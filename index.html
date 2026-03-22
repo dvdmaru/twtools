@@ -5071,10 +5071,15 @@ function TyphoonTool() {
         if (data.dates[tomorrowKey]) {
           newTomorrowStatuses = normalizeStatuses(data.dates[tomorrowKey].statuses);
           if (data.dates[tomorrowKey].dateLabel) newTomorrowDate = data.dates[tomorrowKey].dateLabel;
+        } else if (!data.hasTyphoon) {
+          // 無颱風 → 明天也正常（不是「尚未公布」）
+          newTomorrowStatuses = {...INIT_TYPHOON};
         }
+        // else: 有颱風但明天沒資料 → null（尚未公布）
       } else if (data.statuses) {
         // 舊格式：只有一組 statuses，視為今天
         newTodayStatuses = normalizeStatuses(data.statuses);
+        if (!data.hasTyphoon) newTomorrowStatuses = {...INIT_TYPHOON};
       }
 
       setTodayStatuses(newTodayStatuses);
@@ -5092,6 +5097,7 @@ function TyphoonTool() {
           const fbData = {
             typhoonName: name, updatedAt: now,
             updatedAtISO: new Date().toISOString(), source: 'dgpa',
+            hasTyphoon: !!(data.hasTyphoon),
             statuses: newTodayStatuses, // 向下相容
             dates: { [todayKey]: { statuses: newTodayStatuses, dateLabel: newTodayDate } },
           };
@@ -5130,14 +5136,18 @@ function TyphoonTool() {
             setTomorrowStatuses(normalizeStatuses(data.dates[tomorrowKey].statuses));
             if (data.dates[tomorrowKey].dateLabel) setTomorrowDate(data.dates[tomorrowKey].dateLabel);
             smartDefaultTab(true);
+          } else if (!data.hasTyphoon) {
+            // 無颱風 → 明天也正常
+            setTomorrowStatuses({...INIT_TYPHOON});
           } else {
+            // 有颱風但明天沒資料 → 尚未公布
             setTomorrowStatuses(null);
           }
         } else if (data.statuses) {
           // 舊格式
           setTodayStatuses(normalizeStatuses(data.statuses));
           setTodayDate(formatDateLabel(getTaipeiDate(0)));
-          setTomorrowStatuses(null);
+          setTomorrowStatuses(data.hasTyphoon === false ? {...INIT_TYPHOON} : null);
         }
 
         if (data.typhoonName !== undefined) setTyphoonName(data.typhoonName);
@@ -5172,9 +5182,11 @@ function TyphoonTool() {
     setDataSource('manual');
 
     if (_db) {
+      const hasTyphoonFlag = !!(typhoonName || hasTomorrowEdits || Object.values(savedToday).some(s => s !== 'normal'));
       const fbData = {
         statuses: savedToday, typhoonName, updatedAt: now,
         updatedAtISO: new Date().toISOString(), source: 'manual',
+        hasTyphoon: hasTyphoonFlag,
         dates: { [todayKey]: { statuses: savedToday, dateLabel: formatDateLabel(getTaipeiDate(0)) } },
       };
       if (hasTomorrowEdits) {
