@@ -4999,8 +4999,7 @@ function TyphoonTool() {
   // ── 雙日資料結構 ──
   const [todayStatuses, setTodayStatuses]       = useState(INIT_TYPHOON);
   const [tomorrowStatuses, setTomorrowStatuses] = useState(null); // null = 尚未公布
-  const [todayDate, setTodayDate]               = useState('');   // e.g. "3月22日"
-  const [tomorrowDate, setTomorrowDate]         = useState('');
+  // todayDate / tomorrowDate 改為即時計算（formatDateLabel(getTaipeiDate(0/1))），不再用 state
   const [activeTab, setActiveTab]               = useState('today'); // 'today' | 'tomorrow'
   const [editMode, setEditMode]                 = useState(false);
   const [editTab, setEditTab]                   = useState('today');
@@ -5057,52 +5056,44 @@ function TyphoonTool() {
 
       // Worker 新格式：data.dates = { "2026-07-15": { statuses: {...} }, ... }
       // Worker 舊格式：data.statuses = { "台北市": "off_all", ... }
-      let newTodayStatuses = INIT_TYPHOON;
+      let newTodayStatuses = {...INIT_TYPHOON};
       let newTomorrowStatuses = null;
-      let newTodayDate = formatDateLabel(getTaipeiDate(0));
-      let newTomorrowDate = formatDateLabel(getTaipeiDate(1));
 
       if (data.dates && typeof data.dates === 'object') {
         // 新格式：多日資料
         if (data.dates[todayKey]) {
           newTodayStatuses = normalizeStatuses(data.dates[todayKey].statuses);
-          if (data.dates[todayKey].dateLabel) newTodayDate = data.dates[todayKey].dateLabel;
         }
         if (data.dates[tomorrowKey]) {
           newTomorrowStatuses = normalizeStatuses(data.dates[tomorrowKey].statuses);
-          if (data.dates[tomorrowKey].dateLabel) newTomorrowDate = data.dates[tomorrowKey].dateLabel;
         } else if (!data.hasTyphoon) {
-          // 無颱風 → 明天也正常（不是「尚未公布」）
           newTomorrowStatuses = {...INIT_TYPHOON};
         }
-        // else: 有颱風但明天沒資料 → null（尚未公布）
       } else if (data.statuses) {
-        // 舊格式：只有一組 statuses，視為今天
+        // 舊格式
         newTodayStatuses = normalizeStatuses(data.statuses);
         if (!data.hasTyphoon) newTomorrowStatuses = {...INIT_TYPHOON};
       }
 
       setTodayStatuses(newTodayStatuses);
       setTomorrowStatuses(newTomorrowStatuses);
-      setTodayDate(newTodayDate);
-      setTomorrowDate(newTomorrowDate);
       setTyphoonName(name);
       setLastUpdate(now);
       setDataSource('dgpa');
       smartDefaultTab(!!newTomorrowStatuses);
 
-      // 同步到 Firebase
+      // 同步到 Firebase（dateLabel 僅作為 metadata 保留）
       if (_db) {
         try {
           const fbData = {
             typhoonName: name, updatedAt: now,
             updatedAtISO: new Date().toISOString(), source: 'dgpa',
             hasTyphoon: !!(data.hasTyphoon),
-            statuses: newTodayStatuses, // 向下相容
-            dates: { [todayKey]: { statuses: newTodayStatuses, dateLabel: newTodayDate } },
+            statuses: newTodayStatuses,
+            dates: { [todayKey]: { statuses: newTodayStatuses, dateLabel: formatDateLabel(getTaipeiDate(0)) } },
           };
           if (newTomorrowStatuses) {
-            fbData.dates[tomorrowKey] = { statuses: newTomorrowStatuses, dateLabel: newTomorrowDate };
+            fbData.dates[tomorrowKey] = { statuses: newTomorrowStatuses, dateLabel: formatDateLabel(getTaipeiDate(1)) };
           }
           await _db.ref('/twTools_typhoon').set(fbData);
         } catch(e) { console.warn('颱風資料同步 Firebase 失敗:', e); }
@@ -5123,42 +5114,62 @@ function TyphoonTool() {
         const todayKey = toDateKey(getTaipeiDate(0));
         const tomorrowKey = toDateKey(getTaipeiDate(1));
 
-        if (data.dates && typeof data.dates === 'object') {
-          // 新格式
+        // 檢查 Firebase 資料的日期 key 是否包含今天（跨午夜過期偵測）
+        const dataDateKeys = data.dates ? Object.keys(data.dates) : [];
+        const isDateStale = dataDateKeys.length > 0 && !dataDateKeys.includes(todayKey);
+
+        if (!isDateStale && data.dates && typeof data.dates === 'object') {
+          // 新格式且日期匹配
           if (data.dates[todayKey]) {
             setTodayStatuses(normalizeStatuses(data.dates[todayKey].statuses));
-            if (data.dates[todayKey].dateLabel) setTodayDate(data.dates[todayKey].dateLabel);
-          } else {
-            setTodayStatuses(normalizeStatuses(data.statuses));
-            setTodayDate(formatDateLabel(getTaipeiDate(0)));
           }
           if (data.dates[tomorrowKey]) {
             setTomorrowStatuses(normalizeStatuses(data.dates[tomorrowKey].statuses));
-            if (data.dates[tomorrowKey].dateLabel) setTomorrowDate(data.dates[tomorrowKey].dateLabel);
             smartDefaultTab(true);
           } else if (!data.hasTyphoon) {
-            // 無颱風 → 明天也正常
             setTomorrowStatuses({...INIT_TYPHOON});
           } else {
-            // 有颱風但明天沒資料 → 尚未公布
             setTomorrowStatuses(null);
           }
-        } else if (data.statuses) {
-          // 舊格式
+        } else if (!isDateStale && data.statuses) {
+          // 舊格式且未過期
           setTodayStatuses(normalizeStatuses(data.statuses));
-          setTodayDate(formatDateLabel(getTaipeiDate(0)));
           setTomorrowStatuses(data.hasTyphoon === false ? {...INIT_TYPHOON} : null);
+        } else {
+          // 資料過期（跨午夜）→ 預設正常狀態
+          setTodayStatuses({...INIT_TYPHOON});
+          setTomorrowStatuses({...INIT_TYPHOON});
         }
 
         if (data.typhoonName !== undefined) setTyphoonName(data.typhoonName);
-        if (data.updatedAt) setLastUpdate(data.updatedAt);
-        if (data.source) setDataSource(data.source);
+        if (data.updatedAt && !isDateStale) setLastUpdate(data.updatedAt);
+        if (data.source && !isDateStale) setDataSource(data.source);
       }
-      const isStale = !data || !data.updatedAtISO
+      // 過期判斷：時間超過 24 小時 OR 日期 key 不含今天（跨午夜）
+      const dataDateKeys2 = data && data.dates ? Object.keys(data.dates) : [];
+      const isDateStale2 = dataDateKeys2.length > 0 && !dataDateKeys2.includes(todayKey);
+      const isTimeStale = !data || !data.updatedAtISO
         || (Date.now() - new Date(data.updatedAtISO).getTime()) > TYPHOON_STALE_MS;
-      if (isStale && !fetched) { fetched = true; fetchDGPA(); }
+      if ((isTimeStale || isDateStale2) && !fetched) { fetched = true; fetchDGPA(); }
     });
     return () => ref.off('value', handler);
+  }, []);
+
+  // ── 跨午夜偵測：每 60 秒檢查日期是否變化，變化時重新抓取 ──
+  useEffect(() => {
+    let lastDateKey = toDateKey(getTaipeiDate(0));
+    const interval = setInterval(() => {
+      const currentDateKey = toDateKey(getTaipeiDate(0));
+      if (currentDateKey !== lastDateKey) {
+        lastDateKey = currentDateKey;
+        // 日期已變，先重設為正常狀態，再觸發 Worker 重新抓取
+        setTodayStatuses({...INIT_TYPHOON});
+        setTomorrowStatuses({...INIT_TYPHOON});
+        setActiveTab('today');
+        fetchDGPA();
+      }
+    }, 60000); // 每分鐘檢查一次
+    return () => clearInterval(interval);
   }, []);
 
   const handleSave = async () => {
@@ -5171,10 +5182,8 @@ function TyphoonTool() {
     const hasTomorrowEdits = Object.values(savedTomorrow).some(s => s !== 'normal');
 
     setTodayStatuses(savedToday);
-    setTodayDate(formatDateLabel(getTaipeiDate(0)));
     if (hasTomorrowEdits) {
       setTomorrowStatuses(savedTomorrow);
-      setTomorrowDate(formatDateLabel(getTaipeiDate(1)));
     } else {
       setTomorrowStatuses(null);
     }
@@ -5298,7 +5307,7 @@ function TyphoonTool() {
               ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
               : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
           }`}>
-          {t('typhoon.tab_today')} <span className="text-xs opacity-70 ml-1">{todayDate || formatDateLabel(getTaipeiDate(0))}</span>
+          {t('typhoon.tab_today')} <span className="text-xs opacity-70 ml-1">{formatDateLabel(getTaipeiDate(0))}</span>
         </button>
         <button
           onClick={() => setActiveTab('tomorrow')}
@@ -5307,7 +5316,7 @@ function TyphoonTool() {
               ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
               : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
           }`}>
-          {t('typhoon.tab_tomorrow')} <span className="text-xs opacity-70 ml-1">{tomorrowDate || formatDateLabel(getTaipeiDate(1))}</span>
+          {t('typhoon.tab_tomorrow')} <span className="text-xs opacity-70 ml-1">{formatDateLabel(getTaipeiDate(1))}</span>
           {hasTomorrow && tomorrowStatuses && Object.values(tomorrowStatuses).some(s => s !== 'normal') && (
             <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
           )}
