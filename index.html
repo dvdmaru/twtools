@@ -5790,6 +5790,96 @@ const BLOG_ARTICLES = [
         <p>若使用悠遊卡、一卡通、手機載具存發票，可以至財政部電子發票整合服務平台或統一發票兌獎 APP 查詢，中獎後會自動通知，非常方便。</p>
       </div>
     )
+  },
+  {
+    id: 'typo-checker-guide',
+    title_zh: '中文錯別字檢查教學：輸入法害你打錯字？用 AI 一鍵揪出',
+    title_en: 'Chinese Typo Checker Guide: Let AI Catch Your Input Method Mistakes',
+    get title() { return (typeof _blogLang !== 'undefined' && _blogLang === 'en') ? this.title_en : this.title_zh; },
+    date: '2026-03-23',
+    category_zh: '實用工具', category_en: 'Utilities',
+    get category() { return (typeof _blogLang !== 'undefined' && _blogLang === 'en') ? this.category_en : this.category_zh; },
+    readTime_zh: '5 分鐘', readTime_en: '5 min',
+    get readTime() { return (typeof _blogLang !== 'undefined' && _blogLang === 'en') ? this.readTime_en : this.readTime_zh; },
+    summary_zh: '注音、拼音輸入法總是推薦錯的字？「以」和「已」、「在」和「再」分不清？本文教你如何用 AI 錯別字檢查工具，快速揪出文章中的錯字、標點和文法問題。',
+    summary_en: 'Input methods keep suggesting wrong characters? This guide shows you how to use AI-powered typo checking to catch Chinese character errors, punctuation issues, and grammar problems instantly.',
+    get summary() { return (typeof _blogLang !== 'undefined' && _blogLang === 'en') ? this.summary_en : this.summary_zh; },
+    content: () => (
+      <div className="space-y-6 text-gray-300 leading-relaxed">
+        <p>在台灣，幾乎所有人都用注音輸入法打字。注音輸入法很快，但也很容易打出錯字——因為同音字太多了。「已經」打成「以經」、「再見」打成「在見」、「即使」打成「既使」，這些錯誤你一定遇過，甚至可能自己每天都在犯。</p>
+        <p>問題在於，這些錯別字人眼很難發現。因為我們的大腦會自動「腦補」正確的意思，讀過去完全不覺得有問題。但當這些文字出現在正式文件、社群貼文、或客戶信件中，就會讓人覺得不夠專業。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">台灣人最常打錯的字有哪些？</h2>
+        <p>根據語言學研究和輸入法統計，台灣人最常見的錯別字可以分成幾類：</p>
+        <p><strong className="text-white">同音替換</strong>：這是最大宗的錯誤類型。「以」vs「已」（以經→已經）、「在」vs「再」（在見→再見）、「的」vs「得」vs「地」（跑的很快→跑得很快）、「做」vs「作」（做文章→作文章）、「即」vs「既」（即使→既使是錯的）。</p>
+        <p><strong className="text-white">近音混淆</strong>：「部」vs「不」（部分→不分？）、「必」vs「畢」（畢竟→必竟是錯的）、「辨」vs「辯」vs「辮」（分辨→分辯？視語境而定）。</p>
+        <p><strong className="text-white">標點錯誤</strong>：中文應該用全形標點（，。！？），但很多人混用半形（,.!?）。另外，頓號（、）和逗號（，）的使用時機也常常搞混。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">Word 和 Google 文件的拼字檢查有用嗎？</h2>
+        <p>有一定幫助，但非常有限。Word 和 Google 文件的拼字檢查主要針對英文設計，對中文的支援相當基礎。它們能抓到一些明顯的錯字，但對於「同音替換」這類需要理解上下文的錯誤幾乎無能為力——因為「以經」每個字本身都是正確的中文字，傳統拼字檢查器不會把它標記為錯誤。</p>
+        <p>這正是 AI 校對的優勢所在。AI 語言模型能夠理解整句話的意思，判斷「以」在這個語境下應該是「已」，這是傳統工具做不到的。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">如何使用本站的錯別字檢查工具？</h2>
+        <p>步驟非常簡單：</p>
+        <p><strong className="text-white">第一步</strong>：打開本站側欄的「✍️ 錯別字檢查」工具，將你的文字貼入輸入框。支援最多 8,000 字，足夠應付大部分文章和社群貼文。</p>
+        <p><strong className="text-white">第二步</strong>：點擊「開始檢查」按鈕，AI 會在幾秒內分析你的文字，找出三類問題：錯字（紅色標籤）、標點問題（黃色標籤）、文法問題（藍色標籤）。</p>
+        <p><strong className="text-white">第三步</strong>：逐一檢視每個建議。每個問題都會顯示原文片段、錯誤位置、建議修正、以及修正原因的說明。你可以選擇「修正」接受建議，或「忽略」保留原文（有些用詞是你刻意的選擇）。</p>
+        <p><strong className="text-white">第四步</strong>：如果所有建議都合理，直接點「全部修正」一鍵完成。修正後按「複製」把結果貼回你的編輯器。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">字數統計功能</h2>
+        <p>輸入框下方有即時字數統計面板，會自動計算：字元數、中文字數、英文詞數、段落數、以及預估閱讀時間。對於需要控制字數的社群貼文或文案特別實用。統計功能也正確支援 Emoji 表情符號——一個 😀 就是算一個字元，不會因為技術編碼而灌水。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">使用小技巧</h2>
+        <p>建議在文章寫完、自己讀過一遍之後再使用工具檢查。AI 校對是輔助而非替代，有些錯誤只有你自己知道是不是「故意的」。每個 IP 每天有 20 次使用額度，一般使用情境下綽綽有餘。</p>
+      </div>
+    )
+  },
+  {
+    id: 'social-media-proofreading',
+    title_zh: '社群小編必看：發文前的文案校對清單，避免低級錯誤翻車',
+    title_en: 'Social Media Editors: Pre-Post Proofreading Checklist to Avoid Embarrassing Mistakes',
+    get title() { return (typeof _blogLang !== 'undefined' && _blogLang === 'en') ? this.title_en : this.title_zh; },
+    date: '2026-03-23',
+    category_zh: '職場技巧', category_en: 'Career Tips',
+    get category() { return (typeof _blogLang !== 'undefined' && _blogLang === 'en') ? this.category_en : this.category_zh; },
+    readTime_zh: '6 分鐘', readTime_en: '6 min',
+    get readTime() { return (typeof _blogLang !== 'undefined' && _blogLang === 'en') ? this.readTime_en : this.readTime_zh; },
+    summary_zh: '社群貼文一發出就是品牌形象，錯字會被截圖放大。本文整理社群小編發文前的完整校對 SOP，從常見翻車案例到實用校對工具，幫你建立零失誤的發文流程。',
+    summary_en: 'Social media posts represent your brand. Typos get screenshotted and amplified. This article provides a complete pre-post proofreading SOP for social media editors.',
+    get summary() { return (typeof _blogLang !== 'undefined' && _blogLang === 'en') ? this.summary_en : this.summary_zh; },
+    content: () => (
+      <div className="space-y-6 text-gray-300 leading-relaxed">
+        <p>社群小編的日常就是跟時間賽跑。一天要出好幾則貼文，趕熱點、做圖、寫文案、排程，忙到最後往往「寫完就發」，根本沒時間仔細校對。但社群貼文跟私人訊息不一樣——它代表的是品牌形象。一個錯字被截圖放上 Dcard 或 PTT，可能比精心策劃的活動還要多人看到。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">那些年，品牌小編翻車的錯字</h2>
+        <p>社群上最常見的翻車類型，其實不是什麼離譜的錯誤，而是那些「看起來好像對」的同音字替換：</p>
+        <p>「<strong className="text-white">在</strong>次提醒」（應為「<strong className="text-purple-300">再</strong>次提醒」）——這可能是台灣社群貼文出現頻率最高的錯字，因為「在」和「再」發音完全相同。</p>
+        <p>「感謝大家的支持，我們會<strong className="text-white">在接再厲</strong>」（應為「<strong className="text-purple-300">再接再厲</strong>」）——成語錯誤特別致命，因為它會讓讀者質疑品牌的專業度。</p>
+        <p>「限時優惠<strong className="text-white">既</strong>將截止」（應為「<strong className="text-purple-300">即</strong>將截止」）——促銷文案出這種錯，消費者可能連點進去的意願都沒有。</p>
+        <p>「本活動<strong className="text-white">以</strong>額滿」（應為「<strong className="text-purple-300">已</strong>額滿」）——客服文案的錯字會直接影響品牌信任感。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">為什麼自己校對總是看不出錯？</h2>
+        <p>這跟大腦的運作機制有關。當你是文案的作者時，你的大腦已經知道「你想說什麼」，所以在閱讀時會自動填補正確的意思，跳過實際的錯誤。心理學上叫做「確認偏誤」（Confirmation Bias）——你期待看到正確的文字，所以你就「看到」了正確的文字。</p>
+        <p>這也是為什麼請別人幫忙校對通常比自己看有效。但在快節奏的社群工作中，不可能每則貼文都找人幫看。這時候 AI 校對工具就成了你最好的「第二雙眼睛」。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">社群小編的發文前校對 SOP</h2>
+        <p>建議在發文前花 2 分鐘走一遍這個流程：</p>
+        <p><strong className="text-white">1. 先放下，再回來看</strong>：文案寫完後，至少隔 10 分鐘再校對。如果時間不允許，至少切換一下做別的事，讓大腦「重置」。</p>
+        <p><strong className="text-white">2. 用工具跑一遍 AI 校對</strong>：把文案貼到本站的「錯別字檢查」工具，讓 AI 幫你抓同音字替換、標點混用、文法不通順。這一步只需要幾秒鐘。</p>
+        <p><strong className="text-white">3. 大聲唸出來</strong>：這是老派但非常有效的方法。唸出聲音時，你的耳朵會抓到眼睛跳過的問題——句子太長、語氣不對、斷句彆扭，唸一遍就知道。</p>
+        <p><strong className="text-white">4. 檢查專有名詞</strong>：品牌名、產品名、人名、活動名稱——這些 AI 不一定能幫你確認，但如果寫錯，傷害最大。建議公司內部維護一份「品牌詞彙表」。</p>
+        <p><strong className="text-white">5. 最後看一眼 Emoji 和 Hashtag</strong>：Emoji 放錯位置或 Hashtag 打錯字也很常見。確認 # 後面沒有空格，Emoji 數量不要多到影響閱讀。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">特別注意：中英混排的標點問題</h2>
+        <p>社群文案很常出現中英混排的情況，例如「限時 50% OFF！」或「新品上市 Coming Soon」。這時候標點符號的使用要特別注意：中文句子裡應該用全形標點（，。！），英文縮寫或品牌名後面如果接中文，也建議用全形。最忌諱的是同一則貼文裡半形全形混用，看起來非常不專業。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">善用字數統計控制貼文長度</h2>
+        <p>不同平台對文案長度的偏好不同。Facebook 貼文建議 80-150 字最佳互動率，Instagram 圖說前 125 字是「展開更多」之前的黃金區域。本站的錯別字檢查工具內建即時字數統計（支援 Emoji 正確計算），校對的同時也能確認字數是否在最佳範圍內。</p>
+
+        <h2 className="text-lg font-bold text-purple-300 mt-8 mb-3">錯字不會毀掉品牌，但會消耗信任</h2>
+        <p>偶爾一個錯字不會怎樣，但如果品牌帳號「經常」出現錯別字，受眾會在潛意識中累積「這個品牌不太認真」的印象。花 2 分鐘校對，省下的是可能需要好幾則貼文才能修復的品牌信任。發文前多一道關卡，就是對品牌負責。</p>
+      </div>
+    )
   }
 ];
 
