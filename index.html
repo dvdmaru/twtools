@@ -456,8 +456,37 @@ const translations = {
     'sidebar.datecalc': '日期計算器',
     'sidebar.countdown': '倒數計時器',
     'sidebar.resume': '履歷產生器',
+    'sidebar.proofread': '錯別字檢查',
     'sidebar.trip': '✈️ AI 旅行規劃',
     'sidebar.footer': '打工人工具箱 © 2026',
+
+    // ── Proofread 錯別字檢查 ──
+    'proofread.title': '錯別字檢查',
+    'proofread.subtitle': 'AI 智慧校對 — 錯別字、標點符號、語法一次搞定',
+    'proofread.placeholder': '在這裡貼上或輸入要檢查的文字…',
+    'proofread.check': '開始檢查',
+    'proofread.checking': 'AI 校對中…',
+    'proofread.fix': '修正',
+    'proofread.ignore': '略過',
+    'proofread.fix_all': '全部修正',
+    'proofread.no_issues': '未發現問題，文字正確！',
+    'proofread.type_typo': '錯別字',
+    'proofread.type_punctuation': '標點符號',
+    'proofread.type_grammar': '語法',
+    'proofread.stats_chars': '字元',
+    'proofread.stats_chinese': '中文字',
+    'proofread.stats_english': '英文字',
+    'proofread.stats_paragraphs': '段落',
+    'proofread.stats_reading': '閱讀時間',
+    'proofread.stats_minutes': '分鐘',
+    'proofread.remaining': '今日剩餘 {n} 次',
+    'proofread.copy': '複製結果',
+    'proofread.copied': '已複製！',
+    'proofread.clear': '清除',
+    'proofread.error': '檢查失敗，請稍後再試',
+    'proofread.empty': '請先輸入要檢查的文字',
+    'proofread.max_length': '文字過長，請控制在 8000 字以內',
+    'proofread.issues_found': '發現 {n} 個問題',
 
     // ── Common ──
     'common.loading': '載入中…',
@@ -908,8 +937,37 @@ const translations = {
     'sidebar.datecalc': 'Date Calculator',
     'sidebar.countdown': 'Countdown',
     'sidebar.resume': 'Resume Builder',
+    'sidebar.proofread': 'Proofreader',
     'sidebar.trip': '✈️ AI Trip Planner',
     'sidebar.footer': 'TWTools © 2026',
+
+    // ── Proofread ──
+    'proofread.title': 'Proofreader',
+    'proofread.subtitle': 'AI Proofreading — Typos, Punctuation & Grammar',
+    'proofread.placeholder': 'Paste or type the text you want to check...',
+    'proofread.check': 'Check Now',
+    'proofread.checking': 'Checking...',
+    'proofread.fix': 'Fix',
+    'proofread.ignore': 'Ignore',
+    'proofread.fix_all': 'Fix All',
+    'proofread.no_issues': 'No issues found. Your text looks great!',
+    'proofread.type_typo': 'Typo',
+    'proofread.type_punctuation': 'Punctuation',
+    'proofread.type_grammar': 'Grammar',
+    'proofread.stats_chars': 'Characters',
+    'proofread.stats_chinese': 'Chinese',
+    'proofread.stats_english': 'English',
+    'proofread.stats_paragraphs': 'Paragraphs',
+    'proofread.stats_reading': 'Reading Time',
+    'proofread.stats_minutes': 'min',
+    'proofread.remaining': '{n} checks remaining today',
+    'proofread.copy': 'Copy Result',
+    'proofread.copied': 'Copied!',
+    'proofread.clear': 'Clear',
+    'proofread.error': 'Check failed. Please try again later.',
+    'proofread.empty': 'Please enter some text first',
+    'proofread.max_length': 'Text too long. Max 8,000 characters.',
+    'proofread.issues_found': '{n} issues found',
 
     // ── Common ──
     'common.loading': 'Loading...',
@@ -3206,6 +3264,7 @@ function Sidebar({ page, setPage, open, setOpen }) {
     { id:'datecalc', icon:'📅', label: t('sidebar.datecalc') },
     { id:'countdown',icon:'⏳', label: t('sidebar.countdown') },
     { id:'resume',   icon:'📋', label: t('sidebar.resume') },
+    { id:'proofread',icon:'✍️', label: t('sidebar.proofread') },
   ];
   return (
     <>
@@ -5734,6 +5793,249 @@ const BLOG_ARTICLES = [
   }
 ];
 
+// ============================================================
+// ██  ProofreadTool — 錯別字檢查
+// ============================================================
+function ProofreadTool() {
+  const { lang, t } = useLang();
+  const [text, setText]           = useState('');
+  const [checking, setChecking]   = useState(false);
+  const [issues, setIssues]       = useState(null); // null = 尚未檢查, [] = 無問題
+  const [ignored, setIgnored]     = useState(new Set());
+  const [remaining, setRemaining] = useState(null);
+  const [error, setError]         = useState('');
+  const [copied, setCopied]       = useState(false);
+  const [summary, setSummary]     = useState('');
+
+  // ── 即時字數統計 ──
+  const stats = React.useMemo(() => {
+    if (!text) return { chars: 0, chinese: 0, english: 0, paragraphs: 0, readMin: 0 };
+    const chars = text.length;
+    const chinese = (text.match(/[\u4e00-\u9fff\u3400-\u4dbf]/g) || []).length;
+    const english = (text.match(/[a-zA-Z]+/g) || []).length;
+    const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim()).length || (text.trim() ? 1 : 0);
+    const readMin = Math.max(1, Math.round((chinese + english) / 400));
+    return { chars, chinese, english, paragraphs, readMin };
+  }, [text]);
+
+  // ── 呼叫 Worker AI 校對 ──
+  const handleCheck = async () => {
+    if (!text.trim()) { setError(t('proofread.empty')); return; }
+    if (text.length > 8000) { setError(t('proofread.max_length')); return; }
+    setChecking(true); setError(''); setIssues(null); setIgnored(new Set()); setSummary('');
+    try {
+      const res = await fetch(WORKER_URL + '/ai/proofread', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: text }),
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.message || data.error);
+      const parsed = typeof data.text === 'string' ? JSON.parse(data.text) : data.text;
+      setIssues(parsed.issues || []);
+      setSummary(parsed.summary || '');
+      if (data.remaining !== undefined) setRemaining(data.remaining);
+    } catch (e) {
+      console.error('Proofread error:', e);
+      setError(t('proofread.error'));
+    }
+    setChecking(false);
+  };
+
+  // ── 單一修正 ──
+  const handleFix = (issue) => {
+    const idx = text.indexOf(issue.original);
+    if (idx === -1) { // fallback: 直接替換 wrong → suggestion
+      setText(prev => prev.replace(issue.wrong, issue.suggestion));
+    } else {
+      const fixed = issue.original.replace(issue.wrong, issue.suggestion);
+      setText(prev => prev.substring(0, idx) + fixed + prev.substring(idx + issue.original.length));
+    }
+    setIgnored(prev => new Set([...prev, issue.original]));
+  };
+
+  // ── 全部修正 ──
+  const handleFixAll = () => {
+    if (!issues) return;
+    let result = text;
+    const active = issues.filter(i => !ignored.has(i.original));
+    // 由後往前替換避免 index 偏移
+    const sorted = [...active].sort((a, b) => result.lastIndexOf(b.original) - result.lastIndexOf(a.original));
+    sorted.forEach(issue => {
+      const idx = result.indexOf(issue.original);
+      if (idx !== -1) {
+        const fixed = issue.original.replace(issue.wrong, issue.suggestion);
+        result = result.substring(0, idx) + fixed + result.substring(idx + issue.original.length);
+      } else {
+        result = result.replace(issue.wrong, issue.suggestion);
+      }
+    });
+    setText(result);
+    setIssues([]);
+    setSummary(lang === 'en' ? 'All fixes applied!' : '已全部修正！');
+  };
+
+  // ── 複製結果 ──
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  // ── 問題類型 badge 顏色 ──
+  const typeBadge = (type) => {
+    const map = {
+      typo:        { bg: 'bg-red-500/20 text-red-300 border-red-500/30',        label: t('proofread.type_typo') },
+      punctuation: { bg: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30', label: t('proofread.type_punctuation') },
+      grammar:     { bg: 'bg-blue-500/20 text-blue-300 border-blue-500/30',      label: t('proofread.type_grammar') },
+    };
+    const m = map[type] || map.typo;
+    return <span className={`text-xs px-2 py-0.5 rounded-full border ${m.bg}`}>{m.label}</span>;
+  };
+
+  const activeIssues = issues ? issues.filter(i => !ignored.has(i.original)) : [];
+
+  return (
+    <div className="max-w-4xl mx-auto">
+      {/* 標題 */}
+      <h2 className="text-xl font-bold text-white mb-1">{t('proofread.title')}</h2>
+      <p className="text-sm text-gray-400 mb-4">{t('proofread.subtitle')}</p>
+
+      {/* 字數統計面板 */}
+      <div className="grid grid-cols-5 gap-2 mb-4">
+        {[
+          { label: t('proofread.stats_chars'), val: stats.chars },
+          { label: t('proofread.stats_chinese'), val: stats.chinese },
+          { label: t('proofread.stats_english'), val: stats.english },
+          { label: t('proofread.stats_paragraphs'), val: stats.paragraphs },
+          { label: t('proofread.stats_reading'), val: `${stats.readMin} ${t('proofread.stats_minutes')}` },
+        ].map((s, i) => (
+          <div key={i} className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-3 text-center">
+            <div className="text-lg font-bold text-white">{s.val}</div>
+            <div className="text-xs text-gray-400">{s.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* 文字輸入區 */}
+      <textarea
+        value={text}
+        onChange={e => setText(e.target.value)}
+        placeholder={t('proofread.placeholder')}
+        className="w-full h-64 bg-gray-800/50 border border-gray-700/50 rounded-xl p-4 text-gray-200 text-sm leading-relaxed resize-y focus:outline-none focus:border-blue-500/50 transition-colors placeholder-gray-500"
+        style={{ minHeight: '160px' }}
+      />
+
+      {/* 操作按鈕列 */}
+      <div className="flex items-center gap-3 mt-3 mb-4 flex-wrap">
+        <button
+          onClick={handleCheck}
+          disabled={checking || !text.trim()}
+          className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+            checking || !text.trim()
+              ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+              : 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/20'
+          }`}>
+          {checking ? t('proofread.checking') : t('proofread.check')}
+        </button>
+        {activeIssues.length > 0 && (
+          <button onClick={handleFixAll}
+            className="px-4 py-2.5 rounded-xl text-sm font-medium bg-green-600 hover:bg-green-500 text-white transition-all">
+            {t('proofread.fix_all')} ({activeIssues.length})
+          </button>
+        )}
+        <button onClick={handleCopy} disabled={!text.trim()}
+          className="px-4 py-2.5 rounded-xl text-sm font-medium bg-gray-700 hover:bg-gray-600 text-gray-300 transition-all disabled:opacity-40">
+          {copied ? t('proofread.copied') : t('proofread.copy')}
+        </button>
+        <button onClick={() => { setText(''); setIssues(null); setError(''); setSummary(''); setIgnored(new Set()); }}
+          className="px-4 py-2.5 rounded-xl text-sm font-medium bg-gray-700 hover:bg-gray-600 text-gray-300 transition-all">
+          {t('proofread.clear')}
+        </button>
+        {remaining !== null && (
+          <span className="text-xs text-gray-500 ml-auto">
+            {t('proofread.remaining').replace('{n}', remaining)}
+          </span>
+        )}
+      </div>
+
+      {/* 錯誤訊息 */}
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3 mb-4 text-red-300 text-sm">{error}</div>
+      )}
+
+      {/* 檢查結果 */}
+      {issues !== null && (
+        <div className="space-y-3">
+          {/* 摘要 */}
+          <div className={`rounded-xl p-3 text-sm font-medium ${
+            activeIssues.length === 0
+              ? 'bg-green-500/10 border border-green-500/30 text-green-300'
+              : 'bg-orange-500/10 border border-orange-500/30 text-orange-300'
+          }`}>
+            {activeIssues.length === 0
+              ? (summary || t('proofread.no_issues'))
+              : (summary || t('proofread.issues_found').replace('{n}', activeIssues.length))}
+          </div>
+
+          {/* 逐項問題卡片 */}
+          {activeIssues.map((issue, idx) => (
+            <div key={idx} className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    {typeBadge(issue.type)}
+                    <span className="text-xs text-gray-500">{issue.explanation}</span>
+                  </div>
+                  <div className="text-sm text-gray-300 mb-1">
+                    <span className="text-gray-500">…</span>
+                    {issue.original.split(issue.wrong).map((part, i, arr) => (
+                      <React.Fragment key={i}>
+                        {part}
+                        {i < arr.length - 1 && (
+                          <span className="bg-red-500/30 text-red-200 px-1 rounded line-through">{issue.wrong}</span>
+                        )}
+                      </React.Fragment>
+                    ))}
+                    <span className="text-gray-500">…</span>
+                  </div>
+                  <div className="text-sm">
+                    <span className="text-gray-500">{lang === 'en' ? 'Suggestion: ' : '建議：'}</span>
+                    <span className="text-green-300 font-medium">{issue.suggestion}</span>
+                  </div>
+                </div>
+                <div className="flex gap-2 flex-shrink-0">
+                  <button onClick={() => handleFix(issue)}
+                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-green-600/80 hover:bg-green-500 text-white transition-all">
+                    {t('proofread.fix')}
+                  </button>
+                  <button onClick={() => setIgnored(prev => new Set([...prev, issue.original]))}
+                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-gray-700 hover:bg-gray-600 text-gray-300 transition-all">
+                    {t('proofread.ignore')}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 使用說明 */}
+      <div className="mt-6 bg-gray-800/30 border border-gray-700/30 rounded-xl p-5">
+        <h3 className="text-sm font-semibold text-white mb-2">{lang === 'en' ? 'How it works' : '使用說明'}</h3>
+        <div className="text-xs text-gray-400 space-y-1">
+          <p>{lang === 'en' ? '1. Paste or type text, then click "Check Now" for AI-powered proofreading.' : '1. 貼上或輸入文字，點擊「開始檢查」即可由 AI 自動校對。'}</p>
+          <p>{lang === 'en' ? '2. Each issue shows the error type (typo/punctuation/grammar) with a suggested fix.' : '2. 每個問題會標示類型（錯別字/標點/語法），並提供修正建議。'}</p>
+          <p>{lang === 'en' ? '3. Click "Fix" to apply a suggestion, or "Ignore" if the text is intentional.' : '3. 點「修正」接受建議，或「略過」表示這是刻意的寫法。'}</p>
+          <p>{lang === 'en' ? '4. "Fix All" applies all remaining suggestions at once.' : '4. 「全部修正」可一次套用所有修正建議。'}</p>
+          <p>{lang === 'en' ? '5. Word count statistics update in real time as you type.' : '5. 字數統計即時更新，方便掌握文章長度。'}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 let _blogLang = 'zh';
 function BlogPage({ setPage }) {
   const { lang, t } = useLang();
@@ -7090,6 +7392,7 @@ function App() {
         {page === 'datecalc' && <DateCalculatorTool />}
         {page === 'countdown'&& <CountdownTool />}
         {page === 'resume'   && <ResumeTool />}
+        {page === 'proofread' && <ProofreadTool />}
         {page === 'blog'     && <BlogPage setPage={setPage} />}
         {page === 'about'    && <AboutPage setPage={setPage} />}
         {page === 'contact'  && <ContactPage setPage={setPage} />}
