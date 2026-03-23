@@ -5807,10 +5807,18 @@ function ProofreadTool() {
   const [copied, setCopied]       = useState(false);
   const [summary, setSummary]     = useState('');
 
+  // ── 視覺字元數（正確處理 emoji / 組合字元）──
+  const visualLength = (s) => {
+    if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+      return [...new Intl.Segmenter().segment(s)].length;
+    }
+    return [...s].length; // fallback: 至少拆 surrogate pair
+  };
+
   // ── 即時字數統計 ──
   const stats = React.useMemo(() => {
     if (!text) return { chars: 0, chinese: 0, english: 0, paragraphs: 0, readMin: 0 };
-    const chars = text.length;
+    const chars = visualLength(text);
     const chinese = (text.match(/[\u4e00-\u9fff\u3400-\u4dbf]/g) || []).length;
     const english = (text.match(/[a-zA-Z]+/g) || []).length;
     const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim()).length || (text.trim() ? 1 : 0);
@@ -5821,7 +5829,7 @@ function ProofreadTool() {
   // ── 呼叫 Worker AI 校對 ──
   const handleCheck = async () => {
     if (!text.trim()) { setError(t('proofread.empty')); return; }
-    if (text.length > 8000) { setError(t('proofread.max_length')); return; }
+    if (visualLength(text) > 8000) { setError(t('proofread.max_length')); return; }
     setChecking(true); setError(''); setIssues(null); setIgnored(new Set()); setSummary('');
     try {
       const res = await fetch(WORKER_URL + '/ai/proofread', {
