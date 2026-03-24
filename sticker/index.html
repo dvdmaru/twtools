@@ -630,6 +630,9 @@
       const [listing, setListing] = useState(null);
       const [isGeneratingListing, setIsGeneratingListing] = useState(false);
 
+      // P6 state: 單張自訂提示詞
+      const [stickerHints, setStickerHints] = useState(Array(32).fill(''));
+
       const canProceed = () => {
         switch (currentStep) {
           case 0: return !!referenceImage;
@@ -786,6 +789,7 @@
                 exportProgress={exportProgress} setExportProgress={setExportProgress}
                 listing={listing} setListing={setListing}
                 isGeneratingListing={isGeneratingListing} setIsGeneratingListing={setIsGeneratingListing}
+                stickerHints={stickerHints} setStickerHints={setStickerHints}
               />
             )}
           </div>
@@ -1082,6 +1086,7 @@
       mainSource, setMainSource, tabSource, setTabSource,
       isExporting, setIsExporting, exportProgress, setExportProgress,
       listing, setListing, isGeneratingListing, setIsGeneratingListing,
+      stickerHints, setStickerHints,
     }) {
       const styleName = ART_STYLES.find(s => s.id === selectedStyle)?.label || selectedStyle;
       const stylePrompt = STYLE_PROMPTS[selectedStyle] || STYLE_PROMPTS['original'];
@@ -1109,7 +1114,7 @@
       };
       const sceneHint = THEME_SCENE_HINTS[captionTheme] || '';
 
-      const buildPrompt = (index) => {
+      const buildPrompt = (index, extraHint = '') => {
         const meta = captionMeta[index];
         const caption = captions[index] || '';
         const originalText = meta?.originalText || '';
@@ -1132,6 +1137,7 @@
                 `This illustration is for a LINE messaging sticker with the text "${caption}".`,
                 `The character pose and expression must clearly match the mood "${moodStr}" and convey the feeling of "${caption}".`,
               ].join('\n'),
+          extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority for this specific sticker): ${extraHint}\n` : '',
           '', 'CRITICAL REQUIREMENTS:',
           '- PRESERVE the character species and visual identity from the reference image — this is the #1 priority',
           '- The character outfit/costume MUST match the scene context described above',
@@ -1144,12 +1150,12 @@
         ].join('\n');
       };
 
-      const generateOne = async (index) => {
+      const generateOne = async (index, extraHint = '') => {
         const res = await fetch(`${WORKER_URL}/generate-image`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            prompt: buildPrompt(index),
+            prompt: buildPrompt(index, extraHint),
             referenceImage: referenceImage?.dataUrl || null,
             style: selectedStyle,
           }),
@@ -1181,13 +1187,28 @@
         setIsGenerating(false);
       };
 
+      const [regenLoadingIndex, setRegenLoadingIndex] = useState(null);
+
       const handleRetryOne = async (index) => {
         try {
-          const dataUrl = await generateOne(index);
+          const hint = stickerHints[index] || '';
+          const dataUrl = await generateOne(index, hint);
           const next = [...generatedImages]; next[index] = dataUrl; setGeneratedImages(next);
           const nextP = [...processedImages]; nextP[index] = null; setProcessedImages(nextP);
           setGenerateProgress(prev => ({ ...prev, errors: prev.errors.filter(e => e.index !== index) }));
         } catch (err) { alert(`第 ${index + 1} 張重試失敗：${err.message}`); }
+      };
+
+      // 單張重新生成（已有圖片也可用，帶自訂提示詞）
+      const handleRegenOne = async (index) => {
+        setRegenLoadingIndex(index);
+        try {
+          const hint = stickerHints[index] || '';
+          const dataUrl = await generateOne(index, hint);
+          const next = [...generatedImages]; next[index] = dataUrl; setGeneratedImages(next);
+          const nextP = [...processedImages]; nextP[index] = null; setProcessedImages(nextP);
+        } catch (err) { alert(`第 ${index + 1} 張重新生成失敗：${err.message}`); }
+        finally { setRegenLoadingIndex(null); }
       };
 
       const completedCount = generatedImages.slice(0, stickerCount).filter(Boolean).length;
@@ -1312,38 +1333,72 @@
             {Array.from({ length: stickerCount }).map((_, i) => {
               const isFailed = generateProgress.errors.find(e => e.index === i);
               const isCurrentlyGenerating = isGenerating && generateProgress.current === i + 1 && !generatedImages[i];
+              const isRegening = regenLoadingIndex === i;
               const displayImage = processedImages[i] || generatedImages[i];
 
               return (
-                <div key={i}
-                  className={`sticker-slot ${displayImage ? 'has-image' : ''} ${
-                    isFailed ? 'border-red-300 bg-red-50' : ''
-                  } ${selectedSticker === i ? 'selected' : ''}`}
-                  onClick={() => displayImage && setSelectedSticker(i)}>
+                <div key={i} className="flex flex-col">
+                  <div
+                    className={`sticker-slot ${displayImage ? 'has-image' : ''} ${
+                      isFailed ? 'border-red-300 bg-red-50' : ''
+                    } ${selectedSticker === i ? 'selected' : ''}`}
+                    onClick={() => displayImage && setSelectedSticker(i)}>
 
-                  {displayImage && fontsReady ? (
-                    <StickerCanvas
-                      imageDataUrl={displayImage}
-                      caption={captions[i]}
-                      textSettings={textSettings}
-                      position={textPositions[i]}
-                      onPositionChange={(pos) => updatePosition(i, pos)}
-                    />
-                  ) : isCurrentlyGenerating ? (
-                    <div className="text-center p-2">
-                      <div className="text-2xl mb-1 animate-pulse">⏳</div>
-                      <div className="text-xs text-primary font-medium">生成中...</div>
-                    </div>
-                  ) : isFailed ? (
-                    <div className="text-center p-2">
-                      <div className="text-2xl text-red-300 mb-1">❌</div>
-                      <button onClick={(e) => { e.stopPropagation(); handleRetryOne(i); }}
-                        className="text-xs text-red-500 hover:text-red-700 underline">重試</button>
-                    </div>
-                  ) : (
-                    <div className="text-center p-2">
-                      <div className="text-2xl text-gray-300 mb-1">🖼️</div>
-                      <div className="text-xs text-gray-400">{i + 1}</div>
+                    {isRegening ? (
+                      <div className="text-center p-2">
+                        <div className="text-2xl mb-1 animate-pulse">⏳</div>
+                        <div className="text-xs text-primary font-medium">重新生成中...</div>
+                      </div>
+                    ) : displayImage && fontsReady ? (
+                      <StickerCanvas
+                        imageDataUrl={displayImage}
+                        caption={captions[i]}
+                        textSettings={textSettings}
+                        position={textPositions[i]}
+                        onPositionChange={(pos) => updatePosition(i, pos)}
+                      />
+                    ) : isCurrentlyGenerating ? (
+                      <div className="text-center p-2">
+                        <div className="text-2xl mb-1 animate-pulse">⏳</div>
+                        <div className="text-xs text-primary font-medium">生成中...</div>
+                      </div>
+                    ) : isFailed ? (
+                      <div className="text-center p-2">
+                        <div className="text-2xl text-red-300 mb-1">❌</div>
+                        <button onClick={(e) => { e.stopPropagation(); handleRetryOne(i); }}
+                          className="text-xs text-red-500 hover:text-red-700 underline">重試</button>
+                      </div>
+                    ) : (
+                      <div className="text-center p-2">
+                        <div className="text-2xl text-gray-300 mb-1">🖼️</div>
+                        <div className="text-xs text-gray-400">{i + 1}</div>
+                      </div>
+                    )}
+                  </div>
+                  {/* 單張重生控制列 */}
+                  {(displayImage || isFailed) && !isGenerating && (
+                    <div className="mt-1 space-y-1">
+                      <div className="flex gap-1">
+                        <input
+                          type="text"
+                          value={stickerHints[i] || ''}
+                          onChange={(e) => {
+                            const next = [...stickerHints];
+                            next[i] = e.target.value;
+                            setStickerHints(next);
+                          }}
+                          placeholder="提示詞（如：手舉高）"
+                          className="flex-1 text-xs px-2 py-1 border border-gray-200 rounded-lg focus:outline-none focus:border-primary min-w-0"
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                        <button
+                          onClick={(e) => { e.stopPropagation(); handleRegenOne(i); }}
+                          disabled={regenLoadingIndex !== null}
+                          className="text-xs px-2 py-1 rounded-lg bg-primary text-white hover:bg-primary-dark transition whitespace-nowrap disabled:opacity-50"
+                          title="重新生成這張">
+                          🔄
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
