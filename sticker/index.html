@@ -962,8 +962,9 @@
             const nextC = [...captions];
             const nextM = [...captionMeta];
             data.captions.slice(0, stickerCount).forEach((item, i) => {
-              nextC[i] = item.text || item;
-              nextM[i] = { mood: item.mood || 'neutral', action: item.action || 'standing with a gentle expression' };
+              const text = item.text || item;
+              nextC[i] = text;
+              nextM[i] = { mood: item.mood || 'neutral', action: item.action || 'standing with a gentle expression', originalText: text };
             });
             setCaptions(nextC);
             setCaptionMeta(nextM);
@@ -1110,9 +1111,12 @@
 
       const buildPrompt = (index) => {
         const meta = captionMeta[index];
-        const moodStr = meta?.mood || 'neutral';
-        const actionStr = meta?.action || 'standing with a gentle expression';
         const caption = captions[index] || '';
+        const originalText = meta?.originalText || '';
+        // 如果使用者手動修改了文案，用修改後的文字推導情緒，不依賴過期的 captionMeta
+        const wasEdited = caption !== originalText && originalText !== '';
+        const moodStr = wasEdited ? '' : (meta?.mood || 'neutral');
+        const actionStr = wasEdited ? '' : (meta?.action || 'standing with a gentle expression');
         return [
           `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), body shape, color palette, and key visual features. You MUST preserve ALL of these in your output.`,
           '',
@@ -1121,9 +1125,13 @@
           `Preserve the character's distinctive features: fur/hair color, eye color, accessories, clothing, markings, and proportions from the reference image.`,
           '',
           sceneHint ? `SCENE/COSTUME CONTEXT: ${sceneHint}` : '',
-          `The character should express: ${actionStr} (mood: ${moodStr}).`,
-          `This illustration is for a LINE messaging sticker with the text "${caption}".`,
-          `The character pose and expression must clearly match the mood "${moodStr}" and convey the feeling of "${caption}".`,
+          wasEdited
+            ? `This illustration is for a LINE messaging sticker with the text "${caption}". Infer the most appropriate mood, facial expression, and body pose directly from this text. The character's expression and action must clearly convey the feeling of "${caption}".`
+            : [
+                `The character should express: ${actionStr} (mood: ${moodStr}).`,
+                `This illustration is for a LINE messaging sticker with the text "${caption}".`,
+                `The character pose and expression must clearly match the mood "${moodStr}" and convey the feeling of "${caption}".`,
+              ].join('\n'),
           '', 'CRITICAL REQUIREMENTS:',
           '- PRESERVE the character species and visual identity from the reference image — this is the #1 priority',
           '- The character outfit/costume MUST match the scene context described above',
