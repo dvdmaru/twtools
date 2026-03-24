@@ -179,6 +179,25 @@
     // ============================================================
 
     const WORKER_URL = 'https://line-sticker-proxy.charlie-chien.workers.dev';
+    // Product type configurations
+    const PRODUCT_CONFIG = {
+      sticker: {
+        canvasW: 370, canvasH: 320, mainSize: 240,
+        countOptions: [2, 8, 16, 24, 32], defaultCount: 16,
+        steps: ['上傳參考圖', '選畫風', '編輯文案', '預覽生成'],
+        hasText: true, label: '一般貼圖', emoji: '💬',
+        sizeLabel: '370×320', zipPrefix: 'line-stickers',
+      },
+      emoji: {
+        canvasW: 180, canvasH: 180, mainSize: 180,
+        countOptions: [8, 16, 24, 32, 40], defaultCount: 16,
+        steps: ['上傳參考圖', '選畫風', '預覽生成'],
+        hasText: false, label: '表情貼', emoji: '😀',
+        sizeLabel: '180×180', zipPrefix: 'line-emoji',
+      },
+    };
+
+    // Legacy global refs (kept for backward compat in non-parameterized paths)
     const CANVAS_W = 370;
     const CANVAS_H = 320;
 
@@ -218,7 +237,7 @@
       { id: 'mixed', label: '混合' },
     ];
 
-    const STEPS = ['上傳參考圖', '選畫風', '編輯文案', '預覽生成'];
+    // STEPS is now dynamic — derived from PRODUCT_CONFIG[productType].steps in App()
 
     const FONTS = [
       { id: 'noto',     family: 'Noto Sans TC',      label: '黑體' },
@@ -357,8 +376,8 @@
     // Utility: Draw sticker canvas (image + text)
     // ============================================================
 
-    function drawStickerCanvas(ctx, img, caption, textSettings, position) {
-      const W = CANVAS_W, H = CANVAS_H;
+    function drawStickerCanvas(ctx, img, caption, textSettings, position, w, h) {
+      const W = w || CANVAS_W, H = h || CANVAS_H;
       ctx.clearRect(0, 0, W, H);
 
       if (img) {
@@ -407,26 +426,26 @@
      * draws onto a 370×320 canvas with content shrunk to fit within margins.
      * Returns a PNG data URL.
      */
-    function renderFinalSticker(processedImageDataUrl, caption, textSettings, position) {
+    function renderFinalSticker(processedImageDataUrl, caption, textSettings, position, dims = {}) {
+      const cW = dims.canvasW || CANVAS_W;
+      const cH = dims.canvasH || CANVAS_H;
       return new Promise((resolve) => {
         const canvas = document.createElement('canvas');
-        canvas.width = CANVAS_W;
-        canvas.height = CANVAS_H;
+        canvas.width = cW;
+        canvas.height = cH;
         const ctx = canvas.getContext('2d');
 
         if (!processedImageDataUrl) {
-          // Empty sticker — just resolve transparent
           resolve(canvas.toDataURL('image/png'));
           return;
         }
 
         const img = new Image();
         img.onload = () => {
-          ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+          ctx.clearRect(0, 0, cW, cH);
 
-          // Draw image with margin: scale to fit within (W - 2*MARGIN) × (H - 2*MARGIN)
-          const innerW = CANVAS_W - MARGIN * 2;
-          const innerH = CANVAS_H - MARGIN * 2;
+          const innerW = cW - MARGIN * 2;
+          const innerH = cH - MARGIN * 2;
           const scale = Math.min(innerW / img.width, innerH / img.height);
           const w = img.width * scale;
           const h = img.height * scale;
@@ -434,11 +453,10 @@
           const y = MARGIN + (innerH - h) / 2;
           ctx.drawImage(img, x, y, w, h);
 
-          // Draw text (same logic as drawStickerCanvas but with margin-aware positioning)
           if (caption && caption.trim()) {
             const { fontFamily, fontSize, fontColor, strokeColor, strokeWidth } = textSettings;
-            const tx = position.x * CANVAS_W;
-            const ty = position.y * CANVAS_H;
+            const tx = position.x * cW;
+            const ty = position.y * cH;
 
             ctx.save();
             ctx.font = `bold ${fontSize}px "${fontFamily}", "Noto Sans TC", sans-serif`;
@@ -468,20 +486,21 @@
      * Generate main.png (240×240) from a sticker data URL.
      * Center-crops to square, then scales to 240×240.
      */
-    function generateMainImage(stickerDataUrl) {
+    function generateMainImage(stickerDataUrl, mainSize) {
+      const ms = mainSize || MAIN_SIZE;
       return new Promise((resolve) => {
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          canvas.width = MAIN_SIZE;
-          canvas.height = MAIN_SIZE;
+          canvas.width = ms;
+          canvas.height = ms;
           const ctx = canvas.getContext('2d');
 
-          // Center-crop to square from 370×320
-          const srcSize = Math.min(img.width, img.height); // 320
-          const sx = (img.width - srcSize) / 2;   // (370-320)/2 = 25
-          const sy = (img.height - srcSize) / 2;   // 0
-          ctx.drawImage(img, sx, sy, srcSize, srcSize, 0, 0, MAIN_SIZE, MAIN_SIZE);
+          // Center-crop to square, then scale to mainSize
+          const srcSize = Math.min(img.width, img.height);
+          const sx = (img.width - srcSize) / 2;
+          const sy = (img.height - srcSize) / 2;
+          ctx.drawImage(img, sx, sy, srcSize, srcSize, 0, 0, ms, ms);
 
           resolve(canvas.toDataURL('image/png'));
         };
@@ -531,44 +550,65 @@
      */
     async function buildStickerZip({
       processedImages, generatedImages, captions, textSettings, textPositions,
-      stickerCount, mainSourceIndex, tabSourceIndex, onProgress
+      stickerCount, mainSourceIndex, tabSourceIndex, onProgress,
+      config, // PRODUCT_CONFIG entry
     }) {
       const zip = new JSZip();
-      const total = stickerCount + 2; // stickers + main + tab
+      const dims = config ? { canvasW: config.canvasW, canvasH: config.canvasH } : {};
+      const mainSize = config?.mainSize || MAIN_SIZE;
+      const zipPrefix = config?.zipPrefix || 'line-stickers';
+      const hasText = config?.hasText !== false;
+      const total = stickerCount + 2;
       let done = 0;
 
-      // 1. Render each sticker with margin
+      // 1. Render each sticker/emoji with margin
       for (let i = 0; i < stickerCount; i++) {
         const srcImage = processedImages[i] || generatedImages[i];
         if (!srcImage) continue;
 
         const finalDataUrl = await renderFinalSticker(
-          srcImage, captions[i], textSettings, textPositions[i]
+          srcImage,
+          hasText ? captions[i] : '',
+          textSettings,
+          textPositions[i],
+          dims,
         );
         const filename = String(i + 1).padStart(2, '0') + '.png';
-        zip.file(filename, dataUrlToUint8Array(finalDataUrl));
+        // Emoji uses 3-digit filenames (001.png) per LINE spec
+        const fn = config?.canvasW === 180
+          ? String(i + 1).padStart(3, '0') + '.png'
+          : filename;
+        zip.file(fn, dataUrlToUint8Array(finalDataUrl));
 
         done++;
-        onProgress?.({ done, total, step: `貼圖 ${filename}` });
+        onProgress?.({ done, total, step: `${fn}` });
       }
 
-      // 2. Generate main.png from selected sticker
+      // 2. Generate main.png
       const mainSrc = processedImages[mainSourceIndex] || generatedImages[mainSourceIndex];
       if (mainSrc) {
         const mainSticker = await renderFinalSticker(
-          mainSrc, captions[mainSourceIndex], textSettings, textPositions[mainSourceIndex]
+          mainSrc,
+          hasText ? captions[mainSourceIndex] : '',
+          textSettings,
+          textPositions[mainSourceIndex],
+          dims,
         );
-        const mainDataUrl = await generateMainImage(mainSticker);
+        const mainDataUrl = await generateMainImage(mainSticker, mainSize);
         zip.file('main.png', dataUrlToUint8Array(mainDataUrl));
       }
       done++;
       onProgress?.({ done, total, step: 'main.png' });
 
-      // 3. Generate tab.png from selected sticker
+      // 3. Generate tab.png (96×74, same for both sticker and emoji)
       const tabSrc = processedImages[tabSourceIndex] || generatedImages[tabSourceIndex];
       if (tabSrc) {
         const tabSticker = await renderFinalSticker(
-          tabSrc, captions[tabSourceIndex], textSettings, textPositions[tabSourceIndex]
+          tabSrc,
+          hasText ? captions[tabSourceIndex] : '',
+          textSettings,
+          textPositions[tabSourceIndex],
+          dims,
         );
         const tabDataUrl = await generateTabImage(tabSticker);
         zip.file('tab.png', dataUrlToUint8Array(tabDataUrl));
@@ -576,12 +616,12 @@
       done++;
       onProgress?.({ done, total, step: 'tab.png' });
 
-      // 4. Generate and trigger download
+      // 4. Download
       const blob = await zip.generateAsync({ type: 'blob' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `line-stickers-${stickerCount}pack.zip`;
+      a.download = `${zipPrefix}-${stickerCount}pack.zip`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -595,25 +635,30 @@
     // ============================================================
 
     function App() {
+      const [productType, setProductType] = useState('sticker'); // 'sticker' | 'emoji'
+      const config = PRODUCT_CONFIG[productType];
+      const steps = config.steps;
+      const lastStep = steps.length - 1;
+
       const [currentStep, setCurrentStep] = useState(0);
       const [referenceImage, setReferenceImage] = useState(null);
       const [selectedStyle, setSelectedStyle] = useState(null);
-      const [captions, setCaptions] = useState(Array(32).fill(''));
-      const [captionMeta, setCaptionMeta] = useState(Array(32).fill(null));
-      const [captionTheme, setCaptionTheme] = useState('daily'); // 追蹤使用者選的文案主題
-      const [generatedImages, setGeneratedImages] = useState(Array(32).fill(null));
+      const [captions, setCaptions] = useState(Array(40).fill(''));
+      const [captionMeta, setCaptionMeta] = useState(Array(40).fill(null));
+      const [captionTheme, setCaptionTheme] = useState('daily');
+      const [generatedImages, setGeneratedImages] = useState(Array(40).fill(null));
       const [stickerCount, setStickerCount] = useState(16);
       const [isGenerating, setIsGenerating] = useState(false);
       const [generateProgress, setGenerateProgress] = useState({ current: 0, total: 0, errors: [] });
 
       // P3 state
-      const [processedImages, setProcessedImages] = useState(Array(32).fill(null));
+      const [processedImages, setProcessedImages] = useState(Array(40).fill(null));
       const [textSettings, setTextSettings] = useState({
         fontFamily: 'Noto Sans TC', fontSize: 36,
         fontColor: '#FFFFFF', strokeColor: '#000000', strokeWidth: 4,
       });
       const [textPositions, setTextPositions] = useState(
-        Array(32).fill(null).map(() => ({ x: 0.5, y: 0.85 }))
+        Array(40).fill(null).map(() => ({ x: 0.5, y: 0.85 }))
       );
       const [bgMethod, setBgMethod] = useState('smart'); // smart = 智慧去背（預設）, ml = AI 去背, white = 快速去白
       const [bgTolerance, setBgTolerance] = useState(20);
@@ -631,15 +676,26 @@
       const [isGeneratingListing, setIsGeneratingListing] = useState(false);
 
       // P6 state: 單張自訂提示詞
-      const [stickerHints, setStickerHints] = useState(Array(32).fill(''));
+      const [stickerHints, setStickerHints] = useState(Array(40).fill(''));
 
       const canProceed = () => {
-        switch (currentStep) {
-          case 0: return !!referenceImage;
-          case 1: return !!selectedStyle;
-          case 2: return captions.slice(0, stickerCount).filter(c => c.trim()).length >= stickerCount;
-          default: return false;
+        const stepName = steps[currentStep];
+        switch (stepName) {
+          case '上傳參考圖': return !!referenceImage;
+          case '選畫風': return !!selectedStyle;
+          case '編輯文案': return captions.slice(0, stickerCount).filter(c => c.trim()).length >= stickerCount;
+          default: return false; // 預覽生成 step has no "next"
         }
+      };
+
+      // Reset step & images when switching product type
+      const handleProductTypeChange = (type) => {
+        if (type === productType) return;
+        setProductType(type);
+        setCurrentStep(0);
+        setGeneratedImages(Array(40).fill(null));
+        setProcessedImages(Array(40).fill(null));
+        setStickerCount(PRODUCT_CONFIG[type].defaultCount);
       };
 
       // Auto background removal for newly generated images
@@ -749,26 +805,32 @@
         <div className="max-w-5xl mx-auto px-4 py-8">
           <header className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">🎨 LINE Sticker Maker</h1>
-            <p className="text-gray-500 text-sm">AI 生角色圖 × 程式疊文字 — 貼圖文字正確率 100%</p>
+            <p className="text-gray-500 text-sm">
+              {productType === 'emoji'
+                ? 'AI 生表情貼 — 插入聊天文字中的迷你角色圖'
+                : 'AI 生角色圖 × 程式疊文字 — 貼圖文字正確率 100%'}
+            </p>
           </header>
 
-          <StepIndicator steps={STEPS} current={currentStep} />
+          <StepIndicator steps={steps} current={currentStep} />
 
           <div className="mt-8">
-            {currentStep === 0 && (
+            {steps[currentStep] === '上傳參考圖' && (
               <StepUpload referenceImage={referenceImage} setReferenceImage={setReferenceImage}
-                stickerCount={stickerCount} setStickerCount={setStickerCount} />
+                stickerCount={stickerCount} setStickerCount={setStickerCount}
+                productType={productType} onProductTypeChange={handleProductTypeChange}
+                config={config} />
             )}
-            {currentStep === 1 && (
+            {steps[currentStep] === '選畫風' && (
               <StepStyle selectedStyle={selectedStyle} setSelectedStyle={setSelectedStyle} />
             )}
-            {currentStep === 2 && (
+            {steps[currentStep] === '編輯文案' && (
               <StepCaptions captions={captions} setCaptions={setCaptions}
                 captionMeta={captionMeta} setCaptionMeta={setCaptionMeta}
                 stickerCount={stickerCount}
                 captionTheme={captionTheme} setCaptionTheme={setCaptionTheme} />
             )}
-            {currentStep === 3 && (
+            {steps[currentStep] === '預覽生成' && (
               <StepPreview
                 referenceImage={referenceImage} selectedStyle={selectedStyle}
                 captions={captions} captionMeta={captionMeta} captionTheme={captionTheme}
@@ -790,6 +852,7 @@
                 listing={listing} setListing={setListing}
                 isGeneratingListing={isGeneratingListing} setIsGeneratingListing={setIsGeneratingListing}
                 stickerHints={stickerHints} setStickerHints={setStickerHints}
+                productType={productType} config={config}
               />
             )}
           </div>
@@ -801,8 +864,8 @@
                          disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 transition">
               ← 上一步
             </button>
-            {currentStep < 3 ? (
-              <button onClick={() => setCurrentStep(s => Math.min(3, s + 1))}
+            {currentStep < lastStep ? (
+              <button onClick={() => setCurrentStep(s => Math.min(lastStep, s + 1))}
                 disabled={!canProceed()}
                 className="px-6 py-2.5 rounded-lg bg-primary text-white font-medium
                            disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary-dark transition">
@@ -846,7 +909,8 @@
     // Step 0: Upload
     // ============================================================
 
-    function StepUpload({ referenceImage, setReferenceImage, stickerCount, setStickerCount }) {
+    function StepUpload({ referenceImage, setReferenceImage, stickerCount, setStickerCount,
+      productType, onProductTypeChange, config }) {
       const fileInputRef = useRef(null);
       const handleFile = (file) => {
         if (!file || !file.type.startsWith('image/')) return;
@@ -857,6 +921,20 @@
 
       return (
         <div className="space-y-6">
+          {/* 產品類型選擇 */}
+          <div className="flex items-center justify-center gap-3">
+            {Object.entries(PRODUCT_CONFIG).map(([key, cfg]) => (
+              <button key={key} onClick={() => onProductTypeChange(key)}
+                className={`px-5 py-2.5 rounded-xl text-sm font-medium transition border-2 ${
+                  productType === key
+                    ? 'border-primary bg-primary/5 text-primary'
+                    : 'border-gray-200 text-gray-500 hover:border-gray-300 hover:bg-gray-50'
+                }`}>
+                <span className="mr-1.5">{cfg.emoji}</span>{cfg.label}
+                <span className="ml-1.5 text-xs text-gray-400">({cfg.sizeLabel})</span>
+              </button>
+            ))}
+          </div>
           <div className="text-center">
             <h2 className="text-xl font-bold text-gray-900 mb-1">上傳角色參考圖</h2>
             <p className="text-gray-500 text-sm">AI 會根據這張圖生成同一角色的不同表情和動作</p>
@@ -884,8 +962,8 @@
               onChange={(e) => handleFile(e.target.files[0])} className="hidden" />
           </div>
           <div className="flex items-center justify-center gap-4">
-            <span className="text-sm text-gray-600">貼圖張數：</span>
-            {[2, 8, 16, 24, 32].map(n => (
+            <span className="text-sm text-gray-600">{productType === 'emoji' ? '表情貼張數：' : '貼圖張數：'}</span>
+            {config.countOptions.map(n => (
               <button key={n} onClick={() => setStickerCount(n)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
                   stickerCount === n ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -1087,7 +1165,10 @@
       isExporting, setIsExporting, exportProgress, setExportProgress,
       listing, setListing, isGeneratingListing, setIsGeneratingListing,
       stickerHints, setStickerHints,
+      productType, config,
     }) {
+      const isEmoji = productType === 'emoji';
+      const hasText = config?.hasText !== false;
       const styleName = ART_STYLES.find(s => s.id === selectedStyle)?.label || selectedStyle;
       const stylePrompt = STYLE_PROMPTS[selectedStyle] || STYLE_PROMPTS['original'];
       const abortRef = useRef(false);
@@ -1114,11 +1195,52 @@
       };
       const sceneHint = THEME_SCENE_HINTS[captionTheme] || '';
 
+      // Emoji 模式的情緒/動作多樣性列表（確保每張不重複）
+      const EMOJI_MOODS = [
+        'happy and smiling brightly', 'laughing out loud', 'winking playfully',
+        'crying tears of joy', 'sad and dejected', 'angry and frustrated',
+        'surprised with mouth wide open', 'sleepy and yawning', 'love-struck with heart eyes',
+        'confused and puzzled', 'cool and wearing sunglasses', 'nervous and sweating',
+        'proud and triumphant', 'shy and blushing', 'excited and jumping',
+        'bored and unamused', 'scared and trembling', 'thinking deeply',
+        'pleading with puppy eyes', 'relieved and sighing', 'mischievous and scheming',
+        'greeting and waving hello', 'giving a thumbs up', 'celebrating with party hat',
+        'eating happily', 'running fast', 'sleeping peacefully', 'dancing joyfully',
+        'flexing muscles', 'blowing a kiss', 'face-palming', 'clapping hands',
+        'peeking from corner', 'rolling eyes', 'shrugging shoulders',
+        'sticking tongue out', 'hugging a heart', 'meditating calmly', 'starry-eyed in awe', 'sobbing uncontrollably',
+      ];
+
       const buildPrompt = (index, extraHint = '') => {
+        // === Emoji mode: no text, varied expressions, 180×180 ===
+        if (isEmoji) {
+          const mood = EMOJI_MOODS[index % EMOJI_MOODS.length];
+          return [
+            `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), body shape, color palette, and key visual features. You MUST preserve ALL of these in your output.`,
+            '',
+            `Based on the reference character image provided, generate a single character illustration ${stylePrompt}.`,
+            `The character MUST be the SAME species and type as the reference — NEVER change the species.`,
+            `Preserve the character's distinctive features: fur/hair color, eye color, accessories, clothing, markings, and proportions.`,
+            '',
+            `This is for a LINE messaging EMOJI (tiny icon shown inline in chat text).`,
+            `The character expression/pose: ${mood}.`,
+            extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority): ${extraHint}\n` : '',
+            '', 'CRITICAL REQUIREMENTS:',
+            '- PRESERVE the character species and visual identity from the reference image — #1 priority',
+            '- Do NOT include any text, letters, words, numbers, or characters in the image',
+            '- Use a clean solid CHROMA KEY GREEN background (hex #00B140) — fill the ENTIRE background with this exact green color',
+            '- FILL THE FRAME COMPLETELY: The character MUST occupy 85-95% of the canvas. This is a TINY emoji (180×180 pixels) — every pixel counts. Minimize all empty space.',
+            '- Prefer CLOSE-UP face/upper-body composition for maximum readability at small sizes',
+            '- Single character only, centered in frame',
+            '- Expression must be EXAGGERATED and instantly readable at very small sizes (will display at ~24px in chat)',
+            '- No decorative borders, frames, or background elements',
+          ].join('\n');
+        }
+
+        // === Sticker mode: original logic ===
         const meta = captionMeta[index];
         const caption = captions[index] || '';
         const originalText = meta?.originalText || '';
-        // 如果使用者手動修改了文案，用修改後的文字推導情緒，不依賴過期的 captionMeta
         const wasEdited = caption !== originalText && originalText !== '';
         const moodStr = wasEdited ? '' : (meta?.mood || 'neutral');
         const actionStr = wasEdited ? '' : (meta?.action || 'standing with a gentle expression');
@@ -1218,7 +1340,10 @@
         <div className="space-y-6">
           <div className="text-center">
             <h2 className="text-xl font-bold text-gray-900 mb-1">預覽 & 生成</h2>
-            <p className="text-gray-500 text-sm">畫風：{styleName} ・ {stickerCount} 張貼圖</p>
+            <p className="text-gray-500 text-sm">
+              畫風：{styleName} ・ {stickerCount} 張{isEmoji ? '表情貼' : '貼圖'}
+              {isEmoji && <span className="ml-2 text-xs text-amber-500">（180×180 · 無文字）</span>}
+            </p>
           </div>
 
           {/* === Generate Controls === */}
@@ -1323,8 +1448,8 @@
                 </div>
               </div>
 
-              {/* Text controls */}
-              <TextControls textSettings={textSettings} setTextSettings={setTextSettings} applyLayout={applyLayout} />
+              {/* Text controls (hidden for emoji mode) */}
+              {hasText && <TextControls textSettings={textSettings} setTextSettings={setTextSettings} applyLayout={applyLayout} />}
             </div>
           )}
 
@@ -1342,6 +1467,7 @@
                     className={`sticker-slot ${displayImage ? 'has-image' : ''} ${
                       isFailed ? 'border-red-300 bg-red-50' : ''
                     } ${selectedSticker === i ? 'selected' : ''}`}
+                    style={isEmoji ? { aspectRatio: '1/1' } : {}}
                     onClick={() => displayImage && setSelectedSticker(i)}>
 
                     {isRegening ? (
@@ -1352,10 +1478,12 @@
                     ) : displayImage && fontsReady ? (
                       <StickerCanvas
                         imageDataUrl={displayImage}
-                        caption={captions[i]}
+                        caption={hasText ? captions[i] : ''}
                         textSettings={textSettings}
                         position={textPositions[i]}
-                        onPositionChange={(pos) => updatePosition(i, pos)}
+                        onPositionChange={hasText ? ((pos) => updatePosition(i, pos)) : undefined}
+                        canvasW={config.canvasW}
+                        canvasH={config.canvasH}
                       />
                     ) : isCurrentlyGenerating ? (
                       <div className="text-center p-2">
@@ -1411,9 +1539,9 @@
             <div className="grid grid-cols-2 gap-2">
               <div>📎 參考圖：{referenceImage?.file?.name || '無'}</div>
               <div>🎨 畫風：{styleName}</div>
-              <div>📝 文案：{captions.slice(0, stickerCount).filter(c => c.trim()).length}/{stickerCount} 句已填</div>
-              <div>📐 規格：{CANVAS_W}×{CANVAS_H}px（LINE 主圖）</div>
-              <div>🔤 字體：{FONTS.find(f => f.family === textSettings.fontFamily)?.label || textSettings.fontFamily}</div>
+              {hasText && <div>📝 文案：{captions.slice(0, stickerCount).filter(c => c.trim()).length}/{stickerCount} 句已填</div>}
+              <div>📐 規格：{config.sizeLabel}px（{isEmoji ? 'LINE 表情貼' : 'LINE 主圖'}）</div>
+              {hasText && <div>🔤 字體：{FONTS.find(f => f.family === textSettings.fontFamily)?.label || textSettings.fontFamily}</div>}
               <div>🖌️ 去背：{bgMethod === 'smart' ? `智慧去背（容差 ${bgTolerance}）` : bgMethod === 'white' ? `快速去白（容差 ${bgTolerance}）` : 'AI 去背'}</div>
             </div>
           </div>
@@ -1428,6 +1556,7 @@
               setListing={setListing}
               isGeneratingListing={isGeneratingListing}
               setIsGeneratingListing={setIsGeneratingListing}
+              isEmoji={isEmoji}
             />
           )}
 
@@ -1435,17 +1564,20 @@
           {hasImages && (
             <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 space-y-4">
               <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
-                📦 匯出 LINE 貼圖包
+                📦 匯出 LINE {isEmoji ? '表情貼包' : '貼圖包'}
               </h3>
               <p className="text-xs text-gray-400">
-                ZIP 包含：{stickerCount} 張主圖（01.png ~ {String(stickerCount).padStart(2, '0')}.png，370×320）+ main.png（240×240）+ tab.png（96×74），10px 安全邊距
+                {isEmoji
+                  ? `ZIP 包含：${stickerCount} 張表情貼（001.png ~ ${String(stickerCount).padStart(3, '0')}.png，180×180）+ main.png（180×180）+ tab.png（96×74），10px 安全邊距`
+                  : `ZIP 包含：${stickerCount} 張主圖（01.png ~ ${String(stickerCount).padStart(2, '0')}.png，370×320）+ main.png（240×240）+ tab.png（96×74），10px 安全邊距`
+                }
               </p>
 
               {/* main / tab source selector */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Main Image Source */}
                 <div>
-                  <label className="ctrl-label mb-2 block">Main Image 來源（240×240 正方形）</label>
+                  <label className="ctrl-label mb-2 block">Main Image 來源（{config.mainSize}×{config.mainSize} 正方形）</label>
                   <div className="flex gap-2 flex-wrap">
                     {Array.from({ length: stickerCount }).map((_, i) => {
                       const hasSrc = processedImages[i] || generatedImages[i];
@@ -1511,6 +1643,7 @@
                         processedImages, generatedImages, captions, textSettings, textPositions,
                         stickerCount, mainSourceIndex: mainSource, tabSourceIndex: tabSource,
                         onProgress: (p) => setExportProgress(p),
+                        config,
                       });
                       setExportProgress({ done: result.fileCount, total: result.fileCount,
                         step: `完成！ZIP 大小 ${(result.zipSize / 1024).toFixed(0)} KB` });
@@ -1529,7 +1662,7 @@
                   {isExporting ? (
                     <><span className="animate-spin">⏳</span> 匯出中...</>
                   ) : (
-                    <>📦 匯出 LINE 貼圖包</>
+                    <>📦 匯出 LINE {isEmoji ? '表情貼包' : '貼圖包'}</>
                   )}
                 </button>
 
@@ -1563,7 +1696,7 @@
     // ListingGenerator — LINE Creators Market 上架文案
     // ============================================================
 
-    function ListingGenerator({ captionTheme, captions, stickerCount, listing, setListing, isGeneratingListing, setIsGeneratingListing }) {
+    function ListingGenerator({ captionTheme, captions, stickerCount, listing, setListing, isGeneratingListing, setIsGeneratingListing, isEmoji }) {
       const [charDesc, setCharDesc] = useState('');
 
       const handleGenerate = async () => {
@@ -1575,9 +1708,10 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              theme: themeLabel,
-              captions: captions.slice(0, stickerCount).filter(c => c.trim()),
+              theme: isEmoji ? '表情貼（LINE Emoji）' : themeLabel,
+              captions: isEmoji ? [] : captions.slice(0, stickerCount).filter(c => c.trim()),
               characterDescription: charDesc,
+              productType: isEmoji ? 'emoji' : 'sticker',
             }),
           });
           const data = await res.json();
@@ -1610,7 +1744,7 @@
         <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 space-y-4">
           <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
             📝 LINE 上架文案
-            <span className="text-xs font-normal text-gray-400">Creators Market 標題＆說明＆版權（中英文）</span>
+            <span className="text-xs font-normal text-gray-400">Creators Market {isEmoji ? '表情貼' : '貼圖'}標題＆說明＆版權（中英文）</span>
           </h3>
 
           {/* 角色描述（可選） + 生成按鈕 */}
@@ -1747,7 +1881,9 @@
     // StickerCanvas — Canvas-based sticker with draggable text
     // ============================================================
 
-    function StickerCanvas({ imageDataUrl, caption, textSettings, position, onPositionChange }) {
+    function StickerCanvas({ imageDataUrl, caption, textSettings, position, onPositionChange, canvasW, canvasH }) {
+      const cW = canvasW || CANVAS_W;
+      const cH = canvasH || CANVAS_H;
       const canvasRef = useRef(null);
       const imgRef = useRef(null);
       const isDragging = useRef(false);
@@ -1769,7 +1905,7 @@
       function draw() {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        drawStickerCanvas(canvas.getContext('2d'), imgRef.current, caption, textSettings, position);
+        drawStickerCanvas(canvas.getContext('2d'), imgRef.current, caption, textSettings, position, cW, cH);
       }
 
       // Coordinate helper
@@ -1826,7 +1962,7 @@
 
       return (
         <div className="canvas-wrap">
-          <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H}
+          <canvas ref={canvasRef} width={cW} height={cH}
             onMouseDown={handleDown} onTouchStart={handleDown} />
         </div>
       );
