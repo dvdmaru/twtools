@@ -188,9 +188,16 @@
         hasText: true, label: '一般貼圖', emoji: '💬',
         sizeLabel: '370×320', zipPrefix: 'line-stickers',
       },
+      big: {
+        canvasW: 396, canvasH: 660, mainSize: 240,
+        countOptions: [2, 8, 16, 24, 32, 40], defaultCount: 16,
+        steps: ['上傳參考圖', '選畫風', '編輯文案', '預覽生成'],
+        hasText: true, label: '大貼圖', emoji: '📐',
+        sizeLabel: '396×660', zipPrefix: 'line-big-stickers',
+      },
       emoji: {
         canvasW: 180, canvasH: 180, mainSize: 180,
-        countOptions: [8, 16, 24, 32, 40], defaultCount: 16,
+        countOptions: [2, 8, 16, 24, 32, 40], defaultCount: 16,
         steps: ['上傳參考圖', '選畫風', '預覽生成'],
         hasText: false, label: '表情貼', emoji: '😀',
         sizeLabel: '180×180', zipPrefix: 'line-emoji',
@@ -1168,6 +1175,7 @@
       productType, config,
     }) {
       const isEmoji = productType === 'emoji';
+      const isBig = productType === 'big';
       const hasText = config?.hasText !== false;
       const styleName = ART_STYLES.find(s => s.id === selectedStyle)?.label || selectedStyle;
       const stylePrompt = STYLE_PROMPTS[selectedStyle] || STYLE_PROMPTS['original'];
@@ -1196,19 +1204,48 @@
       const sceneHint = THEME_SCENE_HINTS[captionTheme] || '';
 
       // Emoji 模式的情緒/動作多樣性列表（確保每張不重複）
+      // 表情聚焦臉部（符合 LINE emoji 審核：表情生動、特徵鮮明）
       const EMOJI_MOODS = [
-        'happy and smiling brightly', 'laughing out loud', 'winking playfully',
-        'crying tears of joy', 'sad and dejected', 'angry and frustrated',
-        'surprised with mouth wide open', 'sleepy and yawning', 'love-struck with heart eyes',
-        'confused and puzzled', 'cool and wearing sunglasses', 'nervous and sweating',
-        'proud and triumphant', 'shy and blushing', 'excited and jumping',
-        'bored and unamused', 'scared and trembling', 'thinking deeply',
-        'pleading with puppy eyes', 'relieved and sighing', 'mischievous and scheming',
-        'greeting and waving hello', 'giving a thumbs up', 'celebrating with party hat',
-        'eating happily', 'running fast', 'sleeping peacefully', 'dancing joyfully',
-        'flexing muscles', 'blowing a kiss', 'face-palming', 'clapping hands',
-        'peeking from corner', 'rolling eyes', 'shrugging shoulders',
-        'sticking tongue out', 'hugging a heart', 'meditating calmly', 'starry-eyed in awe', 'sobbing uncontrollably',
+        'beaming with a huge bright smile, eyes squeezed into happy crescents',
+        'laughing hysterically with mouth wide open showing teeth, tears of joy',
+        'winking one eye closed with a cheeky grin',
+        'crying rivers of tears with a trembling mouth',
+        'furious with red face, furrowed brows, gritted teeth',
+        'shocked with mouth hanging open and eyes as big as saucers',
+        'drowsy with half-closed eyes and a wide yawn',
+        'love-struck with giant heart-shaped eyes and blushing cheeks',
+        'puzzled with one eyebrow raised and a question mark expression',
+        'wearing cool sunglasses with a smug grin',
+        'nervous with sweat drops and an awkward forced smile',
+        'puffed-up proud face with sparkles in eyes',
+        'deeply blushing with shy downcast eyes',
+        'starry-eyed with excitement, mouth in a wide O',
+        'utterly bored with flat-line mouth and dead eyes',
+        'terrified with wide eyes, mouth trembling, face pale',
+        'deep in thought with eyes looking up and hand on chin',
+        'pleading with huge watery puppy eyes and pouting lip',
+        'relieved with a long exhale, eyes closed peacefully',
+        'devious with a sly side-smile and narrowed eyes',
+        'cheerful greeting with one paw/hand raised near face',
+        'thumbs up with a confident wink (show paw/hand near face)',
+        'party mode with a tiny hat, confetti, and huge grin',
+        'munching food with stuffed cheeks and happy closed eyes',
+        'peacefully sleeping with closed eyes, Zzz floating',
+        'blowing a kiss with puckered lips and a floating heart',
+        'face-palming with one paw/hand covering face',
+        'peeking from the bottom edge with curious wide eyes',
+        'eye-rolling with exasperated expression',
+        'sticking tongue out playfully with one eye closed',
+        'hugging a small heart against cheek',
+        'frozen in shock with blank white eyes',
+        'sneezing with scrunched-up face',
+        'drooling with glazed-over happy eyes',
+        'steaming mad with steam coming from ears',
+        'sparkling clean with shiny face and closed-eye smile',
+        'sick with a thermometer, flushed cheeks, and droopy eyes',
+        'mind-blown with top of head popping open',
+        'smirking with one corner of mouth raised',
+        'sobbing with face crumpled and mouth wide open crying',
       ];
 
       const buildPrompt = (index, extraHint = '') => {
@@ -1216,28 +1253,40 @@
         if (isEmoji) {
           const mood = EMOJI_MOODS[index % EMOJI_MOODS.length];
           return [
-            `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), body shape, color palette, and key visual features. You MUST preserve ALL of these in your output.`,
+            `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), face shape, color palette, and key FACIAL features. You MUST preserve ALL of these in your output.`,
             '',
-            `Based on the reference character image provided, generate a single character illustration ${stylePrompt}.`,
+            `Based on the reference character image provided, generate a CLOSE-UP FACE illustration ${stylePrompt}.`,
             `The character MUST be the SAME species and type as the reference — NEVER change the species.`,
-            `Preserve the character's distinctive features: fur/hair color, eye color, accessories, clothing, markings, and proportions.`,
+            `Preserve the character's distinctive FACIAL features: fur/hair color, eye shape, eye color, ear shape, nose, accessories (hats, glasses, etc.), markings, and face proportions.`,
             '',
-            `This is for a LINE messaging EMOJI (tiny icon shown inline in chat text).`,
+            `This is for a LINE messaging EMOJI — a tiny icon (180×180px) displayed inline in chat text at approximately 24px.`,
             `The character expression/pose: ${mood}.`,
             extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority): ${extraHint}\n` : '',
-            '', 'CRITICAL REQUIREMENTS:',
+            '',
+            'COMPOSITION — THIS IS THE MOST IMPORTANT REQUIREMENT:',
+            '- EXTREME CLOSE-UP: Show ONLY the character\'s FACE (head + ears). The face MUST fill at least 90% of the canvas.',
+            '- Frame from forehead/ears to chin — like a passport photo but even tighter. DO NOT show the body, arms, legs, or torso.',
+            '- The face should be so large that the top of the ears/head nearly touches the top edge, and the chin nearly touches the bottom edge.',
+            '- Think of this like a phone emoji 😀 — just the face, nothing else.',
+            '',
+            'STYLE REQUIREMENTS:',
+            '- Use BOLD, THICK outlines/linework for maximum visibility at tiny sizes',
+            '- Use VIBRANT, SATURATED colors — not pastel or muted',
+            '- Expression must be EXTREMELY EXAGGERATED — big wide eyes, huge open mouth, visible tears, giant sweat drops, etc.',
+            '- The expression must be INSTANTLY recognizable even at 24px display size',
+            '',
+            'TECHNICAL REQUIREMENTS:',
             '- PRESERVE the character species and visual identity from the reference image — #1 priority',
             '- Do NOT include any text, letters, words, numbers, or characters in the image',
             '- Use a clean solid CHROMA KEY GREEN background (hex #00B140) — fill the ENTIRE background with this exact green color',
-            '- FILL THE FRAME COMPLETELY: The character MUST occupy 85-95% of the canvas. This is a TINY emoji (180×180 pixels) — every pixel counts. Minimize all empty space.',
-            '- Prefer CLOSE-UP face/upper-body composition for maximum readability at small sizes',
-            '- Single character only, centered in frame',
-            '- Expression must be EXAGGERATED and instantly readable at very small sizes (will display at ~24px in chat)',
+            '- Single character face only, centered in frame',
             '- No decorative borders, frames, or background elements',
+            '- No body parts below the neck (except hands near face for specific expressions like face-palming)',
           ].join('\n');
         }
 
-        // === Sticker mode: original logic ===
+        // === Sticker / Big Sticker mode ===
+        const isBig = productType === 'big';
         const meta = captionMeta[index];
         const caption = captions[index] || '';
         const originalText = meta?.originalText || '';
@@ -1253,10 +1302,10 @@
           '',
           sceneHint ? `SCENE/COSTUME CONTEXT: ${sceneHint}` : '',
           wasEdited
-            ? `This illustration is for a LINE messaging sticker with the text "${caption}". Infer the most appropriate mood, facial expression, and body pose directly from this text. The character's expression and action must clearly convey the feeling of "${caption}".`
+            ? `This illustration is for a LINE messaging ${isBig ? 'BIG sticker (tall portrait format)' : 'sticker'} with the text "${caption}". Infer the most appropriate mood, facial expression, and body pose directly from this text. The character's expression and action must clearly convey the feeling of "${caption}".`
             : [
                 `The character should express: ${actionStr} (mood: ${moodStr}).`,
-                `This illustration is for a LINE messaging sticker with the text "${caption}".`,
+                `This illustration is for a LINE messaging ${isBig ? 'BIG sticker (tall portrait format)' : 'sticker'} with the text "${caption}".`,
                 `The character pose and expression must clearly match the mood "${moodStr}" and convey the feeling of "${caption}".`,
               ].join('\n'),
           extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority for this specific sticker): ${extraHint}\n` : '',
@@ -1265,9 +1314,13 @@
           '- The character outfit/costume MUST match the scene context described above',
           '- Do NOT include any text, letters, words, numbers, or characters in the image',
           '- Use a clean solid CHROMA KEY GREEN background (hex #00B140) — this specific green is required for automated background removal. Fill the ENTIRE background with this exact green color.',
-          '- FILL THE FRAME: The character should occupy at least 80-90% of the canvas height. Minimize empty space above and below the character. For upper-body shots, crop tightly from chest up. For full-body shots, the character should nearly touch the top and bottom edges.',
+          isBig
+            ? '- TALL PORTRAIT COMPOSITION (396×660 pixels): The canvas is a tall vertical rectangle. Draw the FULL BODY of the character standing/posing, utilizing the full height. The character should occupy 80-90% of the canvas height. This format has more room for expressive full-body poses.'
+            : '- FILL THE FRAME: The character should occupy at least 80-90% of the canvas height. Minimize empty space above and below the character. For upper-body shots, crop tightly from chest up. For full-body shots, the character should nearly touch the top and bottom edges.',
           '- Single character only, centered in frame',
-          '- Expressive and clear at small sizes (370x320 pixels)',
+          isBig
+            ? '- Expressive and clear — full-body pose should be dynamic and readable (396x660 pixels)'
+            : '- Expressive and clear at small sizes (370x320 pixels)',
           '- No decorative borders or frames',
         ].join('\n');
       };
@@ -1341,7 +1394,7 @@
           <div className="text-center">
             <h2 className="text-xl font-bold text-gray-900 mb-1">預覽 & 生成</h2>
             <p className="text-gray-500 text-sm">
-              畫風：{styleName} ・ {stickerCount} 張{isEmoji ? '表情貼' : '貼圖'}
+              畫風：{styleName} ・ {stickerCount} 張{isEmoji ? '表情貼' : isBig ? '大貼圖' : '貼圖'}
               {isEmoji && <span className="ml-2 text-xs text-amber-500">（180×180 · 無文字）</span>}
             </p>
           </div>
@@ -1467,7 +1520,7 @@
                     className={`sticker-slot ${displayImage ? 'has-image' : ''} ${
                       isFailed ? 'border-red-300 bg-red-50' : ''
                     } ${selectedSticker === i ? 'selected' : ''}`}
-                    style={isEmoji ? { aspectRatio: '1/1' } : {}}
+                    style={isEmoji ? { aspectRatio: '1/1' } : isBig ? { aspectRatio: '396/660' } : {}}
                     onClick={() => displayImage && setSelectedSticker(i)}>
 
                     {isRegening ? (
@@ -1564,12 +1617,12 @@
           {hasImages && (
             <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 space-y-4">
               <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
-                📦 匯出 LINE {isEmoji ? '表情貼包' : '貼圖包'}
+                📦 匯出 LINE {isEmoji ? '表情貼包' : isBig ? '大貼圖包' : '貼圖包'}
               </h3>
               <p className="text-xs text-gray-400">
                 {isEmoji
                   ? `ZIP 包含：${stickerCount} 張表情貼（001.png ~ ${String(stickerCount).padStart(3, '0')}.png，180×180）+ main.png（180×180）+ tab.png（96×74），10px 安全邊距`
-                  : `ZIP 包含：${stickerCount} 張主圖（01.png ~ ${String(stickerCount).padStart(2, '0')}.png，370×320）+ main.png（240×240）+ tab.png（96×74），10px 安全邊距`
+                  : `ZIP 包含：${stickerCount} 張主圖（01.png ~ ${String(stickerCount).padStart(2, '0')}.png，${config.sizeLabel}）+ main.png（240×240）+ tab.png（96×74），10px 安全邊距`
                 }
               </p>
 
@@ -1662,7 +1715,7 @@
                   {isExporting ? (
                     <><span className="animate-spin">⏳</span> 匯出中...</>
                   ) : (
-                    <>📦 匯出 LINE {isEmoji ? '表情貼包' : '貼圖包'}</>
+                    <>📦 匯出 LINE {isEmoji ? '表情貼包' : isBig ? '大貼圖包' : '貼圖包'}</>
                   )}
                 </button>
 
@@ -1744,7 +1797,7 @@
         <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 space-y-4">
           <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
             📝 LINE 上架文案
-            <span className="text-xs font-normal text-gray-400">Creators Market {isEmoji ? '表情貼' : '貼圖'}標題＆說明＆版權（中英文）</span>
+            <span className="text-xs font-normal text-gray-400">Creators Market {isEmoji ? '表情貼' : isBig ? '大貼圖' : '貼圖'}標題＆說明＆版權（中英文）</span>
           </h3>
 
           {/* 角色描述（可選） + 生成按鈕 */}
