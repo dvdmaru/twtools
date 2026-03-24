@@ -1610,6 +1610,7 @@
               isGeneratingListing={isGeneratingListing}
               setIsGeneratingListing={setIsGeneratingListing}
               isEmoji={isEmoji}
+              productType={productType}
             />
           )}
 
@@ -1749,7 +1750,8 @@
     // ListingGenerator — LINE Creators Market 上架文案
     // ============================================================
 
-    function ListingGenerator({ captionTheme, captions, stickerCount, listing, setListing, isGeneratingListing, setIsGeneratingListing, isEmoji }) {
+    function ListingGenerator({ captionTheme, captions, stickerCount, listing, setListing, isGeneratingListing, setIsGeneratingListing, isEmoji, productType }) {
+      const isBig = productType === 'big';
       const [charDesc, setCharDesc] = useState('');
 
       const handleGenerate = async () => {
