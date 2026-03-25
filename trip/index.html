@@ -111,8 +111,8 @@ const T = {
     endDate: '回程日',
     daysNights: (d) => `共 ${d} 天 ${d-1} 夜`,
     currency: '幣別',
-    totalBudget: '總預算',
-    perPerson: '每人總預算',
+    totalBudget: '每人預算',
+    perPerson: '含機票、住宿、餐飲、門票等',
     travelers: '旅行人數',
     person: '人',
     step3Title: '你的旅行風格',
@@ -141,8 +141,9 @@ const T = {
     interestsLabel: '興趣',
     generateBtn: '🪄 開始規劃',
     resetBtn: '✨ 重新規劃',
+    editConditions: '✏️ 修改條件',
     apiKeySection: 'API Key 設定',
-    apiKeyDesc: '免費額度用完後，輸入你的 Claude API Key 可繼續使用',
+    apiKeyDesc: '使用自己的 API Key',
     apiKeyPrivacy: '你的 API Key 僅在瀏覽器端使用，不會傳送至任何第三方伺服器',
     freeQuota: (used, limit) => `免費額度：已用 ${used}/${limit} 次`,
     freeQuotaLeft: (n) => `本月剩餘 ${n} 次免費`,
@@ -206,8 +207,8 @@ const T = {
     endDate: '回程日',
     daysNights: (d) => `共 ${d} 天 ${d-1} 晚`,
     currency: '币种',
-    totalBudget: '总预算',
-    perPerson: '每人总预算',
+    totalBudget: '每人预算',
+    perPerson: '含机票、住宿、餐饮、门票等',
     travelers: '旅行人数',
     person: '人',
     step3Title: '你的旅行风格',
@@ -236,8 +237,9 @@ const T = {
     interestsLabel: '兴趣',
     generateBtn: '🪄 开始规划',
     resetBtn: '✨ 重新规划',
+    editConditions: '✏️ 修改条件',
     apiKeySection: 'API Key 设置',
-    apiKeyDesc: '免费额度用完后，输入你的 Claude API Key 可继续使用',
+    apiKeyDesc: '使用自己的 API Key',
     apiKeyPrivacy: '你的 API Key 仅在浏览器端使用，不会传送至任何第三方服务器',
     freeQuota: (used, limit) => `免费额度：已用 ${used}/${limit} 次`,
     freeQuotaLeft: (n) => `本月剩余 ${n} 次免费`,
@@ -301,8 +303,8 @@ const T = {
     endDate: 'Return',
     daysNights: (d) => `${d} days ${d-1} nights`,
     currency: 'Currency',
-    totalBudget: 'Total Budget',
-    perPerson: 'Budget per person',
+    totalBudget: 'Budget per Person',
+    perPerson: 'Incl. flights, hotels, food, tickets',
     travelers: 'Travelers',
     person: '',
     step3Title: 'Your Travel Style',
@@ -331,8 +333,9 @@ const T = {
     interestsLabel: 'Interests',
     generateBtn: '🪄 Plan My Trip',
     resetBtn: '✨ Plan Again',
+    editConditions: '✏️ Edit Criteria',
     apiKeySection: 'API Key Settings',
-    apiKeyDesc: 'After free uses, enter your Claude API Key to continue',
+    apiKeyDesc: 'Use your own API Key',
     apiKeyPrivacy: 'Your API Key is only used locally and never sent to third parties',
     freeQuota: (used, limit) => `Free uses: ${used}/${limit}`,
     freeQuotaLeft: (n) => `${n} free uses remaining`,
@@ -399,18 +402,18 @@ const INTEREST_OPTIONS = [
 ];
 
 const POPULAR = [
-  { name:{tw:'東京',cn:'东京',en:'Tokyo'}, emoji:'🗼', country:{tw:'日本',cn:'日本',en:'Japan'} },
-  { name:{tw:'大阪',cn:'大阪',en:'Osaka'}, emoji:'🏯', country:{tw:'日本',cn:'日本',en:'Japan'} },
-  { name:{tw:'首爾',cn:'首尔',en:'Seoul'}, emoji:'🇰🇷', country:{tw:'韓國',cn:'韩国',en:'South Korea'} },
-  { name:{tw:'曼谷',cn:'曼谷',en:'Bangkok'}, emoji:'🛕', country:{tw:'泰國',cn:'泰国',en:'Thailand'} },
-  { name:{tw:'新加坡',cn:'新加坡',en:'Singapore'}, emoji:'🦁', country:{tw:'新加坡',cn:'新加坡',en:'Singapore'} },
-  { name:{tw:'香港',cn:'香港',en:'Hong Kong'}, emoji:'🌃', country:{tw:'香港',cn:'香港',en:'Hong Kong'} },
-  { name:{tw:'峇里島',cn:'巴厘岛',en:'Bali'}, emoji:'🌺', country:{tw:'印尼',cn:'印尼',en:'Indonesia'} },
-  { name:{tw:'倫敦',cn:'伦敦',en:'London'}, emoji:'🎡', country:{tw:'英國',cn:'英国',en:'UK'} },
-  { name:{tw:'巴黎',cn:'巴黎',en:'Paris'}, emoji:'🗼', country:{tw:'法國',cn:'法国',en:'France'} },
-  { name:{tw:'紐約',cn:'纽约',en:'New York'}, emoji:'🗽', country:{tw:'美國',cn:'美国',en:'USA'} },
-  { name:{tw:'重慶',cn:'重庆',en:'Chongqing'}, emoji:'🌶️', country:{tw:'中國',cn:'中国',en:'China'} },
-  { name:{tw:'沖繩',cn:'冲绳',en:'Okinawa'}, emoji:'🏖️', country:{tw:'日本',cn:'日本',en:'Japan'} },
+  { name:{tw:'東京',cn:'东京',en:'Tokyo'}, emoji:'🗼', country:{tw:'日本',cn:'日本',en:'Japan'}, currency:'JPY' },
+  { name:{tw:'大阪',cn:'大阪',en:'Osaka'}, emoji:'🏯', country:{tw:'日本',cn:'日本',en:'Japan'}, currency:'JPY' },
+  { name:{tw:'首爾',cn:'首尔',en:'Seoul'}, emoji:'🇰🇷', country:{tw:'韓國',cn:'韩国',en:'South Korea'}, currency:'KRW' },
+  { name:{tw:'曼谷',cn:'曼谷',en:'Bangkok'}, emoji:'🛕', country:{tw:'泰國',cn:'泰国',en:'Thailand'}, currency:'THB' },
+  { name:{tw:'新加坡',cn:'新加坡',en:'Singapore'}, emoji:'🦁', country:{tw:'新加坡',cn:'新加坡',en:'Singapore'}, currency:'USD' },
+  { name:{tw:'香港',cn:'香港',en:'Hong Kong'}, emoji:'🌃', country:{tw:'香港',cn:'香港',en:'Hong Kong'}, currency:'TWD' },
+  { name:{tw:'峇里島',cn:'巴厘岛',en:'Bali'}, emoji:'🌺', country:{tw:'印尼',cn:'印尼',en:'Indonesia'}, currency:'USD' },
+  { name:{tw:'倫敦',cn:'伦敦',en:'London'}, emoji:'🎡', country:{tw:'英國',cn:'英国',en:'UK'}, currency:'GBP' },
+  { name:{tw:'巴黎',cn:'巴黎',en:'Paris'}, emoji:'🗼', country:{tw:'法國',cn:'法国',en:'France'}, currency:'EUR' },
+  { name:{tw:'紐約',cn:'纽约',en:'New York'}, emoji:'🗽', country:{tw:'美國',cn:'美国',en:'USA'}, currency:'USD' },
+  { name:{tw:'重慶',cn:'重庆',en:'Chongqing'}, emoji:'🌶️', country:{tw:'中國',cn:'中国',en:'China'}, currency:'CNY' },
+  { name:{tw:'沖繩',cn:'冲绳',en:'Okinawa'}, emoji:'🏖️', country:{tw:'日本',cn:'日本',en:'Japan'}, currency:'JPY' },
 ];
 
 // ═══════════════════════════════════════════
@@ -469,7 +472,7 @@ function buildPrompt(tripData, lang) {
 目的地：${tripData.destination}
 日期：${tripData.startDate} 至 ${tripData.endDate}（${tripData.numDays} 天）
 消費偏好：${tripData.style === 'budget' ? '經濟實惠' : tripData.style === 'moderate' ? '舒適中等' : '精緻豪華'}
-旅行人數：${tripData.travelers} 人
+每人預算：${tripData.budget} ${tripData.currency}（含機票、住宿、餐飲、門票等所有費用，共 ${tripData.travelers} 人同行）
 節奏偏好：${tripData.pace === 'relaxed' ? '悠閒慢遊' : tripData.pace === 'moderate' ? '適中平衡' : '充實緊湊'}
 興趣偏好：${tripData.interests.join('、')}
 ${tripData.notes ? `額外需求：${tripData.notes}` : ''}
@@ -647,7 +650,7 @@ function StepDestination({ data, onChange, onNext, lang }) {
       <p className="text-sm text-gray-400 mb-3 font-medium">{t.popularLabel}</p>
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
         {POPULAR.map(p => (
-          <button key={p.name.en} onClick={() => onChange({ destination: `${p.name[lk]}（${p.name.en}），${p.country[lk]}` })}
+          <button key={p.name.en} onClick={() => onChange({ destination: `${p.name[lk]}, ${p.country[lk]}`, currency: p.currency })}
             className={`flex flex-col items-center gap-1 p-3 rounded-xl border transition-all hover:shadow-md ${
               data.destination.includes(p.name[lk]) ? 'border-brand-400 bg-brand-50 shadow-sm' : 'border-gray-200 bg-white hover:border-brand-300'
             }`}>
@@ -673,15 +676,20 @@ function StepDatesAndBudget({ data, onChange, onNext, onBack }) {
     return Math.max(1, Math.ceil((new Date(data.endDate) - new Date(data.startDate)) / 86400000) + 1);
   }, [data.startDate, data.endDate]);
   const today = new Date().toISOString().split('T')[0];
+  const minEndDate = useMemo(() => {
+    if (!data.startDate) return today;
+    const d = new Date(data.startDate); d.setDate(d.getDate() + 1);
+    return d.toISOString().split('T')[0];
+  }, [data.startDate, today]);
   return (
     <div className="fade-in">
       <h2 className="text-2xl font-bold text-gray-800 mb-2">{t.step2Title}</h2>
       <p className="text-gray-500 mb-6">{t.step2Desc}</p>
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div><label className="block text-sm font-medium text-gray-600 mb-1.5">{t.startDate}</label>
-          <input type="date" value={data.startDate} min={today} onChange={e => onChange({ startDate: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white" /></div>
+          <input type="date" value={data.startDate} min={today} onChange={e => { onChange({ startDate: e.target.value }); if (data.endDate && data.endDate <= e.target.value) onChange({ endDate: '' }); }} className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white" /></div>
         <div><label className="block text-sm font-medium text-gray-600 mb-1.5">{t.endDate}</label>
-          <input type="date" value={data.endDate} min={data.startDate||today} onChange={e => onChange({ endDate: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white" /></div>
+          <input type="date" value={data.endDate} min={minEndDate} onChange={e => onChange({ endDate: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white" /></div>
       </div>
       {numDays > 0 && <div className="mb-6 px-4 py-2.5 bg-brand-50 rounded-lg text-brand-700 text-sm font-medium">{t.daysNights(numDays)}</div>}
       <div className="grid grid-cols-3 gap-4 mb-4">
@@ -691,16 +699,26 @@ function StepDatesAndBudget({ data, onChange, onNext, onBack }) {
             <option value="KRW">KRW</option><option value="THB">THB</option><option value="GBP">GBP</option><option value="CNY">CNY</option>
           </select></div>
         <div className="col-span-2"><label className="block text-sm font-medium text-gray-600 mb-1.5">{t.totalBudget} <span className="text-gray-400">({CURRENCY_SYMBOLS[data.currency]})</span></label>
-          <input type="number" value={data.budget} placeholder={t.perPerson} onChange={e => onChange({ budget: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white" /></div>
+          <input type="number" value={data.budget} placeholder={t.perPerson} onChange={e => onChange({ budget: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white" />
+          <p className="text-xs text-gray-400 mt-1">{t.perPerson}</p></div>
       </div>
       <div className="mb-6"><label className="block text-sm font-medium text-gray-600 mb-1.5">{t.travelers}</label>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {[1,2,3,4].map(n => (
             <button key={n} onClick={() => onChange({ travelers: n })}
               className={`flex-1 py-3 rounded-xl border text-center font-medium transition-all ${
-                data.travelers===n ? 'border-brand-400 bg-brand-50 text-brand-700' : 'border-gray-200 bg-white text-gray-600 hover:border-brand-300'
+                data.travelers===n && ![5,6,7,8,9,10].includes(data.travelers) ? 'border-brand-400 bg-brand-50 text-brand-700' : 'border-gray-200 bg-white text-gray-600 hover:border-brand-300'
               }`}>{['👤','👫','👨‍👩‍👧','👨‍👩‍👧‍👦'][n-1]} {n}{t.person}</button>
           ))}
+          <div className={`flex items-center gap-1 px-3 py-2.5 rounded-xl border transition-all ${
+            data.travelers > 4 ? 'border-brand-400 bg-brand-50' : 'border-gray-200 bg-white'
+          }`}>
+            <span className="text-sm text-gray-500">👥</span>
+            <input type="number" min="5" max="30" placeholder="5+"
+              value={data.travelers > 4 ? data.travelers : ''}
+              onChange={e => { const v = parseInt(e.target.value); if (v > 0) onChange({ travelers: v }); }}
+              className="w-12 text-center text-sm font-medium bg-transparent border-none outline-none" />
+          </div>
         </div>
       </div>
       <div className="flex gap-3">
@@ -780,7 +798,7 @@ function StepReview({ data, onBack, onGenerate, apiKey, setApiKey, quota }) {
       <p className="text-gray-500 mb-6">{t.step4Desc}</p>
       <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 space-y-4">
         {[[t.destination, data.destination], [t.dates, `${data.startDate} ～ ${data.endDate}（${numDays}天）`],
-          [t.budgetLabel, `${sym}${Number(data.budget).toLocaleString()} ${data.currency}`],
+          [t.budgetLabel, `${sym}${Number(data.budget).toLocaleString()} ${data.currency} / ${t.person}`],
           [t.travelersLabel, `${data.travelers} ${t.person}`],
           [t.styleLabel, data.style==='budget'?t.budget:data.style==='moderate'?t.moderate:t.luxury],
           [t.paceLabel, data.pace==='relaxed'?t.relaxed:data.pace==='moderate'?t.moderatePace:t.packed],
@@ -798,27 +816,35 @@ function StepReview({ data, onBack, onGenerate, apiKey, setApiKey, quota }) {
         </div>
       </div>
 
-      {/* Quota & API Key */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
-        {quota && (
-          <div className={`mb-4 px-4 py-2.5 rounded-lg text-sm font-medium ${
-            quota.remaining > 0 ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
-          }`}>
-            {quota.remaining > 0 ? t.freeQuotaLeft(quota.remaining) : t.freeQuotaOut}
-          </div>
-        )}
-        {(needKey || apiKey) && (
-          <>
-            <label className="block text-sm font-medium text-gray-600 mb-1.5">{t.apiKeySection}</label>
-            <input type="password" value={apiKey} onChange={e => setApiKey(e.target.value)} placeholder="sk-ant-api03-..."
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white mb-2 font-mono text-sm" />
-            <p className="text-xs text-gray-400">{t.apiKeyPrivacy}</p>
-          </>
-        )}
-        {!needKey && !apiKey && (
-          <button onClick={() => setApiKey(' ')} className="text-sm text-brand-600 hover:underline">{t.apiKeyDesc}</button>
-        )}
-      </div>
+      {/* Quota & API Key — 免費額度有剩時只顯示額度，用完才展開 */}
+      {(quota || apiKey) && (
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
+          {quota && (
+            <div className={`px-4 py-2.5 rounded-lg text-sm font-medium ${
+              quota.remaining > 0 ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
+            } ${needKey || apiKey.trim() ? 'mb-4' : ''}`}>
+              {quota.remaining > 0 ? t.freeQuotaLeft(quota.remaining) : t.freeQuotaOut}
+            </div>
+          )}
+          {needKey && (
+            <>
+              <label className="block text-sm font-medium text-gray-600 mb-1.5">{t.apiKeySection}</label>
+              <input type="password" value={apiKey} onChange={e => setApiKey(e.target.value)} placeholder="sk-ant-api03-..."
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white mb-2 font-mono text-sm" />
+              <p className="text-xs text-gray-400">{t.apiKeyPrivacy}</p>
+            </>
+          )}
+          {!needKey && !apiKey.trim() && (
+            <details className="mt-3"><summary className="text-xs text-gray-400 cursor-pointer hover:text-brand-500">{t.apiKeyDesc}</summary>
+              <div className="mt-2">
+                <input type="password" value={apiKey} onChange={e => setApiKey(e.target.value)} placeholder="sk-ant-api03-..."
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white mb-2 font-mono text-sm" />
+                <p className="text-xs text-gray-400">{t.apiKeyPrivacy}</p>
+              </div>
+            </details>
+          )}
+        </div>
+      )}
 
       <div className="flex gap-3">
         <button onClick={onBack} className="px-6 py-3.5 rounded-xl border border-gray-300 text-gray-600 font-medium hover:bg-gray-50">{t.prevBtn}</button>
@@ -936,7 +962,7 @@ function makeMapUrl(name, city) {
 }
 
 // ── Results ──
-function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
+function ResultsView({ trip, tripData, onReset, onEdit, lang, apiKey, onUpdateTrip }) {
   const t = useT();
   const [selectedDay, setSelectedDay] = useState(0);
   const [activeTab, setActiveTab] = useState('itinerary');
@@ -946,6 +972,8 @@ function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
   const [replanMsg, setReplanMsg] = useState(null);
   const sym = CURRENCY_SYMBOLS[tripData.currency]||'';
   const days = trip.days||[];
+
+  const selectDay = (d) => { setSelectedDay(d); setReplanOpen(false); setReplanNote(''); setReplanMsg(null); };
 
   const handleReplanDay = async () => {
     if (replanning) return;
@@ -1046,6 +1074,7 @@ function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
       <div className="bg-gradient-to-r from-brand-600 to-brand-800 text-white">
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between mb-4"><Logo white /><div className="flex items-center gap-2">
+            <button onClick={onEdit} className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium backdrop-blur transition-all">{t.editConditions}</button>
             <button onClick={onReset} className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium backdrop-blur transition-all">{t.resetBtn}</button>
           </div></div>
           <h1 className="text-2xl sm:text-3xl font-bold mb-1">{trip.tripTitle||'My Trip'}</h1>
@@ -1077,18 +1106,30 @@ function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
       <div className="max-w-6xl mx-auto px-4 mt-4">
         <div className="flex gap-1 bg-white rounded-xl p-1 border border-gray-200 mb-4 w-fit">
           {[['itinerary',t.tabItinerary],['map',t.tabMap],['booking',t.tabBooking]].map(([key,label]) => (
-            <button key={key} onClick={() => setActiveTab(key)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab===key?'bg-brand-500 text-white shadow-sm':'text-gray-600 hover:bg-gray-100'}`}>{label}</button>
+            <button key={key} onClick={() => { setActiveTab(key); if (key === 'itinerary' && selectedDay === null) selectDay(0); }} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab===key?'bg-brand-500 text-white shadow-sm':'text-gray-600 hover:bg-gray-100'}`}>{label}</button>
           ))}
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-4 pb-20">
         {activeTab==='itinerary' && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 slide-up">
-            <div className="lg:col-span-1"><div className="bg-white rounded-2xl border border-gray-200 p-4 sticky top-4">
+          <div className="slide-up">
+            {/* 手機版：橫向滾動 pill bar */}
+            <div className="lg:hidden mb-4">
+              <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar" style={{scrollbarWidth:'none',msOverflowStyle:'none',WebkitOverflowScrolling:'touch'}}>
+                {days.map((day,i) => (
+                  <button key={i} onClick={() => selectDay(i)} className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all ${selectedDay===i?'bg-brand-500 text-white shadow-sm':'bg-white border border-gray-200 text-gray-600 hover:border-brand-300'}`}>
+                    {t.dayLabel(i+1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* 桌面版：側邊欄 */}
+            <div className="hidden lg:block lg:col-span-1"><div className="bg-white rounded-2xl border border-gray-200 p-4 sticky top-4">
               <h3 className="font-semibold text-gray-800 mb-3">{t.daysSection}</h3>
               <div className="space-y-2 max-h-[50vh] overflow-y-auto custom-scrollbar">
                 {days.map((day,i) => (
-                  <button key={i} onClick={() => setSelectedDay(i)} className={`w-full text-left p-3 rounded-xl transition-all ${selectedDay===i?'bg-brand-50 border-brand-300 border-2':'bg-gray-50 border border-transparent hover:bg-gray-100'}`}>
+                  <button key={i} onClick={() => selectDay(i)} className={`w-full text-left p-3 rounded-xl transition-all ${selectedDay===i?'bg-brand-50 border-brand-300 border-2':'bg-gray-50 border border-transparent hover:bg-gray-100'}`}>
                     <div className="flex items-center justify-between"><span className={`text-xs font-bold px-2 py-0.5 rounded-full ${selectedDay===i?'bg-brand-500 text-white':'bg-gray-200 text-gray-600'}`}>{t.dayLabel(i+1)}</span><span className="text-xs text-gray-400">{day.date}</span></div>
                     <p className="text-sm font-medium text-gray-700 mt-1.5 truncate">{day.dayTitle}</p>
                     {day.dailyCost && <p className="text-xs text-gray-400 mt-1">{sym}{Object.values(day.dailyCost).reduce((a,b)=>a+(b||0),0).toLocaleString()}</p>}
@@ -1098,9 +1139,10 @@ function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
               <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
                 <button onClick={exportICS} className="w-full py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 flex items-center justify-center gap-2">{t.exportICS}</button>
                 <button onClick={exportPDF} className="w-full py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 flex items-center justify-center gap-2">{t.exportPDF}</button>
+                <button onClick={exportJSON} className="w-full py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 flex items-center justify-center gap-2">{t.exportJSON}</button>
               </div>
             </div></div>
-            <div className="lg:col-span-2">{days[selectedDay] && (
+            <div className="lg:col-span-2">{selectedDay !== null && days[selectedDay] && (
               <div className="fade-in">
                 <div className="flex items-center gap-3 mb-4"><span className="px-3 py-1 bg-brand-500 text-white rounded-full text-sm font-bold">{t.dayLabel(selectedDay+1)}</span><h3 className="text-xl font-bold text-gray-800">{days[selectedDay].dayTitle}</h3></div>
                 <div className="space-y-3">
@@ -1166,12 +1208,19 @@ function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
               </div>
             )}</div>
           </div>
+          {/* 手機版匯出按鈕 */}
+          <div className="lg:hidden mt-4 flex flex-wrap gap-2">
+            <button onClick={exportICS} className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 flex items-center justify-center gap-2 bg-white">{t.exportICS}</button>
+            <button onClick={exportPDF} className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 flex items-center justify-center gap-2 bg-white">{t.exportPDF}</button>
+            <button onClick={exportJSON} className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 flex items-center justify-center gap-2 bg-white">{t.exportJSON}</button>
+          </div>
+          </div>
         )}
         {activeTab==='map' && (
           <div className="slide-up"><div className="bg-white rounded-2xl border border-gray-200 overflow-hidden" style={{height:500}}>
             <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100 flex-wrap">
               <button onClick={() => setSelectedDay(null)} className={`px-3 py-1 rounded-full text-xs font-medium ${selectedDay===null?'bg-brand-500 text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{t.showAll}</button>
-              {days.map((_,i) => <button key={i} onClick={() => setSelectedDay(i)} className={`px-3 py-1 rounded-full text-xs font-medium ${selectedDay===i?'bg-brand-500 text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{t.dayLabel(i+1)}</button>)}
+              {days.map((_,i) => <button key={i} onClick={() => selectDay(i)} className={`px-3 py-1 rounded-full text-xs font-medium ${selectedDay===i?'bg-brand-500 text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{t.dayLabel(i+1)}</button>)}
             </div>
             <TripMap days={days} selectedDay={selectedDay}/>
           </div></div>
@@ -1253,8 +1302,8 @@ function App() {
   const [quota, setQuota] = useState(null);
   const [formData, setFormData] = useState({
     destination:'', startDate:'', endDate:'', budget:'',
-    currency:'JPY', travelers:2, style:'moderate', pace:'moderate',
-    interests:['food','sightseeing'], notes:''
+    currency:'TWD', travelers:2, style:'moderate', pace:'moderate',
+    interests:[], notes:''
   });
 
   const t = T[lang];
@@ -1293,7 +1342,10 @@ function App() {
         }
       }
 
-      setTrip(repairJSON(resultText));
+      const parsed = repairJSON(resultText);
+      if (!parsed.days || !parsed.days.length) throw new Error('AI 回傳的行程資料不完整，請重試。');
+      setTrip(parsed);
+      setLoading(false);
     } catch (e) {
       setError(e.message);
       setLoading(false);
@@ -1301,10 +1353,11 @@ function App() {
   };
 
   const handleReset = () => { setTrip(null); setStep(0); setLoading(false); setError(null); };
+  const handleEdit = () => { setTrip(null); setStep(3); setLoading(false); setError(null); };
 
   if (trip) return (
     <I18nContext.Provider value={t}>
-      <ResultsView trip={trip} tripData={formData} onReset={handleReset} lang={lang} apiKey={apiKey} onUpdateTrip={setTrip} />
+      <ResultsView trip={trip} tripData={formData} onReset={handleReset} onEdit={handleEdit} lang={lang} apiKey={apiKey} onUpdateTrip={setTrip} />
     </I18nContext.Provider>
   );
 
