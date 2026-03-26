@@ -393,7 +393,13 @@ const useT = () => useContext(I18nContext);
 // ═══════════════════════════════════════════
 const CATEGORY_ICONS = { sightseeing:'🏛️',food:'🍜',shopping:'🛍️',culture:'🎭',nature:'🌿',transport:'🚆',nightlife:'🌃',relaxation:'♨️' };
 const CATEGORY_COLORS = { sightseeing:'#6366f1',food:'#f97316',shopping:'#ec4899',culture:'#8b5cf6',nature:'#22c55e',transport:'#64748b',nightlife:'#a855f7',relaxation:'#06b6d4' };
-const CURRENCY_SYMBOLS = { TWD:'NT$',JPY:'¥',USD:'$',EUR:'€',KRW:'₩',THB:'฿',GBP:'£',CNY:'¥' };
+const CURRENCY_SYMBOLS = {
+  TWD:'NT$',JPY:'¥',USD:'$',EUR:'€',KRW:'₩',THB:'฿',GBP:'£',CNY:'¥',
+  HKD:'HK$',MOP:'MOP$',SGD:'S$',MYR:'RM',IDR:'Rp',PHP:'₱',VND:'₫',
+  CHF:'CHF',SEK:'kr',NOK:'kr',DKK:'kr',CZK:'Kč',HUF:'Ft',PLN:'zł',TRY:'₺',ISK:'kr',
+  CAD:'C$',AUD:'A$',NZD:'NZ$',MXN:'MX$',
+  INR:'₹',LKR:'Rs',AED:'AED',ILS:'₪',EGP:'E£',ZAR:'R',MAD:'MAD'
+};
 
 const INTEREST_OPTIONS = [
   { id:'history', icon:'🏯' }, { id:'food', icon:'🍣' }, { id:'nature', icon:'🏔️' },
@@ -401,14 +407,87 @@ const INTEREST_OPTIONS = [
   { id:'art', icon:'🎨' }, { id:'adventure', icon:'🏄' }, { id:'relaxation', icon:'🧘' }, { id:'photo', icon:'📸' },
 ];
 
+// ── 目的地→幣別自動偵測（手動輸入用） ──
+const DEST_CURRENCY_MAP = [
+  // 東亞
+  { keywords: ['日本','japan','jp','東京','tokyo','大阪','osaka','京都','kyoto','北海道','hokkaido','沖繩','okinawa','冲绳','福岡','fukuoka','名古屋','nagoya','札幌','sapporo','奈良','nara','廣島','hiroshima','广岛'], currency: 'JPY' },
+  { keywords: ['韓國','韩国','korea','kr','首爾','seoul','首尔','釜山','busan','濟州','jeju','济州','仁川','incheon'], currency: 'KRW' },
+  { keywords: ['中國','中国','china','cn','北京','beijing','上海','shanghai','重慶','重庆','chongqing','廣州','广州','guangzhou','深圳','shenzhen','成都','chengdu','杭州','hangzhou','西安','xian','南京','nanjing'], currency: 'CNY' },
+  { keywords: ['香港','hong kong','hk'], currency: 'HKD' },
+  { keywords: ['澳門','澳门','macau','macao'], currency: 'MOP' },
+  // 東南亞
+  { keywords: ['泰國','泰国','thailand','曼谷','bangkok','清邁','清迈','chiang mai','普吉','phuket','芭達雅','芭提雅','pattaya'], currency: 'THB' },
+  { keywords: ['越南','vietnam','胡志明','ho chi minh','河內','河内','hanoi','峴港','岘港','da nang'], currency: 'VND' },
+  { keywords: ['新加坡','singapore','sg'], currency: 'SGD' },
+  { keywords: ['馬來西亞','马来西亚','malaysia','吉隆坡','kuala lumpur','kl','檳城','槟城','penang','蘭卡威','兰卡威','langkawi'], currency: 'MYR' },
+  { keywords: ['印尼','indonesia','峇里島','巴厘岛','bali','雅加達','雅加达','jakarta'], currency: 'IDR' },
+  { keywords: ['菲律賓','菲律宾','philippines','馬尼拉','马尼拉','manila','宿霧','宿务','cebu','長灘島','长滩岛','boracay'], currency: 'PHP' },
+  { keywords: ['柬埔寨','cambodia','吳哥窟','吴哥窟','angkor','暹粒','siem reap','金邊','金边','phnom penh'], currency: 'USD' },
+  // 歐洲（歐元區）
+  { keywords: ['法國','法国','france','巴黎','paris','尼斯','nice','馬賽','马赛','marseille','里昂','lyon'], currency: 'EUR' },
+  { keywords: ['德國','德国','germany','柏林','berlin','慕尼黑','munich','münchen','法蘭克福','法兰克福','frankfurt','漢堡','汉堡','hamburg'], currency: 'EUR' },
+  { keywords: ['義大利','意大利','italy','羅馬','罗马','rome','米蘭','米兰','milan','威尼斯','venice','佛羅倫斯','佛罗伦萨','florence','拿坡里','napoli','naples'], currency: 'EUR' },
+  { keywords: ['西班牙','spain','巴塞隆納','巴塞罗那','barcelona','馬德里','马德里','madrid','塞維利亞','塞维利亚','seville'], currency: 'EUR' },
+  { keywords: ['荷蘭','荷兰','netherlands','阿姆斯特丹','amsterdam'], currency: 'EUR' },
+  { keywords: ['希臘','希腊','greece','雅典','athens','聖托里尼','圣托里尼','santorini'], currency: 'EUR' },
+  { keywords: ['葡萄牙','portugal','里斯本','lisbon','波多','porto'], currency: 'EUR' },
+  { keywords: ['奧地利','奥地利','austria','維也納','维也纳','vienna','薩爾茲堡','萨尔茨堡','salzburg'], currency: 'EUR' },
+  { keywords: ['芬蘭','芬兰','finland','赫爾辛基','赫尔辛基','helsinki'], currency: 'EUR' },
+  { keywords: ['愛爾蘭','爱尔兰','ireland','都柏林','dublin'], currency: 'EUR' },
+  { keywords: ['比利時','比利时','belgium','布魯塞爾','布鲁塞尔','brussels'], currency: 'EUR' },
+  // 歐洲（非歐元）
+  { keywords: ['英國','英国','uk','united kingdom','britain','倫敦','伦敦','london','愛丁堡','爱丁堡','edinburgh','曼徹斯特','曼彻斯特','manchester'], currency: 'GBP' },
+  { keywords: ['瑞士','switzerland','蘇黎世','苏黎世','zurich','日內瓦','日内瓦','geneva','琉森','lucerne','伯恩','bern'], currency: 'CHF' },
+  { keywords: ['瑞典','sweden','斯德哥爾摩','斯德哥尔摩','stockholm'], currency: 'SEK' },
+  { keywords: ['挪威','norway','奧斯陸','奥斯陆','oslo','卑爾根','卑尔根','bergen'], currency: 'NOK' },
+  { keywords: ['丹麥','丹麦','denmark','哥本哈根','copenhagen'], currency: 'DKK' },
+  { keywords: ['捷克','czech','布拉格','prague','praha'], currency: 'CZK' },
+  { keywords: ['匈牙利','hungary','布達佩斯','布达佩斯','budapest'], currency: 'HUF' },
+  { keywords: ['波蘭','波兰','poland','華沙','华沙','warsaw','克拉科夫','krakow'], currency: 'PLN' },
+  { keywords: ['土耳其','turkey','türkiye','伊斯坦堡','伊斯坦布尔','istanbul','卡帕多奇亞','cappadocia'], currency: 'TRY' },
+  { keywords: ['冰島','冰岛','iceland','雷克雅維克','雷克雅未克','reykjavik'], currency: 'ISK' },
+  // 美洲
+  { keywords: ['美國','美国','usa','us','united states','紐約','纽约','new york','洛杉磯','洛杉矶','los angeles','la','舊金山','旧金山','san francisco','芝加哥','chicago','拉斯維加斯','拉斯维加斯','las vegas','夏威夷','hawaii','西雅圖','西雅图','seattle','波士頓','波士顿','boston','邁阿密','迈阿密','miami','華盛頓','华盛顿','washington'], currency: 'USD' },
+  { keywords: ['加拿大','canada','溫哥華','温哥华','vancouver','多倫多','多伦多','toronto','蒙特婁','蒙特利尔','montreal'], currency: 'CAD' },
+  { keywords: ['墨西哥','mexico','坎昆','cancun','墨西哥城','mexico city'], currency: 'MXN' },
+  // 大洋洲
+  { keywords: ['澳洲','澳大利亚','australia','雪梨','悉尼','sydney','墨爾本','墨尔本','melbourne','布里斯本','布里斯班','brisbane','黃金海岸','黄金海岸','gold coast'], currency: 'AUD' },
+  { keywords: ['紐西蘭','新西兰','new zealand','奧克蘭','奥克兰','auckland','皇后鎮','皇后镇','queenstown'], currency: 'NZD' },
+  // 南亞 / 中東 / 非洲
+  { keywords: ['印度','india','新德里','new delhi','孟買','孟买','mumbai'], currency: 'INR' },
+  { keywords: ['斯里蘭卡','斯里兰卡','sri lanka','可倫坡','科伦坡','colombo'], currency: 'LKR' },
+  { keywords: ['馬爾地夫','马尔代夫','maldives','馬列','马累','malé'], currency: 'USD' },
+  { keywords: ['杜拜','迪拜','dubai','阿布達比','阿布扎比','abu dhabi','阿聯酋','阿联酋','uae'], currency: 'AED' },
+  { keywords: ['以色列','israel','特拉維夫','特拉维夫','tel aviv','耶路撒冷','jerusalem'], currency: 'ILS' },
+  { keywords: ['埃及','egypt','開羅','开罗','cairo'], currency: 'EGP' },
+  { keywords: ['南非','south africa','開普敦','开普敦','cape town','約翰尼斯堡','约翰内斯堡','johannesburg'], currency: 'ZAR' },
+  { keywords: ['摩洛哥','morocco','馬拉喀什','马拉喀什','marrakech'], currency: 'MAD' },
+];
+
+function detectCurrencyFromDestination(text) {
+  if (!text || text.trim().length < 2) return null;
+  const lower = text.toLowerCase().trim();
+  let bestMatch = null;
+  let bestLen = 0;
+  for (const entry of DEST_CURRENCY_MAP) {
+    for (const kw of entry.keywords) {
+      if (lower.includes(kw.toLowerCase()) && kw.length > bestLen) {
+        bestMatch = entry.currency;
+        bestLen = kw.length;
+      }
+    }
+  }
+  return bestMatch;
+}
+
 const POPULAR = [
   { name:{tw:'東京',cn:'东京',en:'Tokyo'}, emoji:'🗼', country:{tw:'日本',cn:'日本',en:'Japan'}, currency:'JPY' },
   { name:{tw:'大阪',cn:'大阪',en:'Osaka'}, emoji:'🏯', country:{tw:'日本',cn:'日本',en:'Japan'}, currency:'JPY' },
   { name:{tw:'首爾',cn:'首尔',en:'Seoul'}, emoji:'🇰🇷', country:{tw:'韓國',cn:'韩国',en:'South Korea'}, currency:'KRW' },
   { name:{tw:'曼谷',cn:'曼谷',en:'Bangkok'}, emoji:'🛕', country:{tw:'泰國',cn:'泰国',en:'Thailand'}, currency:'THB' },
-  { name:{tw:'新加坡',cn:'新加坡',en:'Singapore'}, emoji:'🦁', country:{tw:'新加坡',cn:'新加坡',en:'Singapore'}, currency:'USD' },
-  { name:{tw:'香港',cn:'香港',en:'Hong Kong'}, emoji:'🌃', country:{tw:'香港',cn:'香港',en:'Hong Kong'}, currency:'TWD' },
-  { name:{tw:'峇里島',cn:'巴厘岛',en:'Bali'}, emoji:'🌺', country:{tw:'印尼',cn:'印尼',en:'Indonesia'}, currency:'USD' },
+  { name:{tw:'新加坡',cn:'新加坡',en:'Singapore'}, emoji:'🦁', country:{tw:'新加坡',cn:'新加坡',en:'Singapore'}, currency:'SGD' },
+  { name:{tw:'香港',cn:'香港',en:'Hong Kong'}, emoji:'🌃', country:{tw:'香港',cn:'香港',en:'Hong Kong'}, currency:'HKD' },
+  { name:{tw:'峇里島',cn:'巴厘岛',en:'Bali'}, emoji:'🌺', country:{tw:'印尼',cn:'印尼',en:'Indonesia'}, currency:'IDR' },
   { name:{tw:'倫敦',cn:'伦敦',en:'London'}, emoji:'🎡', country:{tw:'英國',cn:'英国',en:'UK'}, currency:'GBP' },
   { name:{tw:'巴黎',cn:'巴黎',en:'Paris'}, emoji:'🗼', country:{tw:'法國',cn:'法国',en:'France'}, currency:'EUR' },
   { name:{tw:'紐約',cn:'纽约',en:'New York'}, emoji:'🗽', country:{tw:'美國',cn:'美国',en:'USA'}, currency:'USD' },
@@ -694,9 +773,26 @@ function StepDatesAndBudget({ data, onChange, onNext, onBack }) {
       {numDays > 0 && <div className="mb-6 px-4 py-2.5 bg-brand-50 rounded-lg text-brand-700 text-sm font-medium">{t.daysNights(numDays)}</div>}
       <div className="grid grid-cols-3 gap-4 mb-4">
         <div className="col-span-1"><label className="block text-sm font-medium text-gray-600 mb-1.5">{t.currency}</label>
-          <select value={data.currency} onChange={e => onChange({ currency: e.target.value })} className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white">
-            <option value="TWD">TWD</option><option value="JPY">JPY</option><option value="USD">USD</option><option value="EUR">EUR</option>
-            <option value="KRW">KRW</option><option value="THB">THB</option><option value="GBP">GBP</option><option value="CNY">CNY</option>
+          <select value={data.currency} onChange={e => onChange({ currency: e.target.value, _currencyManual: true })} className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white">
+            <optgroup label="── 常用 ──">
+              <option value="TWD">TWD (NT$)</option><option value="JPY">JPY (¥)</option><option value="USD">USD ($)</option><option value="EUR">EUR (€)</option>
+              <option value="KRW">KRW (₩)</option><option value="THB">THB (฿)</option><option value="GBP">GBP (£)</option><option value="CNY">CNY (¥)</option>
+            </optgroup>
+            <optgroup label="── 亞太 ──">
+              <option value="HKD">HKD (HK$)</option><option value="MOP">MOP (MOP$)</option><option value="SGD">SGD (S$)</option><option value="MYR">MYR (RM)</option>
+              <option value="IDR">IDR (Rp)</option><option value="PHP">PHP (₱)</option><option value="VND">VND (₫)</option>
+              <option value="AUD">AUD (A$)</option><option value="NZD">NZD (NZ$)</option><option value="INR">INR (₹)</option><option value="LKR">LKR (Rs)</option>
+            </optgroup>
+            <optgroup label="── 歐洲 ──">
+              <option value="CHF">CHF</option><option value="SEK">SEK (kr)</option><option value="NOK">NOK (kr)</option><option value="DKK">DKK (kr)</option>
+              <option value="CZK">CZK (Kč)</option><option value="HUF">HUF (Ft)</option><option value="PLN">PLN (zł)</option><option value="TRY">TRY (₺)</option><option value="ISK">ISK (kr)</option>
+            </optgroup>
+            <optgroup label="── 美洲 ──">
+              <option value="CAD">CAD (C$)</option><option value="MXN">MXN (MX$)</option>
+            </optgroup>
+            <optgroup label="── 中東/非洲 ──">
+              <option value="AED">AED</option><option value="ILS">ILS (₪)</option><option value="EGP">EGP (E£)</option><option value="ZAR">ZAR (R)</option><option value="MAD">MAD</option>
+            </optgroup>
           </select></div>
         <div className="col-span-2"><label className="block text-sm font-medium text-gray-600 mb-1.5">{t.totalBudget} <span className="text-gray-400">({CURRENCY_SYMBOLS[data.currency]})</span></label>
           <input type="number" value={data.budget} placeholder={t.perPerson} onChange={e => onChange({ budget: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white" />
@@ -1303,13 +1399,25 @@ function App() {
   const [formData, setFormData] = useState({
     destination:'', startDate:'', endDate:'', budget:'',
     currency:'TWD', travelers:2, style:'moderate', pace:'moderate',
-    interests:[], notes:''
+    interests:[], notes:'', _currencyManual: false
   });
 
   const t = T[lang];
   useEffect(() => { localStorage.setItem('tc_lang', lang); document.documentElement.lang = lang; }, [lang]);
 
-  const updateForm = useCallback(patch => setFormData(prev => ({...prev,...patch})), []);
+  const updateForm = useCallback(patch => {
+    setFormData(prev => {
+      const next = {...prev,...patch};
+      if ('destination' in patch && !('currency' in patch) && !prev._currencyManual) {
+        const detected = detectCurrencyFromDestination(patch.destination);
+        if (detected) next.currency = detected;
+      }
+      if ('destination' in patch && 'currency' in patch && !patch._currencyManual) {
+        next._currencyManual = false;
+      }
+      return next;
+    });
+  }, []);
   const numDays = useMemo(() => {
     if (!formData.startDate||!formData.endDate) return 0;
     return Math.max(1, Math.ceil((new Date(formData.endDate)-new Date(formData.startDate))/86400000)+1);
