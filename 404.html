@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>頁面不存在 — twtools.cc</title>
+  <link rel="canonical" href="https://twtools.cc/" />
+  <script>
+    // SPA 路徑對照表：把常見的錯誤路徑導向正確的 hash route
+    const ROUTE_MAP = {
+      '/lottery':  '/#lottery',
+      '/lottery/super': '/#lottery',
+      '/lottery/big':   '/#lottery',
+      '/blog':     '/#blog',
+      '/image':    '/#image',
+      '/pdf':      '/#pdf',
+      '/currency': '/#currency',
+      '/unit':     '/#unit',
+      '/date':     '/#date',
+      '/countdown':'/#countdown',
+      '/resume':   '/#resume',
+      '/proofread':'/#proofread',
+      '/typhoon':  '/#typhoon',
+      '/video':    '/#video',
+    };
+
+    var path = window.location.pathname.replace(/\/$/, '') || '/';
+    var redirect = ROUTE_MAP[path];
+
+    if (redirect) {
+      window.location.replace('https://twtools.cc' + redirect);
+    } else {
+      // 未知路徑：3 秒後導回首頁
+      setTimeout(function() {
+        window.location.replace('https://twtools.cc/');
+      }, 3000);
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111827;
+      color: #f9fafb;
+      font-family: system-ui, -apple-system, "Noto Sans TC", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 2rem;
+    }
+    .container { max-width: 480px; }
+    h1 { font-size: 4rem; color: #a78bfa; margin-bottom: 0.5rem; }
+    p { color: #9ca3af; font-size: 1rem; line-height: 1.6; margin-bottom: 1rem; }
+    a {
+      display: inline-block;
+      background: #7c3aed;
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+    a:hover { background: #6d28d9; }
+    .hint { font-size: 0.85rem; color: #6b7280; margin-top: 1.5rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>404</h1>
+    <p>這個頁面不存在，正在幫你導回首頁...</p>
+    <a href="https://twtools.cc/">回到工具箱首頁</a>
+    <p class="hint">twtools.cc — 打工牛馬的線上工具箱</p>
+  </div>
+</body>
+</html>
