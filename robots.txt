@@ -2,9 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 Disallow: /seed_articles.html
-Disallow: /lottery/
-Disallow: /twTools_blog/
-Disallow: /twTools_currency/
-Disallow: /twTools_typhoon/
 
-Sitemap: https://twtools.cc/sitemap.xml
+Sitemap: https://twtools.cc/sitemap-index.xml
