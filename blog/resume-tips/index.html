@@ -3,7 +3,18 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-0WTK2LJFTY');
-  </script><!-- AdSense (async, non-blocking) --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com"></script><script>
+  </script><!-- AdSense (async, non-blocking) --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Dark/Light mode: apply before render to prevent flash --><script>
+    (function(){
+      var saved = null;
+      try { saved = localStorage.getItem('twtools_theme'); } catch(e){}
+      if (saved === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+        if (!saved) { try { localStorage.setItem('twtools_theme', 'dark'); } catch(e){} }
+      }
+    })();
+  </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
@@ -12,28 +23,107 @@
             sans: ['"Noto Sans TC"', 'system-ui', '-apple-system', 'sans-serif'],
           },
           colors: {
-            brand: { 50:'#faf5ff',100:'#f3e8ff',200:'#e9d5ff',300:'#d8b4fe',400:'#c084fc',500:'#a855f7',600:'#9333ea',700:'#7e22ce',800:'#6b21a8',900:'#581c87' }
+            /* Morandi Dusty Slate Blue — TWTools 主色系 */
+            brand: {
+              50:  '#f0f1f5',
+              100: '#dfe2ea',
+              200: '#c2c7d6',
+              300: '#a0a7bc',
+              400: '#8189a5',
+              500: '#6b7394',
+              600: '#575f7d',
+              700: '#474e67',
+              800: '#3b4057',
+              900: '#2e3245',
+              950: '#1e2130'
+            },
+            /* 暖調中性灰（莫蘭迪暖灰）*/
+            warm: {
+              50:  '#f8f7f5',
+              100: '#f0eeeb',
+              200: '#e2dfd9',
+              300: '#cfc9c0',
+              400: '#b5ada2',
+              500: '#9d948a',
+              600: '#857b72',
+              700: '#6d645d',
+              800: '#5a524c',
+              900: '#4a433e',
+              950: '#2d2925'
+            },
+            /* 莫蘭迪灰粉強調色 */
+            accent: {
+              50:  '#f5f0f1',
+              100: '#ebe0e3',
+              200: '#d9c5ca',
+              300: '#c4a5ad',
+              400: '#af8a95',
+              500: '#9a7480',
+              600: '#7f5f6a',
+              700: '#664d56',
+              800: '#504047',
+              900: '#3d3238',
+              950: '#251e22'
+            }
           }
         }
       }
     }
-  </script><!-- Base styles --><style>
-    /* Prevent FOUT: hide text until font is loaded */
+  </script><!-- Base styles + Theme CSS variables --><style>
     body { font-family: 'Noto Sans TC', system-ui, -apple-system, sans-serif; }
-    /* Lazy-load images by default */
     img { loading: lazy; }
-    /* Smooth scroll for anchor links */
     html { scroll-behavior: smooth; }
-  </style></head> <body class="bg-gray-950 text-white min-h-screen">  <div class="max-w-3xl mx-auto px-4 py-8"> <!-- Navigation --> <div class="flex items-center justify-between mb-6"> <a href="/blog/" class="text-purple-400 hover:text-purple-300 text-sm">
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+      gap: 6px;
+    }
+
+    /* Light mode (default body colors) */
+    :root {
+      --tw-page-bg: #f8f7f5;
+      --tw-text-primary: #2e3245;
+      --tw-text-secondary: #575f7d;
+      --tw-text-muted: #857b72;
+      --tw-surface: #ffffff;
+      --tw-surface-hover: #f0eeeb;
+      --tw-border: #e2dfd9;
+      --tw-brand-text: #575f7d;
+      --tw-brand-accent: #6b7394;
+      --tw-hero-from: #6b7394;
+      --tw-hero-to: #9a7480;
+    }
+    /* Dark mode */
+    html.dark {
+      --tw-page-bg: #1e2130;
+      --tw-text-primary: #e2dfd9;
+      --tw-text-secondary: #a0a7bc;
+      --tw-text-muted: #857b72;
+      --tw-surface: #2e3245;
+      --tw-surface-hover: #3b4057;
+      --tw-border: #474e67;
+      --tw-brand-text: #a0a7bc;
+      --tw-brand-accent: #8189a5;
+      --tw-hero-from: #8189a5;
+      --tw-hero-to: #af8a95;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style></head> <body class="min-h-screen">  <div class="max-w-3xl mx-auto px-4 py-8"> <!-- Navigation --> <div class="flex items-center justify-between mb-6"> <a href="/blog/" class="text-sm transition-colors" style="color:var(--tw-brand-accent)">
 ← 返回文章列表
-</a> <a href="/blog/en/resume-tips/" class="text-purple-400 hover:text-purple-300 text-sm">
+</a> <a href="/blog/en/resume-tips/" class="text-sm transition-colors" style="color:var(--tw-brand-accent)">
 🌐 English
-</a> </div> <!-- Article header --> <article> <header class="mb-8"> <h1 class="text-2xl md:text-3xl font-bold text-white mb-3">履歷怎麼寫才吸引人？台灣求職履歷格式與常見錯誤</h1> <div class="flex items-center gap-4 text-sm text-gray-400"> <span>職場技巧</span> <span>·</span> <time datetime="2026-03-10"> 2026年3月10日 </time> <span>·</span> <span>6 分鐘</span> </div> </header> <!-- Article content (rendered Markdown) --> <div class="prose prose-invert prose-purple max-w-none
-                  prose-headings:text-purple-300 prose-headings:font-bold
-                  prose-p:text-gray-300 prose-p:leading-relaxed
-                  prose-li:text-gray-300
-                  prose-strong:text-white
-                  prose-a:text-purple-400 prose-a:hover:text-purple-300"> <p>在台灣的求職市場中，HR 平均只花 6-10 秒掃一份履歷。在這麼短的時間內，你的履歷必須能夠清楚傳達「我就是你要找的人」。本文從 HR 的角度出發，告訴你台灣求職者最容易忽視卻最重要的履歷要素。</p>
+</a> </div> <!-- Article header --> <article> <header class="mb-8"> <h1 class="text-2xl md:text-3xl font-bold mb-3" style="color:var(--tw-text-primary)">履歷怎麼寫才吸引人？台灣求職履歷格式與常見錯誤</h1> <div class="flex items-center gap-4 text-sm" style="color:var(--tw-text-muted)"> <span>職場技巧</span> <span>·</span> <time datetime="2026-03-10"> 2026年3月10日 </time> <span>·</span> <span>6 分鐘</span> </div> </header> <!-- Article content (rendered Markdown) --> <div class="prose dark:prose-invert max-w-none
+                  prose-headings:text-brand-600 prose-headings:font-bold dark:prose-headings:text-brand-300
+                  prose-p:leading-relaxed
+                  prose-strong:text-brand-800 dark:prose-strong:text-warm-100
+                  prose-a:text-brand-500 prose-a:hover:text-brand-400 dark:prose-a:text-brand-400 dark:prose-a:hover:text-brand-300" style="color:var(--tw-text-secondary)"> <p>在台灣的求職市場中，HR 平均只花 6-10 秒掃一份履歷。在這麼短的時間內，你的履歷必須能夠清楚傳達「我就是你要找的人」。本文從 HR 的角度出發，告訴你台灣求職者最容易忽視卻最重要的履歷要素。</p>
 <h2 id="台灣履歷的基本格式">台灣履歷的基本格式</h2>
 <p>不同於歐美求職市場，台灣履歷通常包含以下元素：</p>
 <ul>
@@ -75,8 +165,20 @@
 <p><strong>金融業</strong>：相關證照優先。CFA、特考證照等會大幅提升競爭力。學歷和實習經驗也被看重。</p>
 <h2 id="履歷製作工具">履歷製作工具</h2>
 <p>如果你不擅長排版，或希望快速產出精美的 PDF 履歷，可以使用線上工具。TWTools 提供的履歷工具就內建多種台灣求職市場常用的模板，支援即時編輯、一鍵 PDF 匯出，確保格式統一。</p>
-<p>最後，記住一點：履歷是為了篩進面試，面試才是真正展現自己的舞台。花點時間把履歷寫好，就等於拿到了敲門磚。</p> </div> </article> <!-- Bottom navigation --> <div class="mt-12 pt-6 border-t border-gray-800 flex items-center justify-between"> <a href="/blog/" class="text-purple-400 hover:text-purple-300 text-sm">
+<p>最後，記住一點：履歷是為了篩進面試，面試才是真正展現自己的舞台。花點時間把履歷寫好，就等於拿到了敲門磚。</p> </div> </article> <!-- Bottom navigation --> <div class="mt-12 pt-6 flex items-center justify-between border-t" style="border-color:var(--tw-border)"> <a href="/blog/" class="text-sm transition-colors" style="color:var(--tw-brand-accent)">
 ← 返回文章列表
-</a> <a href="/blog/en/resume-tips/" class="text-purple-400 hover:text-purple-300 text-sm">
+</a> <a href="/blog/en/resume-tips/" class="text-sm transition-colors" style="color:var(--tw-brand-accent)">
 🌐 English
-</a> </div> </div>  </body></html>
+</a> </div> </div>  <!-- Theme toggle helper (global function for all pages) --> <script>
+    window.toggleTheme = function() {
+      var html = document.documentElement;
+      var isDark = html.classList.contains('dark');
+      if (isDark) {
+        html.classList.remove('dark');
+        try { localStorage.setItem('twtools_theme', 'light'); } catch(e){}
+      } else {
+        html.classList.add('dark');
+        try { localStorage.setItem('twtools_theme', 'dark'); } catch(e){}
+      }
+    };
+  </script> </body> </html>

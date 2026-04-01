@@ -3,7 +3,18 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-0WTK2LJFTY');
-  </script><!-- AdSense (async, non-blocking) --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com"></script><script>
+  </script><!-- AdSense (async, non-blocking) --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Dark/Light mode: apply before render to prevent flash --><script>
+    (function(){
+      var saved = null;
+      try { saved = localStorage.getItem('twtools_theme'); } catch(e){}
+      if (saved === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+        if (!saved) { try { localStorage.setItem('twtools_theme', 'dark'); } catch(e){} }
+      }
+    })();
+  </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
@@ -12,29 +23,108 @@
             sans: ['"Noto Sans TC"', 'system-ui', '-apple-system', 'sans-serif'],
           },
           colors: {
-            brand: { 50:'#faf5ff',100:'#f3e8ff',200:'#e9d5ff',300:'#d8b4fe',400:'#c084fc',500:'#a855f7',600:'#9333ea',700:'#7e22ce',800:'#6b21a8',900:'#581c87' }
+            /* Morandi Dusty Slate Blue — TWTools 主色系 */
+            brand: {
+              50:  '#f0f1f5',
+              100: '#dfe2ea',
+              200: '#c2c7d6',
+              300: '#a0a7bc',
+              400: '#8189a5',
+              500: '#6b7394',
+              600: '#575f7d',
+              700: '#474e67',
+              800: '#3b4057',
+              900: '#2e3245',
+              950: '#1e2130'
+            },
+            /* 暖調中性灰（莫蘭迪暖灰）*/
+            warm: {
+              50:  '#f8f7f5',
+              100: '#f0eeeb',
+              200: '#e2dfd9',
+              300: '#cfc9c0',
+              400: '#b5ada2',
+              500: '#9d948a',
+              600: '#857b72',
+              700: '#6d645d',
+              800: '#5a524c',
+              900: '#4a433e',
+              950: '#2d2925'
+            },
+            /* 莫蘭迪灰粉強調色 */
+            accent: {
+              50:  '#f5f0f1',
+              100: '#ebe0e3',
+              200: '#d9c5ca',
+              300: '#c4a5ad',
+              400: '#af8a95',
+              500: '#9a7480',
+              600: '#7f5f6a',
+              700: '#664d56',
+              800: '#504047',
+              900: '#3d3238',
+              950: '#251e22'
+            }
           }
         }
       }
     }
-  </script><!-- Base styles --><style>
-    /* Prevent FOUT: hide text until font is loaded */
+  </script><!-- Base styles + Theme CSS variables --><style>
     body { font-family: 'Noto Sans TC', system-ui, -apple-system, sans-serif; }
-    /* Lazy-load images by default */
     img { loading: lazy; }
-    /* Smooth scroll for anchor links */
     html { scroll-behavior: smooth; }
-  </style></head> <body class="bg-gray-950 text-white min-h-screen">  <div class="max-w-3xl mx-auto px-4 py-8"> <!-- Navigation --> <div class="flex items-center justify-between mb-6"> <a href="/blog/" class="text-purple-400 hover:text-purple-300 text-sm">
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+      gap: 6px;
+    }
+
+    /* Light mode (default body colors) */
+    :root {
+      --tw-page-bg: #f8f7f5;
+      --tw-text-primary: #2e3245;
+      --tw-text-secondary: #575f7d;
+      --tw-text-muted: #857b72;
+      --tw-surface: #ffffff;
+      --tw-surface-hover: #f0eeeb;
+      --tw-border: #e2dfd9;
+      --tw-brand-text: #575f7d;
+      --tw-brand-accent: #6b7394;
+      --tw-hero-from: #6b7394;
+      --tw-hero-to: #9a7480;
+    }
+    /* Dark mode */
+    html.dark {
+      --tw-page-bg: #1e2130;
+      --tw-text-primary: #e2dfd9;
+      --tw-text-secondary: #a0a7bc;
+      --tw-text-muted: #857b72;
+      --tw-surface: #2e3245;
+      --tw-surface-hover: #3b4057;
+      --tw-border: #474e67;
+      --tw-brand-text: #a0a7bc;
+      --tw-brand-accent: #8189a5;
+      --tw-hero-from: #8189a5;
+      --tw-hero-to: #af8a95;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style></head> <body class="min-h-screen">  <div class="max-w-3xl mx-auto px-4 py-8"> <!-- Navigation --> <div class="flex items-center justify-between mb-6"> <a href="/blog/" class="text-sm transition-colors" style="color:var(--tw-brand-accent)">
 ← Back to Articles
-</a> <a href="/blog/lottery-guide/" class="text-purple-400 hover:text-purple-300 text-sm">
+</a> <a href="/blog/lottery-guide/" class="text-sm transition-colors" style="color:var(--tw-brand-accent)">
 🇹🇼 中文版
-</a> </div> <!-- Article header --> <article> <header class="mb-8"> <h1 class="text-2xl md:text-3xl font-bold text-white mb-3">How to Play Super Lotto &amp; Big Lotto: Complete Taiwan Lottery Guide</h1> <div class="flex items-center gap-4 text-sm text-gray-400"> <span>Life Tips</span> <span>·</span> <time datetime="2026-01-25"> January 25, 2026 </time> <span>·</span> <span>6 min</span> </div> </header> <!-- Article content (rendered Markdown — still Chinese content for now) --> <div class="prose prose-invert prose-purple max-w-none
-                  prose-headings:text-purple-300 prose-headings:font-bold
-                  prose-p:text-gray-300 prose-p:leading-relaxed
-                  prose-li:text-gray-300
-                  prose-strong:text-white
-                  prose-a:text-purple-400 prose-a:hover:text-purple-300"> <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 mb-8 text-sm text-yellow-200"> <strong>Note:</strong> This article is currently available in Chinese only. The English translation is coming soon.
-<a href="/blog/lottery-guide/" class="underline ml-1">Read in Chinese →</a> </div> <p>台灣彩券由台灣銀行發行，包含多種彩票遊戲，其中以威力彩、大樂透、今彩539最受歡迎。本文帶你從買彩券到領獎，一次搞懂完整流程。</p>
+</a> </div> <!-- Article header --> <article> <header class="mb-8"> <h1 class="text-2xl md:text-3xl font-bold mb-3" style="color:var(--tw-text-primary)">How to Play Super Lotto &amp; Big Lotto: Complete Taiwan Lottery Guide</h1> <div class="flex items-center gap-4 text-sm" style="color:var(--tw-text-muted)"> <span>Life Tips</span> <span>·</span> <time datetime="2026-01-25"> January 25, 2026 </time> <span>·</span> <span>6 min</span> </div> </header> <!-- Article content (rendered Markdown — still Chinese content for now) --> <div class="prose dark:prose-invert max-w-none
+                  prose-headings:text-brand-600 prose-headings:font-bold dark:prose-headings:text-brand-300
+                  prose-p:leading-relaxed
+                  prose-strong:text-brand-800 dark:prose-strong:text-warm-100
+                  prose-a:text-brand-500 prose-a:hover:text-brand-400 dark:prose-a:text-brand-400 dark:prose-a:hover:text-brand-300" style="color:var(--tw-text-secondary)"> <div class="rounded-lg p-4 mb-8 text-sm bg-accent-50 border border-accent-200 dark:bg-accent-950/50 dark:border-accent-800/50" style="color:var(--tw-text-secondary)"> <strong>Note:</strong> This article is currently available in Chinese only. The English translation is coming soon.
+<a href="/blog/lottery-guide/" class="underline ml-1" style="color:var(--tw-brand-accent)">Read in Chinese →</a> </div> <p>台灣彩券由台灣銀行發行，包含多種彩票遊戲，其中以威力彩、大樂透、今彩539最受歡迎。本文帶你從買彩券到領獎，一次搞懂完整流程。</p>
 <h2 id="三大主力彩種介紹">三大主力彩種介紹</h2>
 <p><strong>威力彩</strong>：每週一、四晚上 21:30 開獎。玩法為從 1 至 38 中選 6 個號碼，再從 1 至 8 中選 1 個第二區號碼。頭獎獎金無上限累積，是台灣史上最高獎金紀錄的保持者，曾突破 30 億元。</p>
 <p><strong>大樂透</strong>：每週二、五晚上 21:30 開獎。從 1 至 49 中選 6 個號碼，另有對獎號碼。頭獎中獎機率約 1/1,398 萬，頭獎保障 800 萬元起跳。</p>
@@ -51,8 +141,20 @@
 <h2 id="怎麼對獎">怎麼對獎？</h2>
 <p>最方便的方式是使用台灣彩券官方 APP 掃描彩票條碼，即可自動對獎。也可以使用本站「<strong>台灣彩券開獎查詢工具</strong>」查看最新開獎號碼，手動比對。電視開獎結束後，台灣彩券官網也會立即更新當期號碼。</p>
 <h2 id="中獎後如何領獎">中獎後如何領獎？</h2>
-<p>獎金在 2,000 元以下，可至任一彩券行兌領；2,000 元至 200,000 元，可至台灣銀行各分行辦理；超過 200,000 元，需至台灣銀行總行或指定分行，並準備身分證正本辦理。領獎期限為開獎日起算 60 天內，請勿逾期。獎金超過 2,000 元需依規定扣繳 20% 稅款（中華民國境內居住者），領獎前請先確認金額。</p> </div> </article> <!-- Back to articles (bottom) --> <div class="mt-12 pt-6 border-t border-gray-800 flex items-center justify-between"> <a href="/blog/" class="text-purple-400 hover:text-purple-300 text-sm">
+<p>獎金在 2,000 元以下，可至任一彩券行兌領；2,000 元至 200,000 元，可至台灣銀行各分行辦理；超過 200,000 元，需至台灣銀行總行或指定分行，並準備身分證正本辦理。領獎期限為開獎日起算 60 天內，請勿逾期。獎金超過 2,000 元需依規定扣繳 20% 稅款（中華民國境內居住者），領獎前請先確認金額。</p> </div> </article> <!-- Back to articles (bottom) --> <div class="mt-12 pt-6 flex items-center justify-between border-t" style="border-color:var(--tw-border)"> <a href="/blog/" class="text-sm transition-colors" style="color:var(--tw-brand-accent)">
 ← Back to Articles
-</a> <a href="/blog/lottery-guide/" class="text-purple-400 hover:text-purple-300 text-sm">
+</a> <a href="/blog/lottery-guide/" class="text-sm transition-colors" style="color:var(--tw-brand-accent)">
 🇹🇼 中文版
-</a> </div> </div>  </body></html>
+</a> </div> </div>  <!-- Theme toggle helper (global function for all pages) --> <script>
+    window.toggleTheme = function() {
+      var html = document.documentElement;
+      var isDark = html.classList.contains('dark');
+      if (isDark) {
+        html.classList.remove('dark');
+        try { localStorage.setItem('twtools_theme', 'light'); } catch(e){}
+      } else {
+        html.classList.add('dark');
+        try { localStorage.setItem('twtools_theme', 'dark'); } catch(e){}
+      }
+    };
+  </script> </body> </html>
