@@ -3,17 +3,8 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-0WTK2LJFTY');
-  </script><!-- AdSense (async, non-blocking) --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Dark/Light mode: apply before render to prevent flash --><script>
-    (function(){
-      var saved = null;
-      try { saved = localStorage.getItem('twtools_theme'); } catch(e){}
-      if (saved === 'light') {
-        document.documentElement.classList.remove('dark');
-      } else {
-        document.documentElement.classList.add('dark');
-        if (!saved) { try { localStorage.setItem('twtools_theme', 'dark'); } catch(e){} }
-      }
-    })();
+  </script><!-- AdSense (async, non-blocking) --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Dark mode only: ensure dark class is always present --><script>
+    document.documentElement.classList.add('dark');
   </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
     tailwind.config = {
       darkMode: 'class',
@@ -81,22 +72,8 @@
       gap: 6px;
     }
 
-    /* Light mode (default body colors) */
+    /* Dark mode only — CSS variables for Morandi palette */
     :root {
-      --tw-page-bg: #f8f7f5;
-      --tw-text-primary: #2e3245;
-      --tw-text-secondary: #575f7d;
-      --tw-text-muted: #857b72;
-      --tw-surface: #ffffff;
-      --tw-surface-hover: #f0eeeb;
-      --tw-border: #e2dfd9;
-      --tw-brand-text: #575f7d;
-      --tw-brand-accent: #6b7394;
-      --tw-hero-from: #6b7394;
-      --tw-hero-to: #9a7480;
-    }
-    /* Dark mode */
-    html.dark {
       --tw-page-bg: #1e2130;
       --tw-text-primary: #e2dfd9;
       --tw-text-secondary: #a0a7bc;
@@ -170,16 +147,4 @@
 ← Back to Articles
 </a> <a href="/blog/resume-tips/" class="text-sm transition-colors" style="color:var(--tw-brand-accent)">
 🇹🇼 中文版
-</a> </div> </div>  <!-- Theme toggle helper (global function for all pages) --> <script>
-    window.toggleTheme = function() {
-      var html = document.documentElement;
-      var isDark = html.classList.contains('dark');
-      if (isDark) {
-        html.classList.remove('dark');
-        try { localStorage.setItem('twtools_theme', 'light'); } catch(e){}
-      } else {
-        html.classList.add('dark');
-        try { localStorage.setItem('twtools_theme', 'dark'); } catch(e){}
-      }
-    };
-  </script> </body> </html>
+</a> </div> </div>  </body></html>
