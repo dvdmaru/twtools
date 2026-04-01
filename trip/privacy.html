@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>隱私權政策 | 旅圖 TripCraft</title>
+  <meta name="description" content="旅圖 TripCraft 隱私權政策 - 瞭解我們如何保護您的隱私與資料">
+  <link rel="canonical" href="https://twtools.cc/trip/privacy.html">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root { --font-main: 'Noto Sans TC', system-ui, sans-serif; }
+    * { font-family: var(--font-main); }
+    body { background: #f8fafc; color: #1e293b; }
+
+    .logo-svg {
+      width: 32px;
+      height: 32px;
+      display: inline-block;
+    }
+
+    h1 {
+      color: #0d9488;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      color: #0d9488;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p, li {
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      list-style: disc;
+      margin-left: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.75rem;
+    }
+
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      color: #14b8a6;
+      text-decoration: none;
+      font-weight: 500;
+      margin-top: 2rem;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: #0d9488;
+    }
+
+    .update-date {
+      color: #64748b;
+      font-size: 0.875rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen py-12 px-4">
+    <div class="max-w-2xl mx-auto">
+      <!-- Header with Logo -->
+      <div class="flex items-center gap-3 mb-8">
+        <svg class="logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="6" fill="#0d9488"/>
+          <path d="M12 7L15 10L12 13L9 10L12 7Z" fill="white"/>
+          <path d="M12 13L9 16L12 19L15 16L12 13Z" fill="white" opacity="0.6"/>
+        </svg>
+        <div>
+          <h1 style="margin: 0; font-size: 1.5rem;">旅圖 TripCraft</h1>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <h1>隱私權政策</h1>
+      <p style="color: #64748b; margin-bottom: 2rem;">最後更新：2026 年 3 月 18 日</p>
+
+      <div class="space-y-6">
+        <div class="section">
+          <h2>簡介</h2>
+          <p>旅圖 TripCraft（以下稱「本服務」）致力於保護用戶的隱私。本政策說明我們如何蒐集、使用和保護您的資料。</p>
+        </div>
+
+        <div class="section">
+          <h2>1. 我們不收集個人資料</h2>
+          <p>旅圖不要求您建立帳戶、輸入姓名、電郵或任何個人可識別資訊。您可以完全匿名使用本服務。</p>
+        </div>
+
+        <div class="section">
+          <h2>2. 裝置識別碼</h2>
+          <p>為了計算免費額度（每月 3 次），我們在您的瀏覽器 localStorage 中存放一個隨機裝置識別碼。</p>
+          <ul>
+            <li>此識別碼<strong>不與任何個人資訊關聯</strong></li>
+            <li>僅用於追蹤該裝置本月的免費使用次數</li>
+            <li>您可隨時清除瀏覽器 cookies 和 localStorage 重置此識別碼</li>
+            <li>不會傳送至任何第三方伺服器</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>3. 行程資料傳送至 AI 服務</h2>
+          <p>當您按下「開始規劃」時，您輸入的旅行資訊（目的地、日期、預算偏好等）會傳送至 Anthropic Claude API 以生成行程。</p>
+          <ul>
+            <li>我們<strong>不儲存</strong>您的行程資料在我們的伺服器上</li>
+            <li>資料交互遵循 Anthropic 的隱私政策（<a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener" class="text-brand-500 hover:text-brand-600">anthropic.com/privacy</a>）</li>
+            <li>生成完成後，數據不會被我們保留</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>4. API Key 隱私</h2>
+          <p>如果您選擇輸入自己的 Claude API Key 以使用免費額度之外的服務：</p>
+          <ul>
+            <li>您的 API Key<strong>僅在瀏覽器端使用</strong></li>
+            <li>我們的伺服器<strong>不會看到</strong>您的 API Key</li>
+            <li>請勿在公共電腦上輸入 API Key</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>5. 分析工具 (Google Analytics 4)</h2>
+          <p>我們使用 Google Analytics 4 蒐集<strong>匿名使用統計</strong>，包括：</p>
+          <ul>
+            <li>頁面瀏覽次數</li>
+            <li>功能使用頻率（如匯出 PDF、搜尋機票等）</li>
+            <li>設備類型與瀏覽器</li>
+          </ul>
+          <p><strong>重要：</strong>Google Analytics 不追蹤個人身份或行程內容。所有資料經過匿名化處理。</p>
+        </div>
+
+        <div class="section">
+          <h2>6. 廣告與 Google AdSense</h2>
+          <p>我們使用 Google AdSense 在網頁上展示廣告。</p>
+          <ul>
+            <li>Google 可能使用 Cookie 提供個人化廣告</li>
+            <li>您可在 Google 廣告設定中管理廣告偏好</li>
+            <li>廣告展示與您的行程內容無關</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>7. 第三方服務連結</h2>
+          <p>旅圖行程中包含的以下連結會導向 Google 服務，受 Google 隱私政策管轄：</p>
+          <ul>
+            <li><strong>Google Flights</strong> - 機票搜尋</li>
+            <li><strong>Google Hotels</strong> - 住宿搜尋</li>
+            <li><strong>Google Maps</strong> - 景點與餐廳位置</li>
+          </ul>
+          <p>這些連結包含搜尋參數（目的地、日期），但不傳送任何您的個人資訊。</p>
+        </div>
+
+        <div class="section">
+          <h2>8. 資料安全</h2>
+          <p>我們採取適當的技術措施保護傳輸中的資料（HTTPS 加密）。然而，互聯網傳輸無法保證 100% 安全。</p>
+        </div>
+
+        <div class="section">
+          <h2>9. Cookie 與本地存儲</h2>
+          <p>旅圖使用以下瀏覽器存儲機制：</p>
+          <ul>
+            <li><strong>localStorage</strong> - 儲存裝置識別碼與偏好設定</li>
+            <li><strong>Google Analytics Cookie</strong> - 匿名流量分析</li>
+            <li><strong>Google AdSense Cookie</strong> - 廣告投放</li>
+          </ul>
+          <p>您可在瀏覽器設定中清除所有 Cookie 與 localStorage。</p>
+        </div>
+
+        <div class="section">
+          <h2>10. 政策更新</h2>
+          <p>如果我們更新本隱私權政策，將在本頁面公佈新版本。重大變更會通過網站公告通知。</p>
+        </div>
+
+        <div class="section">
+          <h2>11. 聯絡方式</h2>
+          <p>如有隱私相關問題，請通過<a href="https://docs.google.com/forms/d/e/1FAIpQLSd_XdTrj_rdYmYrjW4MbD3EG4LM3hMLbw6Dg5p_wEEoQwisrA/viewform" target="_blank" rel="noopener" class="text-brand-500 hover:text-brand-600">問題回報表單</a>聯絡我們。</p>
+        </div>
+      </div>
+
+      <!-- Back Link -->
+      <a href="/trip/" class="back-link">← 回到旅圖</a>
+
+      <!-- Footer -->
+      <div class="update-date">
+        <p>旅圖 TripCraft | TWTools.cc</p>
+        <p>隱私權政策版本 1.0 | 2026 年 3 月 18 日</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tailwind Color Config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4',
+              400: '#2dd4bf', 500: '#14b8a6', 600: '#0d9488', 700: '#0f766e',
+              800: '#115e59', 900: '#134e4a'
+            },
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>

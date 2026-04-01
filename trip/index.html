@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>旅圖 TripCraft — AI 旅遊規劃器 | 一鍵規劃，說走就走</title>
+<meta name="description" content="旅圖 TripCraft - AI 旅遊規劃器：輸入目的地、天數、預算，AI 自動產出完整行程表。支援地圖標示、消費等級參考、日曆匯出、Google 機票住宿搜尋連結。">
+<link rel="canonical" href="https://twtools.cc/trip/">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEZ0lEQVR4nJxXXWxURRT+5u6l3W0XSt3+bG3TQgX7R1M0GLFWfRAkIfpo40/En2j8CQ9GHg3+PGiC+qDyYvQBHzRGMTHRqIgEQwzGAF2WLGxT2rRAKbBtt+x2l91td+8dzr3Lsnt379x7yyR7Z2fOzPnOd+bMmRkZZaVn5O+tTMLLXFV7wNHLueqjGlTDWHOI+3mpPMrAwqQvDAnfXtj+zP+leKzwZ93UP+7aWPZDmreHJruKSkqVlba5iRG24xX6fNbYlNw7suX17G0D+gJHBzhTfiRhl5jZiplbzTujcv7izFMvnJHy/NVni+DcYnK5nNuAC+cNME6Ymgc2nf5rUAX7l6tcujPmIrmNR1RVhct1v6xytosGSRCuuVOGInCBPlBIZnNvytTYbK/sDhg6mMfAuzXm3U7W3MUZhpvb8dPmx+CvcjvwiF2scFAgdrPuk39yuzX1SjJ+GBhCm7tWD9mL6SSeCxxDIpvFynZJZb9kbWm+P5FbJmuLyaPD48VX/YOoYmyFzNUKuWS0jAvX7tDcjCFj9q+px+ebHgQTBpoK60DMyyWnDA6XGaCVIZ8fH/ducbzmZnLJmnnRbeeTcVxKJSuMeLKlA7s7+2DvSXM5u/e/37j1Pi/2v9HRhbfW9xgt4PlPWlEQXc5gYSmj11GqL95I4OvxsxYe4ZBXss8PRaaNBvDbH3hcLrR5avVfoaSVHE7OX0MgOgdRfpDF7qr0yCQxmqCl2OCtM4AXypV0CkeuTSMUm0c4voDxxZitXtkJ89L6aiaFDbV1FeBamSXZR+dOwToPGPVK1uDGurNmNR7xtZiCa2WgvgFr5FWwz4xq+S4QMeeGqN19T58QXCva5WKwwQ8neaWAJ1m7vTi5ndLw9qZWHejny5P48nzI1IihxrsdMS/ZBc7Oc429xvDo7AzeC53QDhJ4ZRmvdBq35eP+NhvmRjzJHpxjFSFva25D4Po83g4c18G1/n3hAL6bGjMYcFe1GxtX11kwN+K51u56+gO7qFXoJLpKJ+D+8RBStLdLGR6LXEZDtQf9a30lwdiIRrcHieUsZtM3BHrzbbb+yEHu7CbD0eXNb7/R+PUK+RcPPIqdresM3khml7Htj4OIUH4Q6dViIEKNZjPmGqBWj1FC0fuhzzdlspDJ6PLfp6fwzVgIsaU0/ZYQp7Qscj/jiFAmRJA6d5R7wF9dg53+dl1pNJPGHP1GKbtBkCcebmrRx707chyLFqBl7aAMVQ0Sxo7ywdqaBynotIYGbqfsXCyKXy5MlIFb3xnJA0HWefj7jYrCzlJHlXnOFsdEae2ha1uKbk5OYulWO6lKuE+afOL5cWq+X5kBuYUbK+VFcLv7Rd4IcGXv4qvvTOgvo0sJ+VO6Ip82z2D2d0a7A8fEA8FYfcd+DTv/NBseVqSa3CA9V/bx/APSMXOjEdy6H1Co/iRelXxIwyycH4bS+uuBrcjhJRpOT3PeSzN94jV1kD/Ao/TsCzMVo4rEDyy+tsfwPL8JAAD//+EhqIkAAAAGSURBVAMALriYoryC3h0AAAAASUVORK5CYII=">
+<meta property="og:image" content="https://twtools.cc/trip/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://twtools.cc/trip/assets/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://twtools.cc/trip/">
+<meta property="og:title" content="旅圖 TripCraft — AI 旅遊規劃器">
+<meta property="og:description" content="輸入目的地、天數、預算，AI 自動產出完整行程表。支援地圖標示、消費等級參考、日曆匯出、Google 機票住宿搜尋連結。">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="旅圖 TripCraft — AI 旅遊規劃器">
+<meta name="twitter:description" content="輸入目的地、天數、預算，AI 自動產出完整行程表。支援地圖、日曆匯出、訂購連結。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "旅圖 TripCraft",
+  "url": "https://twtools.cc/trip/",
+  "description": "AI 旅遊規劃器：輸入目的地、天數、預算，自動產出完整行程表、地圖路線、訂購連結",
+  "applicationCategory": "TravelApplication",
+  "operatingSystem": "Any",
+  "inLanguage": ["zh-TW", "zh-CN", "en"],
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" },
+  "featureList": ["AI 行程自動規劃", "互動式地圖", "Google 機票住宿搜尋", "PDF 日曆匯出", "三語支援"],
+  "isPartOf": { "@type": "WebSite", "name": "TWTools", "url": "https://twtools.cc" }
+}
+</script>
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-0WTK2LJFTY');
+</script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+<script>
+tailwind.config = {
+  theme: { extend: { colors: {
+    brand: { 50:'#f0fdfa',100:'#ccfbf1',200:'#99f6e4',300:'#5eead4',400:'#2dd4bf',500:'#14b8a6',600:'#0d9488',700:'#0f766e',800:'#115e59',900:'#134e4a' },
+    accent: { 50:'#fff7ed',100:'#ffedd5',200:'#fed7aa',300:'#fdba74',400:'#fb923c',500:'#f97316',600:'#ea580c' },
+  }}}
+}
+</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+:root { --font-main: 'Noto Sans TC', 'Noto Sans SC', 'Inter', system-ui, sans-serif; }
+* { font-family: var(--font-main); }
+body { margin:0; background:#f8fafc; }
+.fade-in { animation: fadeIn .4s ease-out; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+.slide-up { animation: slideUp .5s ease-out; }
+@keyframes slideUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+@keyframes pulse-dot { 0%,100%{opacity:.4} 50%{opacity:1} }
+.pulse-dot { animation: pulse-dot 1.4s infinite; }
+.leaflet-container { border-radius:12px; }
+.custom-scrollbar::-webkit-scrollbar { width:6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background:transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:3px; }
+input:focus,select:focus,textarea:focus { outline:none; box-shadow:0 0 0 3px rgba(20,184,166,0.2); }
+.activity-card { transition:all .2s ease; }
+.activity-card:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(0,0,0,0.1); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback, useMemo, createContext, useContext } = React;
+
+// ═══════════════════════════════════════════
+// i18n System
+// ═══════════════════════════════════════════
+const LANGS = {
+  'zh-TW': { label: '繁體中文', flag: '🇹🇼' },
+  'zh-CN': { label: '简体中文', flag: '🇨🇳' },
+  'en':    { label: 'English',  flag: '🇺🇸' },
+};
+
+const T = {
+  'zh-TW': {
+    appName: 'TripCraft',
+    appTitle: '旅圖 TripCraft',
+    appSubtitle: '一鍵規劃，說走就走',
+    step1Title: '你想去哪裡？',
+    step1Desc: '輸入目的地城市，或從熱門選項中挑選',
+    step1Placeholder: '例如：東京、京都、大阪',
+    popularLabel: '熱門目的地',
+    nextBtn: '下一步 →',
+    prevBtn: '← 上一步',
+    step2Title: '什麼時候出發？',
+    step2Desc: '選擇日期與預算',
+    startDate: '出發日',
+    endDate: '回程日',
+    daysNights: (d) => `共 ${d} 天 ${d-1} 夜`,
+    currency: '幣別',
+    totalBudget: '總預算',
+    perPerson: '每人總預算',
+    travelers: '旅行人數',
+    person: '人',
+    step3Title: '你的旅行風格',
+    step3Desc: '幫助 AI 更了解你的偏好',
+    spendLevel: '消費等級',
+    budget: '經濟實惠', budgetDesc: '背包客風格',
+    moderate: '舒適中等', moderateDesc: 'CP值最高',
+    luxury: '精緻豪華', luxuryDesc: '享受至上',
+    pace: '行程節奏',
+    relaxed: '悠閒慢遊', relaxedDesc: '每天2-3個景點',
+    moderatePace: '適中平衡', moderatePaceDesc: '每天4-5個景點',
+    packed: '充實緊湊', packedDesc: '塞好塞滿',
+    interests: '興趣偏好',
+    multiSelect: '（可多選）',
+    otherNeeds: '其他需求',
+    otherNeedsPlaceholder: '例如：想看富士山、有長輩同行需要無障礙、對海鮮過敏...',
+    optional: '（選填）',
+    step4Title: '確認行程資訊',
+    step4Desc: '檢查後按下「開始規劃」，AI 將為你產出完整行程',
+    destination: '目的地',
+    dates: '日期',
+    budgetLabel: '預算',
+    travelersLabel: '人數',
+    styleLabel: '風格',
+    paceLabel: '節奏',
+    interestsLabel: '興趣',
+    generateBtn: '🪄 開始規劃',
+    resetBtn: '✨ 重新規劃',
+    apiKeySection: 'API Key 設定',
+    apiKeyDesc: '免費額度用完後，輸入你的 Claude API Key 可繼續使用',
+    apiKeyPrivacy: '你的 API Key 僅在瀏覽器端使用，不會傳送至任何第三方伺服器',
+    freeQuota: (used, limit) => `免費額度：已用 ${used}/${limit} 次`,
+    freeQuotaLeft: (n) => `本月剩餘 ${n} 次免費`,
+    freeQuotaOut: '免費額度已用完，請輸入 API Key',
+    loading: 'AI 正在規劃你的旅程',
+    loadingTips: ['正在搜尋最佳景點...','分析當地交通路線...','挑選推薦餐廳...','優化行程動線...','計算預算分配...','即將完成！'],
+    errorTitle: '⚠️ 產生行程時出錯',
+    close: '關閉',
+    tipsTitle: '💡 旅行小提示',
+    tabItinerary: '📋 行程表',
+    tabMap: '🗺️ 地圖',
+    tabBooking: '🔗 訂購清單',
+    dayLabel: (n) => `Day ${n}`,
+    showAll: '全部天數',
+    exportICS: '📅 匯出日曆 (.ics)',
+    exportJSON: '💾 匯出資料 (.json)',
+    exportPDF: '📄 匯出 PDF',
+    addToGCal: '📅 加入 Google 日曆',
+    searchFlights: '搜尋機票',
+    searchHotels: '搜尋住宿',
+    bookingEssentials: '必要預訂',
+    placesList: '景點與餐廳',
+    costEstimate: '參考',
+    costDisclaimer: '所有費用皆為 AI 估算，實際價格請以訂購平台為準',
+    priceLevel1: '免費/極低',
+    priceLevel2: '平價',
+    priceLevel3: '中等',
+    priceLevel4: '高檔',
+    perNight: '/ 晚',
+    food: '餐飲', transport: '交通', activities: '活動', accommodation: '住宿', misc: '其他',
+    daysSection: '行程天數',
+    poweredBy: 'Built with Claude API & Leaflet | TWTools.cc',
+    footerAbout: '關於旅圖',
+    footerPrivacy: '隱私權政策',
+    footerFeedback: '問題回報',
+    interest_history: '歷史古蹟', interest_food: '美食探索', interest_nature: '自然風景',
+    interest_shopping: '購物血拼', interest_culture: '文化體驗', interest_nightlife: '夜生活',
+    interest_art: '藝術設計', interest_adventure: '冒險運動', interest_relaxation: '悠閒放鬆', interest_photo: '攝影打卡',
+    replanDay: '🔄 重新規劃這天',
+    replanDayDesc: '告訴 AI 你想怎麼改（選填）',
+    replanDayPlaceholder: '例如：多安排購物行程、換一間餐廳、下午想去咖啡廳...',
+    replanDayBtn: '重新規劃',
+    replanDayCancel: '取消',
+    replanning: '正在重新規劃...',
+    replanSuccess: '已更新！',
+    modelUsed: (m) => m.includes('haiku') ? '⚡ Haiku' : '✨ Sonnet',
+  },
+  'zh-CN': {
+    appName: 'TripCraft',
+    appTitle: '旅图 TripCraft',
+    appSubtitle: '一键规划，说走就走',
+    step1Title: '你想去哪里？',
+    step1Desc: '输入目的地城市，或从热门选项中挑选',
+    step1Placeholder: '例如：东京、京都、大阪',
+    popularLabel: '热门目的地',
+    nextBtn: '下一步 →',
+    prevBtn: '← 上一步',
+    step2Title: '什么时候出发？',
+    step2Desc: '选择日期与预算',
+    startDate: '出发日',
+    endDate: '回程日',
+    daysNights: (d) => `共 ${d} 天 ${d-1} 晚`,
+    currency: '币种',
+    totalBudget: '总预算',
+    perPerson: '每人总预算',
+    travelers: '旅行人数',
+    person: '人',
+    step3Title: '你的旅行风格',
+    step3Desc: '帮助 AI 更了解你的偏好',
+    spendLevel: '消费等级',
+    budget: '经济实惠', budgetDesc: '背包客风格',
+    moderate: '舒适中等', moderateDesc: '性价比最高',
+    luxury: '精致豪华', luxuryDesc: '享受至上',
+    pace: '行程节奏',
+    relaxed: '悠闲慢游', relaxedDesc: '每天2-3个景点',
+    moderatePace: '适中平衡', moderatePaceDesc: '每天4-5个景点',
+    packed: '充实紧凑', packedDesc: '塞满每一天',
+    interests: '兴趣偏好',
+    multiSelect: '（可多选）',
+    otherNeeds: '其他需求',
+    otherNeedsPlaceholder: '例如：想看富士山、有老人同行需要无障碍、对海鲜过敏...',
+    optional: '（选填）',
+    step4Title: '确认行程信息',
+    step4Desc: '检查后按下「开始规划」，AI 将为你产出完整行程',
+    destination: '目的地',
+    dates: '日期',
+    budgetLabel: '预算',
+    travelersLabel: '人数',
+    styleLabel: '风格',
+    paceLabel: '节奏',
+    interestsLabel: '兴趣',
+    generateBtn: '🪄 开始规划',
+    resetBtn: '✨ 重新规划',
+    apiKeySection: 'API Key 设置',
+    apiKeyDesc: '免费额度用完后，输入你的 Claude API Key 可继续使用',
+    apiKeyPrivacy: '你的 API Key 仅在浏览器端使用，不会传送至任何第三方服务器',
+    freeQuota: (used, limit) => `免费额度：已用 ${used}/${limit} 次`,
+    freeQuotaLeft: (n) => `本月剩余 ${n} 次免费`,
+    freeQuotaOut: '免费额度已用完，请输入 API Key',
+    loading: 'AI 正在规划你的旅程',
+    loadingTips: ['正在搜索最佳景点...','分析当地交通路线...','挑选推荐餐厅...','优化行程动线...','计算预算分配...','即将完成！'],
+    errorTitle: '⚠️ 生成行程时出错',
+    close: '关闭',
+    tipsTitle: '💡 旅行小提示',
+    tabItinerary: '📋 行程表',
+    tabMap: '🗺️ 地图',
+    tabBooking: '🔗 预订清单',
+    dayLabel: (n) => `Day ${n}`,
+    showAll: '全部天数',
+    exportICS: '📅 导出日历 (.ics)',
+    exportJSON: '💾 导出数据 (.json)',
+    exportPDF: '📄 导出 PDF',
+    addToGCal: '📅 添加到 Google 日历',
+    searchFlights: '搜索机票',
+    searchHotels: '搜索住宿',
+    bookingEssentials: '必要预订',
+    placesList: '景点与餐厅',
+    costEstimate: '参考',
+    costDisclaimer: '所有费用均为 AI 估算，实际价格请以预订平台为准',
+    priceLevel1: '免费/极低',
+    priceLevel2: '平价',
+    priceLevel3: '中等',
+    priceLevel4: '高档',
+    perNight: '/ 晚',
+    food: '餐饮', transport: '交通', activities: '活动', accommodation: '住宿', misc: '其他',
+    daysSection: '行程天数',
+    poweredBy: 'Built with Claude API & Leaflet | TWTools.cc',
+    footerAbout: '关于旅图',
+    footerPrivacy: '隐私政策',
+    footerFeedback: '问题反馈',
+    interest_history: '历史古迹', interest_food: '美食探索', interest_nature: '自然风景',
+    interest_shopping: '购物血拼', interest_culture: '文化体验', interest_nightlife: '夜生活',
+    interest_art: '艺术设计', interest_adventure: '冒险运动', interest_relaxation: '悠闲放松', interest_photo: '摄影打卡',
+    replanDay: '🔄 重新规划这天',
+    replanDayDesc: '告诉 AI 你想怎么改（选填）',
+    replanDayPlaceholder: '例如：多安排购物行程、换一间餐厅、下午想去咖啡厅...',
+    replanDayBtn: '重新规划',
+    replanDayCancel: '取消',
+    replanning: '正在重新规划...',
+    replanSuccess: '已更新！',
+    modelUsed: (m) => m.includes('haiku') ? '⚡ Haiku' : '✨ Sonnet',
+  },
+  'en': {
+    appName: 'TripCraft',
+    appTitle: 'TripCraft',
+    appSubtitle: 'Plan your dream trip in one click',
+    step1Title: 'Where do you want to go?',
+    step1Desc: 'Enter a destination or pick from popular choices',
+    step1Placeholder: 'e.g. Tokyo, Kyoto, Osaka',
+    popularLabel: 'Popular Destinations',
+    nextBtn: 'Next →',
+    prevBtn: '← Back',
+    step2Title: 'When are you going?',
+    step2Desc: 'Select dates and budget',
+    startDate: 'Departure',
+    endDate: 'Return',
+    daysNights: (d) => `${d} days ${d-1} nights`,
+    currency: 'Currency',
+    totalBudget: 'Total Budget',
+    perPerson: 'Budget per person',
+    travelers: 'Travelers',
+    person: '',
+    step3Title: 'Your Travel Style',
+    step3Desc: 'Help AI understand your preferences',
+    spendLevel: 'Spending Level',
+    budget: 'Budget', budgetDesc: 'Backpacker style',
+    moderate: 'Moderate', moderateDesc: 'Best value',
+    luxury: 'Luxury', luxuryDesc: 'Premium experience',
+    pace: 'Trip Pace',
+    relaxed: 'Relaxed', relaxedDesc: '2-3 spots/day',
+    moderatePace: 'Balanced', moderatePaceDesc: '4-5 spots/day',
+    packed: 'Packed', packedDesc: 'Fill every hour',
+    interests: 'Interests',
+    multiSelect: '(multi-select)',
+    otherNeeds: 'Special Requirements',
+    otherNeedsPlaceholder: 'e.g. Want to see Mt. Fuji, traveling with elderly, seafood allergy...',
+    optional: '(optional)',
+    step4Title: 'Review Your Trip',
+    step4Desc: 'Review and tap "Plan My Trip" to generate your itinerary',
+    destination: 'Destination',
+    dates: 'Dates',
+    budgetLabel: 'Budget',
+    travelersLabel: 'Travelers',
+    styleLabel: 'Style',
+    paceLabel: 'Pace',
+    interestsLabel: 'Interests',
+    generateBtn: '🪄 Plan My Trip',
+    resetBtn: '✨ Plan Again',
+    apiKeySection: 'API Key Settings',
+    apiKeyDesc: 'After free uses, enter your Claude API Key to continue',
+    apiKeyPrivacy: 'Your API Key is only used locally and never sent to third parties',
+    freeQuota: (used, limit) => `Free uses: ${used}/${limit}`,
+    freeQuotaLeft: (n) => `${n} free uses remaining`,
+    freeQuotaOut: 'Free uses exhausted. Enter your API Key to continue.',
+    loading: 'AI is planning your trip',
+    loadingTips: ['Searching top attractions...','Analyzing transit routes...','Picking restaurants...','Optimizing routes...','Calculating budget...','Almost done!'],
+    errorTitle: '⚠️ Error generating itinerary',
+    close: 'Close',
+    tipsTitle: '💡 Travel Tips',
+    tabItinerary: '📋 Itinerary',
+    tabMap: '🗺️ Map',
+    tabBooking: '🔗 Bookings',
+    dayLabel: (n) => `Day ${n}`,
+    showAll: 'All Days',
+    exportICS: '📅 Export Calendar (.ics)',
+    exportJSON: '💾 Export Data (.json)',
+    exportPDF: '📄 Export PDF',
+    addToGCal: '📅 Add to Google Calendar',
+    searchFlights: 'Search Flights',
+    searchHotels: 'Search Hotels',
+    bookingEssentials: 'Essential Bookings',
+    placesList: 'Places & Restaurants',
+    costEstimate: 'est.',
+    costDisclaimer: 'All costs are AI estimates. Check booking platforms for actual prices.',
+    priceLevel1: 'Free/Very Low',
+    priceLevel2: 'Budget',
+    priceLevel3: 'Moderate',
+    priceLevel4: 'Premium',
+    perNight: '/ night',
+    food: 'Food', transport: 'Transport', activities: 'Activities', accommodation: 'Accommodation', misc: 'Other',
+    daysSection: 'Trip Days',
+    poweredBy: 'Built with Claude API & Leaflet | TWTools.cc',
+    footerAbout: 'About',
+    footerPrivacy: 'Privacy',
+    footerFeedback: 'Feedback',
+    interest_history: 'History', interest_food: 'Food', interest_nature: 'Nature',
+    interest_shopping: 'Shopping', interest_culture: 'Culture', interest_nightlife: 'Nightlife',
+    interest_art: 'Art & Design', interest_adventure: 'Adventure', interest_relaxation: 'Relaxation', interest_photo: 'Photography',
+    replanDay: '🔄 Replan This Day',
+    replanDayDesc: 'Tell AI what to change (optional)',
+    replanDayPlaceholder: 'e.g. more shopping, swap restaurant, add a café in the afternoon...',
+    replanDayBtn: 'Replan',
+    replanDayCancel: 'Cancel',
+    replanning: 'Replanning...',
+    replanSuccess: 'Updated!',
+    modelUsed: (m) => m.includes('haiku') ? '⚡ Haiku' : '✨ Sonnet',
+  }
+};
+
+const I18nContext = createContext();
+const useT = () => useContext(I18nContext);
+
+// ═══════════════════════════════════════════
+// Constants
+// ═══════════════════════════════════════════
+const CATEGORY_ICONS = { sightseeing:'🏛️',food:'🍜',shopping:'🛍️',culture:'🎭',nature:'🌿',transport:'🚆',nightlife:'🌃',relaxation:'♨️' };
+const CATEGORY_COLORS = { sightseeing:'#6366f1',food:'#f97316',shopping:'#ec4899',culture:'#8b5cf6',nature:'#22c55e',transport:'#64748b',nightlife:'#a855f7',relaxation:'#06b6d4' };
+const CURRENCY_SYMBOLS = {
+  TWD:'NT$',JPY:'¥',USD:'$',EUR:'€',KRW:'₩',THB:'฿',GBP:'£',CNY:'¥',
+  HKD:'HK$',MOP:'MOP$',SGD:'S$',MYR:'RM',IDR:'Rp',PHP:'₱',VND:'₫',
+  CHF:'CHF',SEK:'kr',NOK:'kr',DKK:'kr',CZK:'Kč',HUF:'Ft',PLN:'zł',TRY:'₺',ISK:'kr',
+  CAD:'C$',AUD:'A$',NZD:'NZ$',MXN:'MX$',
+  INR:'₹',LKR:'Rs',AED:'AED',ILS:'₪',EGP:'E£',ZAR:'R',MAD:'MAD'
+};
+
+const INTEREST_OPTIONS = [
+  { id:'history', icon:'🏯' }, { id:'food', icon:'🍣' }, { id:'nature', icon:'🏔️' },
+  { id:'shopping', icon:'🛒' }, { id:'culture', icon:'🎎' }, { id:'nightlife', icon:'🍸' },
+  { id:'art', icon:'🎨' }, { id:'adventure', icon:'🏄' }, { id:'relaxation', icon:'🧘' }, { id:'photo', icon:'📸' },
+];
+
+// ── 目的地→幣別自動偵測（手動輸入用） ──
+const DEST_CURRENCY_MAP = [
+  { keywords: ['日本','japan','jp','東京','tokyo','大阪','osaka','京都','kyoto','北海道','hokkaido','沖繩','okinawa','冲绳','福岡','fukuoka','名古屋','nagoya','札幌','sapporo','奈良','nara','廣島','hiroshima','广岛'], currency: 'JPY' },
+  { keywords: ['韓國','韩国','korea','kr','首爾','seoul','首尔','釜山','busan','濟州','jeju','济州','仁川','incheon'], currency: 'KRW' },
+  { keywords: ['中國','中国','china','cn','北京','beijing','上海','shanghai','重慶','重庆','chongqing','廣州','广州','guangzhou','深圳','shenzhen','成都','chengdu','杭州','hangzhou','西安','xian','南京','nanjing'], currency: 'CNY' },
+  { keywords: ['香港','hong kong','hk'], currency: 'HKD' },
+  { keywords: ['澳門','澳门','macau','macao'], currency: 'MOP' },
+  { keywords: ['泰國','泰国','thailand','曼谷','bangkok','清邁','清迈','chiang mai','普吉','phuket','芭達雅','芭提雅','pattaya'], currency: 'THB' },
+  { keywords: ['越南','vietnam','胡志明','ho chi minh','河內','河内','hanoi','峴港','岘港','da nang'], currency: 'VND' },
+  { keywords: ['新加坡','singapore','sg'], currency: 'SGD' },
+  { keywords: ['馬來西亞','马来西亚','malaysia','吉隆坡','kuala lumpur','kl','檳城','槟城','penang','蘭卡威','兰卡威','langkawi'], currency: 'MYR' },
+  { keywords: ['印尼','indonesia','峇里島','巴厘岛','bali','雅加達','雅加达','jakarta'], currency: 'IDR' },
+  { keywords: ['菲律賓','菲律宾','philippines','馬尼拉','马尼拉','manila','宿霧','宿务','cebu','長灘島','长滩岛','boracay'], currency: 'PHP' },
+  { keywords: ['柬埔寨','cambodia','吳哥窟','吴哥窟','angkor','暹粒','siem reap','金邊','金边','phnom penh'], currency: 'USD' },
+  { keywords: ['法國','法国','france','巴黎','paris','尼斯','nice','馬賽','马赛','marseille','里昂','lyon'], currency: 'EUR' },
+  { keywords: ['德國','德国','germany','柏林','berlin','慕尼黑','munich','münchen','法蘭克福','法兰克福','frankfurt','漢堡','汉堡','hamburg'], currency: 'EUR' },
+  { keywords: ['義大利','意大利','italy','羅馬','罗马','rome','米蘭','米兰','milan','威尼斯','venice','佛羅倫斯','佛罗伦萨','florence','拿坡里','napoli','naples'], currency: 'EUR' },
+  { keywords: ['西班牙','spain','巴塞隆納','巴塞罗那','barcelona','馬德里','马德里','madrid','塞維利亞','塞维利亚','seville'], currency: 'EUR' },
+  { keywords: ['荷蘭','荷兰','netherlands','阿姆斯特丹','amsterdam'], currency: 'EUR' },
+  { keywords: ['希臘','希腊','greece','雅典','athens','聖托里尼','圣托里尼','santorini'], currency: 'EUR' },
+  { keywords: ['葡萄牙','portugal','里斯本','lisbon','波多','porto'], currency: 'EUR' },
+  { keywords: ['奧地利','奥地利','austria','維也納','维也纳','vienna','薩爾茲堡','萨尔茨堡','salzburg'], currency: 'EUR' },
+  { keywords: ['芬蘭','芬兰','finland','赫爾辛基','赫尔辛基','helsinki'], currency: 'EUR' },
+  { keywords: ['愛爾蘭','爱尔兰','ireland','都柏林','dublin'], currency: 'EUR' },
+  { keywords: ['比利時','比利时','belgium','布魯塞爾','布鲁塞尔','brussels'], currency: 'EUR' },
+  { keywords: ['英國','英国','uk','united kingdom','britain','倫敦','伦敦','london','愛丁堡','爱丁堡','edinburgh','曼徹斯特','曼彻斯特','manchester'], currency: 'GBP' },
+  { keywords: ['瑞士','switzerland','蘇黎世','苏黎世','zurich','日內瓦','日内瓦','geneva','琉森','lucerne','伯恩','bern'], currency: 'CHF' },
+  { keywords: ['瑞典','sweden','斯德哥爾摩','斯德哥尔摩','stockholm'], currency: 'SEK' },
+  { keywords: ['挪威','norway','奧斯陸','奥斯陆','oslo','卑爾根','卑尔根','bergen'], currency: 'NOK' },
+  { keywords: ['丹麥','丹麦','denmark','哥本哈根','copenhagen'], currency: 'DKK' },
+  { keywords: ['捷克','czech','布拉格','prague','praha'], currency: 'CZK' },
+  { keywords: ['匈牙利','hungary','布達佩斯','布达佩斯','budapest'], currency: 'HUF' },
+  { keywords: ['波蘭','波兰','poland','華沙','华沙','warsaw','克拉科夫','krakow'], currency: 'PLN' },
+  { keywords: ['土耳其','turkey','türkiye','伊斯坦堡','伊斯坦布尔','istanbul','卡帕多奇亞','cappadocia'], currency: 'TRY' },
+  { keywords: ['冰島','冰岛','iceland','雷克雅維克','雷克雅未克','reykjavik'], currency: 'ISK' },
+  { keywords: ['美國','美国','usa','us','united states','紐約','纽约','new york','洛杉磯','洛杉矶','los angeles','la','舊金山','旧金山','san francisco','芝加哥','chicago','拉斯維加斯','拉斯维加斯','las vegas','夏威夷','hawaii','西雅圖','西雅图','seattle','波士頓','波士顿','boston','邁阿密','迈阿密','miami','華盛頓','华盛顿','washington'], currency: 'USD' },
+  { keywords: ['加拿大','canada','溫哥華','温哥华','vancouver','多倫多','多伦多','toronto','蒙特婁','蒙特利尔','montreal'], currency: 'CAD' },
+  { keywords: ['墨西哥','mexico','坎昆','cancun','墨西哥城','mexico city'], currency: 'MXN' },
+  { keywords: ['澳洲','澳大利亚','australia','雪梨','悉尼','sydney','墨爾本','墨尔本','melbourne','布里斯本','布里斯班','brisbane','黃金海岸','黄金海岸','gold coast'], currency: 'AUD' },
+  { keywords: ['紐西蘭','新西兰','new zealand','奧克蘭','奥克兰','auckland','皇后鎮','皇后镇','queenstown'], currency: 'NZD' },
+  { keywords: ['印度','india','新德里','new delhi','孟買','孟买','mumbai'], currency: 'INR' },
+  { keywords: ['斯里蘭卡','斯里兰卡','sri lanka','可倫坡','科伦坡','colombo'], currency: 'LKR' },
+  { keywords: ['馬爾地夫','马尔代夫','maldives','馬列','马累','malé'], currency: 'USD' },
+  { keywords: ['杜拜','迪拜','dubai','阿布達比','阿布扎比','abu dhabi','阿聯酋','阿联酋','uae'], currency: 'AED' },
+  { keywords: ['以色列','israel','特拉維夫','特拉维夫','tel aviv','耶路撒冷','jerusalem'], currency: 'ILS' },
+  { keywords: ['埃及','egypt','開羅','开罗','cairo'], currency: 'EGP' },
+  { keywords: ['南非','south africa','開普敦','开普敦','cape town','約翰尼斯堡','约翰内斯堡','johannesburg'], currency: 'ZAR' },
+  { keywords: ['摩洛哥','morocco','馬拉喀什','马拉喀什','marrakech'], currency: 'MAD' },
+];
+
+function detectCurrencyFromDestination(text) {
+  if (!text || text.trim().length < 2) return null;
+  const lower = text.toLowerCase().trim();
+  let bestMatch = null;
+  let bestLen = 0;
+  for (const entry of DEST_CURRENCY_MAP) {
+    for (const kw of entry.keywords) {
+      if (lower.includes(kw.toLowerCase()) && kw.length > bestLen) {
+        bestMatch = entry.currency;
+        bestLen = kw.length;
+      }
+    }
+  }
+  return bestMatch;
+}
+
+const POPULAR = [
+  { name:{tw:'東京',cn:'东京',en:'Tokyo'}, emoji:'🗼', country:{tw:'日本',cn:'日本',en:'Japan'}, currency:'JPY' },
+  { name:{tw:'大阪',cn:'大阪',en:'Osaka'}, emoji:'🏯', country:{tw:'日本',cn:'日本',en:'Japan'}, currency:'JPY' },
+  { name:{tw:'首爾',cn:'首尔',en:'Seoul'}, emoji:'🇰🇷', country:{tw:'韓國',cn:'韩国',en:'South Korea'}, currency:'KRW' },
+  { name:{tw:'曼谷',cn:'曼谷',en:'Bangkok'}, emoji:'🛕', country:{tw:'泰國',cn:'泰国',en:'Thailand'}, currency:'THB' },
+  { name:{tw:'新加坡',cn:'新加坡',en:'Singapore'}, emoji:'🦁', country:{tw:'新加坡',cn:'新加坡',en:'Singapore'}, currency:'SGD' },
+  { name:{tw:'香港',cn:'香港',en:'Hong Kong'}, emoji:'🌃', country:{tw:'香港',cn:'香港',en:'Hong Kong'}, currency:'HKD' },
+  { name:{tw:'峇里島',cn:'巴厘岛',en:'Bali'}, emoji:'🌺', country:{tw:'印尼',cn:'印尼',en:'Indonesia'}, currency:'IDR' },
+  { name:{tw:'倫敦',cn:'伦敦',en:'London'}, emoji:'🎡', country:{tw:'英國',cn:'英国',en:'UK'}, currency:'GBP' },
+  { name:{tw:'巴黎',cn:'巴黎',en:'Paris'}, emoji:'🗼', country:{tw:'法國',cn:'法国',en:'France'}, currency:'EUR' },
+  { name:{tw:'紐約',cn:'纽约',en:'New York'}, emoji:'🗽', country:{tw:'美國',cn:'美国',en:'USA'}, currency:'USD' },
+  { name:{tw:'重慶',cn:'重庆',en:'Chongqing'}, emoji:'🌶️', country:{tw:'中國',cn:'中国',en:'China'}, currency:'CNY' },
+  { name:{tw:'沖繩',cn:'冲绳',en:'Okinawa'}, emoji:'🏖️', country:{tw:'日本',cn:'日本',en:'Japan'}, currency:'JPY' },
+];
+
+// ═══════════════════════════════════════════
+// Device ID & API
+// ═══════════════════════════════════════════
+const PROXY_URL = 'https://tripcraft-proxy.charlie-chien.workers.dev'; // ← 部署後替換
+
+function getDeviceId() {
+  let id = localStorage.getItem('tc_device_id');
+  if (!id) {
+    id = 'dev-' + crypto.randomUUID();
+    localStorage.setItem('tc_device_id', id);
+  }
+  return id;
+}
+
+async function callTripAPI({ prompt, userApiKey, mode = 'generate' }) {
+  const deviceId = getDeviceId();
+  const res = await fetch(PROXY_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt, deviceId, userApiKey: userApiKey || undefined, mode }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw { status: res.status, ...data };
+  return data;
+}
+
+// Fallback: 直接呼叫 Anthropic（開發模式或 proxy 未部署時）
+async function callClaudeDirect(apiKey, prompt) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 8000,
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.error?.message || `API error (${res.status})`);
+  }
+  return await res.json();
+}
+
+function buildPrompt(tripData, lang) {
+  const langLabel = lang === 'en' ? 'English' : lang === 'zh-CN' ? '简体中文' : '繁體中文';
+  return `你是一位專業旅遊規劃師。根據以下資訊，產出詳細的逐日行程規劃。**請用${langLabel}回覆所有內容。**
+
+目的地：${tripData.destination}
+日期：${tripData.startDate} 至 ${tripData.endDate}（${tripData.numDays} 天）
+消費偏好：${tripData.style === 'budget' ? '經濟實惠' : tripData.style === 'moderate' ? '舒適中等' : '精緻豪華'}
+旅行人數：${tripData.travelers} 人
+節奏偏好：${tripData.pace === 'relaxed' ? '悠閒慢遊' : tripData.pace === 'moderate' ? '適中平衡' : '充實緊湊'}
+興趣偏好：${tripData.interests.join('、')}
+${tripData.notes ? `額外需求：${tripData.notes}` : ''}
+
+請以 JSON 格式回覆，結構如下（不要加 markdown code block，直接輸出 JSON）：
+{
+  "tripTitle": "行程標題（簡短有吸引力）",
+  "summary": "50字以內的行程亮點摘要",
+  "tips": ["3-5 條實用旅行建議"],
+  "days": [
+    {
+      "date": "YYYY-MM-DD",
+      "dayTitle": "當日主題",
+      "activities": [
+        {
+          "time": "09:00",
+          "endTime": "11:00",
+          "name": "活動名稱",
+          "nameEn": "English Name",
+          "description": "簡短描述（30字內）",
+          "category": "sightseeing|food|shopping|culture|nature|transport|nightlife|relaxation",
+          "priceLevel": 1,
+          "priceLevelNote": "簡短說明（如：門票約 ¥500-800）",
+          "location": { "lat": 0.0, "lng": 0.0, "address": "地址" }
+        }
+      ],
+      "accommodation": { "name": "住宿名稱", "type": "hotel|hostel|airbnb|ryokan", "priceLevel": 1, "priceLevelNote": "簡短說明", "location": { "lat": 0.0, "lng": 0.0 } }
+    }
+  ]
+}
+
+注意：
+1. 座標必須是真實經緯度
+2. 消費等級 priceLevel 請用 1-4（1=免費/極低, 2=平價, 3=中等, 4=高檔）
+3. priceLevelNote 裡給出大致金額範圍讓用戶有概念（如 JPY 情況下寫「¥500-800」）
+4. 相近景點排同一天
+5. 推薦具體餐廳名稱
+6. 首末日考慮交通`;
+}
+
+function buildModifyPrompt(dayData, tripData, userRequest, lang) {
+  const langLabel = lang === 'en' ? 'English' : lang === 'zh-CN' ? '简体中文' : '繁體中文';
+  return `你是旅遊規劃師。以下是某一天的現有行程，請根據用戶要求修改後回傳**完整的這一天**的 JSON。**請用${langLabel}回覆。**
+
+目的地：${tripData.destination}
+日期：${dayData.date}
+消費偏好：${tripData.style === 'budget' ? '經濟' : tripData.style === 'moderate' ? '中等' : '豪華'}
+
+現有行程：
+${JSON.stringify(dayData, null, 2)}
+
+用戶要求修改：${userRequest || '請重新規劃這一天，換不同的景點和餐廳'}
+
+回傳格式（直接輸出 JSON，不要 code block）：
+{
+  "date": "${dayData.date}",
+  "dayTitle": "新的當日主題",
+  "activities": [{ "time":"09:00", "endTime":"11:00", "name":"名稱", "nameEn":"English", "description":"描述", "category":"sightseeing|food|shopping|culture|nature|transport|nightlife|relaxation", "priceLevel":1, "priceLevelNote":"說明", "location":{"lat":0.0,"lng":0.0,"address":"地址"} }],
+  "accommodation": {"name":"住宿","type":"hotel","priceLevel":1,"priceLevelNote":"說明","location":{"lat":0.0,"lng":0.0}}
+}
+
+注意：
+1. 座標必須真實
+2. 消費等級 priceLevel 請用 1-4（1=免費/極低, 2=平價, 3=中等, 4=高檔）
+3. priceLevelNote 給出大致金額範圍
+4. 推薦具體店名`;
+}
+
+// ═══════════════════════════════════════════
+// JSON Repair (處理被截斷的 AI 回應)
+// ═══════════════════════════════════════════
+function repairJSON(text) {
+  // 先嘗試直接解析
+  try { return JSON.parse(text); } catch(e) {}
+
+  // 提取 JSON 部分
+  let json = text.match(/\{[\s\S]*/)?.[0];
+  if (!json) throw new Error('No JSON found in response');
+
+  // 嘗試直接解析提取的部分
+  try { return JSON.parse(json); } catch(e) {}
+
+  // 修復被截斷的 JSON：補齊缺少的括號
+  // 移除最後一個不完整的屬性（可能在字串中間截斷）
+  json = json.replace(/,\s*"[^"]*"?\s*:?\s*[^,\}\]]*$/, '');
+  json = json.replace(/,\s*\{[^}]*$/, '');  // 移除不完整的物件
+  json = json.replace(/,\s*\[[^\]]*$/, '');  // 移除不完整的陣列
+  json = json.replace(/,\s*$/, '');           // 移除尾部逗號
+
+  // 計算並補齊缺少的括號
+  let brackets = 0, braces = 0, inStr = false, escape = false;
+  for (const ch of json) {
+    if (escape) { escape = false; continue; }
+    if (ch === '\\') { escape = true; continue; }
+    if (ch === '"') { inStr = !inStr; continue; }
+    if (inStr) continue;
+    if (ch === '{') braces++;
+    if (ch === '}') braces--;
+    if (ch === '[') brackets++;
+    if (ch === ']') brackets--;
+  }
+  json += ']'.repeat(Math.max(0, brackets));
+  json += '}'.repeat(Math.max(0, braces));
+
+  try { return JSON.parse(json); } catch(e) {
+    throw new Error('JSON 解析失敗，行程資料可能過長。請嘗試縮短天數或選擇「充實緊湊」節奏。');
+  }
+}
+
+// ═══════════════════════════════════════════
+// Components
+// ═══════════════════════════════════════════
+
+function Logo({ white }) {
+  return (
+    <a href="/" className="flex items-center gap-2 no-underline" title="TWTools.cc">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="36" height="36">
+        <defs><linearGradient id="lgo" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style={{stopColor:'#2dd4bf'}}/><stop offset="100%" style={{stopColor:'#0d9488'}}/></linearGradient></defs>
+        <rect width="40" height="40" rx="10" fill="url(#lgo)"/>
+        <g transform="translate(20,20) rotate(-30)"><path d="M-2,-12 L2,-12 L4,-2 L10,2 L10,4 L4,2 L2,10 L4,12 L4,14 L0,12 L-4,14 L-4,12 L-2,10 L-4,2 L-10,4 L-10,2 L-4,-2 Z" fill="white" opacity="0.95"/></g>
+        <circle cx="10" cy="32" r="1.5" fill="white" opacity="0.5"/><circle cx="15" cy="30" r="1" fill="white" opacity="0.4"/><circle cx="19" cy="29" r="0.8" fill="white" opacity="0.3"/>
+      </svg>
+      <span className={`text-xl font-bold ${white ? 'text-white' : 'bg-gradient-to-r from-brand-600 to-brand-800 bg-clip-text text-transparent'}`}>TripCraft</span>
+    </a>
+  );
+}
+
+function BackToTWTools() {
+  return (
+    <a href="https://twtools.cc" className="text-xs text-gray-400 hover:text-brand-500 flex items-center gap-1 no-underline transition-colors">
+      ← TWTools.cc
+    </a>
+  );
+}
+
+function LangSwitcher({ lang, setLang }) {
+  return (
+    <div className="flex gap-1 bg-white/80 rounded-lg p-0.5 border border-gray-200">
+      {Object.entries(LANGS).map(([k, v]) => (
+        <button key={k} onClick={() => setLang(k)}
+          className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
+            lang === k ? 'bg-brand-500 text-white' : 'text-gray-500 hover:bg-gray-100'
+          }`}>{v.flag} {k === 'en' ? 'EN' : k === 'zh-TW' ? '繁' : '简'}</button>
+      ))}
+    </div>
+  );
+}
+
+function StepIndicator({ current, total }) {
+  return (
+    <div className="flex items-center gap-2 mb-8">
+      {Array.from({ length: total }, (_, i) => (
+        <React.Fragment key={i}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${
+            i < current ? 'bg-brand-500 text-white' : i === current ? 'bg-brand-500 text-white ring-4 ring-brand-100' : 'bg-gray-200 text-gray-500'
+          }`}>{i+1}</div>
+          {i < total-1 && <div className={`flex-1 h-0.5 ${i < current ? 'bg-brand-400' : 'bg-gray-200'}`}/>}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
+// ── Step 1 ──
+function StepDestination({ data, onChange, onNext, lang }) {
+  const t = useT();
+  const lk = lang === 'zh-CN' ? 'cn' : lang === 'en' ? 'en' : 'tw';
+  return (
+    <div className="fade-in">
+      <h2 className="text-2xl font-bold text-gray-800 mb-2">{t.step1Title}</h2>
+      <p className="text-gray-500 mb-6">{t.step1Desc}</p>
+      <input type="text" value={data.destination} placeholder={t.step1Placeholder}
+        onChange={e => onChange({ destination: e.target.value })}
+        className="w-full px-4 py-3.5 rounded-xl border border-gray-200 text-lg bg-white mb-6" />
+      <p className="text-sm text-gray-400 mb-3 font-medium">{t.popularLabel}</p>
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+        {POPULAR.map(p => (
+          <button key={p.name.en} onClick={() => onChange({ destination: `${p.name[lk]}, ${p.country[lk]}`, currency: p.currency })}
+            className={`flex flex-col items-center gap-1 p-3 rounded-xl border transition-all hover:shadow-md ${
+              data.destination.includes(p.name[lk]) ? 'border-brand-400 bg-brand-50 shadow-sm' : 'border-gray-200 bg-white hover:border-brand-300'
+            }`}>
+            <span className="text-2xl">{p.emoji}</span>
+            <span className="text-sm font-medium text-gray-700">{p.name[lk]}</span>
+            <span className="text-xs text-gray-400">{p.country[lk]}</span>
+          </button>
+        ))}
+      </div>
+      <button onClick={onNext} disabled={!data.destination.trim()}
+        className="mt-8 w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 text-white font-semibold text-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-lg shadow-brand-200">
+        {t.nextBtn}
+      </button>
+    </div>
+  );
+}
+
+// ── Step 2 ──
+function StepDatesAndBudget({ data, onChange, onNext, onBack }) {
+  const t = useT();
+  const numDays = useMemo(() => {
+    if (!data.startDate || !data.endDate) return 0;
+    return Math.max(1, Math.ceil((new Date(data.endDate) - new Date(data.startDate)) / 86400000) + 1);
+  }, [data.startDate, data.endDate]);
+  const today = new Date().toISOString().split('T')[0];
+  return (
+    <div className="fade-in">
+      <h2 className="text-2xl font-bold text-gray-800 mb-2">{t.step2Title}</h2>
+      <p className="text-gray-500 mb-6">{t.step2Desc}</p>
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <div><label className="block text-sm font-medium text-gray-600 mb-1.5">{t.startDate}</label>
+          <input type="date" value={data.startDate} min={today} onChange={e => onChange({ startDate: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white" /></div>
+        <div><label className="block text-sm font-medium text-gray-600 mb-1.5">{t.endDate}</label>
+          <input type="date" value={data.endDate} min={data.startDate||today} onChange={e => onChange({ endDate: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white" /></div>
+      </div>
+      {numDays > 0 && <div className="mb-6 px-4 py-2.5 bg-brand-50 rounded-lg text-brand-700 text-sm font-medium">{t.daysNights(numDays)}</div>}
+      <div className="grid grid-cols-3 gap-4 mb-4">
+        <div className="col-span-1"><label className="block text-sm font-medium text-gray-600 mb-1.5">{t.currency}</label>
+          <select value={data.currency} onChange={e => onChange({ currency: e.target.value, _currencyManual: true })} className="w-full px-3 py-3 rounded-xl border border-gray-200 bg-white">
+            <optgroup label="── 常用 ──">
+              <option value="TWD">TWD (NT$)</option><option value="JPY">JPY (¥)</option><option value="USD">USD ($)</option><option value="EUR">EUR (€)</option>
+              <option value="KRW">KRW (₩)</option><option value="THB">THB (฿)</option><option value="GBP">GBP (£)</option><option value="CNY">CNY (¥)</option>
+            </optgroup>
+            <optgroup label="── 亞太 ──">
+              <option value="HKD">HKD (HK$)</option><option value="MOP">MOP (MOP$)</option><option value="SGD">SGD (S$)</option><option value="MYR">MYR (RM)</option>
+              <option value="IDR">IDR (Rp)</option><option value="PHP">PHP (₱)</option><option value="VND">VND (₫)</option>
+              <option value="AUD">AUD (A$)</option><option value="NZD">NZD (NZ$)</option><option value="INR">INR (₹)</option><option value="LKR">LKR (Rs)</option>
+            </optgroup>
+            <optgroup label="── 歐洲 ──">
+              <option value="CHF">CHF</option><option value="SEK">SEK (kr)</option><option value="NOK">NOK (kr)</option><option value="DKK">DKK (kr)</option>
+              <option value="CZK">CZK (Kč)</option><option value="HUF">HUF (Ft)</option><option value="PLN">PLN (zł)</option><option value="TRY">TRY (₺)</option><option value="ISK">ISK (kr)</option>
+            </optgroup>
+            <optgroup label="── 美洲 ──">
+              <option value="CAD">CAD (C$)</option><option value="MXN">MXN (MX$)</option>
+            </optgroup>
+            <optgroup label="── 中東/非洲 ──">
+              <option value="AED">AED</option><option value="ILS">ILS (₪)</option><option value="EGP">EGP (E£)</option><option value="ZAR">ZAR (R)</option><option value="MAD">MAD</option>
+            </optgroup>
+          </select></div>
+        <div className="col-span-2"><label className="block text-sm font-medium text-gray-600 mb-1.5">{t.totalBudget} <span className="text-gray-400">({CURRENCY_SYMBOLS[data.currency]})</span></label>
+          <input type="number" value={data.budget} placeholder={t.perPerson} onChange={e => onChange({ budget: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white" /></div>
+      </div>
+      <div className="mb-6"><label className="block text-sm font-medium text-gray-600 mb-1.5">{t.travelers}</label>
+        <div className="flex items-center gap-3">
+          {[1,2,3,4].map(n => (
+            <button key={n} onClick={() => onChange({ travelers: n })}
+              className={`flex-1 py-3 rounded-xl border text-center font-medium transition-all ${
+                data.travelers===n ? 'border-brand-400 bg-brand-50 text-brand-700' : 'border-gray-200 bg-white text-gray-600 hover:border-brand-300'
+              }`}>{['👤','👫','👨‍👩‍👧','👨‍👩‍👧‍👦'][n-1]} {n}{t.person}</button>
+          ))}
+        </div>
+      </div>
+      <div className="flex gap-3">
+        <button onClick={onBack} className="px-6 py-3.5 rounded-xl border border-gray-300 text-gray-600 font-medium hover:bg-gray-50">{t.prevBtn}</button>
+        <button onClick={onNext} disabled={!data.startDate||!data.endDate||!data.budget}
+          className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 text-white font-semibold text-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-lg shadow-brand-200">{t.nextBtn}</button>
+      </div>
+    </div>
+  );
+}
+
+// ── Step 3 ──
+function StepPreferences({ data, onChange, onNext, onBack }) {
+  const t = useT();
+  const toggleInterest = (id) => {
+    const curr = data.interests || [];
+    onChange({ interests: curr.includes(id) ? curr.filter(i => i !== id) : [...curr, id] });
+  };
+  return (
+    <div className="fade-in">
+      <h2 className="text-2xl font-bold text-gray-800 mb-2">{t.step3Title}</h2>
+      <p className="text-gray-500 mb-6">{t.step3Desc}</p>
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-600 mb-2">{t.spendLevel}</label>
+        <div className="grid grid-cols-3 gap-3">
+          {[['budget','💰',t.budget,t.budgetDesc],['moderate','✨',t.moderate,t.moderateDesc],['luxury','👑',t.luxury,t.luxuryDesc]].map(([v,icon,label,desc]) => (
+            <button key={v} onClick={() => onChange({ style: v })}
+              className={`p-4 rounded-xl border text-center transition-all ${data.style===v ? 'border-brand-400 bg-brand-50 shadow-sm' : 'border-gray-200 bg-white hover:border-brand-300'}`}>
+              <div className="text-2xl mb-1">{icon}</div><div className="font-semibold text-gray-700 text-sm">{label}</div><div className="text-xs text-gray-400 mt-0.5">{desc}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-600 mb-2">{t.pace}</label>
+        <div className="grid grid-cols-3 gap-3">
+          {[['relaxed','🐢',t.relaxed,t.relaxedDesc],['moderate','🚶',t.moderatePace,t.moderatePaceDesc],['packed','🏃',t.packed,t.packedDesc]].map(([v,icon,label,desc]) => (
+            <button key={v} onClick={() => onChange({ pace: v })}
+              className={`p-4 rounded-xl border text-center transition-all ${data.pace===v ? 'border-brand-400 bg-brand-50 shadow-sm' : 'border-gray-200 bg-white hover:border-brand-300'}`}>
+              <div className="text-2xl mb-1">{icon}</div><div className="font-semibold text-gray-700 text-sm">{label}</div><div className="text-xs text-gray-400 mt-0.5">{desc}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-600 mb-2">{t.interests} <span className="text-gray-400">{t.multiSelect}</span></label>
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+          {INTEREST_OPTIONS.map(opt => (
+            <button key={opt.id} onClick={() => toggleInterest(opt.id)}
+              className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border text-sm transition-all ${
+                (data.interests||[]).includes(opt.id) ? 'border-brand-400 bg-brand-50 text-brand-700 font-medium' : 'border-gray-200 bg-white text-gray-600 hover:border-brand-300'
+              }`}><span>{opt.icon}</span><span>{t['interest_'+opt.id]}</span></button>
+          ))}
+        </div>
+      </div>
+      <div className="mb-6"><label className="block text-sm font-medium text-gray-600 mb-1.5">{t.otherNeeds} <span className="text-gray-400">{t.optional}</span></label>
+        <textarea value={data.notes||''} onChange={e => onChange({ notes: e.target.value })} placeholder={t.otherNeedsPlaceholder}
+          className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white h-24 resize-none" />
+      </div>
+      <div className="flex gap-3">
+        <button onClick={onBack} className="px-6 py-3.5 rounded-xl border border-gray-300 text-gray-600 font-medium hover:bg-gray-50">{t.prevBtn}</button>
+        <button onClick={onNext} className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 text-white font-semibold text-lg transition-all shadow-lg shadow-brand-200">{t.nextBtn}</button>
+      </div>
+    </div>
+  );
+}
+
+// ── Step 4 ──
+function StepReview({ data, onBack, onGenerate, apiKey, setApiKey, quota }) {
+  const t = useT();
+  const numDays = Math.max(1, Math.ceil((new Date(data.endDate)-new Date(data.startDate))/86400000)+1);
+  const sym = CURRENCY_SYMBOLS[data.currency]||'';
+  const needKey = quota && quota.remaining <= 0;
+  return (
+    <div className="fade-in">
+      <h2 className="text-2xl font-bold text-gray-800 mb-2">{t.step4Title}</h2>
+      <p className="text-gray-500 mb-6">{t.step4Desc}</p>
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6 space-y-4">
+        {[[t.destination, data.destination], [t.dates, `${data.startDate} ～ ${data.endDate}（${numDays}天）`],
+          [t.budgetLabel, `${sym}${Number(data.budget).toLocaleString()} ${data.currency}`],
+          [t.travelersLabel, `${data.travelers} ${t.person}`],
+          [t.styleLabel, data.style==='budget'?t.budget:data.style==='moderate'?t.moderate:t.luxury],
+          [t.paceLabel, data.pace==='relaxed'?t.relaxed:data.pace==='moderate'?t.moderatePace:t.packed],
+        ].map(([label, val], i) => (
+          <div key={i} className="flex justify-between items-center pb-3 border-b border-gray-100">
+            <span className="text-gray-500">{label}</span><span className="font-semibold text-gray-800">{val}</span>
+          </div>
+        ))}
+        <div className="flex justify-between items-start">
+          <span className="text-gray-500">{t.interestsLabel}</span>
+          <div className="flex flex-wrap gap-1.5 justify-end max-w-[60%]">
+            {(data.interests||[]).map(id => <span key={id} className="px-2 py-0.5 bg-brand-50 text-brand-700 rounded-full text-xs font-medium">
+              {INTEREST_OPTIONS.find(o=>o.id===id)?.icon} {t['interest_'+id]}</span>)}
+          </div>
+        </div>
+      </div>
+
+      {/* Quota & API Key */}
+      <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
+        {quota && (
+          <div className={`mb-4 px-4 py-2.5 rounded-lg text-sm font-medium ${
+            quota.remaining > 0 ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
+          }`}>
+            {quota.remaining > 0 ? t.freeQuotaLeft(quota.remaining) : t.freeQuotaOut}
+          </div>
+        )}
+        {(needKey || apiKey) && (
+          <>
+            <label className="block text-sm font-medium text-gray-600 mb-1.5">{t.apiKeySection}</label>
+            <input type="password" value={apiKey} onChange={e => setApiKey(e.target.value)} placeholder="sk-ant-api03-..."
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white mb-2 font-mono text-sm" />
+            <p className="text-xs text-gray-400">{t.apiKeyPrivacy}</p>
+          </>
+        )}
+        {!needKey && !apiKey && (
+          <button onClick={() => setApiKey(' ')} className="text-sm text-brand-600 hover:underline">{t.apiKeyDesc}</button>
+        )}
+      </div>
+
+      <div className="flex gap-3">
+        <button onClick={onBack} className="px-6 py-3.5 rounded-xl border border-gray-300 text-gray-600 font-medium hover:bg-gray-50">{t.prevBtn}</button>
+        <button onClick={onGenerate} disabled={needKey && !apiKey.trim()}
+          className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-accent-500 to-accent-600 text-white font-bold text-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-lg shadow-accent-200">
+          {t.generateBtn}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── Loading ──
+function LoadingScreen() {
+  const t = useT();
+  const [tipIdx, setTipIdx] = useState(0);
+  useEffect(() => { const i = setInterval(() => setTipIdx(x => (x+1)%t.loadingTips.length), 2500); return () => clearInterval(i); }, []);
+  return (
+    <div className="flex flex-col items-center justify-center py-20 fade-in">
+      <div className="relative mb-8"><div className="w-20 h-20 rounded-full border-4 border-brand-100 border-t-brand-500 animate-spin"/><div className="absolute inset-0 flex items-center justify-center text-3xl">✈️</div></div>
+      <h3 className="text-xl font-bold text-gray-800 mb-2">{t.loading}</h3>
+      <p className="text-gray-500 flex items-center gap-2"><span className="pulse-dot">●</span> {t.loadingTips[tipIdx]}</p>
+    </div>
+  );
+}
+
+// ── Map ──
+function TripMap({ days, selectedDay }) {
+  const mapRef = useRef(null);
+  const mapInstance = useRef(null);
+  const markersRef = useRef([]);
+  useEffect(() => {
+    if (!mapRef.current||mapInstance.current) return;
+    mapInstance.current = L.map(mapRef.current,{zoomControl:false}).setView([35.68,139.76],12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(mapInstance.current);
+    L.control.zoom({position:'topright'}).addTo(mapInstance.current);
+  }, []);
+  useEffect(() => {
+    if (!mapInstance.current||!days?.length) return;
+    markersRef.current.forEach(m => m.remove()); markersRef.current = [];
+    const bounds = [];
+    const dayData = selectedDay!==null ? [days[selectedDay]] : days;
+    dayData.forEach(day => {
+      (day.activities||[]).forEach((act, ai) => {
+        if (!act.location?.lat||!act.location?.lng) return;
+        const pos = [act.location.lat, act.location.lng]; bounds.push(pos);
+        const color = CATEGORY_COLORS[act.category]||'#6366f1';
+        const icon = L.divIcon({ className:'', html:`<div style="background:${color};color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)">${selectedDay!==null?ai+1:''}</div>`, iconSize:[28,28], iconAnchor:[14,14] });
+        const m = L.marker(pos,{icon}).addTo(mapInstance.current).bindPopup(`<b>${CATEGORY_ICONS[act.category]||''} ${act.name}</b><br>${act.time}${act.endTime?' - '+act.endTime:''}<br><small>${act.description||''}</small>`);
+        markersRef.current.push(m);
+      });
+    });
+    if (bounds.length > 0) mapInstance.current.fitBounds(bounds, { padding:[40,40], maxZoom:15 });
+  }, [days, selectedDay]);
+  return <div ref={mapRef} style={{width:'100%',height:'100%',minHeight:300}} />;
+}
+
+// ── Budget Chart ──
+function BudgetChart({ totalBudget, currency }) {
+  const t = useT();
+  const canvasRef = useRef(null); const chartRef = useRef(null);
+  const sym = CURRENCY_SYMBOLS[currency]||'';
+  useEffect(() => {
+    if (!canvasRef.current||!totalBudget) return;
+    if (chartRef.current) chartRef.current.destroy();
+    const labels = [t.food,t.transport,t.activities,t.accommodation,t.misc];
+    const values = [totalBudget.food,totalBudget.transport,totalBudget.activities,totalBudget.accommodation,totalBudget.miscellaneous||0];
+    const colors = ['#f97316','#64748b','#6366f1','#06b6d4','#a3a3a3'];
+    chartRef.current = new Chart(canvasRef.current, { type:'doughnut', data:{labels,datasets:[{data:values,backgroundColor:colors,borderWidth:0,hoverOffset:8}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${sym}${ctx.parsed.toLocaleString()}`}}}}
+    });
+    return () => { if (chartRef.current) chartRef.current.destroy(); };
+  }, [totalBudget,currency]);
+  if (!totalBudget) return null;
+  const items = [[t.food,totalBudget.food,'#f97316','🍜'],[t.transport,totalBudget.transport,'#64748b','🚆'],[t.activities,totalBudget.activities,'#6366f1','🎫'],[t.accommodation,totalBudget.accommodation,'#06b6d4','🏨'],[t.misc,totalBudget.miscellaneous||0,'#a3a3a3','📦']];
+  return (
+    <div>
+      <div className="relative" style={{height:200}}><canvas ref={canvasRef}/><div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"><span className="text-xs text-gray-400">{t.totalLabel}</span><span className="text-lg font-bold text-gray-800">{sym}{(totalBudget.total||0).toLocaleString()}</span></div></div>
+      <div className="mt-4 space-y-2">{items.filter(i=>i[1]>0).map(([label,val,color,icon]) => (
+        <div key={label} className="flex items-center justify-between text-sm"><div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full" style={{background:color}}/><span className="text-gray-600">{icon} {label}</span></div><span className="font-medium text-gray-700">{sym}{val.toLocaleString()}</span></div>
+      ))}</div>
+    </div>
+  );
+}
+
+// ── Google Calendar URL ──
+function makeGCalUrl(act, date) {
+  const d = date.replace(/-/g, '');
+  const t1 = (act.time||'09:00').replace(':','') + '00';
+  const t2 = (act.endTime||'10:00').replace(':','') + '00';
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: act.name,
+    dates: `${d}T${t1}/${d}T${t2}`,
+    details: act.description || '',
+    location: act.location?.address || '',
+  });
+  return `https://calendar.google.com/calendar/render?${params}`;
+}
+
+// ── Booking Links ──
+function makeFlightUrl(origin, destination, startDate, endDate) {
+  // Google Flights
+  return `https://www.google.com/travel/flights?q=flights+from+${encodeURIComponent(origin)}+to+${encodeURIComponent(destination)}&d1=${startDate}&d2=${endDate}`;
+}
+
+function makeHotelUrl(destination, checkIn, checkOut) {
+  // Google Hotels
+  return `https://www.google.com/travel/hotels?q=hotels+in+${encodeURIComponent(destination)}&dates=${checkIn},${checkOut}`;
+}
+
+function makeMapUrl(name, city) {
+  // Google Maps search
+  return `https://www.google.com/maps/search/${encodeURIComponent(name + ' ' + city)}`;
+}
+
+// ── Results ──
+function ResultsView({ trip, tripData, onReset, lang, apiKey, onUpdateTrip }) {
+  const t = useT();
+  const [selectedDay, setSelectedDay] = useState(0);
+  const [activeTab, setActiveTab] = useState('itinerary');
+  const [replanOpen, setReplanOpen] = useState(false);
+  const [replanNote, setReplanNote] = useState('');
+  const [replanning, setReplanning] = useState(false);
+  const [replanMsg, setReplanMsg] = useState(null);
+  const sym = CURRENCY_SYMBOLS[tripData.currency]||'';
+  const days = trip.days||[];
+
+  const handleReplanDay = async () => {
+    if (replanning) return;
+    setReplanning(true); setReplanMsg(null);
+    try {
+      const dayData = days[selectedDay];
+      const prompt = buildModifyPrompt(dayData, tripData, replanNote, lang);
+      const userKey = apiKey?.trim();
+      let resultText;
+
+      try {
+        const proxyResult = await callTripAPI({ prompt, userApiKey: userKey || undefined, mode: 'modify' });
+        resultText = proxyResult.content[0].text;
+      } catch (proxyErr) {
+        if (userKey && userKey.startsWith('sk-ant-')) {
+          const directResult = await callClaudeDirect(userKey, prompt);
+          resultText = directResult.content[0].text;
+        } else {
+          throw new Error(proxyErr.message || proxyErr.error || 'Service unavailable');
+        }
+      }
+
+      const newDay = repairJSON(resultText);
+
+      // 更新行程
+      const newDays = [...days];
+      newDays[selectedDay] = newDay;
+      const newTrip = { ...trip, days: newDays };
+      onUpdateTrip(newTrip);
+      setReplanOpen(false); setReplanNote('');
+      setReplanMsg('success');
+      setTimeout(() => setReplanMsg(null), 2000);
+    } catch (e) {
+      setReplanMsg(e.message);
+    } finally {
+      setReplanning(false);
+    }
+  };
+
+  const exportICS = () => {
+    let ics = 'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//TripCraft//TWTools//\n';
+    days.forEach(day => { (day.activities||[]).forEach(act => {
+      const dt = day.date.replace(/-/g,'');
+      const t1 = (act.time||'09:00').replace(':','')+'00';
+      const t2 = (act.endTime||'10:00').replace(':','')+'00';
+      ics += `BEGIN:VEVENT\nDTSTART:${dt}T${t1}\nDTEND:${dt}T${t2}\nSUMMARY:${act.name}\nDESCRIPTION:${act.description||''}\nLOCATION:${act.location?.address||''}\nEND:VEVENT\n`;
+    }); });
+    ics += 'END:VCALENDAR';
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([ics],{type:'text/calendar'})); a.download = `${trip.tripTitle||'trip'}.ics`; a.click();
+  };
+  const exportJSON = () => {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(trip,null,2)],{type:'application/json'})); a.download = `${trip.tripTitle||'trip'}.json`; a.click();
+  };
+
+  const exportPDF = () => {
+    const content = document.createElement('div');
+    content.style.cssText = 'font-family:sans-serif;padding:20px;max-width:800px;';
+
+    let html = `<h1 style="color:#0d9488;margin-bottom:4px">${trip.tripTitle || 'My Trip'}</h1>`;
+    html += `<p style="color:#666;font-size:14px">${tripData.startDate} ~ ${tripData.endDate} | ${sym}${Number(tripData.budget).toLocaleString()} ${tripData.currency} | ${tripData.travelers}${t.person}</p>`;
+    html += `<p style="color:#888;font-size:13px">${trip.summary || ''}</p><hr style="border:none;border-top:1px solid #eee;margin:16px 0">`;
+
+    days.forEach((day, i) => {
+      html += `<h2 style="color:#0d9488;font-size:16px;margin-top:20px">Day ${i+1} - ${day.dayTitle}</h2>`;
+      (day.activities || []).forEach(act => {
+        html += `<div style="padding:8px 0;border-bottom:1px solid #f1f1f1">`;
+        html += `<span style="color:#999;font-size:12px;margin-right:8px">${act.time}${act.endTime ? ' - '+act.endTime : ''}</span>`;
+        html += `<strong style="font-size:14px">${CATEGORY_ICONS[act.category]||'📍'} ${act.name}</strong>`;
+        if (act.nameEn) html += ` <span style="color:#aaa;font-size:12px">${act.nameEn}</span>`;
+        if (act.description) html += `<br><span style="color:#666;font-size:13px">${act.description}</span>`;
+        if (act.priceLevel || act.cost) html += `<br><span style="color:#b8860b;font-size:12px">${'💲'.repeat(act.priceLevel || (act.cost > 0 ? 2 : 0))} ${act.priceLevelNote || ''}</span>`;
+        if (act.location?.address) html += ` <span style="color:#aaa;font-size:11px">📍${act.location.address}</span>`;
+        html += '</div>';
+      });
+      if (day.accommodation) {
+        html += `<div style="background:#f0fdfa;padding:8px 12px;border-radius:8px;margin-top:8px;font-size:13px">🏨 ${day.accommodation.name}${day.accommodation.priceLevel || day.accommodation.cost ? ' — ' + '💲'.repeat(day.accommodation.priceLevel || (day.accommodation.cost > 0 ? 2 : 0)) + ' ' + (day.accommodation.priceLevelNote || '') : ''}</div>`;
+      }
+    });
+
+    html += `<hr style="border:none;border-top:1px solid #eee;margin:16px 0">`;
+    html += `<p style="color:#999;font-size:11px">💲 = ${t.priceLevel1} | 💲💲 = ${t.priceLevel2} | 💲💲💲 = ${t.priceLevel3} | 💲💲💲💲 = ${t.priceLevel4}</p>`;
+    html += `<p style="color:#999;font-size:11px">${t.costDisclaimer}</p>`;
+
+    html += `<p style="color:#ccc;font-size:10px;margin-top:24px;text-align:center">Generated by TripCraft — twtools.cc/trip</p>`;
+    content.innerHTML = html;
+
+    html2pdf().set({
+      margin: [10, 10, 10, 10],
+      filename: (trip.tripTitle || 'trip') + '.pdf',
+      image: { type: 'jpeg', quality: 0.95 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).from(content).save();
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="bg-gradient-to-r from-brand-600 to-brand-800 text-white">
+        <div className="max-w-6xl mx-auto px-4 py-6">
+          <div className="flex items-center justify-between mb-4"><Logo white /><div className="flex items-center gap-2">
+            <button onClick={onReset} className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium backdrop-blur transition-all">{t.resetBtn}</button>
+          </div></div>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-1">{trip.tripTitle||'My Trip'}</h1>
+          <p className="text-brand-100 text-sm">{trip.summary}</p>
+          <div className="flex flex-wrap gap-4 mt-4 text-sm text-brand-100">
+            <span>📅 {tripData.startDate} ～ {tripData.endDate}</span><span>💰 {sym}{Number(tripData.budget).toLocaleString()} {tripData.currency}</span><span>👥 {tripData.travelers}{t.person}</span>
+          </div>
+        </div>
+      </div>
+      {trip.tips?.length > 0 && (
+        <div className="max-w-6xl mx-auto px-4 -mt-3"><div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+          <p className="font-semibold text-amber-800 text-sm mb-2">{t.tipsTitle}</p>
+          <ul className="space-y-1">{trip.tips.map((tip,i) => <li key={i} className="text-sm text-amber-700">• {tip}</li>)}</ul>
+        </div></div>
+      )}
+      {/* 快速訂購連結 */}
+      <div className="max-w-6xl mx-auto px-4 mt-3">
+        <div className="flex flex-wrap gap-2">
+          <a href={makeFlightUrl('Taiwan', tripData.destination, tripData.startDate, tripData.endDate)} target="_blank" rel="noopener"
+            className="px-4 py-2 bg-white rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:border-brand-300 hover:shadow-sm transition-all flex items-center gap-2 no-underline">
+            ✈️ {t.searchFlights}
+          </a>
+          <a href={makeHotelUrl(tripData.destination, tripData.startDate, tripData.endDate)} target="_blank" rel="noopener"
+            className="px-4 py-2 bg-white rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:border-brand-300 hover:shadow-sm transition-all flex items-center gap-2 no-underline">
+            🏨 {t.searchHotels}
+          </a>
+        </div>
+      </div>
+      <div className="max-w-6xl mx-auto px-4 mt-4">
+        <div className="flex gap-1 bg-white rounded-xl p-1 border border-gray-200 mb-4 w-fit">
+          {[['itinerary',t.tabItinerary],['map',t.tabMap],['booking',t.tabBooking]].map(([key,label]) => (
+            <button key={key} onClick={() => setActiveTab(key)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab===key?'bg-brand-500 text-white shadow-sm':'text-gray-600 hover:bg-gray-100'}`}>{label}</button>
+          ))}
+        </div>
+      </div>
+      <div className="max-w-6xl mx-auto px-4 pb-20">
+        {activeTab==='itinerary' && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 slide-up">
+            <div className="lg:col-span-1"><div className="bg-white rounded-2xl border border-gray-200 p-4 sticky top-4">
+              <h3 className="font-semibold text-gray-800 mb-3">{t.daysSection}</h3>
+              <div className="space-y-2 max-h-[50vh] overflow-y-auto custom-scrollbar">
+                {days.map((day,i) => (
+                  <button key={i} onClick={() => setSelectedDay(i)} className={`w-full text-left p-3 rounded-xl transition-all ${selectedDay===i?'bg-brand-50 border-brand-300 border-2':'bg-gray-50 border border-transparent hover:bg-gray-100'}`}>
+                    <div className="flex items-center justify-between"><span className={`text-xs font-bold px-2 py-0.5 rounded-full ${selectedDay===i?'bg-brand-500 text-white':'bg-gray-200 text-gray-600'}`}>{t.dayLabel(i+1)}</span><span className="text-xs text-gray-400">{day.date}</span></div>
+                    <p className="text-sm font-medium text-gray-700 mt-1.5 truncate">{day.dayTitle}</p>
+                    {day.dailyCost && <p className="text-xs text-gray-400 mt-1">{sym}{Object.values(day.dailyCost).reduce((a,b)=>a+(b||0),0).toLocaleString()}</p>}
+                  </button>
+                ))}
+              </div>
+              <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
+                <button onClick={exportICS} className="w-full py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 flex items-center justify-center gap-2">{t.exportICS}</button>
+                <button onClick={exportPDF} className="w-full py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 flex items-center justify-center gap-2">{t.exportPDF}</button>
+              </div>
+            </div></div>
+            <div className="lg:col-span-2">{days[selectedDay] && (
+              <div className="fade-in">
+                <div className="flex items-center gap-3 mb-4"><span className="px-3 py-1 bg-brand-500 text-white rounded-full text-sm font-bold">{t.dayLabel(selectedDay+1)}</span><h3 className="text-xl font-bold text-gray-800">{days[selectedDay].dayTitle}</h3></div>
+                <div className="space-y-3">
+                  {(days[selectedDay].activities||[]).map((act,i) => {
+                    const color = CATEGORY_COLORS[act.category]||'#6366f1';
+                    return (
+                      <div key={i} className="activity-card flex gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-gray-200">
+                        <div className="flex flex-col items-center min-w-[50px]"><span className="text-xs font-medium text-gray-500">{act.time}</span>{act.endTime&&<span className="text-[10px] text-gray-400">{act.endTime}</span>}</div>
+                        <div className="w-0.5 rounded-full" style={{background:color,minHeight:40}}/>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-0.5"><span className="text-base">{CATEGORY_ICONS[act.category]||'📍'}</span><span className="font-semibold text-gray-800 text-sm truncate">{act.name}</span>{act.nameEn&&<span className="text-xs text-gray-400 truncate hidden sm:inline">{act.nameEn}</span>}</div>
+                          {act.description&&<p className="text-xs text-gray-500 mb-1">{act.description}</p>}
+                          <div className="flex items-center gap-3 text-xs text-gray-400 flex-wrap">
+                            {(act.priceLevel || act.cost) && <span className="text-amber-600 font-medium">{'💲'.repeat(act.priceLevel || (act.cost > 0 ? 2 : 0))} {act.priceLevelNote && <span className="text-gray-400">({act.priceLevelNote})</span>}</span>}
+                            {act.location?.address&&<a href={makeMapUrl(act.name, tripData.destination)} target="_blank" rel="noopener" className="text-blue-500 hover:underline truncate">📍 {act.location.address}</a>}
+                            <a href={makeGCalUrl(act, days[selectedDay].date)} target="_blank" rel="noopener"
+                              className="text-brand-600 hover:underline ml-auto shrink-0">{t.addToGCal}</a>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {days[selectedDay].accommodation&&(
+                  <div className="mt-4 p-4 bg-cyan-50 rounded-xl border border-cyan-200">
+                    <div className="flex items-center gap-2 mb-1"><span className="text-lg">🏨</span><span className="font-semibold text-gray-800">{days[selectedDay].accommodation.name}</span></div>
+                    {(days[selectedDay].accommodation.priceLevel || days[selectedDay].accommodation.cost) && <span className="text-sm text-cyan-700">{'💲'.repeat(days[selectedDay].accommodation.priceLevel || (days[selectedDay].accommodation.cost > 0 ? 2 : 0))} {days[selectedDay].accommodation.priceLevelNote && <span>({days[selectedDay].accommodation.priceLevelNote})</span>}</span>}
+                  </div>
+                )}
+                {days[selectedDay].dailyCost&&(
+                  <div className="mt-4 p-4 bg-gray-50 rounded-xl grid grid-cols-4 gap-3 text-center">
+                    {[['🍜',t.food,'food'],['🚆',t.transport,'transport'],['🎫',t.activities,'activities'],['🏨',t.accommodation,'accommodation']].map(([icon,label,key]) => (
+                      <div key={key}><div className="text-lg">{icon}</div><div className="text-xs text-gray-400">{label}</div><div className="text-sm font-semibold text-gray-700">{sym}{(days[selectedDay].dailyCost[key]||0).toLocaleString()}</div></div>
+                    ))}
+                  </div>
+                )}
+
+                {/* 重新規劃這天 */}
+                <div className="mt-4">
+                  {replanMsg === 'success' && <div className="mb-3 px-4 py-2 bg-green-50 text-green-700 rounded-lg text-sm font-medium fade-in">{t.replanSuccess}</div>}
+                  {replanMsg && replanMsg !== 'success' && <div className="mb-3 px-4 py-2 bg-red-50 text-red-700 rounded-lg text-sm fade-in">{replanMsg}</div>}
+                  {!replanOpen ? (
+                    <button onClick={() => setReplanOpen(true)}
+                      className="w-full py-2.5 rounded-xl border border-dashed border-brand-300 text-brand-600 text-sm font-medium hover:bg-brand-50 transition-all flex items-center justify-center gap-2">
+                      {t.replanDay} <span className="text-xs text-gray-400">⚡ Haiku</span>
+                    </button>
+                  ) : (
+                    <div className="p-4 bg-brand-50 rounded-xl border border-brand-200 fade-in">
+                      <p className="text-sm font-medium text-brand-700 mb-2">{t.replanDayDesc}</p>
+                      <textarea value={replanNote} onChange={e => setReplanNote(e.target.value)} placeholder={t.replanDayPlaceholder}
+                        className="w-full px-3 py-2 rounded-lg border border-brand-200 bg-white text-sm h-20 resize-none mb-3" />
+                      <div className="flex gap-2">
+                        <button onClick={() => { setReplanOpen(false); setReplanNote(''); }}
+                          className="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 text-sm hover:bg-white">{t.replanDayCancel}</button>
+                        <button onClick={handleReplanDay} disabled={replanning}
+                          className="flex-1 py-2 rounded-lg bg-brand-500 text-white text-sm font-medium hover:bg-brand-600 disabled:opacity-50 flex items-center justify-center gap-2">
+                          {replanning ? <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"/>{t.replanning}</> : t.replanDayBtn}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}</div>
+          </div>
+        )}
+        {activeTab==='map' && (
+          <div className="slide-up"><div className="bg-white rounded-2xl border border-gray-200 overflow-hidden" style={{height:500}}>
+            <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100 flex-wrap">
+              <button onClick={() => setSelectedDay(null)} className={`px-3 py-1 rounded-full text-xs font-medium ${selectedDay===null?'bg-brand-500 text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{t.showAll}</button>
+              {days.map((_,i) => <button key={i} onClick={() => setSelectedDay(i)} className={`px-3 py-1 rounded-full text-xs font-medium ${selectedDay===i?'bg-brand-500 text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{t.dayLabel(i+1)}</button>)}
+            </div>
+            <TripMap days={days} selectedDay={selectedDay}/>
+          </div></div>
+        )}
+        {activeTab==='booking' && (
+          <div className="slide-up space-y-4">
+            {/* 機票 + 住宿快捷 */}
+            <div className="bg-white rounded-2xl border border-gray-200 p-6">
+              <h3 className="font-bold text-gray-800 mb-4">{t.bookingEssentials}</h3>
+              <div className="space-y-3">
+                <a href={makeFlightUrl('Taiwan', tripData.destination, tripData.startDate, tripData.endDate)} target="_blank" rel="noopener"
+                  className="flex items-center gap-3 p-4 bg-blue-50 rounded-xl border border-blue-200 hover:border-blue-300 transition-all no-underline">
+                  <span className="text-2xl">✈️</span>
+                  <div className="flex-1">
+                    <div className="font-semibold text-gray-800 text-sm">{t.searchFlights}</div>
+                    <div className="text-xs text-gray-500">Google Flights · {tripData.startDate} ~ {tripData.endDate}</div>
+                  </div>
+                  <span className="text-gray-400">→</span>
+                </a>
+                <a href={makeHotelUrl(tripData.destination, tripData.startDate, tripData.endDate)} target="_blank" rel="noopener"
+                  className="flex items-center gap-3 p-4 bg-cyan-50 rounded-xl border border-cyan-200 hover:border-cyan-300 transition-all no-underline">
+                  <span className="text-2xl">🏨</span>
+                  <div className="flex-1">
+                    <div className="font-semibold text-gray-800 text-sm">{t.searchHotels}</div>
+                    <div className="text-xs text-gray-500">Google Hotels · {tripData.startDate} ~ {tripData.endDate}</div>
+                  </div>
+                  <span className="text-gray-400">→</span>
+                </a>
+              </div>
+            </div>
+            {/* 每日景點/餐廳連結 */}
+            <div className="bg-white rounded-2xl border border-gray-200 p-6">
+              <h3 className="font-bold text-gray-800 mb-4">{t.placesList}</h3>
+              <div className="space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar">
+                {days.map((day, i) => (
+                  <div key={i}>
+                    <p className="text-xs font-bold text-brand-600 mb-2">{t.dayLabel(i+1)} — {day.dayTitle}</p>
+                    <div className="space-y-1.5">
+                      {(day.activities || []).filter(a => a.category !== 'transport').map((act, j) => (
+                        <a key={j} href={makeMapUrl(act.name, tripData.destination)} target="_blank" rel="noopener"
+                          className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all no-underline text-sm">
+                          <span>{CATEGORY_ICONS[act.category] || '📍'}</span>
+                          <span className="text-gray-700 flex-1 truncate">{act.name}</span>
+                          {(act.priceLevel || act.cost) && <span className="text-amber-500 text-xs">{'💲'.repeat(act.priceLevel || (act.cost > 0 ? 2 : 0))}</span>}
+                          <span className="text-gray-300 text-xs">Maps ↗</span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <p className="text-xs text-gray-400 text-center">{t.costDisclaimer}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════
+// Main App
+// ═══════════════════════════════════════════
+function App() {
+  const [lang, setLang] = useState(() => {
+    const saved = localStorage.getItem('tc_lang');
+    if (saved && T[saved]) return saved;
+    const bl = navigator.language || '';
+    if (bl.startsWith('zh-CN') || bl === 'zh') return 'zh-CN';
+    if (bl.startsWith('zh')) return 'zh-TW';
+    if (bl.startsWith('en')) return 'en';
+    return 'zh-TW';
+  });
+  const [step, setStep] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [trip, setTrip] = useState(null);
+  const [apiKey, setApiKey] = useState('');
+  const [quota, setQuota] = useState(null);
+  const [formData, setFormData] = useState({
+    destination:'', startDate:'', endDate:'', budget:'',
+    currency:'TWD', travelers:2, style:'moderate', pace:'moderate',
+    interests:[], notes:'', _currencyManual: false
+  });
+
+  const t = T[lang];
+  useEffect(() => { localStorage.setItem('tc_lang', lang); document.documentElement.lang = lang; }, [lang]);
+
+  const updateForm = useCallback(patch => {
+    setFormData(prev => {
+      const next = {...prev,...patch};
+      if ('destination' in patch && !('currency' in patch) && !prev._currencyManual) {
+        const detected = detectCurrencyFromDestination(patch.destination);
+        if (detected) next.currency = detected;
+      }
+      if ('destination' in patch && 'currency' in patch && !patch._currencyManual) {
+        next._currencyManual = false;
+      }
+      return next;
+    });
+  }, []);
+  const numDays = useMemo(() => {
+    if (!formData.startDate||!formData.endDate) return 0;
+    return Math.max(1, Math.ceil((new Date(formData.endDate)-new Date(formData.startDate))/86400000)+1);
+  }, [formData.startDate, formData.endDate]);
+
+  const handleGenerate = async () => {
+    setLoading(true); setError(null);
+    try {
+      const interestLabels = (formData.interests||[]).map(id => t['interest_'+id] || id);
+      const prompt = buildPrompt({...formData, numDays, interests: interestLabels}, lang);
+      let resultText;
+      const userKey = apiKey.trim();
+
+      try {
+        // 嘗試走 proxy
+        const proxyResult = await callTripAPI({ prompt, userApiKey: userKey || undefined });
+        resultText = proxyResult.content[0].text;
+        if (proxyResult.quota) setQuota(proxyResult.quota);
+      } catch (proxyErr) {
+        if (proxyErr.error === 'free_limit_reached') {
+          setQuota({ used: proxyErr.used, limit: proxyErr.limit, remaining: 0 });
+          throw new Error(proxyErr.message);
+        }
+        // Proxy 不可用，fallback 直呼 Anthropic（需要 user key）
+        if (userKey && userKey.startsWith('sk-ant-')) {
+          const directResult = await callClaudeDirect(userKey, prompt);
+          resultText = directResult.content[0].text;
+        } else {
+          throw new Error(proxyErr.message || proxyErr.error || 'Service unavailable');
+        }
+      }
+
+      setTrip(repairJSON(resultText));
+    } catch (e) {
+      setError(e.message);
+      setLoading(false);
+    }
+  };
+
+  const handleReset = () => { setTrip(null); setStep(0); setLoading(false); setError(null); };
+
+  if (trip) return (
+    <I18nContext.Provider value={t}>
+      <ResultsView trip={trip} tripData={formData} onReset={handleReset} lang={lang} apiKey={apiKey} onUpdateTrip={setTrip} />
+    </I18nContext.Provider>
+  );
+
+  return (
+    <I18nContext.Provider value={t}>
+      <div className="min-h-screen bg-gradient-to-br from-brand-50 via-white to-accent-50">
+        <div className="max-w-xl mx-auto px-4 py-8">
+          <div className="flex justify-between items-start mb-6">
+            <BackToTWTools />
+            <LangSwitcher lang={lang} setLang={setLang} />
+          </div>
+          <div className="text-center mb-8">
+            <div className="flex justify-center mb-3"><Logo /></div>
+            <h1 className="text-3xl font-bold text-gray-800">{t.appTitle}</h1>
+            <p className="text-gray-500 mt-1">{t.appSubtitle}</p>
+          </div>
+          {loading ? <LoadingScreen /> : (
+            <>
+              <StepIndicator current={step} total={4} />
+              {error && (
+                <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+                  <p className="font-semibold mb-1">{t.errorTitle}</p><p>{error}</p>
+                  <button onClick={() => {setError(null);setLoading(false);}} className="mt-2 text-red-600 underline text-xs">{t.close}</button>
+                </div>
+              )}
+              {step===0 && <StepDestination data={formData} onChange={updateForm} onNext={() => setStep(1)} lang={lang} />}
+              {step===1 && <StepDatesAndBudget data={formData} onChange={updateForm} onNext={() => setStep(2)} onBack={() => setStep(0)} />}
+              {step===2 && <StepPreferences data={formData} onChange={updateForm} onNext={() => setStep(3)} onBack={() => setStep(1)} />}
+              {step===3 && <StepReview data={formData} onBack={() => setStep(2)} onGenerate={handleGenerate} apiKey={apiKey} setApiKey={setApiKey} quota={quota} />}
+            </>
+          )}
+          <div className="flex justify-center gap-4 text-xs text-gray-400 mt-8 mb-2">
+            <a href="/trip/about.html" className="hover:text-brand-500 no-underline">{t.footerAbout}</a>
+            <span>·</span>
+            <a href="/trip/privacy.html" className="hover:text-brand-500 no-underline">{t.footerPrivacy}</a>
+            <span>·</span>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSd_XdTrj_rdYmYrjW4MbD3EG4LM3hMLbw6Dg5p_wEEoQwisrA/viewform" target="_blank" rel="noopener" className="hover:text-brand-500 no-underline">{t.footerFeedback}</a>
+          </div>
+          <p className="text-center text-xs text-gray-400 mt-2">{t.poweredBy}</p>
+        </div>
+      </div>
+    </I18nContext.Provider>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
