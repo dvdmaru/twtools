@@ -195,6 +195,13 @@
         hasText: true, label: '大貼圖', emoji: '📐',
         sizeLabel: '396×660', zipPrefix: 'line-big-stickers',
       },
+      bigface: {
+        canvasW: 370, canvasH: 320, mainSize: 240,
+        countOptions: [2, 8, 16, 24, 32], defaultCount: 16,
+        steps: ['上傳參考圖', '選畫風', '編輯文案', '預覽生成'],
+        hasText: true, label: '大臉貼圖', emoji: '🤪',
+        sizeLabel: '370×320', zipPrefix: 'line-bigface-stickers',
+      },
       emoji: {
         canvasW: 180, canvasH: 180, mainSize: 180,
         countOptions: [2, 8, 16, 24, 32, 40], defaultCount: 16,
@@ -688,7 +695,7 @@
     // ============================================================
 
     function App() {
-      const [productType, setProductType] = useState('sticker'); // 'sticker' | 'emoji'
+      const [productType, setProductType] = useState('sticker'); // 'sticker' | 'big' | 'bigface' | 'emoji'
       const config = PRODUCT_CONFIG[productType];
       const steps = config.steps;
       const lastStep = steps.length - 1;
@@ -1223,6 +1230,7 @@
     }) {
       const isEmoji = productType === 'emoji';
       const isBig = productType === 'big';
+      const isBigFace = productType === 'bigface';
       const hasText = config?.hasText !== false;
       const styleName = ART_STYLES.find(s => s.id === selectedStyle)?.label || selectedStyle;
       const stylePrompt = STYLE_PROMPTS[selectedStyle] || STYLE_PROMPTS['original'];
@@ -1332,8 +1340,51 @@
           ].join('\n');
         }
 
+        // === Big Face Sticker mode: face occupies 80%+ of canvas ===
+        if (isBigFace) {
+          const meta = captionMeta[index];
+          const caption = captions[index] || '';
+          const originalText = meta?.originalText || '';
+          const wasEdited = caption !== originalText && originalText !== '';
+          const moodStr = wasEdited ? '' : (meta?.mood || 'neutral');
+          return [
+            `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), face shape, color palette, and key FACIAL features. You MUST preserve ALL of these in your output.`,
+            '',
+            `Based on the reference character image provided, generate an EXTREME CLOSE-UP FACE illustration ${stylePrompt}.`,
+            `The character MUST be the SAME species and type as the reference — if it is a cat, draw a cat; if it is a human, draw a human. NEVER change the species.`,
+            `Preserve the character's distinctive FACIAL features: fur/hair color, eye shape, eye color, ear shape, nose, accessories, markings, and face proportions.`,
+            '',
+            sceneHint ? `SCENE/COSTUME CONTEXT: ${sceneHint}` : '',
+            wasEdited
+              ? `This is a LINE "BIG FACE" sticker with the text "${caption}". The character's facial expression must clearly convey the feeling of "${caption}" at maximum intensity.`
+              : `The character should express: mood "${moodStr}" for the text "${caption}". Make the expression EXTREMELY exaggerated and dramatic.`,
+            extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority): ${extraHint}\n` : '',
+            '',
+            'COMPOSITION — THIS IS THE #1 MOST IMPORTANT REQUIREMENT:',
+            '- 🔴 THE CHARACTER\'S FACE MUST OCCUPY AT LEAST 80% OF THE ENTIRE CANVAS. This is a hard requirement.',
+            '- Frame the shot as an EXTREME CLOSE-UP: show the face from forehead/top of head to chin, filling the entire width and most of the height.',
+            '- The face should look like it is PRESSED AGAINST THE SCREEN — as if the character is pushing their face onto the glass.',
+            '- Ears/hair can extend beyond the canvas edges (cropped). The face should feel TOO BIG for the frame.',
+            '- DO NOT show the body, torso, arms, or legs. ONLY the face/head.',
+            '- Some stickers may show hands near face (face-palming, covering mouth, peace sign near face) but the FACE is always the dominant element.',
+            '',
+            'EXPRESSION REQUIREMENTS:',
+            '- Expressions must be EXTREMELY EXAGGERATED and THEATRICAL — this is what makes big face stickers fun.',
+            '- Think: pupils dilating in shock, tears flying off the face, mouth stretched impossibly wide, steam from ears, sparkles overflowing from eyes.',
+            '- Every emotion should be dialed up to 200% — not just "happy" but "ECSTATICALLY overjoyed with face literally glowing".',
+            '- The expression should be SO dramatic that it\'s instantly funny and relatable.',
+            '',
+            'TECHNICAL REQUIREMENTS:',
+            '- PRESERVE the character species and visual identity from the reference image — this is non-negotiable',
+            '- Do NOT include any text, letters, words, numbers, or characters in the image',
+            '- Use a clean solid CHROMA KEY GREEN background (hex #00B140) — fill the ENTIRE background with this exact green color',
+            '- Canvas is 370×320 pixels — the face should fill this almost entirely',
+            '- Single character face only, centered in frame',
+            '- No decorative borders or frames',
+          ].join('\n');
+        }
+
         // === Sticker / Big Sticker mode ===
-        const isBig = productType === 'big';
         const meta = captionMeta[index];
         const caption = captions[index] || '';
         const originalText = meta?.originalText || '';
@@ -1441,7 +1492,7 @@
           <div className="text-center">
             <h2 className="text-xl font-bold text-gray-900 mb-1">預覽 & 生成</h2>
             <p className="text-gray-500 text-sm">
-              畫風：{styleName} ・ {stickerCount} 張{isEmoji ? '表情貼' : isBig ? '大貼圖' : '貼圖'}
+              畫風：{styleName} ・ {stickerCount} 張{isEmoji ? '表情貼' : isBig ? '大貼圖' : isBigFace ? '大臉貼圖' : '貼圖'}
               {isEmoji && <span className="ml-2 text-xs text-amber-500">（180×180 · 無文字）</span>}
             </p>
           </div>
@@ -1640,7 +1691,7 @@
               <div>📎 參考圖：{referenceImage?.file?.name || '無'}</div>
               <div>🎨 畫風：{styleName}</div>
               {hasText && <div>📝 文案：{captions.slice(0, stickerCount).filter(c => c.trim()).length}/{stickerCount} 句已填</div>}
-              <div>📐 規格：{config.sizeLabel}px（{isEmoji ? 'LINE 表情貼' : 'LINE 主圖'}）</div>
+              <div>📐 規格：{config.sizeLabel}px（{isEmoji ? 'LINE 表情貼' : isBigFace ? 'LINE 大臉貼圖' : 'LINE 主圖'}）</div>
               {hasText && <div>🔤 字體：{FONTS.find(f => f.family === textSettings.fontFamily)?.label || textSettings.fontFamily}</div>}
               <div>🖌️ 去背：{bgMethod === 'smart' ? `智慧去背（容差 ${bgTolerance}）` : bgMethod === 'white' ? `快速去白（容差 ${bgTolerance}）` : 'AI 去背'}</div>
             </div>
@@ -1665,7 +1716,7 @@
           {hasImages && (
             <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 space-y-4">
               <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
-                📦 匯出 LINE {isEmoji ? '表情貼包' : isBig ? '大貼圖包' : '貼圖包'}
+                📦 匯出 LINE {isEmoji ? '表情貼包' : isBig ? '大貼圖包' : isBigFace ? '大臉貼圖包' : '貼圖包'}
               </h3>
               <p className="text-xs text-gray-400">
                 {isEmoji
@@ -1763,7 +1814,7 @@
                   {isExporting ? (
                     <><span className="animate-spin">⏳</span> 匯出中...</>
                   ) : (
-                    <>📦 匯出 LINE {isEmoji ? '表情貼包' : isBig ? '大貼圖包' : '貼圖包'}</>
+                    <>📦 匯出 LINE {isEmoji ? '表情貼包' : isBig ? '大貼圖包' : isBigFace ? '大臉貼圖包' : '貼圖包'}</>
                   )}
                 </button>
 
@@ -1799,6 +1850,7 @@
 
     function ListingGenerator({ captionTheme, captions, stickerCount, listing, setListing, isGeneratingListing, setIsGeneratingListing, isEmoji, productType }) {
       const isBig = productType === 'big';
+      const isBigFace = productType === 'bigface';
       const [charDesc, setCharDesc] = useState('');
 
       const handleGenerate = async () => {
@@ -1810,10 +1862,10 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              theme: isEmoji ? '表情貼（LINE Emoji）' : themeLabel,
+              theme: isEmoji ? '表情貼（LINE Emoji）' : isBigFace ? `大臉貼圖 — ${themeLabel}` : themeLabel,
               captions: isEmoji ? [] : captions.slice(0, stickerCount).filter(c => c.trim()),
               characterDescription: charDesc,
-              productType: isEmoji ? 'emoji' : 'sticker',
+              productType: isEmoji ? 'emoji' : isBigFace ? 'bigface' : 'sticker',
             }),
           });
           const data = await res.json();
@@ -1846,7 +1898,7 @@
         <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 space-y-4">
           <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
             📝 LINE 上架文案
-            <span className="text-xs font-normal text-gray-400">Creators Market {isEmoji ? '表情貼' : isBig ? '大貼圖' : '貼圖'}標題＆說明＆版權（中英文）</span>
+            <span className="text-xs font-normal text-gray-400">Creators Market {isEmoji ? '表情貼' : isBig ? '大貼圖' : isBigFace ? '大臉貼圖' : '貼圖'}標題＆說明＆版權（中英文）</span>
           </h3>
 
           {/* 角色描述（可選） + 生成按鈕 */}
