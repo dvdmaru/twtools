@@ -478,6 +478,7 @@
     // ============================================================
 
     const MARGIN = 5; // 5px safety margin for LINE stickers (reduced from 10 for larger character fill)
+    const EMOJI_MARGIN = 2; // Emoji is tiny (180px), minimal margin to maximize face fill
 
     /**
      * Trim transparent pixels from an image, returning a cropped canvas.
@@ -550,13 +551,15 @@
           // Auto-crop transparent edges for larger character fill
           const trimmed = trimTransparent(img);
 
-          const innerW = cW - MARGIN * 2;
-          const innerH = cH - MARGIN * 2;
+          // Emoji uses smaller margin since it's already tiny (180px)
+          const margin = (cW === 180 && cH === 180) ? EMOJI_MARGIN : MARGIN;
+          const innerW = cW - margin * 2;
+          const innerH = cH - margin * 2;
           const scale = Math.min(innerW / trimmed.width, innerH / trimmed.height);
           const w = trimmed.width * scale;
           const h = trimmed.height * scale;
-          const x = MARGIN + (innerW - w) / 2;
-          const y = MARGIN + (innerH - h) / 2;
+          const x = margin + (innerW - w) / 2;
+          const y = margin + (innerH - h) / 2;
           ctx.drawImage(trimmed, x, y, w, h);
 
           if (caption && caption.trim()) {
@@ -1447,11 +1450,15 @@
             campaignRule ? `\n🎯 CAMPAIGN RULE (MUST FOLLOW):\n${campaignRule}\n` : '',
             extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority): ${extraHint}\n` : '',
             '',
-            'COMPOSITION — THIS IS THE MOST IMPORTANT REQUIREMENT:',
-            '- EXTREME CLOSE-UP: Show ONLY the character\'s FACE (head + ears). The face MUST fill at least 90% of the canvas.',
-            '- Frame from forehead/ears to chin — like a passport photo but even tighter. DO NOT show the body, arms, legs, or torso.',
-            '- The face should be so large that the top of the ears/head nearly touches the top edge, and the chin nearly touches the bottom edge.',
-            '- Think of this like a phone emoji 😀 — just the face, nothing else.',
+            'COMPOSITION — THIS IS THE SINGLE MOST IMPORTANT REQUIREMENT:',
+            '- THE FACE MUST FILL 95-100% OF THE ENTIRE CANVAS. Not 80%, not 90% — aim for the absolute maximum.',
+            '- Draw ONLY the face. Imagine the camera is 3cm from the character\'s nose.',
+            '- The top of the ears/head MUST be CROPPED BY the top edge — partially cut off is CORRECT.',
+            '- The chin MUST nearly touch or be cropped by the bottom edge.',
+            '- The cheeks MUST nearly touch the left and right edges.',
+            '- There should be almost ZERO empty space between the face and the canvas edges.',
+            '- Think of how Apple/Google emojis look: 😀🐱🐶 — the face fills the entire square with virtually no margin.',
+            '- ⛔ If there is visible empty background on any side wider than 5% of the canvas, you have FAILED the composition requirement.',
             '',
             'STYLE REQUIREMENTS:',
             '- Use BOLD, THICK outlines/linework for maximum visibility at tiny sizes',
