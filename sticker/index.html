@@ -251,6 +251,52 @@
       { id: 'mixed', label: '混合' },
     ];
 
+    // ============================================================
+    // LINE Creators 活動主題模組（Campaign System）
+    // 每個活動定義：適用產品類型、文案限制、圖片 prompt 覆蓋規則
+    // ============================================================
+    const CAMPAIGNS = {
+      bigface: {
+        label: '🤪 大臉貼圖',
+        description: '臉佔畫面 80% 以上，至少 8 張大臉',
+        applicableTypes: ['bigface'], // 只在大臉貼圖模式出現
+        captionHint: '文案要短（2-4字），因為臉佔滿畫面，文字空間有限',
+        promptOverlay: '', // bigface 的 prompt 已經內建，不需額外覆蓋
+        minCount: 8, // 活動最低張數要求
+      },
+      cry: {
+        label: '😭 哭哭貼圖',
+        description: '所有貼圖都是哭的表情，各種哭法',
+        applicableTypes: ['sticker', 'bigface'], // 一般貼圖和大臉都可參加
+        captionHint: '文案圍繞「哭」的情境：委屈、感動、崩潰、笑到哭、裝哭等',
+        promptOverlay: [
+          'CAMPAIGN THEME: CRYING STICKERS — Every single sticker in this set MUST show the character CRYING.',
+          'Each sticker should depict a DIFFERENT TYPE of crying:',
+          '- 嚎啕大哭 (wailing with wide open mouth, rivers of tears)',
+          '- 委屈偷哭 (quiet sobbing, single tear rolling down, lip quivering)',
+          '- 感動流淚 (tears of joy/gratitude, gentle smile with tears)',
+          '- 笑到哭 (laughing so hard tears come out, eyes squeezed shut)',
+          '- 崩潰大哭 (ugly crying, face scrunched up, snot bubble)',
+          '- 裝哭 (fake crying with exaggerated pouty face, crocodile tears)',
+          '- 無聲流淚 (stoic face with a single dramatic tear)',
+          '- 哭到生氣 (crying + angry, tears flying with clenched teeth)',
+          '- 邊吃邊哭 (eating comfort food while crying)',
+          '- 抱枕頭哭 (burying face into a pillow/stuffed animal, tears visible)',
+          'IMPORTANT: Tears and crying expression are MANDATORY in every image. Vary the intensity and style of crying across stickers.',
+        ].join('\n'),
+        moods: ['wailing', 'sobbing', 'tears_of_joy', 'laughcry', 'ugly_crying', 'fake_crying', 'silent_tears', 'angry_crying', 'comfort_crying', 'pillow_crying', 'dramatic_crying', 'helpless_crying', 'grateful_crying', 'overwhelmed_crying', 'nostalgic_crying', 'happy_crying'],
+      },
+      // 未來活動在這裡新增即可，格式同上
+      // example: {
+      //   label: '🎃 萬聖節貼圖',
+      //   description: '萬聖節主題角色扮裝',
+      //   applicableTypes: ['sticker', 'bigface'],
+      //   captionHint: '萬聖節相關用語',
+      //   promptOverlay: 'CAMPAIGN: Halloween theme. Character must wear a Halloween costume...',
+      //   moods: ['spooky', 'playful', ...],
+      // },
+    };
+
     // STEPS is now dynamic — derived from PRODUCT_CONFIG[productType].steps in App()
 
     const FONTS = [
@@ -738,6 +784,13 @@
       // P6 state: 單張自訂提示詞
       const [stickerHints, setStickerHints] = useState(Array(40).fill(''));
 
+      // P8 state: LINE 活動主題（Campaign）
+      const [activeCampaign, setActiveCampaign] = useState(null);
+      // 過濾出適用當前產品類型的活動
+      const availableCampaigns = Object.entries(CAMPAIGNS).filter(
+        ([, c]) => c.applicableTypes.includes(productType)
+      );
+
       const canProceed = () => {
         const stepName = steps[currentStep];
         switch (stepName) {
@@ -879,7 +932,9 @@
               <StepUpload referenceImage={referenceImage} setReferenceImage={setReferenceImage}
                 stickerCount={stickerCount} setStickerCount={setStickerCount}
                 productType={productType} onProductTypeChange={handleProductTypeChange}
-                config={config} />
+                config={config}
+                activeCampaign={activeCampaign} setActiveCampaign={setActiveCampaign}
+                availableCampaigns={availableCampaigns} />
             )}
             {steps[currentStep] === '選畫風' && (
               <StepStyle selectedStyle={selectedStyle} setSelectedStyle={setSelectedStyle} />
@@ -888,7 +943,8 @@
               <StepCaptions captions={captions} setCaptions={setCaptions}
                 captionMeta={captionMeta} setCaptionMeta={setCaptionMeta}
                 stickerCount={stickerCount}
-                captionTheme={captionTheme} setCaptionTheme={setCaptionTheme} />
+                captionTheme={captionTheme} setCaptionTheme={setCaptionTheme}
+                activeCampaign={activeCampaign} />
             )}
             {steps[currentStep] === '預覽生成' && (
               <StepPreview
@@ -913,6 +969,7 @@
                 isGeneratingListing={isGeneratingListing} setIsGeneratingListing={setIsGeneratingListing}
                 stickerHints={stickerHints} setStickerHints={setStickerHints}
                 productType={productType} config={config}
+                activeCampaign={activeCampaign}
               />
             )}
           </div>
@@ -970,7 +1027,8 @@
     // ============================================================
 
     function StepUpload({ referenceImage, setReferenceImage, stickerCount, setStickerCount,
-      productType, onProductTypeChange, config }) {
+      productType, onProductTypeChange, config,
+      activeCampaign, setActiveCampaign, availableCampaigns }) {
       const fileInputRef = useRef(null);
       const handleFile = (file) => {
         if (!file || !file.type.startsWith('image/')) return;
@@ -995,6 +1053,42 @@
               </button>
             ))}
           </div>
+
+          {/* LINE 活動主題選擇（只在有適用活動時顯示） */}
+          {availableCampaigns.length > 0 && (
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 border border-amber-200">
+              <label className="text-xs text-amber-700 font-medium block mb-2">🎪 LINE 活動主題募集（選填）</label>
+              <div className="flex flex-wrap gap-2">
+                <button onClick={() => setActiveCampaign(null)}
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition ${
+                    !activeCampaign
+                      ? 'bg-gray-700 text-white'
+                      : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'
+                  }`}>
+                  不參加活動
+                </button>
+                {availableCampaigns.map(([key, c]) => (
+                  <button key={key} onClick={() => setActiveCampaign(key)}
+                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition ${
+                      activeCampaign === key
+                        ? 'bg-amber-500 text-white shadow-sm'
+                        : 'bg-white text-gray-600 hover:bg-amber-50 border border-amber-200'
+                    }`}>
+                    {c.label}
+                  </button>
+                ))}
+              </div>
+              {activeCampaign && CAMPAIGNS[activeCampaign] && (
+                <p className="text-xs text-amber-600 mt-2">
+                  📋 {CAMPAIGNS[activeCampaign].description}
+                  {CAMPAIGNS[activeCampaign].captionHint && (
+                    <span className="block mt-1">💡 文案提示：{CAMPAIGNS[activeCampaign].captionHint}</span>
+                  )}
+                </p>
+              )}
+            </div>
+          )}
+
           <div className="text-center">
             <h2 className="text-xl font-bold text-gray-900 mb-1">上傳角色參考圖</h2>
             <p className="text-gray-500 text-sm">AI 會根據這張圖生成同一角色的不同表情和動作</p>
@@ -1063,7 +1157,7 @@
     // Step 2: Captions
     // ============================================================
 
-    function StepCaptions({ captions, setCaptions, captionMeta, setCaptionMeta, stickerCount, captionTheme, setCaptionTheme }) {
+    function StepCaptions({ captions, setCaptions, captionMeta, setCaptionMeta, stickerCount, captionTheme, setCaptionTheme, activeCampaign }) {
       const theme = captionTheme;
       const setTheme = setCaptionTheme;
       const [captionStyle, setCaptionStyle] = useState('mixed');
@@ -1098,6 +1192,8 @@
               style: CAPTION_STYLES.find(s => s.id === captionStyle)?.label || captionStyle,
               trending: theme === 'trending', // 告訴 Worker 啟用時事流行梗模式
               exclude: captions.slice(0, stickerCount).filter(c => c.trim()), // 排除已有文案
+              campaign: activeCampaign || null, // LINE 活動主題
+              campaignHint: activeCampaign ? CAMPAIGNS[activeCampaign]?.captionHint : null,
             }),
           });
           const data = await res.json();
@@ -1227,6 +1323,7 @@
       listing, setListing, isGeneratingListing, setIsGeneratingListing,
       stickerHints, setStickerHints,
       productType, config,
+      activeCampaign,
     }) {
       const isEmoji = productType === 'emoji';
       const isBig = productType === 'big';
@@ -1347,38 +1444,43 @@
           const originalText = meta?.originalText || '';
           const wasEdited = caption !== originalText && originalText !== '';
           const moodStr = wasEdited ? '' : (meta?.mood || 'neutral');
+          // 活動額外 prompt 規則（campaign overlay）
+          const campaignRule = activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '';
           return [
             `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), face shape, color palette, and key FACIAL features. You MUST preserve ALL of these in your output.`,
             '',
-            `Based on the reference character image provided, generate an EXTREME CLOSE-UP FACE illustration ${stylePrompt}.`,
-            `The character MUST be the SAME species and type as the reference — if it is a cat, draw a cat; if it is a human, draw a human. NEVER change the species.`,
+            `Based on the reference character image provided, generate a FACE-ONLY EXTREME CLOSE-UP illustration ${stylePrompt}.`,
+            `The character MUST be the SAME species and type as the reference — NEVER change the species.`,
             `Preserve the character's distinctive FACIAL features: fur/hair color, eye shape, eye color, ear shape, nose, accessories, markings, and face proportions.`,
             '',
-            sceneHint ? `SCENE/COSTUME CONTEXT: ${sceneHint}` : '',
             wasEdited
               ? `This is a LINE "BIG FACE" sticker with the text "${caption}". The character's facial expression must clearly convey the feeling of "${caption}" at maximum intensity.`
               : `The character should express: mood "${moodStr}" for the text "${caption}". Make the expression EXTREMELY exaggerated and dramatic.`,
+            campaignRule ? `\n🎯 CAMPAIGN RULE (MUST FOLLOW):\n${campaignRule}\n` : '',
             extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority): ${extraHint}\n` : '',
             '',
-            'COMPOSITION — THIS IS THE #1 MOST IMPORTANT REQUIREMENT:',
-            '- 🔴 THE CHARACTER\'S FACE MUST OCCUPY AT LEAST 80% OF THE ENTIRE CANVAS. This is a hard requirement.',
-            '- Frame the shot as an EXTREME CLOSE-UP: show the face from forehead/top of head to chin, filling the entire width and most of the height.',
-            '- The face should look like it is PRESSED AGAINST THE SCREEN — as if the character is pushing their face onto the glass.',
-            '- Ears/hair can extend beyond the canvas edges (cropped). The face should feel TOO BIG for the frame.',
-            '- DO NOT show the body, torso, arms, or legs. ONLY the face/head.',
-            '- Some stickers may show hands near face (face-palming, covering mouth, peace sign near face) but the FACE is always the dominant element.',
+            '🔴 COMPOSITION — THE SINGLE MOST IMPORTANT RULE:',
+            '- THE FACE MUST FILL THE ENTIRE 370×320 CANVAS. Not 80% — aim for 95-100%.',
+            '- Draw ONLY the face. Imagine the camera is 5cm from the character\'s nose.',
+            '- The top of the head/ears should be CROPPED BY the top edge of the canvas.',
+            '- The chin should nearly touch the bottom edge.',
+            '- The cheeks should nearly touch the left and right edges.',
+            '- Think of how a face looks when someone presses their face against a glass window — that\'s how big.',
+            '- ⛔ ABSOLUTELY NO body, neck, shoulders, torso, arms, hands, or legs. ZERO. Not even a hint.',
+            '- ⛔ NO "bust shot", NO "portrait from chest up". ONLY the FACE from forehead to chin.',
+            '- The ONLY exception: a single hand touching the face (like covering mouth or wiping tears) — but the face must still fill 90%+.',
             '',
             'EXPRESSION REQUIREMENTS:',
-            '- Expressions must be EXTREMELY EXAGGERATED and THEATRICAL — this is what makes big face stickers fun.',
-            '- Think: pupils dilating in shock, tears flying off the face, mouth stretched impossibly wide, steam from ears, sparkles overflowing from eyes.',
-            '- Every emotion should be dialed up to 200% — not just "happy" but "ECSTATICALLY overjoyed with face literally glowing".',
-            '- The expression should be SO dramatic that it\'s instantly funny and relatable.',
+            '- Every expression must be ABSURDLY exaggerated — dial it to 300%.',
+            '- Eyes: should be HUGE (taking up 30%+ of the face), with exaggerated pupils, visible sparkles/tears/spirals.',
+            '- Mouth: stretched impossibly wide for laughing/screaming, tiny dot for shocked, wobbly line for crying.',
+            '- Effects: tears FLYING off the face, steam from ears, literal sparkles, sweat drops the size of fists, popping veins, spiral eyes.',
+            '- The face should look like a manga reaction panel — maximum comedic impact.',
             '',
             'TECHNICAL REQUIREMENTS:',
-            '- PRESERVE the character species and visual identity from the reference image — this is non-negotiable',
+            '- PRESERVE the character species and visual identity from the reference image',
             '- Do NOT include any text, letters, words, numbers, or characters in the image',
-            '- Use a clean solid CHROMA KEY GREEN background (hex #00B140) — fill the ENTIRE background with this exact green color',
-            '- Canvas is 370×320 pixels — the face should fill this almost entirely',
+            '- Use a clean solid CHROMA KEY GREEN background (hex #00B140) — fill the ENTIRE background',
             '- Single character face only, centered in frame',
             '- No decorative borders or frames',
           ].join('\n');
@@ -1391,6 +1493,8 @@
         const wasEdited = caption !== originalText && originalText !== '';
         const moodStr = wasEdited ? '' : (meta?.mood || 'neutral');
         const actionStr = wasEdited ? '' : (meta?.action || 'standing with a gentle expression');
+        // 活動額外 prompt 規則（campaign overlay）
+        const campaignRule = activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '';
         return [
           `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), body shape, color palette, and key visual features. You MUST preserve ALL of these in your output.`,
           '',
@@ -1406,6 +1510,7 @@
                 `This illustration is for a LINE messaging ${isBig ? 'BIG sticker (tall portrait format)' : 'sticker'} with the text "${caption}".`,
                 `The character pose and expression must clearly match the mood "${moodStr}" and convey the feeling of "${caption}".`,
               ].join('\n'),
+          campaignRule ? `\n🎯 CAMPAIGN RULE (MUST FOLLOW):\n${campaignRule}\n` : '',
           extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority for this specific sticker): ${extraHint}\n` : '',
           '', 'CRITICAL REQUIREMENTS:',
           '- PRESERVE the character species and visual identity from the reference image — this is the #1 priority',
