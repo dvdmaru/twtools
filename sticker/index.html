@@ -267,7 +267,7 @@
       cry: {
         label: '😭 哭哭貼圖',
         description: '所有貼圖都是哭的表情，各種哭法',
-        applicableTypes: ['sticker', 'bigface'], // 一般貼圖和大臉都可參加
+        applicableTypes: ['sticker', 'bigface', 'emoji'], // 一般貼圖、大臉、表情貼都可參加
         captionHint: '文案圍繞「哭」的情境：委屈、感動、崩潰、笑到哭、裝哭等',
         promptOverlay: [
           'CAMPAIGN THEME: CRYING STICKERS — Every single sticker in this set MUST show the character CRYING.',
@@ -1400,10 +1400,41 @@
         'sobbing with face crumpled and mouth wide open crying',
       ];
 
+      // 哭活動專用 emoji moods（全部是各種哭法的臉部特寫）
+      const CRY_EMOJI_MOODS = [
+        'wailing with mouth wide open, rivers of tears streaming down both cheeks',
+        'quiet sobbing with trembling lower lip, a single tear rolling down',
+        'tears of joy with a gentle smile, glistening tear drops',
+        'laughing so hard that tears squirt out, eyes squeezed shut',
+        'ugly crying with scrunched-up face, snot bubble, tears everywhere',
+        'fake crying with exaggerated pouty face, one visible crocodile tear',
+        'stoic face with a single dramatic tear rolling down slowly',
+        'crying and angry at the same time, tears flying with clenched teeth',
+        'crying with stuffed cheeks full of food, tears dripping into food',
+        'burying face with both paws/hands, tears visible between fingers',
+        'sobbing with swollen red eyes, puffy cheeks, totally exhausted from crying',
+        'dramatically crying with sparkling tear drops flying in all directions',
+        'nostalgic gentle tears with a wistful far-away look',
+        'happy crying with the biggest smile, tears overflowing',
+        'crying so hard the face is completely red and distorted',
+        'helplessly crying with spiral eyes, completely overwhelmed',
+        'silently crying with blank expression, tears just flowing',
+        'biting lip trying not to cry but a tear escapes',
+        'waterfall tears with exaggerated cartoon tear streams',
+        'touched and moved, hand over heart, single beautiful tear',
+        'crying into a pillow/tissue, face barely visible, tears soaking through',
+        'angry ugly crying after losing a game, fists clenched',
+        'dramatic soap-opera cry with hand reaching out',
+        'crying with runny nose, sniffling, tissue in hand near face',
+      ];
+
       const buildPrompt = (index, extraHint = '') => {
         // === Emoji mode: no text, varied expressions, 180×180 ===
         if (isEmoji) {
-          const mood = EMOJI_MOODS[index % EMOJI_MOODS.length];
+          // 如果有哭活動，用哭專用 moods；否則用一般 moods
+          const moodPool = (activeCampaign === 'cry') ? CRY_EMOJI_MOODS : EMOJI_MOODS;
+          const mood = moodPool[index % moodPool.length];
+          const campaignRule = activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '';
           return [
             `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), face shape, color palette, and key FACIAL features. You MUST preserve ALL of these in your output.`,
             '',
@@ -1413,6 +1444,7 @@
             '',
             `This is for a LINE messaging EMOJI — a tiny icon (180×180px) displayed inline in chat text at approximately 24px.`,
             `The character expression/pose: ${mood}.`,
+            campaignRule ? `\n🎯 CAMPAIGN RULE (MUST FOLLOW):\n${campaignRule}\n` : '',
             extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority): ${extraHint}\n` : '',
             '',
             'COMPOSITION — THIS IS THE MOST IMPORTANT REQUIREMENT:',
