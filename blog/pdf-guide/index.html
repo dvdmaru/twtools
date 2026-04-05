@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>PDF 合併、分割、壓縮全攻略：免安裝線上工具實測 | TWTools</title><meta name="description" content="工作中常需要合併多個 PDF、從長文件中擷取特定頁面、或壓縮 PDF 以便寄送。本文教你不用安裝軟體，直接在瀏覽器完成這些操作。"><link rel="canonical" href="https://twtools.cc/blog/pdf-guide/"><link rel="icon" href="/favicon.png" type="image/png"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (CJK) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://twtools.cc/blog/pdf-guide/"><meta property="og:title" content="PDF 合併、分割、壓縮全攻略：免安裝線上工具實測 | TWTools"><meta property="og:description" content="工作中常需要合併多個 PDF、從長文件中擷取特定頁面、或壓縮 PDF 以便寄送。本文教你不用安裝軟體，直接在瀏覽器完成這些操作。"><meta property="og:image" content="https://twtools.cc/og-image.png"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="PDF 合併、分割、壓縮全攻略：免安裝線上工具實測 | TWTools"><meta name="twitter:description" content="工作中常需要合併多個 PDF、從長文件中擷取特定頁面、或壓縮 PDF 以便寄送。本文教你不用安裝軟體，直接在瀏覽器完成這些操作。"><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>PDF 合併、分割、壓縮全攻略：免安裝線上工具實測 | TWTools</title><meta name="description" content="工作中常需要合併多個 PDF、從長文件中擷取特定頁面、或壓縮 PDF 以便寄送。本文教你不用安裝軟體，直接在瀏覽器完成這些操作。"><link rel="canonical" href="https://twtools.cc/blog/pdf-guide/"><link rel="icon" href="/favicon.png" type="image/png"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (CJK) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://twtools.cc/blog/pdf-guide/"><meta property="og:title" content="PDF 合併、分割、壓縮全攻略：免安裝線上工具實測 | TWTools"><meta property="og:description" content="工作中常需要合併多個 PDF、從長文件中擷取特定頁面、或壓縮 PDF 以便寄送。本文教你不用安裝軟體，直接在瀏覽器完成這些操作。"><meta property="og:image" content="https://twtools.cc/og-image.png"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="PDF 合併、分割、壓縮全攻略：免安裝線上工具實測 | TWTools"><meta name="twitter:description" content="工作中常需要合併多個 PDF、從長文件中擷取特定頁面、或壓縮 PDF 以便寄送。本文教你不用安裝軟體，直接在瀏覽器完成這些操作。"><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
@@ -68,8 +68,14 @@
     /* Lottery number grid */
     .num-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-      gap: 6px;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
     }
 
     /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */

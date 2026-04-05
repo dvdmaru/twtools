@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>倒數計時器 — 節日倒數、自訂日期 | TWTools</title><meta name="description" content="免費線上倒數計時器：預設台灣節日與國際假日倒數、自訂日期倒數、瀏覽器通知提醒、分享連結。支援 8 國假日資料。"><link rel="canonical" href="https://twtools.cc/countdown/"><link rel="icon" href="/favicon.png" type="image/png"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (CJK) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://twtools.cc/countdown/"><meta property="og:title" content="倒數計時器 — 節日倒數、自訂日期 | TWTools"><meta property="og:description" content="免費線上倒數計時器：預設台灣節日與國際假日倒數、自訂日期倒數、瀏覽器通知提醒、分享連結。支援 8 國假日資料。"><meta property="og:image" content="https://twtools.cc/og-image.png"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="倒數計時器 — 節日倒數、自訂日期 | TWTools"><meta name="twitter:description" content="免費線上倒數計時器：預設台灣節日與國際假日倒數、自訂日期倒數、瀏覽器通知提醒、分享連結。支援 8 國假日資料。"><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>倒數計時器 — 節日倒數、自訂日期 | TWTools</title><meta name="description" content="免費線上倒數計時器：預設台灣節日與國際假日倒數、自訂日期倒數、瀏覽器通知提醒、分享連結。支援 8 國假日資料。"><link rel="canonical" href="https://twtools.cc/countdown/"><link rel="icon" href="/favicon.png" type="image/png"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (CJK) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://twtools.cc/countdown/"><meta property="og:title" content="倒數計時器 — 節日倒數、自訂日期 | TWTools"><meta property="og:description" content="免費線上倒數計時器：預設台灣節日與國際假日倒數、自訂日期倒數、瀏覽器通知提醒、分享連結。支援 8 國假日資料。"><meta property="og:image" content="https://twtools.cc/og-image.png"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="倒數計時器 — 節日倒數、自訂日期 | TWTools"><meta name="twitter:description" content="免費線上倒數計時器：預設台灣節日與國際假日倒數、自訂日期倒數、瀏覽器通知提醒、分享連結。支援 8 國假日資料。"><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
@@ -68,8 +68,14 @@
     /* Lottery number grid */
     .num-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-      gap: 6px;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
     }
 
     /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
@@ -91,4 +97,4 @@
       color: var(--tw-text-primary);
       transition: background-color 0.3s ease, color 0.3s ease;
     }
-  </style></head> <body class="min-h-screen">  <div id="countdown-tool-root"></div> <script type="module" src="/_assets/countdown.astro_astro_type_script_index_0_lang.Cp8BbIhe.js"></script>  </body></html>
+  </style></head> <body class="min-h-screen">  <div id="countdown-tool-root"></div> <script type="module" src="/_assets/countdown.astro_astro_type_script_index_0_lang.NUXm5KI1.js"></script>  </body></html>
