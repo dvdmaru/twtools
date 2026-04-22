@@ -297,19 +297,9 @@
           'CAMPAIGN THEME: WORDLESS EXAGGERATED STICKERS — This sticker set is for LINE Creators Market\'s "Wordless Exaggerated" campaign.',
           'STRICT RULE — ABSOLUTELY NO TEXT, NO LETTERS, NO NUMBERS, NO WORDS, NO LOGOS, NO TYPOGRAPHY anywhere in the image. The character must communicate purely through visual means.',
           'Each sticker must show an EXTREMELY EXAGGERATED facial expression OR body action — much more dramatic than a normal sticker. Push the expression to cartoon-extreme levels.',
-          'Vary the wordless expressions across the set, drawing from these archetypes:',
-          '- 眼睛瞪到爆出眼眶 (eyes literally bulging out of sockets, anime-style shock)',
-          '- 下巴掉到地上 (jaw dropped to the floor cartoon-style)',
-          '- 整張臉融化 (face melting from despair)',
-          '- 噴鼻血、噴口水、噴眼淚 (exaggerated nosebleed / spit-take / tear-fountain)',
-          '- 整個人飄起來 (floating mid-air from joy/shock, with motion lines)',
-          '- 頭頂冒煙、冒火、冒問號 (steam, fire, question marks, lightbulbs above head — but as graphic shapes, NOT text)',
-          '- 雙腳離地、四肢扭曲 (limbs flailing, body contorted)',
-          '- 縮成一團、變成一條線 (shrunken into a tiny ball / flattened into a line)',
-          '- 化身成符號 (turning into a heart/star/spiral shape)',
-          '- 過度誇張的肢體語言 (over-the-top gestures: pointing, hugging air, kneeling)',
           'You may include CARTOON SOUND-EFFECT GRAPHICS like lightning bolts, sparkles, spiral swirls, sweat drops, heart symbols, exclamation/question mark shapes — as long as they are GRAPHIC SHAPES, NOT actual text characters.',
           'IMPORTANT: This rule overrides any other instruction about text. NO text, EVER. If you would normally add a small word, replace it with a pictographic symbol instead.',
+          'NOTE: A specific archetype is assigned per-sticker via the main prompt — follow that archetype precisely; do NOT mix or hedge across multiple archetypes in a single image.',
         ].join('\n'),
       },
       watery: {
@@ -1492,6 +1482,53 @@
         'crying with runny nose, sniffling, tissue in hand near face',
       ];
 
+      // P8.2 wordless 活動專用 archetype 池（仿 EMOJI_MOODS / CRY_EMOJI_MOODS）
+      // 每筆是「表情 + 動作」單一 archetype，wordless mode 下 buildPrompt() 用 index % length 為每張指派
+      // 至少 40 筆（big 最大 40 張時也不重複）；同陣列同時供 sticker / big / bigface 使用
+      // bigface mode 由「ABSOLUTELY NO body」的 composition rule 自動把全身描述限縮到臉部
+      const WORDLESS_EXPRESSIONS = [
+        'eyes literally bulging out of their sockets in anime-style shock, mouth shrunk to a tiny dot, motion lines radiating outward',
+        'jaw dropped all the way to the ground cartoon-style, tongue rolled out flat on the floor, eyes turned into wide circles',
+        'whole face melting downward into a goopy puddle from despair, droopy slime-like distortion, hollow eyes',
+        'exaggerated nosebleed gushing in a thick red fountain, eyes rolled back blissfully, slack-jawed smile',
+        'spit-take spraying a wide arc of liquid forward, eyes bugged out, hands flying up in surprise',
+        'two giant tear-fountain spouts rocketing upward from both eyes, mouth a wide square of wailing',
+        'floating mid-air from pure joy, body weightless, motion lines and starbursts swirling around',
+        'steam blasting out of both ears like a kettle whistle, face beet-red with rage, fists clenched',
+        'literal cartoon flames erupting from the top of the head, eyes turned into fiery ovals, fierce snarl',
+        'enormous cartoon question mark hovering above the head as a graphic shape, head tilted sideways, blank confused stare',
+        'giant lightbulb popping on above the head as a graphic shape, eyes sparkling, eureka grin from ear to ear',
+        'all four limbs flailing wildly in different directions, eyes spinning into spirals, total panic',
+        'shrunken into a tiny ball curled up tightly, only two big watery eyes visible peeking out',
+        'flattened into a paper-thin horizontal line, two dot eyes and a wavy mouth, completely deflated',
+        'whole body morphing into a giant heart shape, blissful closed eyes, deep blush on cheeks',
+        'body twisted into a dizzy spiral swirl, eyes turned into X marks, tongue lolling out',
+        'kneeling dramatically on both knees, both arms thrown up to the sky, mouth wide in a desperate pleading wail',
+        'pointing aggressively forward with one finger/paw extended, mouth wide in righteous shouting, brows furrowed',
+        'hugging the empty air tightly with both arms wrapped around nothing, eyes closed in dreamy bliss, hearts floating',
+        'head exploding upward into a burst of stars and confetti, eyes turned into giant stars, mouth open in awe',
+        'a single sweat drop the size of a fist breaking off the side of the head, awkward forced grin, eyes glancing sideways',
+        'thick veins popping on the forehead, fists clenched at the sides, teeth bared in pure fury, body trembling',
+        'eyes turned into giant pink hearts, tongue hanging out the side, blissful drool, totally love-struck',
+        'mouth stretched impossibly wide screaming, tongue flapping, hair on end, body leaned back from the force',
+        'both palms turned upward in a wry shrug, head tilted, lopsided side-smile, brows raised in resignation',
+        'covering the entire face with both hands in shame, peeking through the fingers with one embarrassed eye, blush visible',
+        'fainting backwards mid-collapse, eyes turned into white X crosses, body going completely limp',
+        'spinning so fast only motion blur and a swirl shape remain, dizzy stars circling above',
+        'crawling forward exhausted on hands and knees, tongue hanging out, sweat pouring, defeated half-closed eyes',
+        'striking a triumphant victory pose with one fist raised high, sparkles bursting outward, sharp grin',
+        'cradling the head in both hands in regret, mouth a wavy line of dismay, single sweat drop on the temple',
+        'throwing both arms straight up in celebration, mouth a wide O of joy, confetti and ribbons raining down',
+        'face squished and stretched sideways as if pressed against invisible glass, comical distortion, googly eyes',
+        'sucked into a black-hole vortex behind the body, eyes wide with terror, arms reaching forward for help',
+        'evil sly grin with one fang showing, eyes narrowed into half-circles, hands rubbed together scheming',
+        'drowning in a pool of own tears, only the head bobbing above the water, sad bubble blowing from nose',
+        'frozen solid in a block of ice with shocked face inside, blue lips, snowflakes drifting around',
+        'caught mid-jump-scare with hair on end, mouth open in silent scream, body hovering off the ground',
+        'sparkling beams of pure happiness shooting outward in all directions from the body, blissful closed-eye smile',
+        'whole body wobbling like jelly with motion blur, mouth in nervous wobble, eyes wide and shaky',
+      ];
+
       const buildPrompt = (index, extraHint = '') => {
         // === Emoji mode: no text, varied expressions, 180×180 ===
         if (isEmoji) {
@@ -1544,6 +1581,10 @@
           const originalText = meta?.originalText || '';
           const wasEdited = caption !== originalText && originalText !== '';
           const moodStr = wasEdited ? '' : (meta?.mood || 'neutral');
+          // P8.2 wordless mode：每張獨立指派 archetype，避免 12 張 prompt 全部 fallback 到 'neutral' 造成雷同
+          const wordlessExpression = wordlessMode
+            ? WORDLESS_EXPRESSIONS[index % WORDLESS_EXPRESSIONS.length]
+            : null;
           // 活動額外 prompt 規則（campaign overlay）
           const campaignRule = activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '';
           return [
@@ -1553,9 +1594,11 @@
             `The character MUST be the SAME species and type as the reference — NEVER change the species.`,
             `Preserve the character's distinctive FACIAL features: fur/hair color, eye shape, eye color, ear shape, nose, accessories, markings, and face proportions.`,
             '',
-            wasEdited
-              ? `This is a LINE "BIG FACE" sticker with the text "${caption}". The character's facial expression must clearly convey the feeling of "${caption}" at maximum intensity.`
-              : `The character should express: mood "${moodStr}" for the text "${caption}". Make the expression EXTREMELY exaggerated and dramatic.`,
+            wordlessExpression
+              ? `This is a LINE "BIG FACE" WORDLESS sticker (NO TEXT, NO LETTERS, NO NUMBERS anywhere in the image). The character's face MUST vividly perform this SPECIFIC archetype: ${wordlessExpression}. Push it to absolute cartoon-extreme. This is the ONE specific archetype assigned to THIS sticker — it must look visibly DIFFERENT from any other sticker in the same set.`
+              : (wasEdited
+                ? `This is a LINE "BIG FACE" sticker with the text "${caption}". The character's facial expression must clearly convey the feeling of "${caption}" at maximum intensity.`
+                : `The character should express: mood "${moodStr}" for the text "${caption}". Make the expression EXTREMELY exaggerated and dramatic.`),
             campaignRule ? `\n🎯 CAMPAIGN RULE (MUST FOLLOW):\n${campaignRule}\n` : '',
             extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority): ${extraHint}\n` : '',
             '',
@@ -1593,6 +1636,10 @@
         const wasEdited = caption !== originalText && originalText !== '';
         const moodStr = wasEdited ? '' : (meta?.mood || 'neutral');
         const actionStr = wasEdited ? '' : (meta?.action || 'standing with a gentle expression');
+        // P8.2 wordless mode：每張獨立指派 archetype，避免 captionMeta 為空時 fallback 到同一句 'standing with a gentle expression' 造成 12+ 張 prompt 雷同
+        const wordlessExpression = wordlessMode
+          ? WORDLESS_EXPRESSIONS[index % WORDLESS_EXPRESSIONS.length]
+          : null;
         // 活動額外 prompt 規則（campaign overlay）
         const campaignRule = activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '';
         return [
@@ -1603,13 +1650,19 @@
           `Preserve the character's distinctive features: fur/hair color, eye color, accessories, clothing, markings, and proportions from the reference image.`,
           '',
           sceneHint ? `SCENE/COSTUME CONTEXT: ${sceneHint}` : '',
-          wasEdited
-            ? `This illustration is for a LINE messaging ${isBig ? 'BIG sticker (tall portrait format)' : 'sticker'} with the text "${caption}". Infer the most appropriate mood, facial expression, and body pose directly from this text. The character's expression and action must clearly convey the feeling of "${caption}".`
-            : [
-                `The character should express: ${actionStr} (mood: ${moodStr}).`,
-                `This illustration is for a LINE messaging ${isBig ? 'BIG sticker (tall portrait format)' : 'sticker'} with the text "${caption}".`,
-                `The character pose and expression must clearly match the mood "${moodStr}" and convey the feeling of "${caption}".`,
-              ].join('\n'),
+          wordlessExpression
+            ? [
+                `This illustration is for a LINE messaging ${isBig ? 'BIG WORDLESS sticker (tall portrait format, NO TEXT, NO LETTERS, NO NUMBERS anywhere in the image)' : 'WORDLESS sticker (NO TEXT, NO LETTERS, NO NUMBERS anywhere in the image)'}.`,
+                `The character MUST vividly perform this SPECIFIC archetype: ${wordlessExpression}.`,
+                `Push it to absolute cartoon-extreme. This is the ONE specific archetype assigned to THIS sticker — it must look visibly DIFFERENT from any other sticker in the same set.`,
+              ].join('\n')
+            : (wasEdited
+                ? `This illustration is for a LINE messaging ${isBig ? 'BIG sticker (tall portrait format)' : 'sticker'} with the text "${caption}". Infer the most appropriate mood, facial expression, and body pose directly from this text. The character's expression and action must clearly convey the feeling of "${caption}".`
+                : [
+                    `The character should express: ${actionStr} (mood: ${moodStr}).`,
+                    `This illustration is for a LINE messaging ${isBig ? 'BIG sticker (tall portrait format)' : 'sticker'} with the text "${caption}".`,
+                    `The character pose and expression must clearly match the mood "${moodStr}" and convey the feeling of "${caption}".`,
+                  ].join('\n')),
           campaignRule ? `\n🎯 CAMPAIGN RULE (MUST FOLLOW):\n${campaignRule}\n` : '',
           extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority for this specific sticker): ${extraHint}\n` : '',
           '', 'CRITICAL REQUIREMENTS:',
