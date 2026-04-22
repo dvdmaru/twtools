@@ -286,6 +286,53 @@
         ].join('\n'),
         moods: ['wailing', 'sobbing', 'tears_of_joy', 'laughcry', 'ugly_crying', 'fake_crying', 'silent_tears', 'angry_crying', 'comfort_crying', 'pillow_crying', 'dramatic_crying', 'helpless_crying', 'grateful_crying', 'overwhelmed_crying', 'nostalgic_crying', 'happy_crying'],
       },
+      wordless: {
+        label: '🤐 無字浮誇',
+        description: '整組「完全無文字」，靠浮誇表情/動作/狀聲圖形傳達情緒。LINE 活動：審核 4/17–7/12，banner 7/15–7/28。需 ≥ 8 張。',
+        applicableTypes: ['sticker', 'big', 'bigface'], // emoji 屬「表情貼」分類，不在此活動範圍
+        captionHint: '本活動嚴禁文字（含中、英、數字、注音、emoji 字符）。系統將自動跳過文字輸入步驟。',
+        wordlessCampaign: true, // 旗標：跳過 編輯文案 step + 強制 caption=''
+        minCount: 8,
+        promptOverlay: [
+          'CAMPAIGN THEME: WORDLESS EXAGGERATED STICKERS — This sticker set is for LINE Creators Market\'s "Wordless Exaggerated" campaign.',
+          'STRICT RULE — ABSOLUTELY NO TEXT, NO LETTERS, NO NUMBERS, NO WORDS, NO LOGOS, NO TYPOGRAPHY anywhere in the image. The character must communicate purely through visual means.',
+          'Each sticker must show an EXTREMELY EXAGGERATED facial expression OR body action — much more dramatic than a normal sticker. Push the expression to cartoon-extreme levels.',
+          'Vary the wordless expressions across the set, drawing from these archetypes:',
+          '- 眼睛瞪到爆出眼眶 (eyes literally bulging out of sockets, anime-style shock)',
+          '- 下巴掉到地上 (jaw dropped to the floor cartoon-style)',
+          '- 整張臉融化 (face melting from despair)',
+          '- 噴鼻血、噴口水、噴眼淚 (exaggerated nosebleed / spit-take / tear-fountain)',
+          '- 整個人飄起來 (floating mid-air from joy/shock, with motion lines)',
+          '- 頭頂冒煙、冒火、冒問號 (steam, fire, question marks, lightbulbs above head — but as graphic shapes, NOT text)',
+          '- 雙腳離地、四肢扭曲 (limbs flailing, body contorted)',
+          '- 縮成一團、變成一條線 (shrunken into a tiny ball / flattened into a line)',
+          '- 化身成符號 (turning into a heart/star/spiral shape)',
+          '- 過度誇張的肢體語言 (over-the-top gestures: pointing, hugging air, kneeling)',
+          'You may include CARTOON SOUND-EFFECT GRAPHICS like lightning bolts, sparkles, spiral swirls, sweat drops, heart symbols, exclamation/question mark shapes — as long as they are GRAPHIC SHAPES, NOT actual text characters.',
+          'IMPORTANT: This rule overrides any other instruction about text. NO text, EVER. If you would normally add a small word, replace it with a pictographic symbol instead.',
+        ].join('\n'),
+      },
+      watery: {
+        label: '💧 水亮亮',
+        description: '日系「水潤立體貼紙風」：水亮亮大眼 或 水潤 Q 彈圓滾滾。LINE 活動：審核 4/13–6/14，banner 6/17–6/30。需 ≥ 8 張。',
+        applicableTypes: ['sticker', 'big', 'bigface', 'emoji'], // 不限類型
+        captionHint: '純視覺活動，文案不受限制（系統不會把 captionHint 傳給文案產生 API）',
+        affectsCaptions: false, // 純視覺活動：文案產生時不傳 campaignHint，避免 Gemini 過度約束
+        minCount: 8,
+        promptOverlay: [
+          'CAMPAIGN THEME: WATERY / GLOSSY STICKERS — This sticker set is for LINE Creators Market\'s "Watery (水亮亮)" campaign, inspired by Japanese "puffy 3D sticker" aesthetics (水潤立體貼紙風格).',
+          'STRICT VISUAL RULE — Every sticker MUST exhibit one or both of these signature looks:',
+          '(A) 水亮亮大眼 — Watery sparkling eyes: oversized, glossy eyes with multiple white catchlights/highlights, wet shimmering reflections, prismatic sparkles, almost teary-glossy appearance like Japanese shoujo-manga eyes turned up to 11.',
+          '(B) 水潤 Q 彈圓滾滾 — Plump bouncy round body: rounded chubby silhouette, smooth glossy surface like a freshly-poured silicone sticker or jelly candy, soft highlights along curves, gentle gradient shading suggesting a 3D puffy/inflated form.',
+          'Surface treatment requirements:',
+          '- Glossy reflective highlights on every rounded surface (cheeks, eyes, body)',
+          '- Subtle prismatic/rainbow shimmer on edges (like a clear vinyl sticker catching light)',
+          '- Soft pastel or saturated jewel tones, NEVER flat matte colors',
+          '- Drop-shadow + light gradient suggests the character is a 3D physical object photographed under soft studio light',
+          'Avoid flat 2D illustration look. The result should feel like an actual peelable sticker that you could touch and feel the soft squishy gloss.',
+          'You can still add the requested expression/action — but the watery glossy treatment is MANDATORY across all stickers.',
+        ].join('\n'),
+      },
       // 未來活動在這裡新增即可，格式同上
       // example: {
       //   label: '🎃 萬聖節貼圖',
@@ -661,12 +708,13 @@
       processedImages, generatedImages, captions, textSettings, textPositions,
       stickerCount, mainSourceIndex, tabSourceIndex, onProgress,
       config, // PRODUCT_CONFIG entry
+      wordlessMode = false, // P8.1 無字浮誇活動：強制不疊文字（即使 config.hasText 為 true）
     }) {
       const zip = new JSZip();
       const dims = config ? { canvasW: config.canvasW, canvasH: config.canvasH } : {};
       const mainSize = config?.mainSize || MAIN_SIZE;
       const zipPrefix = config?.zipPrefix || 'line-stickers';
-      const hasText = config?.hasText !== false;
+      const hasText = (config?.hasText !== false) && !wordlessMode;
       const total = stickerCount + 2;
       let done = 0;
 
@@ -746,8 +794,6 @@
     function App() {
       const [productType, setProductType] = useState('sticker'); // 'sticker' | 'big' | 'bigface' | 'emoji'
       const config = PRODUCT_CONFIG[productType];
-      const steps = config.steps;
-      const lastStep = steps.length - 1;
 
       const [currentStep, setCurrentStep] = useState(0);
       const [referenceImage, setReferenceImage] = useState(null);
@@ -793,6 +839,18 @@
       const availableCampaigns = Object.entries(CAMPAIGNS).filter(
         ([, c]) => c.applicableTypes.includes(productType)
       );
+
+      // P8.1 wordless mode：自動跳過「編輯文案」step，並強制 caption 為空字串
+      const isWordlessMode = !!CAMPAIGNS[activeCampaign]?.wordlessCampaign;
+      const steps = isWordlessMode
+        ? config.steps.filter(s => s !== '編輯文案')
+        : config.steps;
+      const lastStep = steps.length - 1;
+
+      // 切換 wordless 或產品類型時，若 currentStep 越界則 clamp 到最後一步
+      useEffect(() => {
+        if (currentStep > lastStep) setCurrentStep(lastStep);
+      }, [lastStep, isWordlessMode]);
 
       const canProceed = () => {
         const stepName = steps[currentStep];
@@ -1195,8 +1253,9 @@
               style: CAPTION_STYLES.find(s => s.id === captionStyle)?.label || captionStyle,
               trending: theme === 'trending', // 告訴 Worker 啟用時事流行梗模式
               exclude: captions.slice(0, stickerCount).filter(c => c.trim()), // 排除已有文案
-              campaign: activeCampaign || null, // LINE 活動主題
-              campaignHint: activeCampaign ? CAMPAIGNS[activeCampaign]?.captionHint : null,
+              // P8.1 純視覺活動（如 watery）affectsCaptions:false 時不傳 campaign/Hint，避免 Gemini 對文案過度約束
+              campaign: (activeCampaign && CAMPAIGNS[activeCampaign]?.affectsCaptions !== false) ? activeCampaign : null,
+              campaignHint: (activeCampaign && CAMPAIGNS[activeCampaign]?.affectsCaptions !== false) ? CAMPAIGNS[activeCampaign]?.captionHint : null,
             }),
           });
           const data = await res.json();
@@ -1331,7 +1390,9 @@
       const isEmoji = productType === 'emoji';
       const isBig = productType === 'big';
       const isBigFace = productType === 'bigface';
-      const hasText = config?.hasText !== false;
+      // P8.1 wordless mode：強制不顯示/不疊文字（即使 config.hasText 為 true）
+      const wordlessMode = !!CAMPAIGNS[activeCampaign]?.wordlessCampaign;
+      const hasText = (config?.hasText !== false) && !wordlessMode;
       const styleName = ART_STYLES.find(s => s.id === selectedStyle)?.label || selectedStyle;
       const stylePrompt = STYLE_PROMPTS[selectedStyle] || STYLE_PROMPTS['original'];
       const abortRef = useRef(false);
@@ -1940,6 +2001,7 @@
                         stickerCount, mainSourceIndex: mainSource, tabSourceIndex: tabSource,
                         onProgress: (p) => setExportProgress(p),
                         config,
+                        wordlessMode,
                       });
                       setExportProgress({ done: result.fileCount, total: result.fileCount,
                         step: `完成！ZIP 大小 ${(result.zipSize / 1024).toFixed(0)} KB` });
