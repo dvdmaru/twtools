@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>父母山陰 8 日旅遊地圖｜2026.05.09-05.16</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif; color: #2c3e50; }
+  body { display: flex; flex-direction: column; }
+
+  header { background: linear-gradient(135deg, #1f4e79 0%, #2e75b6 100%); color: white; padding: 16px 24px; }
+  header h1 { font-size: 20px; margin-bottom: 4px; }
+  header .subtitle { font-size: 13px; opacity: 0.9; }
+
+  .container { display: flex; flex: 1; overflow: hidden; }
+
+  /* 側欄 */
+  aside { width: 320px; background: #f8f9fa; overflow-y: auto; border-right: 1px solid #dee2e6; padding: 16px; }
+  aside h2 { font-size: 15px; color: #1f4e79; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 2px solid #2e75b6; }
+
+  .controls { margin-bottom: 16px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .controls button { flex: 1; min-width: 70px; padding: 6px 10px; border: 1px solid #2e75b6; background: white; color: #2e75b6; border-radius: 4px; cursor: pointer; font-size: 12px; transition: all 0.2s; }
+  .controls button:hover, .controls button.active { background: #2e75b6; color: white; }
+
+  .day-card { background: white; border-radius: 8px; padding: 12px; margin-bottom: 10px; border-left: 4px solid; cursor: pointer; transition: all 0.2s; }
+  .day-card:hover { transform: translateX(2px); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .day-card.active { background: #fff8e1; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+  .day-card .day-num { font-size: 11px; font-weight: bold; padding: 2px 8px; border-radius: 12px; color: white; display: inline-block; margin-bottom: 6px; }
+  .day-card .day-date { font-size: 12px; color: #6c757d; margin-bottom: 4px; }
+  .day-card .day-region { font-size: 14px; font-weight: bold; color: #1f4e79; margin-bottom: 6px; }
+  .day-card .day-spots { font-size: 12px; color: #495057; line-height: 1.5; }
+  .day-card .day-hotel { font-size: 11px; color: #888; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #dee2e6; }
+
+  /* 地圖 */
+  #map { flex: 1; }
+
+  /* 飛行路線 legend */
+  .legend { position: absolute; bottom: 24px; right: 24px; background: rgba(255,255,255,0.95); padding: 10px 14px; border-radius: 6px; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 1000; }
+  .legend-item { display: flex; align-items: center; gap: 8px; margin: 3px 0; }
+  .legend-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 2px rgba(0,0,0,0.3); }
+
+  /* Leaflet popup 自訂 */
+  .leaflet-popup-content { font-family: "Noto Sans TC", sans-serif; min-width: 200px; }
+  .popup-day { font-size: 11px; color: white; padding: 2px 8px; border-radius: 12px; display: inline-block; margin-bottom: 4px; font-weight: bold; }
+  .popup-title { font-size: 14px; font-weight: bold; color: #1f4e79; margin-bottom: 4px; }
+  .popup-meta { font-size: 11px; color: #6c757d; }
+
+  /* 自訂 marker 圖標 */
+  .marker-pin { width: 30px; height: 30px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; }
+  .marker-pin span { transform: rotate(45deg); color: white; font-weight: bold; font-size: 13px; }
+
+  @media (max-width: 768px) {
+    .container { flex-direction: column; }
+    aside { width: 100%; max-height: 35vh; }
+    .legend { bottom: 8px; right: 8px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🗾 父母山陰 8 日旅遊地圖</h1>
+  <div class="subtitle">2026/05/09 (六) — 05/16 (六)　｜　緣結山陰神話故里・城影漫步花見泉湯</div>
+</header>
+
+<div class="container">
+  <aside>
+    <h2>顯示控制</h2>
+    <div class="controls">
+      <button onclick="showAll()" class="active" id="btn-all">全部</button>
+      <button onclick="showFlight()">航班</button>
+      <button onclick="showHotels()">住宿</button>
+    </div>
+
+    <h2>每日行程（點擊可定位）</h2>
+    <div id="day-list"></div>
+  </aside>
+
+  <div id="map"></div>
+  <div class="legend">
+    <div style="font-weight:bold; margin-bottom:6px;">圖例</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#C00000"></div>住宿酒店</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1f4e79"></div>主要景點</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#9c27b0"></div>機場</div>
+    <div class="legend-item"><span style="display:inline-block; width:24px; height:0; border-top:3px dashed #555;"></span>每日路線</div>
+  </div>
+</div>
+
+<script>
+// ============ 行程資料 ============
+const dayColors = ["#C00000","#E67E22","#F39C12","#27AE60","#16A085","#2980B9","#8E44AD","#7F8C8D"];
+
+const days = [
+  {
+    day:1, date:"5/9 (六)", region:"桃園 → 大阪關西 → 神戶",
+    spots:[
+      {name:"關西空港 (KIX)", lat:34.4339, lng:135.2300, desc:"CX564 14:55 抵達 (JST)；KIX→神戶高速船/巴士約 30 分", type:"airport"},
+      {name:"神戶港・摩賽克廣場 (神戶港夜景)", lat:34.6790, lng:135.1839, desc:"夜景：摩賽克廣場、神戶塔、umie 百貨"},
+    ],
+    hotel:{name:"神戶波特比亞飯店", lat:34.6711, lng:135.2186, addr:"兵庫縣神戶市中央區港島中町 6-10-1", tel:"+81-78-302-1111"}
+  },
+  {
+    day:2, date:"5/10 (日)", region:"神戶 → 丹波 → 天橋立",
+    spots:[
+      {name:"丹波白毫寺 (九尺紫藤)", lat:35.2050, lng:135.0670, desc:"5 月上旬・1.5–1.8m 紫藤花瀑布"},
+      {name:"丹波鐵道青松號", lat:35.5060, lng:135.0820, desc:"水戶岡銳治設計藍色觀光列車"},
+      {name:"日本三景・天橋立", lat:35.5670, lng:135.1880, desc:"3.6 公里沙洲・8000 棵松樹・飛龍觀"},
+    ],
+    hotel:{name:"宮津天橋立美居酒店", lat:35.5538, lng:135.1946, addr:"京都府宮津市字田井 小字岩本 58 番 1", tel:"+81-772-25-1800"}
+  },
+  {
+    day:3, date:"5/11 (一)", region:"天橋立 → 伊根 → 出石 → 鳥取",
+    spots:[
+      {name:"伊根遊覽船 (舟屋)", lat:35.6750, lng:135.2861, desc:"25 分鐘船程・餵食海鷗・國家重要傳建區"},
+      {name:"出石城蕎麥麵 DIY", lat:35.4633, lng:134.8721, desc:"親手揉麵切麵・搭配生雞蛋醬汁"},
+    ],
+    hotel:{name:"鳥取新大谷酒店 (或新大倉)", lat:35.4988, lng:134.2382, addr:"鳥取縣鳥取市今町 2-153", tel:"+81-857-23-1111"}
+  },
+  {
+    day:4, date:"5/12 (二)", region:"鳥取 → 山陰海岸 → 玉造溫泉",
+    spots:[
+      {name:"鳥取沙丘", lat:35.5403, lng:134.2284, desc:"日本最大沙丘・東西 16 公里・天然紀念物"},
+      {name:"高濱咖啡館", lat:35.5391, lng:134.2270, desc:"隈研吾設計・17 度斜角木建築"},
+    ],
+    hotel:{name:"玉造溫泉松乃湯 (或宍道湖溫泉 ICHIBATA)", lat:35.4170, lng:132.9056, addr:"島根縣松江市玉湯町玉造 1215", tel:"+81-852-62-0611"}
+  },
+  {
+    day:5, date:"5/13 (三)", region:"玉造 → 安來 → 松江 → 出雲",
+    spots:[
+      {name:"足立美術館 (日本最美庭園)", lat:35.4123, lng:133.2155, desc:"連續 22 年獲日本園林雜誌最佳庭園"},
+      {name:"由志園・池泉牡丹", lat:35.4404, lng:133.1681, desc:"3 萬朵牡丹漂浮池上・黃金週限定"},
+      {name:"松江城 (國寶)", lat:35.4757, lng:133.0508, desc:"千鳥城・1607 年・日本山陰唯一現存天守"},
+      {name:"宍道湖夕陽", lat:35.4500, lng:132.9700, desc:"日本百大夕陽・島根縣立美術館"},
+    ],
+    hotel:{name:"Centurion Hotel 出雲", lat:35.3713, lng:132.7553, addr:"島根縣出雲市駅北町 1-3", tel:"+81-853-25-7700"}
+  },
+  {
+    day:6, date:"5/14 (四)", region:"出雲 → 尾道 → 倉敷",
+    spots:[
+      {name:"出雲大社 (結緣神社)", lat:35.4019, lng:132.6850, desc:"二禮四拍手一禮・5.2 噸注連繩"},
+      {name:"千光寺公園", lat:34.4118, lng:133.1980, desc:"日本夜景百選・戀人聖地"},
+      {name:"倉敷三井 OUTLET", lat:34.5775, lng:133.7283, desc:"鄰近 Ario 倉敷大型購物區"},
+    ],
+    hotel:{name:"倉敷皇家公園飯店 (或 Grand Cocoe)", lat:34.5953, lng:133.7741, addr:"岡山縣倉敷市阿知 3-21-19", tel:"+81-86-423-2400"}
+  },
+  {
+    day:7, date:"5/15 (五)", region:"倉敷 → 岡山 → 姬路 → 神戶",
+    spots:[
+      {name:"倉敷美觀地區", lat:34.5947, lng:133.7710, desc:"江戶時代白壁藏屋敷・柳樹倉敷川"},
+      {name:"岡山和氣町藤公園", lat:34.7497, lng:134.1543, desc:"500 公尺紫藤架・約 100 種色彩"},
+      {name:"姬路城 (世界遺產)", lat:34.8394, lng:134.6939, desc:"白鷺城・現存最大天守・1993 入選世遺"},
+    ],
+    hotel:{name:"神戶蒙特雷酒店", lat:34.6929, lng:135.1957, addr:"兵庫縣神戶市中央區旗塚通 7-1-16", tel:"+81-78-392-7111"}
+  },
+  {
+    day:8, date:"5/16 (六)", region:"神戶 → 大阪 → 桃園",
+    spots:[
+      {name:"大阪水上巴士", lat:34.6917, lng:135.5067, desc:"大川觀光船 40-60 分鐘"},
+      {name:"住吉大社", lat:34.6128, lng:135.4926, desc:"全日本 2300 座住吉神社總本社・反橋"},
+      {name:"關西空港 (KIX)", lat:34.4339, lng:135.2300, desc:"CX565 16:20 起飛回桃園；住吉大社→KIX 車程約 30-40 分", type:"airport"},
+    ],
+    hotel:null
+  }
+];
+
+const flights = {
+  out: { from:[25.0797,121.2342], to:[34.4339,135.2300], label:"CX564 桃園→大阪關西 11:05→14:55" },
+  back:{ from:[34.4339,135.2300], to:[25.0797,121.2342], label:"CX565 大阪關西→桃園 16:20→18:15" }
+};
+
+// ============ 地圖初始化 ============
+const map = L.map('map').setView([35.0, 134.0], 7);
+
+// 主要圖磚：CartoDB Voyager（免費、允許 file://、無 API key）
+const primaryTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+  maxZoom: 19,
+  subdomains: 'abcd',
+  attribution: '© OpenStreetMap contributors © CARTO | 行程資料：旅遊家旅行社'
+});
+
+// 備援圖磚：Esri World Street Map（備用，不需 API key）
+const fallbackTiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+  maxZoom: 18,
+  attribution: 'Tiles © Esri | 行程資料：旅遊家旅行社'
+});
+
+// 預設用主要來源；偵測到連續 tile 載入錯誤時切換到備援
+let tileErrorCount = 0;
+primaryTiles.on('tileerror', () => {
+  tileErrorCount++;
+  if (tileErrorCount >= 3 && map.hasLayer(primaryTiles)) {
+    console.warn('CartoDB tiles failing, switching to Esri fallback');
+    map.removeLayer(primaryTiles);
+    fallbackTiles.addTo(map);
+  }
+});
+primaryTiles.addTo(map);
+
+// ============ Marker 工廠 ============
+function makePin(color, label) {
+  return L.divIcon({
+    className: '',
+    html: `<div class="marker-pin" style="background:${color}"><span>${label}</span></div>`,
+    iconSize: [30,42],
+    iconAnchor: [15,42]
+  });
+}
+
+// ============ 渲染標記 ============
+const allLayers = []; // 所有標記
+const hotelLayers = []; // 只有酒店
+const airportLayers = []; // 機場
+const dayPolylines = []; // 每日連線
+
+days.forEach((d, dayIdx) => {
+  const color = dayColors[dayIdx];
+  const dayPath = []; // 當日的軌跡點
+
+  // 景點 markers
+  d.spots.forEach((spot, i) => {
+    const isAirport = spot.type === 'airport';
+    const pinColor = isAirport ? '#9c27b0' : '#1f4e79';
+    const label = isAirport ? '✈' : `${dayIdx+1}-${i+1}`;
+    const m = L.marker([spot.lat, spot.lng], { icon: makePin(pinColor, label) });
+    m.bindPopup(`
+      <div class="popup-day" style="background:${color}">Day ${d.day} · ${d.date}</div>
+      <div class="popup-title">${spot.name}</div>
+      <div class="popup-meta">${spot.desc}</div>
+    `);
+    m.addTo(map);
+    allLayers.push(m);
+    if (isAirport) airportLayers.push(m);
+    dayPath.push([spot.lat, spot.lng]);
+  });
+
+  // 酒店 marker
+  if (d.hotel) {
+    const m = L.marker([d.hotel.lat, d.hotel.lng], { icon: makePin('#C00000', '🏨') });
+    m.bindPopup(`
+      <div class="popup-day" style="background:${color}">Day ${d.day} · ${d.date} 入住</div>
+      <div class="popup-title">🏨 ${d.hotel.name}</div>
+      <div class="popup-meta">📍 ${d.hotel.addr}</div>
+      <div class="popup-meta">☎️ ${d.hotel.tel}</div>
+    `);
+    m.addTo(map);
+    allLayers.push(m);
+    hotelLayers.push(m);
+    dayPath.push([d.hotel.lat, d.hotel.lng]);
+  }
+
+  // 每日路線連線
+  if (dayPath.length >= 2) {
+    const line = L.polyline(dayPath, {
+      color: color, weight: 3, opacity: 0.7, dashArray: '8,6'
+    });
+    line.addTo(map);
+    dayPolylines.push(line);
+  }
+});
+
+// 航班路線
+const outFlight = L.polyline([flights.out.from, flights.out.to], {
+  color: '#9c27b0', weight: 2, opacity: 0.6, dashArray: '4,8'
+}).bindPopup(`<b>去程</b><br>${flights.out.label}`);
+const backFlight = L.polyline([flights.back.from, flights.back.to], {
+  color: '#9c27b0', weight: 2, opacity: 0.6, dashArray: '4,8'
+}).bindPopup(`<b>回程</b><br>${flights.back.label}`);
+outFlight.addTo(map);
+backFlight.addTo(map);
+
+// ============ 側欄渲染 ============
+const dayList = document.getElementById('day-list');
+days.forEach((d, idx) => {
+  const color = dayColors[idx];
+  const card = document.createElement('div');
+  card.className = 'day-card';
+  card.style.borderLeftColor = color;
+  card.innerHTML = `
+    <span class="day-num" style="background:${color}">Day ${d.day}</span>
+    <div class="day-date">${d.date}</div>
+    <div class="day-region">${d.region}</div>
+    <div class="day-spots">${d.spots.map(s => '• ' + s.name).join('<br>')}</div>
+    ${d.hotel ? `<div class="day-hotel">🏨 ${d.hotel.name}</div>` : '<div class="day-hotel">🏠 返抵桃園</div>'}
+  `;
+  card.onclick = () => {
+    document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    const points = d.spots.map(s => [s.lat, s.lng]);
+    if (d.hotel) points.push([d.hotel.lat, d.hotel.lng]);
+    if (points.length > 0) map.fitBounds(points, { padding: [50, 50] });
+  };
+  dayList.appendChild(card);
+});
+
+// ============ 切換顯示 ============
+function setActive(btnId) {
+  document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
+  document.getElementById(btnId).classList.add('active');
+}
+
+function showAll() {
+  setActive('btn-all');
+  allLayers.forEach(l => map.addLayer(l));
+  dayPolylines.forEach(l => map.addLayer(l));
+  map.addLayer(outFlight); map.addLayer(backFlight);
+  map.setView([35.0, 134.0], 7);
+}
+
+function showFlight() {
+  setActive(document.querySelectorAll('.controls button')[1].id = 'btn-flight');
+  document.querySelectorAll('.controls button')[1].id = 'btn-flight';
+  allLayers.forEach(l => map.removeLayer(l));
+  dayPolylines.forEach(l => map.removeLayer(l));
+  airportLayers.forEach(l => map.addLayer(l));
+  map.addLayer(outFlight); map.addLayer(backFlight);
+  // 加上桃園
+  L.marker([25.0797,121.2342], { icon: makePin('#9c27b0', '✈') })
+    .bindPopup('<b>桃園國際機場 (TPE)</b><br>去程 5/9 11:05 起飛<br>回程 5/16 18:15 抵達')
+    .addTo(map);
+  map.fitBounds([[25.0797,121.2342],[34.4339,135.2300]], { padding:[80,80] });
+}
+
+function showHotels() {
+  document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.controls button')[2].classList.add('active');
+  allLayers.forEach(l => map.removeLayer(l));
+  dayPolylines.forEach(l => map.removeLayer(l));
+  map.removeLayer(outFlight); map.removeLayer(backFlight);
+  hotelLayers.forEach(l => map.addLayer(l));
+  if (hotelLayers.length > 0) {
+    const bounds = L.latLngBounds(hotelLayers.map(m => m.getLatLng()));
+    map.fitBounds(bounds, { padding: [50,50] });
+  }
+}
+
+// 修正 button id
+document.querySelectorAll('.controls button')[0].id = 'btn-all';
+document.querySelectorAll('.controls button')[1].id = 'btn-flight';
+document.querySelectorAll('.controls button')[2].id = 'btn-hotels';
+document.querySelectorAll('.controls button')[1].onclick = showFlight;
+document.querySelectorAll('.controls button')[2].onclick = showHotels;
+</script>
+</body>
+</html>
