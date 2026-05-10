@@ -1,0 +1,1 @@
+import{j as r,L as a}from"./LangContext.BbYoU8jT.js";import{S as m}from"./Sidebar.BL6r2DPA.js";function o({currentPage:s,children:e}){return r.jsx(a,{children:r.jsxs("div",{className:"flex min-h-screen",style:{background:"var(--tw-page-bg)"},children:[r.jsx(m,{currentPage:s}),r.jsx("main",{className:"flex-1 md:ml-56 p-4 sm:p-6 lg:p-8",children:e})]})})}export{o as T};
