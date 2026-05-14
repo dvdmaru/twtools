@@ -1,0 +1,351 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>24 節氣查詢 — 每年立春到大寒完整日期 | TWTools</title><meta name="description" content="免費線上 24 節氣查詢工具。指定年份顯示完整 24 節氣日期(立春、雨水、驚蟄到小寒、大寒)+ 每節氣意義說明 + 下一個節氣倒數。1900-2099 範圍,瀏覽器內離線運算。"><link rel="canonical" href="https://twtools.cc/solar-terms/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://twtools.cc/solar-terms/"><meta property="og:title" content="24 節氣查詢 — 每年立春到大寒完整日期 | TWTools"><meta property="og:description" content="免費線上 24 節氣查詢工具。指定年份顯示完整 24 節氣日期(立春、雨水、驚蟄到小寒、大寒)+ 每節氣意義說明 + 下一個節氣倒數。1900-2099 範圍,瀏覽器內離線運算。"><meta property="og:image" content="https://twtools.cc/og-image.png"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="24 節氣查詢 — 每年立春到大寒完整日期 | TWTools"><meta name="twitter:description" content="免費線上 24 節氣查詢工具。指定年份顯示完整 24 節氣日期(立春、雨水、驚蟄到小寒、大寒)+ 每節氣意義說明 + 下一個節氣倒數。1900-2099 範圍,瀏覽器內離線運算。"><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0WTK2LJFTY');
+  </script><!-- AdSense (async, non-blocking) --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            /* Morandi Dusty Rose — TWTools 品牌色（OKLCH hue 22） */
+            brand: {
+              50:  '#fceeed',
+              100: '#f2dbda',
+              200: '#e0b9b7',
+              300: '#ca9592',
+              400: '#af7472',
+              500: '#935e5c',
+              600: '#764a49',
+              700: '#583937',
+              800: '#3e2726',
+              900: '#281818',
+              950: '#110c08'
+            },
+            /* 奶油暖灰中性色（OKLCH hue 60） */
+            warm: {
+              50:  '#fcf3ed',
+              100: '#f1e5dc',
+              200: '#e3d0c2',
+              300: '#c9b3a2',
+              400: '#a99483',
+              500: '#887769',
+              600: '#6e6055',
+              700: '#564b42',
+              800: '#3e3630',
+              900: '#2b2520',
+              950: '#15110d'
+            },
+            /* 暖琥珀強調色（OKLCH hue 75） */
+            accent: {
+              50:  '#fdf4e7',
+              100: '#f8e5cb',
+              200: '#eecb9a',
+              300: '#e1ad63',
+              400: '#d49838',
+              500: '#b68028',
+              600: '#906520',
+              700: '#6b4c1d',
+              800: '#4b3617',
+              900: '#32230e',
+              950: '#181005'
+            }
+          }
+        }
+      }
+    }
+  </script><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/BaseLayout.CXwgWFeb.css"></head> <body class="min-h-screen paper-noise">  <div class="flex min-h-screen" style="background: var(--tw-page-bg);"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="ZOe9iO" prefix="r1" component-url="/_assets/SidebarIsland.Wed13Zqu.js" component-export="default" renderer-url="/_assets/client.DKYTfpNv.js" props="{&quot;currentPage&quot;:[0,&quot;solarterms&quot;]}" ssr client="load" opts="{&quot;name&quot;:&quot;SidebarIsland&quot;,&quot;value&quot;:true}" await-children><button class="fixed top-3 left-3 z-50 md:hidden bg-warm-100 p-3 rounded-lg text-warm-900 text-lg">☰</button><div class="fixed inset-0 bg-black/60 z-30 md:hidden transition-opacity duration-300 opacity-0 pointer-events-none"></div><aside class="fixed top-0 left-0 h-full w-56 bg-warm-50 border-r border-warm-200 z-40 flex flex-col transition-transform duration-300 ease-in-out
+          -translate-x-full md:translate-x-0"><div class="p-4 border-b border-warm-200 flex items-center justify-between"><a href="/" class="flex items-center no-underline"><img src="data:image/png;base64,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" alt="TWTools" class="w-7 h-7 rounded-lg"/><span class="text-sm font-bold text-brand-600 ml-1.5">TWTools</span></a><div class="flex items-center gap-1"><button class="text-xs px-1.5 py-0.5 rounded border border-warm-300 text-warm-600 hover:text-warm-900 hover:border-warm-400 transition-colors" title="Switch to English">EN</button><button class="text-warm-600 hover:text-warm-900 md:hidden text-lg leading-none">✕</button></div></div><nav class="flex-1 py-2 overflow-y-auto"><div><div class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">檔案處理</div><a href="/image/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🖼️</span>圖片工具</a><a href="/pdf/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">📄</span>PDF 工具</a><a href="/resume/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">📋</span>履歷產生器</a><a href="/proofread/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">✍️</span>錯別字檢查</a></div><div><div class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">生活查詢</div><a href="/typhoon/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🌀</span>颱風停班停課</a><a href="/lottery/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🎰</span>台灣彩券</a><a href="/currency/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">💱</span>匯率換算</a></div><div><div class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">計算換算</div><a href="/datecalc/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">📅</span>日期計算器</a><a href="/countdown/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">⏳</span>倒數計時器</a><a href="/unit/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">📏</span>單位換算</a></div><div><div class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">查詢工具</div><a href="/postal/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">📮</span>郵遞區號</a><a href="/address/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🌐</span>地址中譯英</a><a href="/lunar/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🌙</span>農曆國曆</a><a href="/solar-terms/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline bg-brand-100 text-brand-700 border-r-2 border-brand-500"><span class="text-base">☀️</span>二十四節氣</a></div><div><div class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">更多</div><a href="/blog/" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">📝</span>知識文章</a></div><div class="border-t border-warm-200 mt-1"><a href="/trip/" target="_blank" rel="noopener" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 text-warm-600 hover:bg-warm-100 hover:text-warm-900 transition-colors no-underline"><span class="text-base">✈️</span>✈️ AI 旅行規劃<span class="ml-auto text-xs text-warm-400">↗</span></a></div></nav><div class="p-3 border-t border-warm-200 text-xs text-warm-600 text-center space-y-1"><div class="flex justify-center gap-3"><a href="/about/" class="hover:text-warm-900 transition-colors no-underline" style="color:var(--tw-brand-accent)">關於</a><a href="/privacy/" class="hover:text-warm-900 transition-colors no-underline" style="color:var(--tw-brand-accent)">隱私權</a></div>打工牛馬的線上工具箱 © 2026</div></aside><!--astro:end--></astro-island> <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8"> <nav class="max-w-6xl mx-auto mb-6" aria-label="breadcrumb"> <div class="flex items-center gap-2 text-sm flex-wrap" style="color: var(--tw-text-muted);"> <a href="/" class="grow-underline">首頁</a><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+<span style="color: var(--tw-text-primary);">查詢工具</span><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+<span style="color: var(--tw-text-primary);">二十四節氣</span> </div> </nav> <section class="max-w-6xl mx-auto mb-10"> <div class="flex items-center gap-3 mb-4 flex-wrap"> <span class="brand-dot"></span> <span class="eyebrow">№ 14 · QUERY · TERMS</span> <span class="printrule hidden md:inline">|</span> <span class="eyebrow hidden md:inline">TOOL · 14 / 14</span> </div> <h1 class="font-serif-tc font-black tracking-cn mb-5" style="font-size: clamp(36px, 5.4vw, 60px); line-height: 1.06; color: var(--tw-hero-color); letter-spacing: -0.015em;"> 二十四節氣查詢 </h1> <p class="text-base md:text-lg leading-relaxed mb-6 max-w-2xl" style="color: var(--tw-text-secondary);"> 指定年份顯示完整 24 節氣日期(立春、雨水、驚蟄到小寒、大寒)+ 每節氣意義說明 + 下一個節氣倒數。1900-2099 範圍,精度與權威農民曆一致,瀏覽器內即時運算可離線。 </p> <div class="flex items-center gap-2 flex-wrap"> <span class="stamp"> <svg aria-hidden="true"
+  class="w-3 h-3 inline-block mr-1 -mt-0.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="12" cy="12" r="4" />
+  <path d="M12 2v2" />
+  <path d="M12 20v2" />
+  <path d="m4.93 4.93 1.41 1.41" />
+  <path d="m17.66 17.66 1.41 1.41" />
+  <path d="M2 12h2" />
+  <path d="M20 12h2" />
+  <path d="m6.34 17.66-1.41 1.41" />
+  <path d="m19.07 4.93-1.41 1.41" />
+</svg>
+ 24 TERMS </span><span class="stamp muted"> <svg aria-hidden="true"
+  class="w-3 h-3 inline-block mr-1 -mt-0.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
+</svg>
+ 即時查詢 </span><span class="stamp muted"> <svg aria-hidden="true"
+  class="w-3 h-3 inline-block mr-1 -mt-0.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M12 20h.01" />
+  <path d="M8.5 16.429a5 5 0 0 1 7 0" />
+  <path d="M5 12.859a10 10 0 0 1 5.17-2.69" />
+  <path d="M19 12.859a10 10 0 0 0-2.007-1.523" />
+  <path d="M2 8.82a15 15 0 0 1 4.177-2.643" />
+  <path d="M22 8.82a15 15 0 0 0-11.288-3.764" />
+  <path d="m2 2 20 20" />
+</svg>
+ 可離線 </span> </div> </section> <section class="max-w-6xl mx-auto mb-16"> <div class="tool-shell p-5 md:p-7"> <div class="flex items-baseline justify-between mb-5 flex-wrap gap-2"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h2 class="font-serif-tc text-lg font-bold tracking-cn">工具操作</h2> </div> <span class="eyebrow">SELECT YEAR · VIEW 24 TERMS</span> </div> <div id="solar-terms-tool-root"></div> </div> </section> <section class="reading-col mb-16"> <div class="prose-cn"> <h2 class="section-h2"> <span class="num">§ 01</span> <span>什麼時候會用到 24 節氣</span> </h2> <p>三個常見情境:第一是<strong>農時、釣魚、攝影規劃</strong>,農夫、釣客、攝影玩家對節氣敏感(驚蟄春雷、清明掃墓踏青、夏至釣鱸、白露採筍、冬至搓圓),知道當年確切日期可提前安排。第二是<strong>養生與飲食規劃</strong>,中醫養生講「順時養生」,立春疏肝、夏至養心、秋分潤肺、冬至補腎，本工具讓你一年規劃清楚。第三是<strong>節電與用電規劃</strong>,夏至前後北半球白晝最長、氣溫升至高峰,可作為冷氣使用、電費躍升的時間錨點(<a href="/blog/summer-electricity-saving-2026/">夏月電價詳解</a>)。</p> <figure class="figure"> <div class="frame dot-grid" style="aspect-ratio: 16/8;"> <div class="absolute inset-0 p-6 flex items-center justify-around"> <div class="text-center"> <div class="font-mono font-black mb-2" style="font-size: 32px; color: var(--tw-text-muted);">2026</div> <div class="font-mono-tc text-xs" style="color: var(--tw-text-muted);">選擇年份</div> </div> <svg aria-hidden="true"
+  class="w-6 h-6 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 12h14" />
+  <path d="m12 5 7 7-7 7" />
+</svg>
+ <div class="text-center"> <div class="w-16 h-16 md:w-20 md:h-20 mx-auto mb-2 rounded-full grid place-items-center" style="background: var(--tw-surface); border: 1.5px solid var(--tw-hero-color); color: var(--tw-hero-color);"> <svg aria-hidden="true"
+  class="w-7 h-7 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="12" cy="12" r="4" />
+  <path d="M12 2v2" />
+  <path d="M12 20v2" />
+  <path d="m4.93 4.93 1.41 1.41" />
+  <path d="m17.66 17.66 1.41 1.41" />
+  <path d="M2 12h2" />
+  <path d="M20 12h2" />
+  <path d="m6.34 17.66-1.41 1.41" />
+  <path d="m19.07 4.93-1.41 1.41" />
+</svg>
+ </div> <div class="font-mono-tc text-xs font-bold" style="color: var(--tw-hero-color);">天文演算</div> </div> <svg aria-hidden="true"
+  class="w-6 h-6 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 12h14" />
+  <path d="m12 5 7 7-7 7" />
+</svg>
+ <div class="text-center"> <div class="font-serif-tc font-black mb-2" style="font-size: 22px; color: var(--tw-hero-color); line-height: 1.3;">24 節氣<br>完整日期</div> <div class="font-mono-tc text-xs font-bold" style="color: var(--tw-hero-color);">立春 → 大寒</div> </div> </div> </div> <figcaption><em>圖 1:輸入年份,本工具即列出該年 24 節氣完整日期與意義。</em> <span class="src">— ILLUSTRATION · TWTOOLS</span></figcaption> </figure> <h2 class="section-h2"> <span class="num">§ 02</span> <span>工具如何使用</span> </h2> <p>本工具沒有複雜的設定:</p> <ol> <li><strong>選擇年份</strong>:輸入框輸入 1900-2099 之間任一年份,或點「去年 / 今年 / 明年」快速按鈕。本工具的 24 節氣演算基於紫金山天文台農曆數據,精度與權威農民曆一致。</li> <li><strong>瀏覽 24 節氣表</strong>:頁面以「2x4 / 4x6」響應式 grid 顯示完整 24 節氣,每張卡片含「節氣名稱、日期、意義 + 物候」。今天的節氣會以綠色高亮(若當日剛好是節氣日)。已過的節氣會淡灰呈現,未到的節氣會用白底加強對比。</li> <li><strong>下一節氣倒數</strong>:頁面頂部會自動顯示「下一個節氣 + 倒數天數」,例如「下一個節氣:小滿 2026-05-21,還有 7 天」。這個功能在每天打開時都會即時更新,適合農夫、攝影玩家做養生與規劃。</li> </ol> <p>整個資料計算<strong>完全離線</strong>,所有節氣日期由 lunar-javascript 套件即時演算,不依賴任何後端 API。</p> <figure class="figure"> <div class="frame" style="aspect-ratio: 16/7; background: var(--tw-surface); position: relative;"> <div class="absolute inset-0" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 23px, var(--tw-border) 23px, var(--tw-border) 24px); opacity: 0.3;"></div> <div class="absolute inset-0 p-6 flex items-center justify-around gap-4"> <div class="text-center"> <div class="font-serif-tc font-black mb-1" style="font-size: 20px; color: var(--tw-hero-color);">立春</div> <div class="font-mono text-xs" style="color: var(--tw-text-muted);">2026-02-04</div> </div> <div class="text-center"> <div class="font-serif-tc font-black mb-1" style="font-size: 20px; color: var(--tw-hero-color);">夏至</div> <div class="font-mono text-xs" style="color: var(--tw-text-muted);">2026-06-21</div> </div> <div class="text-center"> <div class="font-serif-tc font-black mb-1" style="font-size: 20px; color: var(--tw-hero-color);">秋分</div> <div class="font-mono text-xs" style="color: var(--tw-text-muted);">2026-09-23</div> </div> <div class="text-center"> <div class="font-serif-tc font-black mb-1" style="font-size: 20px; color: var(--tw-hero-color);">冬至</div> <div class="font-mono text-xs" style="color: var(--tw-text-muted);">2026-12-22</div> </div> </div> </div> <figcaption><em>圖 2:四季四個關鍵節氣(立春、夏至、秋分、冬至)是各季的天文中心。</em> <span class="src">— ILLUSTRATION · TWTOOLS</span></figcaption> </figure> <h2 class="section-h2"> <span class="num">§ 03</span> <span>常見問題</span> </h2> <p>24 節氣怎麼推算的?日期會不會每年不同?以下是最常被問到的問題。</p> <div class="mt-6"> <details class="faq-item" open> <summary> <div><span class="tool-index-num mr-3">01</span><span class="font-serif-tc text-base md:text-lg font-bold tracking-cn">24 節氣是怎麼決定日期的?</span></div> <div class="faq-icon"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 12h14" />
+  <path d="M12 5v14" />
+</svg>
+</div> </summary> <div class="faq-body pl-9">24 節氣是依<strong>太陽在黃道上的位置</strong>劃分,每 15 度為一個節氣。從春分(0°)開始,清明(15°)、穀雨(30°)…直到雨水(330°)、驚蟄(345°),共 24 個點。所以節氣不像農曆是依月相,而是與國曆對應較固定:立春幾乎都在 2/3 或 2/4、夏至幾乎都在 6/21 或 6/22。本工具計算依紫金山天文台數據,精度與權威農民曆一致。</div> </details> <details class="faq-item"> <summary> <div><span class="tool-index-num mr-3">02</span><span class="font-serif-tc text-base md:text-lg font-bold tracking-cn">為什麼節氣日期每年會差一天?</span></div> <div class="faq-icon"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 12h14" />
+  <path d="M12 5v14" />
+</svg>
+</div> </summary> <div class="faq-body pl-9">地球繞太陽公轉一週需 365.2422 天(回歸年),不是整數 365 天。所以每年節氣會比前一年晚約 5.8 小時(0.2422 天),累積 4 年後再以閏年的 2/29 修正回來。這個小漂移讓節氣日期在 1-2 天範圍內波動:例如立春多落在 2/3 或 2/4、冬至多落在 12/21 或 12/22。本工具會精準算到當年的真實日期(部分極端情況可能晚到 2/5、12/23)。</div> </details> <details class="faq-item"> <summary> <div><span class="tool-index-num mr-3">03</span><span class="font-serif-tc text-base md:text-lg font-bold tracking-cn">為什麼說「立春」是新年的開始?跟農曆春節差幾天?</span></div> <div class="faq-icon"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 12h14" />
+  <path d="M12 5v14" />
+</svg>
+</div> </summary> <div class="faq-body pl-9">傳統命理學以<strong>立春</strong>為年份分界(因為節氣是太陽位置決定,代表「太陽角度開始增加」),與民間以<strong>農曆正月初一</strong>為新年起點略有不同。兩者差距通常在 1-2 週內。例如 2026 立春落在 2/4,春節落在 2/17,中間有 13 天是「立春後但農曆未過年」的灰色地帶。八字、紫微斗數的命理判定常用立春,民俗節慶用春節。</div> </details> <details class="faq-item"> <summary> <div><span class="tool-index-num mr-3">04</span><span class="font-serif-tc text-base md:text-lg font-bold tracking-cn">節氣與「物候」的關係?跟氣候變遷有差嗎?</span></div> <div class="faq-icon"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 12h14" />
+  <path d="M12 5v14" />
+</svg>
+</div> </summary> <div class="faq-body pl-9">24 節氣源於黃河流域古代農業觀察,節氣的「意義」與當地物候(植物生長、動物活動、氣候變化)對應。例如「驚蟄」是春雷響、蟄蟲蘇醒;「白露」是清晨可見白色露珠。台灣在亞熱帶,有些物候與華北略不同(例:台灣的冬至往往沒下雪、霜降不一定有霜)。氣候變遷下,部分節氣的物候特徵會早於或晚於傳統時間表,但<strong>節氣本身的天文定義不變</strong>。本工具列出的「意義 + 物候」描述為傳統解讀,供文化參考。</div> </details> </div> </div> </section> <section class="max-w-6xl mx-auto mb-12 pt-10 border-t" style="border-color: var(--tw-border);"> <div class="flex items-baseline justify-between mb-6"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl md:text-2xl font-bold tracking-cn">相關工具</h3> </div> <span class="eyebrow hidden md:inline">3 TOOLS</span> </div> <div class="grid md:grid-cols-3 gap-4"> <a href="/lunar/" class="tool-card"> <div class="flex items-start gap-3 mb-3"> <div class="w-10 h-10 rounded grid place-items-center flex-shrink-0" style="background: var(--tw-page-bg); border: 1px solid var(--tw-border); color: var(--tw-hero-color);"> <svg aria-hidden="true"
+  class="w-5 h-5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
+</svg>
+ </div> <div> <div class="tool-index-num mb-0.5">№ 13</div> <div class="font-serif-tc font-bold tracking-cn">農曆國曆</div> </div> </div> <p class="text-sm leading-relaxed" style="color: var(--tw-text-secondary);"> 節氣是農曆的天文基礎,搭配農民曆查詢更完整。 </p> </a><a href="/countdown/" class="tool-card"> <div class="flex items-start gap-3 mb-3"> <div class="w-10 h-10 rounded grid place-items-center flex-shrink-0" style="background: var(--tw-page-bg); border: 1px solid var(--tw-border); color: var(--tw-hero-color);"> <svg aria-hidden="true"
+  class="w-5 h-5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <line x1="10" x2="14" y1="2" y2="2" />
+  <line x1="12" x2="15" y1="14" y2="11" />
+  <circle cx="12" cy="14" r="8" />
+</svg>
+ </div> <div> <div class="tool-index-num mb-0.5">№ 09</div> <div class="font-serif-tc font-bold tracking-cn">倒數計時器</div> </div> </div> <p class="text-sm leading-relaxed" style="color: var(--tw-text-secondary);"> 倒數到下一個節氣,規劃節氣養生或農事。 </p> </a><a href="/typhoon/" class="tool-card"> <div class="flex items-start gap-3 mb-3"> <div class="w-10 h-10 rounded grid place-items-center flex-shrink-0" style="background: var(--tw-page-bg); border: 1px solid var(--tw-border); color: var(--tw-hero-color);"> <svg aria-hidden="true"
+  class="w-5 h-5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+  <path d="M16 14v6" />
+  <path d="M8 14v6" />
+  <path d="M12 16v6" />
+</svg>
+ </div> <div> <div class="tool-index-num mb-0.5">№ 05</div> <div class="font-serif-tc font-bold tracking-cn">颱風停班停課</div> </div> </div> <p class="text-sm leading-relaxed" style="color: var(--tw-text-secondary);"> 颱風季與節氣相關(白露至霜降為盛行期)。 </p> </a> </div> </section> <section class="max-w-6xl mx-auto mb-16 pt-10 border-t" style="border-color: var(--tw-border);"> <div class="flex items-baseline justify-between mb-6"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl md:text-2xl font-bold tracking-cn">延伸閱讀</h3> </div> <span class="eyebrow hidden md:inline">3 READS</span> </div> <div class="grid md:grid-cols-3 gap-4"> <a href="/blog/summer-electricity-saving-2026/" class="related-card"> <div class="eyebrow mb-2">情報 · 04/30</div> <div class="font-serif-tc font-bold leading-snug mb-2 tracking-cn" style="font-size: 17px;"> 夏天電費怎麼省?2026 夏月電價詳解 </div> <p class="text-sm leading-relaxed" style="color: var(--tw-text-secondary);"> 夏至前後電費躍升,節氣可作為節電期程的時間錨點。 </p> </a><a href="/blog/holiday-2026/" class="related-card"> <div class="eyebrow mb-2">情報 · 03/14</div> <div class="font-serif-tc font-bold leading-snug mb-2 tracking-cn" style="font-size: 17px;"> 2026 國定假日總整理 </div> <p class="text-sm leading-relaxed" style="color: var(--tw-text-secondary);"> 清明、端午等傳統節日常落在節氣前後,搭配參考。 </p> </a><a href="/blog/japan-travel-guide/" class="related-card"> <div class="eyebrow mb-2">生活 · 04/07</div> <div class="font-serif-tc font-bold leading-snug mb-2 tracking-cn" style="font-size: 17px;"> 日本自由行必備攻略:行前準備到旅途中的工具 </div> <p class="text-sm leading-relaxed" style="color: var(--tw-text-secondary);"> 日本同樣使用 24 節氣,旅遊節慶安排可對照。 </p> </a> </div> </section> <footer class="border-t" style="border-color: var(--tw-border);"> <div class="max-w-6xl mx-auto pt-8 pb-2"> <div class="grid md:grid-cols-12 gap-6 items-center"> <div class="md:col-span-5 flex items-center gap-2"> <div class="w-8 h-8 rounded grid place-items-center" style="background: var(--tw-hero-color);"> <span class="font-serif-tc text-white text-base font-black">T</span> </div> <span class="font-serif-tc font-bold text-xl tracking-cn">TWTools</span> <span class="font-mono-tc text-xs ml-2" style="color: var(--tw-text-muted);"> 二十四節氣 </span> </div> <div class="md:col-span-7 flex flex-wrap gap-x-6 gap-y-2 md:justify-end text-sm" style="color: var(--tw-text-secondary);"> <a href="/" class="grow-underline">回首頁</a> <a href="/blog/" class="grow-underline">編輯室</a> <a href="/about/" class="grow-underline">關於</a> <a href="mailto:hi@twtools.cc" class="grow-underline">hi@twtools.cc</a> </div> </div> <div class="mt-6 pt-5 border-t flex flex-col md:flex-row md:items-center md:justify-between gap-2" style="border-color: var(--tw-border);"> <div class="font-mono-tc text-xs" style="color: var(--tw-text-muted);">
+© 2023–2026 TWTOOLS · MADE IN TAIWAN
+</div> <div class="flex items-center gap-2 eyebrow"> <span class="brand-dot"></span> 為打工牛馬而作
+</div> </div> </div> </footer> </main> </div> <script type="module" src="/_assets/solar-terms.astro_astro_type_script_index_0_lang.D0yWOPaL.js"></script>  </body></html>
