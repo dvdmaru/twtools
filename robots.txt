@@ -3,5 +3,6 @@ Allow: /
 Disallow: /admin.html
 Disallow: /seed_articles.html
 Disallow: /japan/
+Disallow: /sticker/
 
 Sitemap: https://twtools.cc/sitemap-index.xml
