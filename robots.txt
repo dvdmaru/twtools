@@ -5,4 +5,4 @@ Disallow: /seed_articles.html
 Disallow: /japan/
 Disallow: /sticker/
 
-Sitemap: https://twtools.cc/sitemap-index.xml
+Sitemap: https://twtools.cc/sitemap.xml
