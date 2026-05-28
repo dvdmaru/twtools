@@ -1,0 +1,288 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>SEO/GEO/AEO Scanner Tutorial: Understand Your Site Visibility in 30 Seconds | TWTools</title><meta name="description" content="Step-by-step tutorial for the TWTools SEO/GEO/AEO scanner. Learn what each of the 18 sub-metrics means and how to fix red flags — with real scan examples."><link rel="canonical" href="https://twtools.cc/blog/en/seo-geo-aeo-scanner-tutorial-2026/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog (English)" href="/blog/en/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:url" content="https://twtools.cc/blog/en/seo-geo-aeo-scanner-tutorial-2026/"><meta property="og:title" content="SEO/GEO/AEO Scanner Tutorial: Understand Your Site Visibility in 30 Seconds | TWTools"><meta property="og:description" content="Step-by-step tutorial for the TWTools SEO/GEO/AEO scanner. Learn what each of the 18 sub-metrics means and how to fix red flags — with real scan examples."><meta property="og:image" content="https://twtools.cc/blog-images/twtools-complete-guide-cover.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="SEO/GEO/AEO Scanner Tutorial: Understand Your Site Visibility in 30 Seconds"><meta property="og:locale" content="en_US"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="SEO/GEO/AEO Scanner Tutorial: Understand Your Site Visibility in 30 Seconds | TWTools"><meta name="twitter:description" content="Step-by-step tutorial for the TWTools SEO/GEO/AEO scanner. Learn what each of the 18 sub-metrics means and how to fix red flags — with real scan examples."><meta name="twitter:image" content="https://twtools.cc/blog-images/twtools-complete-guide-cover.jpg"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0WTK2LJFTY');
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            /* Morandi Dusty Rose — TWTools 品牌色（OKLCH hue 22） */
+            brand: {
+              50:  '#fceeed',
+              100: '#f2dbda',
+              200: '#e0b9b7',
+              300: '#ca9592',
+              400: '#af7472',
+              500: '#935e5c',
+              600: '#764a49',
+              700: '#583937',
+              800: '#3e2726',
+              900: '#281818',
+              950: '#110c08'
+            },
+            /* 奶油暖灰中性色（OKLCH hue 60） */
+            warm: {
+              50:  '#fcf3ed',
+              100: '#f1e5dc',
+              200: '#e3d0c2',
+              300: '#c9b3a2',
+              400: '#a99483',
+              500: '#887769',
+              600: '#6e6055',
+              700: '#564b42',
+              800: '#3e3630',
+              900: '#2b2520',
+              950: '#15110d'
+            },
+            /* 暖琥珀強調色（OKLCH hue 75） */
+            accent: {
+              50:  '#fdf4e7',
+              100: '#f8e5cb',
+              200: '#eecb9a',
+              300: '#e1ad63',
+              400: '#d49838',
+              500: '#b68028',
+              600: '#906520',
+              700: '#6b4c1d',
+              800: '#4b3617',
+              900: '#32230e',
+              950: '#181005'
+            }
+          }
+        }
+      }
+    }
+  </script><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/BaseLayout.BK2W_m_f.css"></head> <body class="min-h-screen paper-noise">   <button id="sidebar-hamburger" class="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg" style="background:var(--tw-surface);color:var(--tw-text-primary)">☰</button>  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 md:hidden hidden"></div>  <aside id="sidebar-panel" class="fixed top-0 left-0 h-full w-56 z-40 flex flex-col border-r transition-transform -translate-x-full md:translate-x-0" style="background:var(--tw-page-bg);border-color:var(--tw-border)"> <!-- Logo --> <div class="p-4 border-b flex items-center justify-between" style="border-color:var(--tw-border)"> <a href="/" class="flex items-center no-underline"> <img src="data:image/png;base64,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" alt="TWTools" class="w-7 h-7 rounded-lg"> <span class="text-sm font-bold ml-1.5" style="color:var(--tw-brand-accent)">TWTools</span> </a> <button id="sidebar-close" class="md:hidden text-lg leading-none" style="color:var(--tw-text-muted)">✕</button> </div> <!-- Nav items grouped by category --> <nav class="flex-1 py-2 overflow-y-auto"> <div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">檔案處理</div> <a href="/image/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🖼️</span> 圖片工具  </a><a href="/pdf/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📄</span> PDF 工具  </a><a href="/resume/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📋</span> 履歷產生器  </a><a href="/proofread/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">✍️</span> 錯別字檢查  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">生活查詢</div> <a href="/typhoon/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌀</span> 颱風停班停課  </a><a href="/lottery/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎰</span> 台灣彩券  </a><a href="/currency/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💱</span> 匯率換算  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">計算換算</div> <a href="/datecalc/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📅</span> 日期計算器  </a><a href="/countdown/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⏳</span> 倒數計時器  </a><a href="/unit/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📏</span> 單位換算  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">查詢工具</div> <a href="/postal/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📮</span> 郵遞區號  </a><a href="/address/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌐</span> 地址中譯英  </a><a href="/lunar/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 農曆國曆  </a><a href="/solar-terms/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☀️</span> 二十四節氣  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">站長工具</div> <a href="/seo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📊</span> SEO/GEO/AEO  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">更多</div> <a href="/blog/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-r-2" style="background:rgba(107,115,148,0.15);color:var(--tw-brand-accent);border-color:var(--tw-brand-accent)"> <span class="text-base">📝</span> 知識文章  </a> </div> <!-- TripCraft --> <a href="/trip/" target="_blank" rel="noopener" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-t mt-1" style="color:var(--tw-text-muted);border-color:var(--tw-border)"> <span class="text-base">✈️</span>
+AI 旅行規劃
+<span class="ml-auto text-xs" style="color:var(--tw-text-muted)">↗</span> </a> </nav> <div class="p-3 border-t text-xs text-center space-y-1" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <div class="flex justify-center gap-3"> <a href="/about/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">關於</a> <a href="/privacy/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">隱私權</a> <a href="/terms/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">條款</a> </div>
+打工牛馬的線上工具箱 © 2026
+</div> </aside>  <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8 min-h-screen" style="background:var(--tw-page-bg)">   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"SEO/GEO/AEO Scanner Tutorial: Understand Your Site Visibility in 30 Seconds","description":"Step-by-step tutorial for the TWTools SEO/GEO/AEO scanner. Learn what each of the 18 sub-metrics means and how to fix red flags — with real scan examples.","image":"https://twtools.cc/blog-images/twtools-complete-guide-cover.jpg","datePublished":"2026-05-26T00:00:00+08:00","dateModified":"2026-05-26T00:00:00+08:00","author":{"@type":"Organization","name":"TWTools Editorial","url":"https://twtools.cc"},"publisher":{"@type":"Organization","name":"TWTools","url":"https://twtools.cc","logo":{"@type":"ImageObject","url":"https://twtools.cc/favicon.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://twtools.cc/blog/en/seo-geo-aeo-scanner-tutorial-2026/"},"inLanguage":"en","keywords":"SEO audit tool, website health check, GEO optimization, AEO optimization, three-axis scan, SEO score, AI search optimization, TWTools SEO"}</script> <div class="max-w-3xl mx-auto px-4 py-8"> <!-- Navigation --> <div class="flex items-center gap-4 mb-6"> <a href="/blog/" class="text-sm transition-colors" style="color:var(--tw-brand-accent)">
+← Articles
+</a> <a href="/blog/seo-geo-aeo-scanner-tutorial-2026/" class="text-sm transition-colors ml-auto" style="color:var(--tw-brand-accent)">
+🇹🇼 Chinese
+</a> </div> <!-- Article header --> <article> <header class="mb-8"> <h1 class="text-2xl md:text-3xl font-bold mb-3" style="color:var(--tw-text-primary)">SEO/GEO/AEO Scanner Tutorial: Understand Your Site Visibility in 30 Seconds</h1> <div class="flex items-center gap-4 text-sm" style="color:var(--tw-text-muted)"> <span>Webmaster Tools</span> <span>·</span> <time datetime="2026-05-26"> May 26, 2026 </time> <span>·</span> <span>8 min</span> </div> </header> <!-- Hero cover image (Phase A: 30 print-style 1200x630 covers shipped 2026-05-10) --> <img src="/blog-images/twtools-complete-guide-cover.jpg" alt="SEO/GEO/AEO Scanner Tutorial: Understand Your Site Visibility in 30 Seconds" class="w-full mb-10 rounded" style="aspect-ratio: 1200/630; object-fit: cover; border: 1px solid var(--tw-border); background: var(--tw-surface);" loading="eager" fetchpriority="high"> <!-- Article content (rendered Markdown) --> <div class="prose max-w-none
+                  prose-headings:text-brand-600 prose-headings:font-bold
+                  prose-p:leading-relaxed
+                  prose-strong:text-brand-800
+                  prose-a:text-brand-500 prose-a:hover:text-brand-400" style="color:var(--tw-text-secondary)"> <p>Have you ever wondered: your site ranks fine on Google, but when someone asks ChatGPT or Perplexity a related question, your site is never mentioned?</p>
+<p>In 2026, “website visibility” goes beyond Google rankings. <strong>Search engines, AI generative engines, and answer engines</strong> are splitting traffic three ways. How does your site score on each path? The TWTools three-axis scanner tells you in 30 seconds.</p>
+<p>This is a complete walkthrough — from “paste your URL” to “read the report” to “fix the issues.”</p>
+<h2 id="what-are-the-three-axes-a-1-minute-primer">What Are the Three Axes? A 1-Minute Primer</h2>
+<p>Before scanning, understand what each axis measures:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Axis</th><th>Full Name</th><th>One-Line Explanation</th><th>Traffic Source</th></tr></thead><tbody><tr><td><strong>SEO</strong></td><td>Search Engine Optimization</td><td>Google organic ranking fundamentals</td><td>google.com organic results</td></tr><tr><td><strong>GEO</strong></td><td>Generative Engine Optimization</td><td>Will AI engines cite your site?</td><td>ChatGPT / Claude / Perplexity / Gemini</td></tr><tr><td><strong>AEO</strong></td><td>Answer Engine Optimization</td><td>Can you claim “position zero”?</td><td>Google Featured Snippets + AI Overview</td></tr></tbody></table>
+<p>You probably know SEO well. <strong>GEO and AEO became critical in 2025-2026.</strong> The three-axis scanner checks all three at once — no need to run separate tools.</p>
+<h2 id="step-1-open-the-scanner-and-paste-your-url">Step 1: Open the Scanner and Paste Your URL</h2>
+<ol>
+<li>Go to the <a href="/seo/">TWTools Three-Axis Scanner</a></li>
+<li>Paste the URL you want to scan (homepage or any page)</li>
+<li>Click “Start Scan”</li>
+</ol>
+<p>The scan runs through 6 stages in real time: fetch HTML → check robots.txt → inspect sitemap → parse JSON-LD → run 18 rules → generate suggestions. <strong>About 30 seconds total</strong>, no login or email required.</p>
+<p>⚠️ <strong>Common issue</strong>: If the URL returns 403 or times out, the target server is likely blocking fetch requests. Try a different page, or check if the site has a WAF (Web Application Firewall).</p>
+<h2 id="step-2-read-the-three-axis-scores">Step 2: Read the Three-Axis Scores</h2>
+<p>After scanning, you see three scores from 0 to 100:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Score Range</th><th>Meaning</th><th>Action</th></tr></thead><tbody><tr><td><strong>80-100</strong></td><td>Excellent — solid fundamentals</td><td>Maintain; fine-tune details</td></tr><tr><td><strong>60-79</strong></td><td>Passing — clear room for improvement</td><td>Fix red indicators first</td></tr><tr><td><strong>40-59</strong></td><td>Below average — multiple gaps</td><td>Follow the suggestion list</td></tr><tr><td><strong>0-39</strong></td><td>Critical</td><td>Review your site architecture</td></tr></tbody></table>
+<p>On average, <strong>Taiwan SME websites score 50-65 on SEO, much lower on GEO</strong> (many sites have never optimized for AI engines). If your first scan lands 70+ across all three axes, you are ahead of most competitors.</p>
+<h2 id="step-3-drill-into-the-18-sub-metrics">Step 3: Drill Into the 18 Sub-Metrics</h2>
+<p>The total score comes from 18 weighted sub-metrics, 6 per axis:</p>
+<h3 id="seo-axis-traditional-search">SEO Axis (Traditional Search)</h3>
+<ul>
+<li><strong>Performance</strong>: Page response time, critical issues</li>
+<li><strong>On-Page Structure</strong>: H1/H2 hierarchy, internal links, image alt coverage</li>
+<li><strong>Technical SEO</strong>: robots.txt / sitemap / canonical correctness</li>
+<li><strong>Meta Tags</strong>: title / description length and quality</li>
+<li><strong>Mobile-Friendly</strong>: viewport settings, touch target sizes</li>
+<li><strong>Page Speed</strong>: HTML size, blocking resources</li>
+</ul>
+<h3 id="geo-axis-generative-engine">GEO Axis (Generative Engine)</h3>
+<ul>
+<li><strong>Citability</strong>: Does content contain clear factual statements AI can cite?</li>
+<li><strong>AI Crawler Access</strong>: Does robots.txt allow GPTBot / ClaudeBot / PerplexityBot (10 AI bots)?</li>
+<li><strong>Structured Data</strong>: JSON-LD schema types and completeness</li>
+<li><strong>E-E-A-T Signals</strong>: Author info, organization info, expertise evidence</li>
+<li><strong>Brand Authority</strong>: Organization schema, sameAs external links</li>
+<li><strong>Multi-Platform Signals</strong>: Consistent brand presence across authoritative platforms</li>
+</ul>
+<h3 id="aeo-axis-answer-engine">AEO Axis (Answer Engine)</h3>
+<ul>
+<li><strong>Answer Paragraph</strong>: Do the first 150 words contain a concise direct answer?</li>
+<li><strong>FAQ Structure</strong>: FAQ schema or Q&#x26;A format present?</li>
+<li><strong>Snippet Ready</strong>: Is the content format easy for Google to extract as a Featured Snippet?</li>
+<li><strong>HowTo Structure</strong>: Does step-by-step content have HowTo schema?</li>
+<li><strong>Question Headings</strong>: Are H2/H3 phrased as questions (“How to…” / “Why…”)?</li>
+<li><strong>PAA Friendly</strong>: Does content align with “People Also Ask” patterns?</li>
+</ul>
+<p>Each sub-metric is color-coded: <strong>green = pass, yellow = improvable, red = needs fix.</strong> Click through to the detail page for specific how-to-fix instructions.</p>
+<h2 id="step-4-fix-by-priority">Step 4: Fix by Priority</h2>
+<p>At the bottom of results, a suggestion list is sorted by <strong>severity</strong>. The approach:</p>
+<p><strong>Fix reds first, then yellows. Greens need no action.</strong></p>
+<p>The most common red flags and their fixes:</p>
+<h3 id="all-ai-crawlers-blocked-most-common-geo-red">“All AI Crawlers Blocked” (Most Common GEO Red)</h3>
+<p>Many sites’ robots.txt looks like this:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>User-agent: GPTBot</span></span>
+<span class="line"><span>Disallow: /</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>User-agent: ClaudeBot</span></span>
+<span class="line"><span>Disallow: /</span></span></code></pre>
+<p>This means you are actively blocking ChatGPT and Claude. If you want AI engines to cite you, <strong>remove those Disallow lines</strong> or change them to <code>Allow: /</code>.</p>
+<h3 id="missing-organization-json-ld-geo--seo-cross-axis-impact">”Missing Organization JSON-LD” (GEO + SEO Cross-Axis Impact)</h3>
+<p>This structured data tells search engines and AI “who runs this site.” Without it, your brand has no identity in AI engines. Adding it is straightforward — a JSON-LD block in your <code>&#x3C;head></code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "@context"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"https://schema.org"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "@type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Organization"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Your Brand"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "url"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"https://yoursite.com"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "logo"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"https://yoursite.com/logo.png"</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="no-answer-paragraph-common-aeo-yellow">“No Answer Paragraph” (Common AEO Yellow)</h3>
+<p>Google Featured Snippets prefer a direct answer in the first 150 words. If your page opens with “Welcome to our website. We are a company founded in…”, AI does not know what to extract. <strong>Put the core answer in paragraph one, then elaborate.</strong></p>
+<h2 id="step-5-rescan-after-changes">Step 5: Rescan After Changes</h2>
+<p>After fixing issues, scan the same URL again. <strong>Score changes are instant</strong> because the scanner uses pure rule-based scoring (no LLM inference). Same page, same HTML, same score — every time.</p>
+<p>The scanner stores your score history in <strong>localStorage</strong> (browser-only, nothing uploaded), so you can track improvement trends.</p>
+<p>⚠️ If you changed robots.txt or JSON-LD but the score did not change, verify: (1) Is the change deployed to production? (2) Is the CDN cache cleared? The scanner fetches the live version, not your localhost.</p>
+<h2 id="faq">FAQ</h2>
+<p><strong>Q1: Does it scan just one page or the whole site?</strong></p>
+<p>One page per scan. Whichever URL you paste, that is what gets scanned. For a site-wide picture, scan at least three pages: homepage, an important article, and a product/service page.</p>
+<p><strong>Q2: Is the score relative to competitors?</strong></p>
+<p>No — scores are absolute (rule-based 0-100), not a relative ranking. Based on our data, Taiwan business sites average ~55 on SEO, ~35 on GEO, ~28 on AEO. GEO and AEO are universally low because most sites have not started AI-related optimization.</p>
+<p><strong>Q3: Is there a usage limit?</strong></p>
+<p>No. Unlimited scans, no login, no email. Hosted on Cloudflare free tier — scan as many times as you want.</p>
+<p><strong>Q4: What does “rule-based scoring” mean?</strong></p>
+<p>Every point comes from an explicit condition (e.g., “Organization JSON-LD present = +X points”), with zero AI model inference. Results are <strong>reproducible and explainable</strong> — same page scanned ten times, same score every time. Each deduction links to a <a href="/seo/">detail page</a> with fix instructions.</p>
+<h2 id="next-steps">Next Steps</h2>
+<p>If GEO and AEO are new to you, read this companion article: <a href="/blog/2026-geo-guide-taiwan-perspective/">2026 GEO Complete Guide: A Taiwan Webmaster’s Perspective</a> for deeper context on why AI engines require separate optimization.</p>
+<p><strong><a href="/seo/">Scan your website now →</a></strong></p> </div> </article> <!-- Prev / Next article navigation --> <div class="mt-12 pt-6 border-t" style="border-color:var(--tw-border)"> <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"> <a href="/blog/en/why-seo-alone-not-enough-2026/" class="group block rounded-xl p-4 transition-colors border" style="border-color:var(--tw-border);background:var(--tw-surface)"> <span class="text-xs block mb-1" style="color:var(--tw-text-muted)">← Previous</span> <span class="text-sm font-medium group-hover:opacity-80 transition-opacity" style="color:var(--tw-brand-accent)">Why SEO Alone Is Not Enough in 2026: The Three Traffic Channels You Are Missing</span> </a> <div></div> </div> </div> <!-- Bottom back link --> <div class="mt-6 flex items-center justify-between"> <a href="/blog/" class="text-sm transition-colors" style="color:var(--tw-brand-accent)">
+← Back to Articles
+</a> <a href="/blog/seo-geo-aeo-scanner-tutorial-2026/" class="text-sm transition-colors" style="color:var(--tw-brand-accent)">
+🇹🇼 Chinese
+</a> </div> </div>  </main>  <script>
+    (function() {
+      var hamburger = document.getElementById('sidebar-hamburger');
+      var overlay = document.getElementById('sidebar-overlay');
+      var panel = document.getElementById('sidebar-panel');
+      var closeBtn = document.getElementById('sidebar-close');
+
+      function openSidebar() {
+        panel.classList.remove('-translate-x-full');
+        panel.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+      }
+      function closeSidebar() {
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+
+      if (hamburger) hamburger.addEventListener('click', openSidebar);
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    })();
+  </script>  </body></html>
