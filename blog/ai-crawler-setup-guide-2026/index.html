@@ -1,0 +1,711 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>10 種 AI 爬蟲完整設定指南：從 GPTBot、ClaudeBot 到 Bytespider，台灣站長最常踩的 robots.txt 坑 | TWTools</title><meta name="description" content="想被 ChatGPT、Claude、Perplexity 引用，第一關不是寫好內容，而是讓它們的爬蟲進得來。這篇逐一拆解 10 種你一定要認識的 AI 爬蟲（訓練型、搜尋型、即時抓取型各有差別）、robots.txt 正確寫法與優先規則，並比較 Cloudflare、Vercel、Zeabur 三大部署平台的預設行為差異——附台灣站長最常踩的 4 個坑與即時掃描工具。"><link rel="canonical" href="https://twtools.cc/blog/ai-crawler-setup-guide-2026/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:url" content="https://twtools.cc/blog/ai-crawler-setup-guide-2026/"><meta property="og:title" content="10 種 AI 爬蟲完整設定指南：從 GPTBot、ClaudeBot 到 Bytespider，台灣站長最常踩的 robots.txt 坑 | TWTools"><meta property="og:description" content="想被 ChatGPT、Claude、Perplexity 引用，第一關不是寫好內容，而是讓它們的爬蟲進得來。這篇逐一拆解 10 種你一定要認識的 AI 爬蟲（訓練型、搜尋型、即時抓取型各有差別）、robots.txt 正確寫法與優先規則，並比較 Cloudflare、Vercel、Zeabur 三大部署平台的預設行為差異——附台灣站長最常踩的 4 個坑與即時掃描工具。"><meta property="og:image" content="https://twtools.cc/blog-images/twtools-complete-guide-cover.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="10 種 AI 爬蟲完整設定指南：從 GPTBot、ClaudeBot 到 Bytespider，台灣站長最常踩的 robots.txt 坑"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="10 種 AI 爬蟲完整設定指南：從 GPTBot、ClaudeBot 到 Bytespider，台灣站長最常踩的 robots.txt 坑 | TWTools"><meta name="twitter:description" content="想被 ChatGPT、Claude、Perplexity 引用，第一關不是寫好內容，而是讓它們的爬蟲進得來。這篇逐一拆解 10 種你一定要認識的 AI 爬蟲（訓練型、搜尋型、即時抓取型各有差別）、robots.txt 正確寫法與優先規則，並比較 Cloudflare、Vercel、Zeabur 三大部署平台的預設行為差異——附台灣站長最常踩的 4 個坑與即時掃描工具。"><meta name="twitter:image" content="https://twtools.cc/blog-images/twtools-complete-guide-cover.jpg"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0WTK2LJFTY');
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            /* Morandi Dusty Rose — TWTools 品牌色（OKLCH hue 22） */
+            brand: {
+              50:  '#fceeed',
+              100: '#f2dbda',
+              200: '#e0b9b7',
+              300: '#ca9592',
+              400: '#af7472',
+              500: '#935e5c',
+              600: '#764a49',
+              700: '#583937',
+              800: '#3e2726',
+              900: '#281818',
+              950: '#110c08'
+            },
+            /* 奶油暖灰中性色（OKLCH hue 60） */
+            warm: {
+              50:  '#fcf3ed',
+              100: '#f1e5dc',
+              200: '#e3d0c2',
+              300: '#c9b3a2',
+              400: '#a99483',
+              500: '#887769',
+              600: '#6e6055',
+              700: '#564b42',
+              800: '#3e3630',
+              900: '#2b2520',
+              950: '#15110d'
+            },
+            /* 暖琥珀強調色（OKLCH hue 75） */
+            accent: {
+              50:  '#fdf4e7',
+              100: '#f8e5cb',
+              200: '#eecb9a',
+              300: '#e1ad63',
+              400: '#d49838',
+              500: '#b68028',
+              600: '#906520',
+              700: '#6b4c1d',
+              800: '#4b3617',
+              900: '#32230e',
+              950: '#181005'
+            }
+          }
+        }
+      }
+    }
+  </script><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/BaseLayout.BK2W_m_f.css"></head> <body class="min-h-screen paper-noise">   <button id="sidebar-hamburger" class="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg" style="background:var(--tw-surface);color:var(--tw-text-primary)">☰</button>  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 md:hidden hidden"></div>  <aside id="sidebar-panel" class="fixed top-0 left-0 h-full w-56 z-40 flex flex-col border-r transition-transform -translate-x-full md:translate-x-0" style="background:var(--tw-page-bg);border-color:var(--tw-border)"> <!-- Logo --> <div class="p-4 border-b flex items-center justify-between" style="border-color:var(--tw-border)"> <a href="/" class="flex items-center no-underline"> <img src="data:image/png;base64,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" alt="TWTools" class="w-7 h-7 rounded-lg"> <span class="text-sm font-bold ml-1.5" style="color:var(--tw-brand-accent)">TWTools</span> </a> <button id="sidebar-close" class="md:hidden text-lg leading-none" style="color:var(--tw-text-muted)">✕</button> </div> <!-- Nav items grouped by category --> <nav class="flex-1 py-2 overflow-y-auto"> <div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">檔案處理</div> <a href="/image/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🖼️</span> 圖片工具  </a><a href="/pdf/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📄</span> PDF 工具  </a><a href="/resume/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📋</span> 履歷產生器  </a><a href="/proofread/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">✍️</span> 錯別字檢查  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">生活查詢</div> <a href="/typhoon/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌀</span> 颱風停班停課  </a><a href="/lottery/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎰</span> 台灣彩券  </a><a href="/currency/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💱</span> 匯率換算  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">計算換算</div> <a href="/datecalc/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📅</span> 日期計算器  </a><a href="/countdown/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⏳</span> 倒數計時器  </a><a href="/unit/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📏</span> 單位換算  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">查詢工具</div> <a href="/postal/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📮</span> 郵遞區號  </a><a href="/address/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌐</span> 地址中譯英  </a><a href="/lunar/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 農曆國曆  </a><a href="/solar-terms/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☀️</span> 二十四節氣  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">站長工具</div> <a href="/seo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📊</span> SEO/GEO/AEO  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">更多</div> <a href="/blog/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-r-2" style="background:rgba(107,115,148,0.15);color:var(--tw-brand-accent);border-color:var(--tw-brand-accent)"> <span class="text-base">📝</span> 知識文章  </a> </div> <!-- TripCraft --> <a href="/trip/" target="_blank" rel="noopener" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-t mt-1" style="color:var(--tw-text-muted);border-color:var(--tw-border)"> <span class="text-base">✈️</span>
+AI 旅行規劃
+<span class="ml-auto text-xs" style="color:var(--tw-text-muted)">↗</span> </a> </nav> <div class="p-3 border-t text-xs text-center space-y-1" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <div class="flex justify-center gap-3"> <a href="/about/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">關於</a> <a href="/privacy/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">隱私權</a> <a href="/terms/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">條款</a> </div>
+打工牛馬的線上工具箱 © 2026
+</div> </aside>  <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8 min-h-screen" style="background:var(--tw-page-bg)">   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"10 種 AI 爬蟲完整設定指南：從 GPTBot、ClaudeBot 到 Bytespider，台灣站長最常踩的 robots.txt 坑","description":"想被 ChatGPT、Claude、Perplexity 引用，第一關不是寫好內容，而是讓它們的爬蟲進得來。這篇逐一拆解 10 種你一定要認識的 AI 爬蟲（訓練型、搜尋型、即時抓取型各有差別）、robots.txt 正確寫法與優先規則，並比較 Cloudflare、Vercel、Zeabur 三大部署平台的預設行為差異——附台灣站長最常踩的 4 個坑與即時掃描工具。","image":"https://twtools.cc/blog-images/twtools-complete-guide-cover.jpg","datePublished":"2026-05-31T00:00:00+08:00","dateModified":"2026-05-31T00:00:00+08:00","author":{"@type":"Organization","name":"TWTools 編輯部","url":"https://twtools.cc"},"publisher":{"@type":"Organization","name":"TWTools","url":"https://twtools.cc","logo":{"@type":"ImageObject","url":"https://twtools.cc/favicon.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://twtools.cc/blog/ai-crawler-setup-guide-2026/"},"inLanguage":"zh-Hant-TW","keywords":"AI 爬蟲, robots.txt 設定, GPTBot, ClaudeBot, PerplexityBot, Google-Extended, GEO 優化, AI 爬蟲開放, Cloudflare AI 爬蟲, 台灣 SEO 2026"}</script>  <nav class="max-w-5xl mx-auto px-2 md:px-6 pt-2 pb-4 no-print" aria-label="breadcrumb"> <ol class="flex items-center gap-2 text-sm flex-wrap m-0 p-0 list-none" style="color: var(--tw-text-muted);"> <li><a href="/" class="grow-underline">首頁</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><a href="/blog/" class="grow-underline">編輯室</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><span style="color: var(--tw-text-primary);">站長工具</span></li> </ol> </nav>  <section class="max-w-5xl mx-auto px-2 md:px-6 pb-6"> <div class="article-col"> <div class="flex items-center gap-3 mb-5 flex-wrap"> <span class="brand-dot"></span> <span class="eyebrow">站長工具</span> <span class="printrule hidden md:inline">|</span> <span class="eyebrow">15 分鐘</span> <span class="printrule hidden md:inline">|</span> <span class="updated-pill"><span class="pulse-dot"></span>UPDATED · 2026 / 05 / 31</span> </div> <h1 class="font-serif-tc font-black tracking-cn" style="font-size: clamp(30px, 4.6vw, 52px); line-height: 1.15; color: var(--tw-hero-color); letter-spacing: -0.015em; margin: 0;"> 10 種 AI 爬蟲完整設定指南：從 GPTBot、ClaudeBot 到 Bytespider，台灣站長最常踩的 robots.txt 坑 </h1> <p class="font-serif-tc" style="margin: 24px 0 0; font-size: clamp(16px, 1.8vw, 19px); line-height: 1.65; color: var(--tw-text-secondary); font-weight: 400;"> 想被 ChatGPT、Claude、Perplexity 引用，第一關不是寫好內容，而是讓它們的爬蟲進得來。這篇逐一拆解 10 種你一定要認識的 AI 爬蟲（訓練型、搜尋型、即時抓取型各有差別）、robots.txt 正確寫法與優先規則，並比較 Cloudflare、Vercel、Zeabur 三大部署平台的預設行為差異——附台灣站長最常踩的 4 個坑與即時掃描工具。 </p> <div class="mt-8 pt-6 border-t flex items-center gap-x-6 gap-y-2 flex-wrap text-sm no-print" style="border-color: var(--tw-border); color: var(--tw-text-muted);"> <span class="inline-flex items-center gap-2"> <span class="w-7 h-7 rounded-full grid place-items-center" style="background: var(--tw-hero-color); color: #fffbfa; font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 12px;">編</span> <span style="color: var(--tw-text-secondary);">TWTools 編輯部</span> </span> <span class="printrule">|</span> <time datetime="2026-05-31">2026 / 05 / 31</time> <span class="ml-auto inline-flex items-center gap-3"> <a href="/blog/en/ai-crawler-setup-guide-2026/" class="grow-underline inline-flex items-center gap-1.5"> <svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="12" cy="12" r="10" />
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+  <path d="M2 12h20" />
+</svg>
+English
+</a> <button type="button" id="print-link" class="grow-underline inline-flex items-center gap-1.5" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0; font: inherit;"> <svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+  <rect x="6" y="14" width="12" height="8" rx="1" />
+</svg>
+列印
+</button> </span> </div> </div> </section>  <figure class="max-w-5xl mx-auto px-2 md:px-6 mb-8 figure"> <div class="article-col"> <img src="/blog-images/twtools-complete-guide-cover.jpg" alt="10 種 AI 爬蟲完整設定指南：從 GPTBot、ClaudeBot 到 Bytespider，台灣站長最常踩的 robots.txt 坑" class="hero-cover" style="width: 100%; object-fit: cover; background: var(--tw-surface);" loading="eager" fetchpriority="high"> <figcaption><em>10 種 AI 爬蟲完整設定指南：從 GPTBot、ClaudeBot 到 Bytespider，台灣站長最常踩的 robots.txt 坑</em> <span class="src">— ILLUSTRATION · TWTOOLS EDITORIAL</span></figcaption> </div> </figure> <article class="max-w-5xl mx-auto px-2 md:px-6 mb-12"> <div class="article-frame"> <aside class="article-margin no-print"> <div class="margin-label">站長工具 · 2026</div> </aside> <div class="prose-cn"> <!-- TOC --> <details class="toc-block no-print" open> <summary> <div class="toc-head"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 5h.01" />
+  <path d="M3 12h.01" />
+  <path d="M3 19h.01" />
+  <path d="M8 5h13" />
+  <path d="M8 12h13" />
+  <path d="M8 19h13" />
+</svg>
+ <span class="eyebrow">CONTENTS · 目次</span> <h3>本文 9 個段落</h3> </div> <svg aria-hidden="true"
+  class="w-4 h-4 toc-chev lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m6 9 6 6 6-6" />
+</svg>
+ </summary> <div class="toc-list"> <ol> <li> <a href="#ai-爬蟲跟-googlebot-到底哪裡不一樣"> <span class="toc-num">§ 01</span> <span class="toc-title">AI 爬蟲跟 Googlebot 到底哪裡不一樣？</span> </a> </li><li> <a href="#10-種你一定要認識的-ai-爬蟲"> <span class="toc-num">§ 02</span> <span class="toc-title">10 種你一定要認識的 AI 爬蟲</span> </a> </li><li> <a href="#robotstxt-怎麼寫才對跟著做一次"> <span class="toc-num">§ 03</span> <span class="toc-title">robots.txt 怎麼寫才對？跟著做一次</span> </a> </li><li> <a href="#cloudflarevercelzeabur三大部署平台的預設差異"> <span class="toc-num">§ 04</span> <span class="toc-title">Cloudflare、Vercel、Zeabur：三大部署平台的預設差異</span> </a> </li><li> <a href="#台灣站長最常踩的-4-個坑"> <span class="toc-num">§ 05</span> <span class="toc-title">台灣站長最常踩的 4 個坑</span> </a> </li><li> <a href="#那些不尊重-robotstxt的爬蟲怎麼辦"> <span class="toc-num">§ 06</span> <span class="toc-title">那些「不尊重 robots.txt」的爬蟲怎麼辦？</span> </a> </li><li> <a href="#動手檢查30-秒掃出自家站的-ai-爬蟲開放度"> <span class="toc-num">§ 07</span> <span class="toc-title">動手檢查：30 秒掃出自家站的 AI 爬蟲開放度</span> </a> </li><li> <a href="#常見問題"> <span class="toc-num">§ 08</span> <span class="toc-title">常見問題</span> </a> </li><li> <a href="#結語先把門打開再談被不被引用"> <span class="toc-num">§ 09</span> <span class="toc-title">結語：先把門打開，再談被不被引用</span> </a> </li> </ol> </div> </details> <p>先講一個越來越常見的場景。</p>
+<p>某家台灣做電商的公司，內容團隊很認真，部落格每週更新、文章寫得也好。但行銷主管發現：用 ChatGPT 或 Perplexity 問「台灣有哪些做 ○○ 的品牌」，答案裡從來沒有自己。檢查之下才發現問題不在內容——而是網站的 <code>robots.txt</code> 把所有 AI 爬蟲都擋在門外，他們完全不知道。</p>
+<p>2026 年，要被 AI 引擎引用，第一關從來不是「內容寫得好不好」，而是「AI 的爬蟲進不進得來」。內容再好，爬蟲進不來，等於不存在。</p>
+<p>這篇是一份完整的 AI 爬蟲設定指南，從「10 種你一定要認識的爬蟲」到「robots.txt 怎麼寫才對」到「三大部署平台的預設差異」，一步一步帶你把門打開。</p>
+<h2 id="ai-爬蟲跟-googlebot-到底哪裡不一樣">AI 爬蟲跟 Googlebot 到底哪裡不一樣？</h2>
+<p>傳統 SEO 你只要顧好一隻爬蟲：Googlebot。但 AI 時代多了一整群爬蟲，而且它們的行為跟 Googlebot 有 3 個關鍵差異：</p>
+<ol>
+<li><strong>數量多、分工細</strong>：光是 OpenAI 一家就有 3 隻不同用途的爬蟲，Google、Apple 各自又把「搜尋索引」和「AI 訓練」拆成不同的爬蟲名稱。</li>
+<li><strong>預設待遇不同</strong>：很多網站（尤其 WordPress 架的）對 Googlebot 是友善的，但對沒見過的 AI 爬蟲，可能被安全外掛或防火牆當成「可疑爬蟲」誤擋。</li>
+<li><strong>遵守程度參差</strong>：合規的爬蟲會老實看 <code>robots.txt</code>，但也有少數爬蟲被第三方實測「無視」規則——這是後面要單獨講的硬仗。</li>
+</ol>
+<p>要理解這些差異，得先搞懂 <code>robots.txt</code> 這個機制的本質。</p>
+<h3 id="robotstxt-是君子協定不是保全">robots.txt 是「君子協定」，不是「保全」</h3>
+<p><code>robots.txt</code> 是放在網站根目錄（<code>你的網域/robots.txt</code>）的一個純文字檔，用來告訴爬蟲「哪些頁面可以抓、哪些不要抓」。</p>
+<p>這套協定在 2022 年 9 月由 IETF 正式標準化為 RFC 9309（Robots Exclusion Protocol），把 1994 年沿用至今的慣例寫成正式標準。但要特別注意：<strong>它的本質是「自願遵守」</strong>。<code>robots.txt</code> 不會真的擋住任何人，它只是「請求」爬蟲不要進來。合規的爬蟲（GPTBot、ClaudeBot、Googlebot 等）會老實遵守；不合規的爬蟲可以選擇無視。</p>
+<p>換句話說：</p>
+<ul>
+<li>想「歡迎」AI 爬蟲 → <code>robots.txt</code> 寫對就有效，因為合規爬蟲會照做。</li>
+<li>想「真的擋住」惡意爬蟲 → <code>robots.txt</code> 不夠，要靠 WAF（Web Application Firewall）這種會真的拒絕連線的硬手段。</li>
+</ul>
+<p>這篇大部分篇幅是教你把門「打開」——因為對 99% 的台灣站長來說，問題不是擋太鬆，而是不小心擋太緊。</p>
+<h2 id="10-種你一定要認識的-ai-爬蟲">10 種你一定要認識的 AI 爬蟲</h2>
+<p>下表是 TWTools 三軸掃描器內建偵測的 10 個 AI bot，也是 2026 年台灣站長最需要顧到的清單。我把它們依「用途」分成 3 類，因為用途不同，你要不要開放的決策也不同。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>爬蟲 token</th><th>所屬公司</th><th>用途分類</th><th>遵守 robots.txt？</th></tr></thead><tbody><tr><td><code>GPTBot</code></td><td>OpenAI</td><td>訓練</td><td>是</td></tr><tr><td><code>OAI-SearchBot</code></td><td>OpenAI</td><td>搜尋索引</td><td>是</td></tr><tr><td><code>ChatGPT-User</code></td><td>OpenAI</td><td>即時抓取</td><td>是</td></tr><tr><td><code>ClaudeBot</code></td><td>Anthropic</td><td>訓練</td><td>是</td></tr><tr><td><code>anthropic-ai</code></td><td>Anthropic</td><td>舊版（已棄用）</td><td>—</td></tr><tr><td><code>Google-Extended</code></td><td>Google</td><td>訓練（非搜尋）</td><td>是</td></tr><tr><td><code>PerplexityBot</code></td><td>Perplexity</td><td>搜尋索引</td><td>是</td></tr><tr><td><code>CCBot</code></td><td>Common Crawl</td><td>公開資料集</td><td>是</td></tr><tr><td><code>Bytespider</code></td><td>ByteDance</td><td>訓練</td><td>有爭議</td></tr><tr><td><code>Applebot-Extended</code></td><td>Apple</td><td>訓練（非搜尋）</td><td>是</td></tr></tbody></table>
+<p>下面逐一說明，附上各家官方文件，方便你自己查證。</p>
+<h3 id="訓練型爬蟲抓你的內容去教模型">訓練型爬蟲：抓你的內容去「教」模型</h3>
+<p>這類爬蟲抓的內容，可能被拿去訓練生成式模型。</p>
+<ul>
+<li><strong><code>GPTBot</code>（OpenAI）</strong>：OpenAI 用來抓取內容、可能用於訓練未來模型的爬蟲。官方在 <a href="https://developers.openai.com/api/docs/bots">OpenAI 爬蟲文件</a> 列出完整說明與 IP 驗證清單。</li>
+<li><strong><code>ClaudeBot</code>（Anthropic）</strong>：Anthropic 收集公開網路內容、可能用於改進模型的爬蟲。官方在 <a href="https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler">Anthropic 爬蟲說明頁</a> 說明它會遵守 <code>robots.txt</code>。</li>
+<li><strong><code>anthropic-ai</code></strong>：這是常在舊教學文章看到的 token，但 Anthropic 現行官方文件已不再列它為現役爬蟲——它被視為<strong>已棄用的舊版 user-agent</strong>。掃描器仍會偵測它，是為了相容你站上可能殘留的舊規則；寫新規則時以 <code>ClaudeBot</code> 為準即可。</li>
+<li><strong><code>Google-Extended</code>（Google）</strong>：這是最容易被誤解的一個。它<strong>只</strong>控制你的內容「要不要被用於訓練 Google 的 AI 模型（Gemini、Vertex AI）」。根據 <a href="https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers">Google 官方爬蟲文件</a>，封鎖 <code>Google-Extended</code> <strong>不會影響</strong>你在 Google 搜尋的收錄與排名。更關鍵的一點下面「台灣站長最常踩的坑」會再講。</li>
+<li><strong><code>Applebot-Extended</code>（Apple）</strong>：控制你的內容要不要被用於訓練 Apple 的基礎模型（Apple Intelligence）。根據 <a href="https://support.apple.com/en-us/119829">Apple 官方說明</a>，封鎖它<strong>只擋訓練</strong>，不影響負責 Siri、Spotlight 索引的 <code>Applebot</code>。</li>
+<li><strong><code>CCBot</code>（Common Crawl）</strong>：非營利組織 Common Crawl 的爬蟲，抓取的公開資料集是眾多 AI 模型訓練資料的來源之一。它遵守 <code>robots.txt</code>，<a href="https://commoncrawl.org/ccbot">官方頁</a> 也提醒有假冒它的爬蟲，建議用 IP 反查驗證。</li>
+<li><strong><code>Bytespider</code>（ByteDance）</strong>：字節跳動的訓練爬蟲，後面單獨講它的爭議。</li>
+</ul>
+<h3 id="搜尋索引型爬蟲決定你會不會出現在-ai-答案來源">搜尋索引型爬蟲：決定你會不會出現在 AI 答案來源</h3>
+<p>這類爬蟲抓內容是為了「在 AI 搜尋結果裡呈現你、連回你」——對想被引用的站長來說，這類<strong>最該開放</strong>。</p>
+<ul>
+<li><strong><code>OAI-SearchBot</code>（OpenAI）</strong>：為 ChatGPT 的搜尋功能索引網站，讓你的站有機會出現在 ChatGPT 給出的來源連結裡。注意它<strong>不是</strong>訓練用，跟 <code>GPTBot</code> 是兩回事，可以分開控制。</li>
+<li><strong><code>PerplexityBot</code>（Perplexity）</strong>：用於在 Perplexity 的搜尋結果中呈現並連回你的網站。Perplexity <a href="https://docs.perplexity.ai/guides/bots">官方文件</a> 建議站長在 <code>robots.txt</code> 中允許它。</li>
+</ul>
+<h3 id="即時抓取型爬蟲使用者問問題的當下才來">即時抓取型爬蟲：使用者問問題的當下才來</h3>
+<p>這類爬蟲只在「使用者主動提問、需要讀某個網頁」時才即時抓取單一頁面，不做大規模索引。</p>
+<ul>
+<li><strong><code>ChatGPT-User</code>（OpenAI）</strong>：使用者在 ChatGPT 中提問、需要 ChatGPT 去讀某個網頁時才出動。</li>
+<li><strong>Perplexity-User（Perplexity）</strong>：跟上面對應。要特別提醒——Perplexity <a href="https://docs.perplexity.ai/guides/bots">官方文件</a> 明說這個即時 fetcher「一般會忽略 <code>robots.txt</code>」，理由是它代表使用者的主動要求，而非自動爬取。這點下面爭議段會再談。</li>
+</ul>
+<blockquote>
+<p>小結：如果你的目標是「被 AI 引用、被當成答案來源」，那麼<strong>搜尋索引型（<code>OAI-SearchBot</code>、<code>PerplexityBot</code>）和即時抓取型（<code>ChatGPT-User</code>）是你最不該擋的</strong>。至於訓練型（<code>GPTBot</code>、<code>ClaudeBot</code>、<code>Google-Extended</code>、<code>Applebot-Extended</code>、<code>CCBot</code>、<code>Bytespider</code>），要不要讓內容被拿去訓練，是你可以自己權衡的價值選擇——但要清楚：擋訓練型，不影響你被搜尋型引用。</p>
+</blockquote>
+<h2 id="robotstxt-怎麼寫才對跟著做一次">robots.txt 怎麼寫才對？跟著做一次</h2>
+<p>理解了爬蟲分類，接下來是動手。<code>robots.txt</code> 的語法其實只有 3 個核心指令：</p>
+<ul>
+<li><code>User-agent:</code> — 指定這段規則對哪隻爬蟲生效（<code>*</code> 代表「所有未被指名的爬蟲」）</li>
+<li><code>Allow:</code> — 允許抓取的路徑</li>
+<li><code>Disallow:</code> — 禁止抓取的路徑</li>
+</ul>
+<p>聽起來簡單，但有一個<strong>最容易出錯的優先規則</strong>，先講清楚。</p>
+<h3 id="你必須知道的優先規則">你必須知道的優先規則</h3>
+<p>根據 <a href="https://developers.google.com/crawling/docs/robots-txt/robots-txt-spec">Google 官方 robots.txt 規範</a>（也對應 RFC 9309）：</p>
+<ol>
+<li><strong>指名的 <code>User-agent</code> 群組會覆蓋 <code>*</code> 群組。</strong> 一旦某隻爬蟲（例如 <code>GPTBot</code>）有自己專屬的規則區塊，它就<strong>只看自己那段</strong>，完全不理會 <code>User-agent: *</code> 那段。這是最多人踩的坑——以為 <code>*</code> 是「全域預設」會疊加上去，其實不會。</li>
+<li><strong><code>Allow</code> 和 <code>Disallow</code> 之間，以「路徑最長（最具體）」者勝；長度相同時 <code>Allow</code> 優先。</strong> 指令書寫的先後順序不影響判定。</li>
+</ol>
+<p>第 1 點的實際後果是：如果你寫了 <code>User-agent: GPTBot</code> 的專屬區塊，卻只在裡面寫 <code>Disallow: /admin/</code>，<strong>那 GPTBot 對你整站其他頁面是「全開放」的</strong>——因為它不看 <code>*</code> 那段。反過來，如果你想對某隻爬蟲全擋，要在它自己的區塊明確寫 <code>Disallow: /</code>。</p>
+<h3 id="第一步先看自己現在的-robotstxt">第一步：先看自己現在的 robots.txt</h3>
+<p>打開瀏覽器，輸入 <code>你的網域/robots.txt</code>（例如 <code>https://twtools.cc/robots.txt</code>）。如果出現 404，代表你沒有 <code>robots.txt</code>——對 AI 爬蟲來說這是「預設全開放」，是好事，但建議還是建立一份明確的規則，以防未來平台政策改變（下面講 Cloudflare 時會看到為什麼）。</p>
+<h3 id="第二步確認沒有一行全擋">第二步：確認沒有「一行全擋」</h3>
+<p>最常見的災難是這一行：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>User-agent: *</span></span>
+<span class="line"><span>Disallow: /</span></span></code></pre>
+<p>這代表「禁止所有爬蟲抓任何頁面」。在傳統 SEO 時代，Googlebot 常有特殊白名單待遇，問題不明顯；但對 AI 爬蟲，這一行就是把 ChatGPT、Claude、Perplexity 全部關在門外。如果你看到它，這就是你流失 AI 流量的頭號嫌犯。</p>
+<h3 id="第三步明確開放想要的-ai-爬蟲">第三步：明確開放想要的 AI 爬蟲</h3>
+<p>最穩妥的寫法，是給每隻你想開放的爬蟲一個專屬區塊。例如，開放 OpenAI 與 Anthropic 的搜尋／即時抓取：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>User-agent: OAI-SearchBot</span></span>
+<span class="line"><span>Allow: /</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>User-agent: ChatGPT-User</span></span>
+<span class="line"><span>Allow: /</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>User-agent: PerplexityBot</span></span>
+<span class="line"><span>Allow: /</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>User-agent: ClaudeBot</span></span>
+<span class="line"><span>Allow: /</span></span></code></pre>
+<h3 id="第四步選擇性處理訓練型爬蟲">第四步：選擇性處理訓練型爬蟲</h3>
+<p>如果你<strong>願意</strong>讓內容被拿去訓練（換取更大的曝光潛力），就一併 <code>Allow</code> 訓練型爬蟲。如果你<strong>不願意</strong>，就明確 <code>Disallow</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>User-agent: GPTBot</span></span>
+<span class="line"><span>Disallow: /</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>User-agent: Google-Extended</span></span>
+<span class="line"><span>Disallow: /</span></span></code></pre>
+<p>再次強調：擋訓練型不影響搜尋型引用，也不影響 Google 一般搜尋排名。</p>
+<h3 id="第五步補上-sitemap-位置">第五步：補上 Sitemap 位置</h3>
+<p>最後，在 <code>robots.txt</code> 任一處加上你的 sitemap 位置，幫所有爬蟲更快找到你的頁面：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Sitemap: https://你的網域/sitemap.xml</span></span></code></pre>
+<p>寫完存檔、上傳到網站根目錄，這一關就完成了。</p>
+<h3 id="一份可以直接抄的完整範本">一份可以直接抄的完整範本</h3>
+<p>把上面 5 步組合起來，一份「歡迎搜尋型、即時型，擋掉純訓練型，並保護後台」的 <code>robots.txt</code> 長這樣：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span># 搜尋索引型 + 即時抓取型：全開放（這是被引用的關鍵）</span></span>
+<span class="line"><span>User-agent: OAI-SearchBot</span></span>
+<span class="line"><span>Allow: /</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>User-agent: ChatGPT-User</span></span>
+<span class="line"><span>Allow: /</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>User-agent: PerplexityBot</span></span>
+<span class="line"><span>Allow: /</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>User-agent: ClaudeBot</span></span>
+<span class="line"><span>Allow: /</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># 純訓練型：不貢獻訓練資料（可依你的價值選擇刪除這幾段改為 Allow）</span></span>
+<span class="line"><span>User-agent: GPTBot</span></span>
+<span class="line"><span>Disallow: /</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>User-agent: Google-Extended</span></span>
+<span class="line"><span>Disallow: /</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>User-agent: Applebot-Extended</span></span>
+<span class="line"><span>Disallow: /</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># 其他所有爬蟲（含 Googlebot 一般搜尋）：開放，但保護後台與內部頁</span></span>
+<span class="line"><span>User-agent: *</span></span>
+<span class="line"><span>Allow: /</span></span>
+<span class="line"><span>Disallow: /admin/</span></span>
+<span class="line"><span>Disallow: /private/</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Sitemap: https://你的網域/sitemap.xml</span></span></code></pre>
+<p>記得前面講的優先規則：上面每個指名區塊（如 <code>GPTBot</code>）只看自己那段，<strong>不會</strong>繼承 <code>User-agent: *</code> 的 <code>Disallow: /admin/</code>。如果你也想擋這些 AI 爬蟲抓後台，要在它們各自的區塊裡再補一行 <code>Disallow: /admin/</code>。</p>
+<h3 id="台灣案例twtools-自家的-robotstxt-怎麼寫">台灣案例：TWTools 自家的 robots.txt 怎麼寫</h3>
+<p>講範本可能還是抽象，直接看一個真實的台灣站。TWTools（twtools.cc）的 <code>robots.txt</code> 其實很簡潔：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>User-agent: *</span></span>
+<span class="line"><span>Allow: /</span></span>
+<span class="line"><span>Disallow: /admin.html</span></span>
+<span class="line"><span>Disallow: /seed_articles.html</span></span>
+<span class="line"><span>Disallow: /japan/</span></span>
+<span class="line"><span>Disallow: /sticker/</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Sitemap: https://twtools.cc/sitemap.xml</span></span></code></pre>
+<p>這份範例的設計邏輯，正好示範了「對想被引用的內容站」最常見、也最務實的策略：</p>
+<ol>
+<li><strong>不寫任何 per-bot 封鎖區塊</strong>：因為沒有指名 <code>GPTBot</code>、<code>ClaudeBot</code> 等任何一隻 AI 爬蟲，它們全部落入 <code>User-agent: *</code> 這個群組——而這個群組是 <code>Allow: /</code>，等於<strong>對前面那 10 個 AI bot 全部開放</strong>。這是「我要被引用」的站最簡單的做法：與其逐一 allow，不如預設全開、只擋例外。</li>
+<li><strong>只 Disallow 真正不該被收的內部頁</strong>：後台（<code>/admin.html</code>）、種子文章測試頁（<code>/seed_articles.html</code>）、以及兩個非主力的子目錄。這些頁面沒有被搜尋或 AI 引用的價值，擋掉乾淨。</li>
+<li><strong>明確列出 Sitemap</strong>：幫所有爬蟲（含 AI 爬蟲）更快找到全站頁面。</li>
+</ol>
+<p>如果你是內容型網站、目標是被 AI 引用，這種「<code>User-agent: *</code> 全開 + 針對性 Disallow + Sitemap」的寫法就很夠用，比逐一 allow 每隻 bot 更好維護——未來出現新的合規 AI 爬蟲，也會自動落入 <code>*</code> 群組被允許，不必每次改檔。</p>
+<h2 id="cloudflarevercelzeabur三大部署平台的預設差異">Cloudflare、Vercel、Zeabur：三大部署平台的預設差異</h2>
+<p>這是台灣站長最容易忽略、卻可能讓你「明明 robots.txt 寫對了還是被擋」的地方。<code>robots.txt</code> 是「你」對爬蟲的請求，但<strong>部署平台本身可能在更前面就用防火牆攔掉爬蟲</strong>，根本輪不到 <code>robots.txt</code> 生效。</p>
+<p>三個台灣常見平台的預設行為差很多：</p>
+<h3 id="cloudflare態度最積極注意新網域的預設選擇">Cloudflare：態度最積極，注意新網域的預設選擇</h3>
+<p>Cloudflare 在 2025 年 7 月 1 日宣布，成為第一家「預設封鎖未經許可 AI 爬蟲」的基礎設施供應商，並推出 Pay-Per-Crawl（讓站長對 AI 爬取收費）與 AI Audit 等功能（<a href="https://www.cloudflare.com/press/press-releases/2025/cloudflare-just-changed-how-ai-crawlers-scrape-the-internet-at-large/">官方新聞稿</a>）。</p>
+<p>這裡要很精確：官方的措辭是「<strong>新註冊網域在 sign-up 時會被詢問是否允許 AI 爬蟲</strong>」，讓站長在一開始就做出選擇，而不是「所有既有 Cloudflare 網站一夜之間全部自動封鎖」。所以正確理解是：</p>
+<ul>
+<li>如果你是<strong>新</strong>用 Cloudflare 的網域，setup 時就要留意這個選項——如果你想被 AI 引用，記得選「允許」。</li>
+<li>如果你<strong>已經</strong>在用 Cloudflare，去後台的 Bot 管理 / AI 爬蟲控制看一下你目前的設定，別讓平台層的封鎖蓋過你 <code>robots.txt</code> 的善意。</li>
+</ul>
+<p>對台灣大量使用 Cloudflare（含 Cloudflare Pages 免費託管）的站長來說，這一條最該檢查。</p>
+<h3 id="vercel預設不封鎖但封鎖-ai-bot規則預設是記錄">Vercel：預設不封鎖，但「封鎖 AI Bot」規則預設是「記錄」</h3>
+<p>根據 <a href="https://vercel.com/docs/bot-management">Vercel 官方文件</a>，Vercel <strong>預設不封鎖</strong> AI 爬蟲。即使你開啟它的 Bot 防護 Managed Ruleset，其中的「Block AI Bots」規則<strong>預設動作是 log（記錄）而非 deny（拒絕）</strong>——也就是說它預設只是「觀察」AI 爬蟲流量，不會真的擋。要真的封鎖，你得手動把動作改成 Deny。</p>
+<p>對站長的意義：用 Vercel 部署的站，AI 爬蟲預設進得來，你只要把 <code>robots.txt</code> 寫對就好，不太會發生「平台偷偷幫你擋」的情況。</p>
+<h3 id="zeabur官方無公開的預設封鎖政策">Zeabur：官方無公開的預設封鎖政策</h3>
+<p>Zeabur 是近年台灣與亞洲開發者很常用的部署平台。截至本文查核，<strong>Zeabur 官方並沒有公開「預設封鎖 AI 爬蟲」的政策文件</strong>。實務上可理解為：它不會主動幫你擋 AI 爬蟲，一切以你自己 <code>robots.txt</code> 與應用層設定為準。如果你用 Zeabur，重點放在把 <code>robots.txt</code> 寫對即可；若有疑慮，直接測一次（下面教）最準。</p>
+<blockquote>
+<p>一句話總結：<strong>Cloudflare 要主動檢查設定別誤擋；Vercel、Zeabur 預設放行、以你的 robots.txt 為準。</strong> 不確定的話，用掃描器實測自家站最快。</p>
+</blockquote>
+<h2 id="台灣站長最常踩的-4-個坑">台灣站長最常踩的 4 個坑</h2>
+<h3 id="坑-1wordpress-安全外掛誤擋ai-爬蟲">坑 1：WordPress 安全外掛「誤擋」AI 爬蟲</h3>
+<p>台灣大量中小企業官網用 WordPress。常見的安全外掛（Wordfence、Sucuri、All In One Security 等）為了防惡意爬蟲，會做 rate limiting 或防火牆規則。問題是：它們的「友善爬蟲白名單」通常包含 Google、Facebook，<strong>但不包含 OpenAI、Anthropic、Perplexity、Apple 這些較新的 AI 爬蟲</strong>。</p>
+<p>要說明的是，這些外掛並沒有一個叫做「只放行 Googlebot」的預設開關；比較準確的講法是——它們的一般防火牆／速率限制規則，<strong>可能在你不知情的情況下把 AI 爬蟲當成可疑流量誤擋</strong>，而且行為會隨外掛版本與你的設定而異（這部分依技術社群整理，非各外掛逐條官方文件）。所以與其猜，不如直接測：用掃描器掃自家站，看 AI bot 到底進不進得來。</p>
+<h3 id="坑-2誤以為封鎖-google-extended-就不會進-ai-overviews">坑 2：誤以為「封鎖 Google-Extended 就不會進 AI Overviews」</h3>
+<p>這是觀念上最大的坑。很多人想避開 Google 的 AI Overviews（搜尋結果頂端那段 AI 摘要），就去封鎖 <code>Google-Extended</code>——<strong>這完全沒用</strong>。</p>
+<p>根據 Google 官方說明，<code>Google-Extended</code> 只管「訓練」，而 AI Overviews 取材自 Google 的<strong>標準搜尋索引</strong>（也就是 <code>Googlebot</code> 抓的內容），並沒有獨立的爬蟲。換句話說：</p>
+<ul>
+<li>封鎖 <code>Google-Extended</code> → 只是不讓內容被拿去訓練 Gemini，<strong>擋不掉 AI Overviews</strong>。</li>
+<li>想完全不出現在 AI Overviews → 只能封鎖 <code>Googlebot</code>，但那等於放棄整個 Google 一般搜尋曝光，得不償失。</li>
+</ul>
+<p>順帶一提，微軟的 <code>Bingbot</code> 也是「一隻爬蟲兼做搜尋與 Copilot」，不像 Google 把訓練拆成獨立的 <code>Google-Extended</code>，所以你沒辦法只擋 Bing 的 AI 而保留 Bing 搜尋。</p>
+<h3 id="坑-3根本沒有-robotstxt卻以為沒設定安全">坑 3：根本沒有 robots.txt，卻以為「沒設定＝安全」</h3>
+<p>「沒有 <code>robots.txt</code>」對 AI 爬蟲來說是「預設全開放」。這本身對想被引用的站來說反而是好事，但有兩個隱憂：一是你無法精細控制（例如想擋訓練、開搜尋）；二是當平台層政策改變（像 Cloudflare 那樣），你沒有一份明確的 <code>robots.txt</code> 作為「我明示要開放」的依據。建議還是建立一份，把意圖寫清楚。</p>
+<h3 id="坑-4簡繁混用被-ai-歸類成非繁中內容">坑 4：簡繁混用，被 AI 歸類成「非繁中內容」</h3>
+<p>這是台灣獨有的問題。很多站長從中國的教學文章複製內容再改，或用簡體中文的 CMS 模板，結果頁面裡混進簡體字而不自知。對 AI 引擎來說這很致命——它可能把你的站歸類為簡體中文內容，在回答<strong>繁體中文</strong>問題時就不優先引用你。爬蟲開放是第一關，但內容語言一致性是第二關，兩關都要過。TWTools 三軸掃描器內建繁中比例與簡繁混用偵測，可以順手一起檢查。</p>
+<h2 id="那些不尊重-robotstxt的爬蟲怎麼辦">那些「不尊重 robots.txt」的爬蟲怎麼辦？</h2>
+<p>前面說 <code>robots.txt</code> 是君子協定。那遇到不是君子的爬蟲呢？這是 2025 年以來業界最熱的爭議，有兩個常被點名的案例，這裡把各方說法並陳，讓你自己判斷：</p>
+<ul>
+<li><strong>Bytespider（ByteDance）</strong>：多家第三方監測機構與報導（如 404 Media 引用 Kasada、Dark Visitors 的監測）指出，<code>Bytespider</code> 會無視 <code>robots.txt</code> 大量爬取。要強調的是，<strong>這是第三方監測說法，ByteDance 並沒有公開官方文件承認或否認</strong>，網路上流傳的「爬取量是 GPTBot 的數十倍」之類數字也都是第三方報導值，不是官方數據，看到請保留。</li>
+<li><strong>Perplexity</strong>：2025 年 8 月，Cloudflare 在<a href="https://blog.cloudflare.com/perplexity-is-using-stealth-undeclared-crawlers-to-evade-website-no-crawl-directives/">官方部落格</a>指控 Perplexity 在宣告的爬蟲被擋後，改用偽裝成一般瀏覽器、未宣告身分的爬蟲搭配輪換 IP 來規避封鎖，並因此把它從「已驗證爬蟲」名單除名。Perplexity 則公開反駁，主張那些是「代表使用者主動要求」的 user-driven agent，不算傳統爬蟲。雙方各執一詞，目前沒有定論。</li>
+</ul>
+<p>關鍵結論：<strong>對於確實不守規矩的爬蟲，<code>robots.txt</code> 沒有約束力</strong>。如果你真的要擋（基於頻寬成本或內容保護考量），唯一有效的手段是部署層的 WAF / Bot 管理（例如 Cloudflare 的 Bot 管理、或前面提到的平台級 AI 爬蟲封鎖），那才會在連線階段真的拒絕。但對大多數想「被引用」的台灣站長來說，這通常不是你要煩惱的方向——你的問題多半是「擋太多」而不是「擋太少」。</p>
+<h2 id="動手檢查30-秒掃出自家站的-ai-爬蟲開放度">動手檢查：30 秒掃出自家站的 AI 爬蟲開放度</h2>
+<p>講了這麼多規則，最快的驗收方式是直接掃一次。TWTools 在 <a href="/blog/2026-geo-guide-taiwan-perspective/">2026 GEO 完整指南</a> 文中內嵌了一個 <strong>robots.txt AI bot 即時掃描器</strong>：貼上你的網址，它會立刻告訴你前面那 10 個 AI bot（<code>GPTBot</code>、<code>ChatGPT-User</code>、<code>OAI-SearchBot</code>、<code>ClaudeBot</code>、<code>anthropic-ai</code>、<code>Google-Extended</code>、<code>PerplexityBot</code>、<code>CCBot</code>、<code>Bytespider</code>、<code>Applebot-Extended</code>）在你的 <code>robots.txt</code> 裡是被 allow 還是 disallow。資料只在你的瀏覽器裡跑，不會上傳。</p>
+<p>如果你想看的不只是爬蟲開放度，而是 AI 引擎眼中的完整體質，可以用 <a href="/seo/">TWTools 三軸掃描器</a> 做一次全面健檢——它把「AI 爬蟲開放」放在 GEO 軸，連同可引用性、結構化資料、E-E-A-T、品牌權威一起評分。爬蟲開放度的單項評分規則與修法，也可以參考 <a href="/seo/metric/geo/crawlers/">AI 爬蟲開放度指標說明頁</a>。</p>
+<p>掃出來如果有紅字，回到本文「robots.txt 怎麼寫才對」那五步，對著修一次，再掃一次確認變綠即可。</p>
+<h2 id="常見問題">常見問題</h2>
+<h3 id="開放-ai-爬蟲會增加我的伺服器負擔嗎">開放 AI 爬蟲會增加我的伺服器負擔嗎？</h3>
+<p>會增加一些流量，但對絕大多數內容型網站而言影響有限——合規的搜尋型與即時抓取型爬蟲（<code>OAI-SearchBot</code>、<code>PerplexityBot</code>、<code>ChatGPT-User</code>）抓取頻率並不誇張。真正造成負擔的通常是不守規矩的大量訓練型爬取，而那種情況 <code>robots.txt</code> 本來就擋不住，要靠 WAF。對想被引用的站長來說，開放帶來的曝光通常遠大於這點流量成本。</p>
+<h3 id="我擋掉-gptbotchatgpt-還引用得到我嗎">我擋掉 GPTBot，ChatGPT 還引用得到我嗎？</h3>
+<p>可能可以。<code>GPTBot</code> 是訓練型，<code>OAI-SearchBot</code> 才是負責 ChatGPT 搜尋索引的爬蟲，<code>ChatGPT-User</code> 是使用者即時提問時抓取——這三隻可以分開控制。所以你可以「擋訓練（<code>GPTBot</code>）、開搜尋與即時（<code>OAI-SearchBot</code>、<code>ChatGPT-User</code>）」，在不貢獻訓練資料的前提下，仍保留被 ChatGPT 引用的機會。</p>
+<h3 id="robotstxt-改完多久會生效">robots.txt 改完，多久會生效？</h3>
+<p>爬蟲下次來抓 <code>robots.txt</code> 時就會讀到新規則，通常是幾小時到幾天不等，不同爬蟲頻率不同。但要注意：「規則生效」不等於「立刻被引用」——AI 引擎還需要時間重新爬取你的內容、納入它的來源池。把 <code>robots.txt</code> 寫對是「開門」，開門之後內容能不能被選為答案，還要看內容本身的可引用性與權威訊號。</p>
+<h3 id="我該用-robotstxt-還是-waf-來管理-ai-爬蟲">我該用 robots.txt 還是 WAF 來管理 AI 爬蟲？</h3>
+<p>看你的目的。想「歡迎並引導」合規爬蟲（這是大多數站長的需求）→ 用 <code>robots.txt</code>，因為合規爬蟲會遵守。想「真的拒絕」不守規矩或惡意的爬取 → 用 WAF / 平台級 Bot 管理，因為它在連線階段就會擋。兩者不衝突：用 <code>robots.txt</code> 表達意圖，必要時再用 WAF 強制執行。</p>
+<h3 id="我是用-cloudflare-pages-的免費方案需要特別設定嗎">我是用 Cloudflare Pages 的免費方案，需要特別設定嗎？</h3>
+<p>建議去 Cloudflare 後台確認一下 AI 爬蟲 / Bot 的設定狀態，因為 Cloudflare 對 AI 爬蟲態度較積極（2025 年起新網域 setup 時會詢問是否允許）。如果你想被 AI 引用，確認沒有在平台層把 AI 爬蟲整批擋掉，再搭配寫對的 <code>robots.txt</code>，就沒問題。</p>
+<h2 id="結語先把門打開再談被不被引用">結語：先把門打開，再談被不被引用</h2>
+<p>2026 年想被 AI 引用，順序很清楚：<strong>第一步是讓爬蟲進得來，第二步才是內容值不值得被引用。</strong> 很多台灣站長卡在第一步而不自知——<code>robots.txt</code> 一行寫錯、安全外掛誤擋、平台層預設封鎖——內容再好都是白費。</p>
+<p>這篇講的都是「一次設定、長期受益」的事：搞懂 10 種爬蟲的分類、把 <code>robots.txt</code> 的 5 步走一遍、確認你的部署平台沒有偷偷幫你擋。花 30 分鐘做完，你就比同業多打開了兩條新流量入口。</p>
+<p>👉 <a href="/seo/">立刻掃描你的網站，看看 AI 爬蟲開放度幾分 →</a></p>
+<p>延伸閱讀：</p>
+<ul>
+<li><a href="/blog/2026-geo-guide-taiwan-perspective/">2026 GEO 完整指南：台灣站長視角（內含 robots.txt 即時掃描器）</a></li>
+<li><a href="/blog/why-seo-alone-not-enough-2026/">2026 年只做 SEO 的網站正在流失隱形流量</a></li>
+<li><a href="/blog/seo-geo-aeo-scanner-tutorial-2026/">三軸掃描器實測教學：30 秒看懂你的網站曝光潛力</a></li>
+</ul> <!-- Reactions --> <div class="reactions no-print"> <div class="ask">這篇對你有幫助嗎？</div> <div class="react-buttons"> <button type="button" class="react-btn" data-react="useful"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
+  <path d="M7 10v12" />
+</svg>
+ <span>覺得有用</span> <span class="count" data-react-count="useful">—</span> </button> <button type="button" class="react-btn" data-react="bookmark"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z" />
+</svg>
+ <span>收藏</span> <span class="count" data-react-count="bookmark">—</span> </button> </div> <span class="meta">PUBLISHED · 2026 / 05 / 31</span> </div> <!-- Full CTA --> <div class="cta-full no-print"> <div class="cta-head"> <h4>把這篇帶走</h4> <span class="eyebrow">SAVE · SHARE · FEED</span> </div> <div class="cta-grid"> <a href="#" class="cta-cell" data-action="copy-link"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+</svg>
+</div> <div> <div class="label">複製連結 <span class="kbd">⌘ C</span></div> <div class="desc">把這篇 URL 存到 Notion、Pocket，或直接傳給朋友。</div> </div> </a> <a href="/blog/ai-crawler-setup-guide-2026/index.md" class="cta-cell" data-action="copy-md"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+</div> <div> <div class="label">複製 Markdown</div> <div class="desc">原始 .md 內容，餵 NotebookLM、ChatGPT 當研究素材。</div> </div> </a> <a href="https://notebooklm.google.com/?import=https%3A%2F%2Ftwtools.cc%2Fblog%2Fai-crawler-setup-guide-2026%2F" target="_blank" rel="noopener" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
+  <path d="M9 13a4.5 4.5 0 0 0 3-4" />
+  <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" />
+  <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
+  <path d="M6 18a4 4 0 0 1-1.967-.516" />
+  <path d="M12 13h4" />
+  <path d="M12 18h6a2 2 0 0 1 2 2v1" />
+  <path d="M12 8h8" />
+  <path d="M16 8V5a2 2 0 0 1 2-2" />
+  <circle cx="16" cy="13" r=".5" />
+  <circle cx="18" cy="3" r=".5" />
+  <circle cx="20" cy="21" r=".5" />
+  <circle cx="20" cy="8" r=".5" />
+</svg>
+</div> <div> <div class="label">送進 NotebookLM</div> <div class="desc">一鍵把本文加入你的 NotebookLM 來源。</div> </div> </a> <a href="/blog/rss.xml" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 11a9 9 0 0 1 9 9" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <circle cx="5" cy="19" r="1" />
+</svg>
+</div> <div> <div class="label">訂閱 RSS</div> <div class="desc">每週一篇，更新就推到你的 Reader。</div> </div> </a> </div> </div> </div> <aside class="article-margin no-print"> <div class="margin-label">TWTOOLS / EDITORIAL</div> </aside> </div> </article>  <section class="no-print"> <div class="adjacent"> <a href="/blog/2026-final-week-income-tax-filing/"> <div class="arrow-row"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m12 19-7-7 7-7" />
+  <path d="M19 12H5" />
+</svg>
+ <span class="eyebrow">PREV · 上一篇</span> </div> <div class="post-title">2026 報稅倒數！綜所稅申報只到 6/1，最後一週還沒報的補救與退稅攻略</div> </a> <div style="background: var(--tw-page-bg);"></div> </div> </section> </main>  <script>
+    (function() {
+      var hamburger = document.getElementById('sidebar-hamburger');
+      var overlay = document.getElementById('sidebar-overlay');
+      var panel = document.getElementById('sidebar-panel');
+      var closeBtn = document.getElementById('sidebar-close');
+
+      function openSidebar() {
+        panel.classList.remove('-translate-x-full');
+        panel.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+      }
+      function closeSidebar() {
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+
+      if (hamburger) hamburger.addEventListener('click', openSidebar);
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    })();
+  </script>  </body></html> <script>
+  (function () {
+    // Print
+    var printBtn = document.getElementById('print-link');
+    if (printBtn) {
+      printBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.print();
+      });
+    }
+
+    // TOC smooth scroll
+    document.querySelectorAll('details.toc-block .toc-list a').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var target = document.querySelector(a.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        var y = target.getBoundingClientRect().top + window.scrollY - 24;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        if (history.replaceState) history.replaceState(null, '', a.getAttribute('href'));
+      });
+    });
+
+    // Mobile TOC collapse by default
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      var toc = document.querySelector('details.toc-block');
+      if (toc) toc.removeAttribute('open');
+    }
+
+    // Reactions — localStorage-backed toggle (per-slug)
+    var slug = location.pathname.replace(/\/+$/, '').split('/').pop() || 'post';
+    var STORAGE_KEY = 'twtools.reactions.' + slug;
+    var BASE = { useful: 0, bookmark: 0 };
+    function readState() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (_) {}
+      return { useful: false, bookmark: false };
+    }
+    function writeState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+    }
+    function renderCount(key, state) {
+      var el = document.querySelector('[data-react-count="' + key + '"]');
+      if (!el) return;
+      el.textContent = String(BASE[key] + (state[key] ? 1 : 0));
+    }
+    function renderActive(key, state) {
+      var btn = document.querySelector('[data-react="' + key + '"]');
+      if (!btn) return;
+      btn.classList.toggle('is-active', !!state[key]);
+    }
+    var state = readState();
+    Object.keys(BASE).forEach(function (k) { renderCount(k, state); renderActive(k, state); });
+    document.querySelectorAll('[data-react]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.getAttribute('data-react');
+        state[key] = !state[key];
+        writeState(state);
+        renderCount(key, state);
+        renderActive(key, state);
+      });
+    });
+
+    // CTA: copy link
+    var copyLink = document.querySelector('[data-action="copy-link"]');
+    if (copyLink) {
+      copyLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(location.href).then(function () {
+            var label = copyLink.querySelector('.label');
+            if (!label) return;
+            var orig = label.innerHTML;
+            label.textContent = '已複製 ✓';
+            setTimeout(function () { label.innerHTML = orig; }, 1400);
+          });
+        }
+      });
+    }
+  })();
+</script>

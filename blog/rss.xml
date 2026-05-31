@@ -1,4 +1,296 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TWTools · Blog</title><description>打工牛馬的線上工具箱 — 台灣使用者免費線上工具集，每週更新生活實用知識文章。</description><link>https://twtools.cc/</link><language>zh-TW</language><atom:link href="https://twtools.cc/blog/rss.xml" rel="self" type="application/rss+xml"/><item><title>2026 報稅倒數！綜所稅申報只到 6/1，最後一週還沒報的補救與退稅攻略</title><link>https://twtools.cc/blog/2026-final-week-income-tax-filing/</link><guid isPermaLink="true">https://twtools.cc/blog/2026-final-week-income-tax-filing/</guid><description>2026 年綜合所得稅申報到 6 月 1 日截止，最後一週還沒報怎麼辦？本文整理線上申報 3 步驟、114 年度免稅額與扣除額、忘記報稅的滯納金與罰鍰，以及退稅 3 批撥款時程，幫你在期限內 10 分鐘完成。</description><pubDate>Tue, 26 May 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;還沒報稅的人請注意，&lt;strong&gt;2026 年綜合所得稅申報到 6 月 1 日（週一）就截止&lt;/strong&gt;，這是申報 114 年度、也就是 2025 全年所得的最後機會。今天是 5 月 26 日，距離期限只剩不到一週。這篇用最白話的方式，帶你搞懂線上申報怎麼操作、114 年度免稅額與扣除額多少、忘記報稅會被罰多少，以及退稅什麼時候入帳。（本文資料更新至 2026 年 5 月）&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TWTools · Blog</title><description>打工牛馬的線上工具箱 — 台灣使用者免費線上工具集，每週更新生活實用知識文章。</description><link>https://twtools.cc/</link><language>zh-TW</language><atom:link href="https://twtools.cc/blog/rss.xml" rel="self" type="application/rss+xml"/><item><title>10 種 AI 爬蟲完整設定指南：從 GPTBot、ClaudeBot 到 Bytespider，台灣站長最常踩的 robots.txt 坑</title><link>https://twtools.cc/blog/ai-crawler-setup-guide-2026/</link><guid isPermaLink="true">https://twtools.cc/blog/ai-crawler-setup-guide-2026/</guid><description>想被 ChatGPT、Claude、Perplexity 引用，第一關不是寫好內容，而是讓它們的爬蟲進得來。這篇逐一拆解 10 種你一定要認識的 AI 爬蟲（訓練型、搜尋型、即時抓取型各有差別）、robots.txt 正確寫法與優先規則，並比較 Cloudflare、Vercel、Zeabur 三大部署平台的預設行為差異——附台灣站長最常踩的 4 個坑與即時掃描工具。</description><pubDate>Sun, 31 May 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;先講一個越來越常見的場景。&lt;/p&gt;
+&lt;p&gt;某家台灣做電商的公司，內容團隊很認真，部落格每週更新、文章寫得也好。但行銷主管發現：用 ChatGPT 或 Perplexity 問「台灣有哪些做 ○○ 的品牌」，答案裡從來沒有自己。檢查之下才發現問題不在內容——而是網站的 &lt;code&gt;robots.txt&lt;/code&gt; 把所有 AI 爬蟲都擋在門外，他們完全不知道。&lt;/p&gt;
+&lt;p&gt;2026 年，要被 AI 引擎引用，第一關從來不是「內容寫得好不好」，而是「AI 的爬蟲進不進得來」。內容再好，爬蟲進不來，等於不存在。&lt;/p&gt;
+&lt;p&gt;這篇是一份完整的 AI 爬蟲設定指南，從「10 種你一定要認識的爬蟲」到「robots.txt 怎麼寫才對」到「三大部署平台的預設差異」，一步一步帶你把門打開。&lt;/p&gt;
+&lt;h2&gt;AI 爬蟲跟 Googlebot 到底哪裡不一樣？&lt;/h2&gt;
+&lt;p&gt;傳統 SEO 你只要顧好一隻爬蟲：Googlebot。但 AI 時代多了一整群爬蟲，而且它們的行為跟 Googlebot 有 3 個關鍵差異：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;數量多、分工細&lt;/strong&gt;：光是 OpenAI 一家就有 3 隻不同用途的爬蟲，Google、Apple 各自又把「搜尋索引」和「AI 訓練」拆成不同的爬蟲名稱。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;預設待遇不同&lt;/strong&gt;：很多網站（尤其 WordPress 架的）對 Googlebot 是友善的，但對沒見過的 AI 爬蟲，可能被安全外掛或防火牆當成「可疑爬蟲」誤擋。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;遵守程度參差&lt;/strong&gt;：合規的爬蟲會老實看 &lt;code&gt;robots.txt&lt;/code&gt;，但也有少數爬蟲被第三方實測「無視」規則——這是後面要單獨講的硬仗。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;要理解這些差異，得先搞懂 &lt;code&gt;robots.txt&lt;/code&gt; 這個機制的本質。&lt;/p&gt;
+&lt;h3&gt;robots.txt 是「君子協定」，不是「保全」&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;robots.txt&lt;/code&gt; 是放在網站根目錄（&lt;code&gt;你的網域/robots.txt&lt;/code&gt;）的一個純文字檔，用來告訴爬蟲「哪些頁面可以抓、哪些不要抓」。&lt;/p&gt;
+&lt;p&gt;這套協定在 2022 年 9 月由 IETF 正式標準化為 RFC 9309（Robots Exclusion Protocol），把 1994 年沿用至今的慣例寫成正式標準。但要特別注意：&lt;strong&gt;它的本質是「自願遵守」&lt;/strong&gt;。&lt;code&gt;robots.txt&lt;/code&gt; 不會真的擋住任何人，它只是「請求」爬蟲不要進來。合規的爬蟲（GPTBot、ClaudeBot、Googlebot 等）會老實遵守；不合規的爬蟲可以選擇無視。&lt;/p&gt;
+&lt;p&gt;換句話說：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;想「歡迎」AI 爬蟲 → &lt;code&gt;robots.txt&lt;/code&gt; 寫對就有效，因為合規爬蟲會照做。&lt;/li&gt;
+&lt;li&gt;想「真的擋住」惡意爬蟲 → &lt;code&gt;robots.txt&lt;/code&gt; 不夠，要靠 WAF（Web Application Firewall）這種會真的拒絕連線的硬手段。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;這篇大部分篇幅是教你把門「打開」——因為對 99% 的台灣站長來說，問題不是擋太鬆，而是不小心擋太緊。&lt;/p&gt;
+&lt;h2&gt;10 種你一定要認識的 AI 爬蟲&lt;/h2&gt;
+&lt;p&gt;下表是 TWTools 三軸掃描器內建偵測的 10 個 AI bot，也是 2026 年台灣站長最需要顧到的清單。我把它們依「用途」分成 3 類，因為用途不同，你要不要開放的決策也不同。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;爬蟲 token&lt;/th&gt;
+&lt;th&gt;所屬公司&lt;/th&gt;
+&lt;th&gt;用途分類&lt;/th&gt;
+&lt;th&gt;遵守 robots.txt？&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;GPTBot&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;OpenAI&lt;/td&gt;
+&lt;td&gt;訓練&lt;/td&gt;
+&lt;td&gt;是&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;OAI-SearchBot&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;OpenAI&lt;/td&gt;
+&lt;td&gt;搜尋索引&lt;/td&gt;
+&lt;td&gt;是&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;ChatGPT-User&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;OpenAI&lt;/td&gt;
+&lt;td&gt;即時抓取&lt;/td&gt;
+&lt;td&gt;是&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;ClaudeBot&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Anthropic&lt;/td&gt;
+&lt;td&gt;訓練&lt;/td&gt;
+&lt;td&gt;是&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;anthropic-ai&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Anthropic&lt;/td&gt;
+&lt;td&gt;舊版（已棄用）&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Google-Extended&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Google&lt;/td&gt;
+&lt;td&gt;訓練（非搜尋）&lt;/td&gt;
+&lt;td&gt;是&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;PerplexityBot&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Perplexity&lt;/td&gt;
+&lt;td&gt;搜尋索引&lt;/td&gt;
+&lt;td&gt;是&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;CCBot&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Common Crawl&lt;/td&gt;
+&lt;td&gt;公開資料集&lt;/td&gt;
+&lt;td&gt;是&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Bytespider&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;ByteDance&lt;/td&gt;
+&lt;td&gt;訓練&lt;/td&gt;
+&lt;td&gt;有爭議&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Applebot-Extended&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Apple&lt;/td&gt;
+&lt;td&gt;訓練（非搜尋）&lt;/td&gt;
+&lt;td&gt;是&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;下面逐一說明，附上各家官方文件，方便你自己查證。&lt;/p&gt;
+&lt;h3&gt;訓練型爬蟲：抓你的內容去「教」模型&lt;/h3&gt;
+&lt;p&gt;這類爬蟲抓的內容，可能被拿去訓練生成式模型。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;GPTBot&lt;/code&gt;（OpenAI）&lt;/strong&gt;：OpenAI 用來抓取內容、可能用於訓練未來模型的爬蟲。官方在 &lt;a href=&quot;https://developers.openai.com/api/docs/bots&quot;&gt;OpenAI 爬蟲文件&lt;/a&gt; 列出完整說明與 IP 驗證清單。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;ClaudeBot&lt;/code&gt;（Anthropic）&lt;/strong&gt;：Anthropic 收集公開網路內容、可能用於改進模型的爬蟲。官方在 &lt;a href=&quot;https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler&quot;&gt;Anthropic 爬蟲說明頁&lt;/a&gt; 說明它會遵守 &lt;code&gt;robots.txt&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;anthropic-ai&lt;/code&gt;&lt;/strong&gt;：這是常在舊教學文章看到的 token，但 Anthropic 現行官方文件已不再列它為現役爬蟲——它被視為&lt;strong&gt;已棄用的舊版 user-agent&lt;/strong&gt;。掃描器仍會偵測它，是為了相容你站上可能殘留的舊規則；寫新規則時以 &lt;code&gt;ClaudeBot&lt;/code&gt; 為準即可。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;Google-Extended&lt;/code&gt;（Google）&lt;/strong&gt;：這是最容易被誤解的一個。它&lt;strong&gt;只&lt;/strong&gt;控制你的內容「要不要被用於訓練 Google 的 AI 模型（Gemini、Vertex AI）」。根據 &lt;a href=&quot;https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers&quot;&gt;Google 官方爬蟲文件&lt;/a&gt;，封鎖 &lt;code&gt;Google-Extended&lt;/code&gt; &lt;strong&gt;不會影響&lt;/strong&gt;你在 Google 搜尋的收錄與排名。更關鍵的一點下面「台灣站長最常踩的坑」會再講。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;Applebot-Extended&lt;/code&gt;（Apple）&lt;/strong&gt;：控制你的內容要不要被用於訓練 Apple 的基礎模型（Apple Intelligence）。根據 &lt;a href=&quot;https://support.apple.com/en-us/119829&quot;&gt;Apple 官方說明&lt;/a&gt;，封鎖它&lt;strong&gt;只擋訓練&lt;/strong&gt;，不影響負責 Siri、Spotlight 索引的 &lt;code&gt;Applebot&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;CCBot&lt;/code&gt;（Common Crawl）&lt;/strong&gt;：非營利組織 Common Crawl 的爬蟲，抓取的公開資料集是眾多 AI 模型訓練資料的來源之一。它遵守 &lt;code&gt;robots.txt&lt;/code&gt;，&lt;a href=&quot;https://commoncrawl.org/ccbot&quot;&gt;官方頁&lt;/a&gt; 也提醒有假冒它的爬蟲，建議用 IP 反查驗證。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;Bytespider&lt;/code&gt;（ByteDance）&lt;/strong&gt;：字節跳動的訓練爬蟲，後面單獨講它的爭議。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;搜尋索引型爬蟲：決定你會不會出現在 AI 答案來源&lt;/h3&gt;
+&lt;p&gt;這類爬蟲抓內容是為了「在 AI 搜尋結果裡呈現你、連回你」——對想被引用的站長來說，這類&lt;strong&gt;最該開放&lt;/strong&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;OAI-SearchBot&lt;/code&gt;（OpenAI）&lt;/strong&gt;：為 ChatGPT 的搜尋功能索引網站，讓你的站有機會出現在 ChatGPT 給出的來源連結裡。注意它&lt;strong&gt;不是&lt;/strong&gt;訓練用，跟 &lt;code&gt;GPTBot&lt;/code&gt; 是兩回事，可以分開控制。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;PerplexityBot&lt;/code&gt;（Perplexity）&lt;/strong&gt;：用於在 Perplexity 的搜尋結果中呈現並連回你的網站。Perplexity &lt;a href=&quot;https://docs.perplexity.ai/guides/bots&quot;&gt;官方文件&lt;/a&gt; 建議站長在 &lt;code&gt;robots.txt&lt;/code&gt; 中允許它。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;即時抓取型爬蟲：使用者問問題的當下才來&lt;/h3&gt;
+&lt;p&gt;這類爬蟲只在「使用者主動提問、需要讀某個網頁」時才即時抓取單一頁面，不做大規模索引。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;ChatGPT-User&lt;/code&gt;（OpenAI）&lt;/strong&gt;：使用者在 ChatGPT 中提問、需要 ChatGPT 去讀某個網頁時才出動。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Perplexity-User（Perplexity）&lt;/strong&gt;：跟上面對應。要特別提醒——Perplexity &lt;a href=&quot;https://docs.perplexity.ai/guides/bots&quot;&gt;官方文件&lt;/a&gt; 明說這個即時 fetcher「一般會忽略 &lt;code&gt;robots.txt&lt;/code&gt;」，理由是它代表使用者的主動要求，而非自動爬取。這點下面爭議段會再談。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;小結：如果你的目標是「被 AI 引用、被當成答案來源」，那麼&lt;strong&gt;搜尋索引型（&lt;code&gt;OAI-SearchBot&lt;/code&gt;、&lt;code&gt;PerplexityBot&lt;/code&gt;）和即時抓取型（&lt;code&gt;ChatGPT-User&lt;/code&gt;）是你最不該擋的&lt;/strong&gt;。至於訓練型（&lt;code&gt;GPTBot&lt;/code&gt;、&lt;code&gt;ClaudeBot&lt;/code&gt;、&lt;code&gt;Google-Extended&lt;/code&gt;、&lt;code&gt;Applebot-Extended&lt;/code&gt;、&lt;code&gt;CCBot&lt;/code&gt;、&lt;code&gt;Bytespider&lt;/code&gt;），要不要讓內容被拿去訓練，是你可以自己權衡的價值選擇——但要清楚：擋訓練型，不影響你被搜尋型引用。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;robots.txt 怎麼寫才對？跟著做一次&lt;/h2&gt;
+&lt;p&gt;理解了爬蟲分類，接下來是動手。&lt;code&gt;robots.txt&lt;/code&gt; 的語法其實只有 3 個核心指令：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;User-agent:&lt;/code&gt; — 指定這段規則對哪隻爬蟲生效（&lt;code&gt;*&lt;/code&gt; 代表「所有未被指名的爬蟲」）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Allow:&lt;/code&gt; — 允許抓取的路徑&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Disallow:&lt;/code&gt; — 禁止抓取的路徑&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;聽起來簡單，但有一個&lt;strong&gt;最容易出錯的優先規則&lt;/strong&gt;，先講清楚。&lt;/p&gt;
+&lt;h3&gt;你必須知道的優先規則&lt;/h3&gt;
+&lt;p&gt;根據 &lt;a href=&quot;https://developers.google.com/crawling/docs/robots-txt/robots-txt-spec&quot;&gt;Google 官方 robots.txt 規範&lt;/a&gt;（也對應 RFC 9309）：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;指名的 &lt;code&gt;User-agent&lt;/code&gt; 群組會覆蓋 &lt;code&gt;*&lt;/code&gt; 群組。&lt;/strong&gt; 一旦某隻爬蟲（例如 &lt;code&gt;GPTBot&lt;/code&gt;）有自己專屬的規則區塊，它就&lt;strong&gt;只看自己那段&lt;/strong&gt;，完全不理會 &lt;code&gt;User-agent: *&lt;/code&gt; 那段。這是最多人踩的坑——以為 &lt;code&gt;*&lt;/code&gt; 是「全域預設」會疊加上去，其實不會。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;Allow&lt;/code&gt; 和 &lt;code&gt;Disallow&lt;/code&gt; 之間，以「路徑最長（最具體）」者勝；長度相同時 &lt;code&gt;Allow&lt;/code&gt; 優先。&lt;/strong&gt; 指令書寫的先後順序不影響判定。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;第 1 點的實際後果是：如果你寫了 &lt;code&gt;User-agent: GPTBot&lt;/code&gt; 的專屬區塊，卻只在裡面寫 &lt;code&gt;Disallow: /admin/&lt;/code&gt;，&lt;strong&gt;那 GPTBot 對你整站其他頁面是「全開放」的&lt;/strong&gt;——因為它不看 &lt;code&gt;*&lt;/code&gt; 那段。反過來，如果你想對某隻爬蟲全擋，要在它自己的區塊明確寫 &lt;code&gt;Disallow: /&lt;/code&gt;。&lt;/p&gt;
+&lt;h3&gt;第一步：先看自己現在的 robots.txt&lt;/h3&gt;
+&lt;p&gt;打開瀏覽器，輸入 &lt;code&gt;你的網域/robots.txt&lt;/code&gt;（例如 &lt;code&gt;https://twtools.cc/robots.txt&lt;/code&gt;）。如果出現 404，代表你沒有 &lt;code&gt;robots.txt&lt;/code&gt;——對 AI 爬蟲來說這是「預設全開放」，是好事，但建議還是建立一份明確的規則，以防未來平台政策改變（下面講 Cloudflare 時會看到為什麼）。&lt;/p&gt;
+&lt;h3&gt;第二步：確認沒有「一行全擋」&lt;/h3&gt;
+&lt;p&gt;最常見的災難是這一行：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;User-agent: *
+Disallow: /
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;這代表「禁止所有爬蟲抓任何頁面」。在傳統 SEO 時代，Googlebot 常有特殊白名單待遇，問題不明顯；但對 AI 爬蟲，這一行就是把 ChatGPT、Claude、Perplexity 全部關在門外。如果你看到它，這就是你流失 AI 流量的頭號嫌犯。&lt;/p&gt;
+&lt;h3&gt;第三步：明確開放想要的 AI 爬蟲&lt;/h3&gt;
+&lt;p&gt;最穩妥的寫法，是給每隻你想開放的爬蟲一個專屬區塊。例如，開放 OpenAI 與 Anthropic 的搜尋／即時抓取：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;第四步：選擇性處理訓練型爬蟲&lt;/h3&gt;
+&lt;p&gt;如果你&lt;strong&gt;願意&lt;/strong&gt;讓內容被拿去訓練（換取更大的曝光潛力），就一併 &lt;code&gt;Allow&lt;/code&gt; 訓練型爬蟲。如果你&lt;strong&gt;不願意&lt;/strong&gt;，就明確 &lt;code&gt;Disallow&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;再次強調：擋訓練型不影響搜尋型引用，也不影響 Google 一般搜尋排名。&lt;/p&gt;
+&lt;h3&gt;第五步：補上 Sitemap 位置&lt;/h3&gt;
+&lt;p&gt;最後，在 &lt;code&gt;robots.txt&lt;/code&gt; 任一處加上你的 sitemap 位置，幫所有爬蟲更快找到你的頁面：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Sitemap: https://你的網域/sitemap.xml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;寫完存檔、上傳到網站根目錄，這一關就完成了。&lt;/p&gt;
+&lt;h3&gt;一份可以直接抄的完整範本&lt;/h3&gt;
+&lt;p&gt;把上面 5 步組合起來，一份「歡迎搜尋型、即時型，擋掉純訓練型，並保護後台」的 &lt;code&gt;robots.txt&lt;/code&gt; 長這樣：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 搜尋索引型 + 即時抓取型：全開放（這是被引用的關鍵）
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+# 純訓練型：不貢獻訓練資料（可依你的價值選擇刪除這幾段改為 Allow）
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+# 其他所有爬蟲（含 Googlebot 一般搜尋）：開放，但保護後台與內部頁
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+Sitemap: https://你的網域/sitemap.xml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;記得前面講的優先規則：上面每個指名區塊（如 &lt;code&gt;GPTBot&lt;/code&gt;）只看自己那段，&lt;strong&gt;不會&lt;/strong&gt;繼承 &lt;code&gt;User-agent: *&lt;/code&gt; 的 &lt;code&gt;Disallow: /admin/&lt;/code&gt;。如果你也想擋這些 AI 爬蟲抓後台，要在它們各自的區塊裡再補一行 &lt;code&gt;Disallow: /admin/&lt;/code&gt;。&lt;/p&gt;
+&lt;h3&gt;台灣案例：TWTools 自家的 robots.txt 怎麼寫&lt;/h3&gt;
+&lt;p&gt;講範本可能還是抽象，直接看一個真實的台灣站。TWTools（&lt;a href=&quot;http://twtools.cc&quot;&gt;twtools.cc&lt;/a&gt;）的 &lt;code&gt;robots.txt&lt;/code&gt; 其實很簡潔：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /seed_articles.html
+Disallow: /japan/
+Disallow: /sticker/
+
+Sitemap: https://twtools.cc/sitemap.xml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;這份範例的設計邏輯，正好示範了「對想被引用的內容站」最常見、也最務實的策略：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;不寫任何 per-bot 封鎖區塊&lt;/strong&gt;：因為沒有指名 &lt;code&gt;GPTBot&lt;/code&gt;、&lt;code&gt;ClaudeBot&lt;/code&gt; 等任何一隻 AI 爬蟲，它們全部落入 &lt;code&gt;User-agent: *&lt;/code&gt; 這個群組——而這個群組是 &lt;code&gt;Allow: /&lt;/code&gt;，等於&lt;strong&gt;對前面那 10 個 AI bot 全部開放&lt;/strong&gt;。這是「我要被引用」的站最簡單的做法：與其逐一 allow，不如預設全開、只擋例外。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;只 Disallow 真正不該被收的內部頁&lt;/strong&gt;：後台（&lt;code&gt;/admin.html&lt;/code&gt;）、種子文章測試頁（&lt;code&gt;/seed_articles.html&lt;/code&gt;）、以及兩個非主力的子目錄。這些頁面沒有被搜尋或 AI 引用的價值，擋掉乾淨。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;明確列出 Sitemap&lt;/strong&gt;：幫所有爬蟲（含 AI 爬蟲）更快找到全站頁面。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如果你是內容型網站、目標是被 AI 引用，這種「&lt;code&gt;User-agent: *&lt;/code&gt; 全開 + 針對性 Disallow + Sitemap」的寫法就很夠用，比逐一 allow 每隻 bot 更好維護——未來出現新的合規 AI 爬蟲，也會自動落入 &lt;code&gt;*&lt;/code&gt; 群組被允許，不必每次改檔。&lt;/p&gt;
+&lt;h2&gt;Cloudflare、Vercel、Zeabur：三大部署平台的預設差異&lt;/h2&gt;
+&lt;p&gt;這是台灣站長最容易忽略、卻可能讓你「明明 robots.txt 寫對了還是被擋」的地方。&lt;code&gt;robots.txt&lt;/code&gt; 是「你」對爬蟲的請求，但&lt;strong&gt;部署平台本身可能在更前面就用防火牆攔掉爬蟲&lt;/strong&gt;，根本輪不到 &lt;code&gt;robots.txt&lt;/code&gt; 生效。&lt;/p&gt;
+&lt;p&gt;三個台灣常見平台的預設行為差很多：&lt;/p&gt;
+&lt;h3&gt;Cloudflare：態度最積極，注意新網域的預設選擇&lt;/h3&gt;
+&lt;p&gt;Cloudflare 在 2025 年 7 月 1 日宣布，成為第一家「預設封鎖未經許可 AI 爬蟲」的基礎設施供應商，並推出 Pay-Per-Crawl（讓站長對 AI 爬取收費）與 AI Audit 等功能（&lt;a href=&quot;https://www.cloudflare.com/press/press-releases/2025/cloudflare-just-changed-how-ai-crawlers-scrape-the-internet-at-large/&quot;&gt;官方新聞稿&lt;/a&gt;）。&lt;/p&gt;
+&lt;p&gt;這裡要很精確：官方的措辭是「&lt;strong&gt;新註冊網域在 sign-up 時會被詢問是否允許 AI 爬蟲&lt;/strong&gt;」，讓站長在一開始就做出選擇，而不是「所有既有 Cloudflare 網站一夜之間全部自動封鎖」。所以正確理解是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果你是&lt;strong&gt;新&lt;/strong&gt;用 Cloudflare 的網域，setup 時就要留意這個選項——如果你想被 AI 引用，記得選「允許」。&lt;/li&gt;
+&lt;li&gt;如果你&lt;strong&gt;已經&lt;/strong&gt;在用 Cloudflare，去後台的 Bot 管理 / AI 爬蟲控制看一下你目前的設定，別讓平台層的封鎖蓋過你 &lt;code&gt;robots.txt&lt;/code&gt; 的善意。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;對台灣大量使用 Cloudflare（含 Cloudflare Pages 免費託管）的站長來說，這一條最該檢查。&lt;/p&gt;
+&lt;h3&gt;Vercel：預設不封鎖，但「封鎖 AI Bot」規則預設是「記錄」&lt;/h3&gt;
+&lt;p&gt;根據 &lt;a href=&quot;https://vercel.com/docs/bot-management&quot;&gt;Vercel 官方文件&lt;/a&gt;，Vercel &lt;strong&gt;預設不封鎖&lt;/strong&gt; AI 爬蟲。即使你開啟它的 Bot 防護 Managed Ruleset，其中的「Block AI Bots」規則&lt;strong&gt;預設動作是 log（記錄）而非 deny（拒絕）&lt;/strong&gt;——也就是說它預設只是「觀察」AI 爬蟲流量，不會真的擋。要真的封鎖，你得手動把動作改成 Deny。&lt;/p&gt;
+&lt;p&gt;對站長的意義：用 Vercel 部署的站，AI 爬蟲預設進得來，你只要把 &lt;code&gt;robots.txt&lt;/code&gt; 寫對就好，不太會發生「平台偷偷幫你擋」的情況。&lt;/p&gt;
+&lt;h3&gt;Zeabur：官方無公開的預設封鎖政策&lt;/h3&gt;
+&lt;p&gt;Zeabur 是近年台灣與亞洲開發者很常用的部署平台。截至本文查核，&lt;strong&gt;Zeabur 官方並沒有公開「預設封鎖 AI 爬蟲」的政策文件&lt;/strong&gt;。實務上可理解為：它不會主動幫你擋 AI 爬蟲，一切以你自己 &lt;code&gt;robots.txt&lt;/code&gt; 與應用層設定為準。如果你用 Zeabur，重點放在把 &lt;code&gt;robots.txt&lt;/code&gt; 寫對即可；若有疑慮，直接測一次（下面教）最準。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;一句話總結：&lt;strong&gt;Cloudflare 要主動檢查設定別誤擋；Vercel、Zeabur 預設放行、以你的 robots.txt 為準。&lt;/strong&gt; 不確定的話，用掃描器實測自家站最快。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;台灣站長最常踩的 4 個坑&lt;/h2&gt;
+&lt;h3&gt;坑 1：WordPress 安全外掛「誤擋」AI 爬蟲&lt;/h3&gt;
+&lt;p&gt;台灣大量中小企業官網用 WordPress。常見的安全外掛（Wordfence、Sucuri、All In One Security 等）為了防惡意爬蟲，會做 rate limiting 或防火牆規則。問題是：它們的「友善爬蟲白名單」通常包含 Google、Facebook，&lt;strong&gt;但不包含 OpenAI、Anthropic、Perplexity、Apple 這些較新的 AI 爬蟲&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;要說明的是，這些外掛並沒有一個叫做「只放行 Googlebot」的預設開關；比較準確的講法是——它們的一般防火牆／速率限制規則，&lt;strong&gt;可能在你不知情的情況下把 AI 爬蟲當成可疑流量誤擋&lt;/strong&gt;，而且行為會隨外掛版本與你的設定而異（這部分依技術社群整理，非各外掛逐條官方文件）。所以與其猜，不如直接測：用掃描器掃自家站，看 AI bot 到底進不進得來。&lt;/p&gt;
+&lt;h3&gt;坑 2：誤以為「封鎖 Google-Extended 就不會進 AI Overviews」&lt;/h3&gt;
+&lt;p&gt;這是觀念上最大的坑。很多人想避開 Google 的 AI Overviews（搜尋結果頂端那段 AI 摘要），就去封鎖 &lt;code&gt;Google-Extended&lt;/code&gt;——&lt;strong&gt;這完全沒用&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;根據 Google 官方說明，&lt;code&gt;Google-Extended&lt;/code&gt; 只管「訓練」，而 AI Overviews 取材自 Google 的&lt;strong&gt;標準搜尋索引&lt;/strong&gt;（也就是 &lt;code&gt;Googlebot&lt;/code&gt; 抓的內容），並沒有獨立的爬蟲。換句話說：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;封鎖 &lt;code&gt;Google-Extended&lt;/code&gt; → 只是不讓內容被拿去訓練 Gemini，&lt;strong&gt;擋不掉 AI Overviews&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;想完全不出現在 AI Overviews → 只能封鎖 &lt;code&gt;Googlebot&lt;/code&gt;，但那等於放棄整個 Google 一般搜尋曝光，得不償失。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;順帶一提，微軟的 &lt;code&gt;Bingbot&lt;/code&gt; 也是「一隻爬蟲兼做搜尋與 Copilot」，不像 Google 把訓練拆成獨立的 &lt;code&gt;Google-Extended&lt;/code&gt;，所以你沒辦法只擋 Bing 的 AI 而保留 Bing 搜尋。&lt;/p&gt;
+&lt;h3&gt;坑 3：根本沒有 robots.txt，卻以為「沒設定＝安全」&lt;/h3&gt;
+&lt;p&gt;「沒有 &lt;code&gt;robots.txt&lt;/code&gt;」對 AI 爬蟲來說是「預設全開放」。這本身對想被引用的站來說反而是好事，但有兩個隱憂：一是你無法精細控制（例如想擋訓練、開搜尋）；二是當平台層政策改變（像 Cloudflare 那樣），你沒有一份明確的 &lt;code&gt;robots.txt&lt;/code&gt; 作為「我明示要開放」的依據。建議還是建立一份，把意圖寫清楚。&lt;/p&gt;
+&lt;h3&gt;坑 4：簡繁混用，被 AI 歸類成「非繁中內容」&lt;/h3&gt;
+&lt;p&gt;這是台灣獨有的問題。很多站長從中國的教學文章複製內容再改，或用簡體中文的 CMS 模板，結果頁面裡混進簡體字而不自知。對 AI 引擎來說這很致命——它可能把你的站歸類為簡體中文內容，在回答&lt;strong&gt;繁體中文&lt;/strong&gt;問題時就不優先引用你。爬蟲開放是第一關，但內容語言一致性是第二關，兩關都要過。TWTools 三軸掃描器內建繁中比例與簡繁混用偵測，可以順手一起檢查。&lt;/p&gt;
+&lt;h2&gt;那些「不尊重 robots.txt」的爬蟲怎麼辦？&lt;/h2&gt;
+&lt;p&gt;前面說 &lt;code&gt;robots.txt&lt;/code&gt; 是君子協定。那遇到不是君子的爬蟲呢？這是 2025 年以來業界最熱的爭議，有兩個常被點名的案例，這裡把各方說法並陳，讓你自己判斷：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Bytespider（ByteDance）&lt;/strong&gt;：多家第三方監測機構與報導（如 404 Media 引用 Kasada、Dark Visitors 的監測）指出，&lt;code&gt;Bytespider&lt;/code&gt; 會無視 &lt;code&gt;robots.txt&lt;/code&gt; 大量爬取。要強調的是，&lt;strong&gt;這是第三方監測說法，ByteDance 並沒有公開官方文件承認或否認&lt;/strong&gt;，網路上流傳的「爬取量是 GPTBot 的數十倍」之類數字也都是第三方報導值，不是官方數據，看到請保留。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Perplexity&lt;/strong&gt;：2025 年 8 月，Cloudflare 在&lt;a href=&quot;https://blog.cloudflare.com/perplexity-is-using-stealth-undeclared-crawlers-to-evade-website-no-crawl-directives/&quot;&gt;官方部落格&lt;/a&gt;指控 Perplexity 在宣告的爬蟲被擋後，改用偽裝成一般瀏覽器、未宣告身分的爬蟲搭配輪換 IP 來規避封鎖，並因此把它從「已驗證爬蟲」名單除名。Perplexity 則公開反駁，主張那些是「代表使用者主動要求」的 user-driven agent，不算傳統爬蟲。雙方各執一詞，目前沒有定論。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;關鍵結論：&lt;strong&gt;對於確實不守規矩的爬蟲，&lt;code&gt;robots.txt&lt;/code&gt; 沒有約束力&lt;/strong&gt;。如果你真的要擋（基於頻寬成本或內容保護考量），唯一有效的手段是部署層的 WAF / Bot 管理（例如 Cloudflare 的 Bot 管理、或前面提到的平台級 AI 爬蟲封鎖），那才會在連線階段真的拒絕。但對大多數想「被引用」的台灣站長來說，這通常不是你要煩惱的方向——你的問題多半是「擋太多」而不是「擋太少」。&lt;/p&gt;
+&lt;h2&gt;動手檢查：30 秒掃出自家站的 AI 爬蟲開放度&lt;/h2&gt;
+&lt;p&gt;講了這麼多規則，最快的驗收方式是直接掃一次。TWTools 在 &lt;a href=&quot;https://twtools.cc/blog/2026-geo-guide-taiwan-perspective/&quot;&gt;2026 GEO 完整指南&lt;/a&gt; 文中內嵌了一個 &lt;strong&gt;robots.txt AI bot 即時掃描器&lt;/strong&gt;：貼上你的網址，它會立刻告訴你前面那 10 個 AI bot（&lt;code&gt;GPTBot&lt;/code&gt;、&lt;code&gt;ChatGPT-User&lt;/code&gt;、&lt;code&gt;OAI-SearchBot&lt;/code&gt;、&lt;code&gt;ClaudeBot&lt;/code&gt;、&lt;code&gt;anthropic-ai&lt;/code&gt;、&lt;code&gt;Google-Extended&lt;/code&gt;、&lt;code&gt;PerplexityBot&lt;/code&gt;、&lt;code&gt;CCBot&lt;/code&gt;、&lt;code&gt;Bytespider&lt;/code&gt;、&lt;code&gt;Applebot-Extended&lt;/code&gt;）在你的 &lt;code&gt;robots.txt&lt;/code&gt; 裡是被 allow 還是 disallow。資料只在你的瀏覽器裡跑，不會上傳。&lt;/p&gt;
+&lt;p&gt;如果你想看的不只是爬蟲開放度，而是 AI 引擎眼中的完整體質，可以用 &lt;a href=&quot;https://twtools.cc/seo/&quot;&gt;TWTools 三軸掃描器&lt;/a&gt; 做一次全面健檢——它把「AI 爬蟲開放」放在 GEO 軸，連同可引用性、結構化資料、E-E-A-T、品牌權威一起評分。爬蟲開放度的單項評分規則與修法，也可以參考 &lt;a href=&quot;https://twtools.cc/seo/metric/geo/crawlers/&quot;&gt;AI 爬蟲開放度指標說明頁&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;掃出來如果有紅字，回到本文「robots.txt 怎麼寫才對」那五步，對著修一次，再掃一次確認變綠即可。&lt;/p&gt;
+&lt;h2&gt;常見問題&lt;/h2&gt;
+&lt;h3&gt;開放 AI 爬蟲會增加我的伺服器負擔嗎？&lt;/h3&gt;
+&lt;p&gt;會增加一些流量，但對絕大多數內容型網站而言影響有限——合規的搜尋型與即時抓取型爬蟲（&lt;code&gt;OAI-SearchBot&lt;/code&gt;、&lt;code&gt;PerplexityBot&lt;/code&gt;、&lt;code&gt;ChatGPT-User&lt;/code&gt;）抓取頻率並不誇張。真正造成負擔的通常是不守規矩的大量訓練型爬取，而那種情況 &lt;code&gt;robots.txt&lt;/code&gt; 本來就擋不住，要靠 WAF。對想被引用的站長來說，開放帶來的曝光通常遠大於這點流量成本。&lt;/p&gt;
+&lt;h3&gt;我擋掉 GPTBot，ChatGPT 還引用得到我嗎？&lt;/h3&gt;
+&lt;p&gt;可能可以。&lt;code&gt;GPTBot&lt;/code&gt; 是訓練型，&lt;code&gt;OAI-SearchBot&lt;/code&gt; 才是負責 ChatGPT 搜尋索引的爬蟲，&lt;code&gt;ChatGPT-User&lt;/code&gt; 是使用者即時提問時抓取——這三隻可以分開控制。所以你可以「擋訓練（&lt;code&gt;GPTBot&lt;/code&gt;）、開搜尋與即時（&lt;code&gt;OAI-SearchBot&lt;/code&gt;、&lt;code&gt;ChatGPT-User&lt;/code&gt;）」，在不貢獻訓練資料的前提下，仍保留被 ChatGPT 引用的機會。&lt;/p&gt;
+&lt;h3&gt;robots.txt 改完，多久會生效？&lt;/h3&gt;
+&lt;p&gt;爬蟲下次來抓 &lt;code&gt;robots.txt&lt;/code&gt; 時就會讀到新規則，通常是幾小時到幾天不等，不同爬蟲頻率不同。但要注意：「規則生效」不等於「立刻被引用」——AI 引擎還需要時間重新爬取你的內容、納入它的來源池。把 &lt;code&gt;robots.txt&lt;/code&gt; 寫對是「開門」，開門之後內容能不能被選為答案，還要看內容本身的可引用性與權威訊號。&lt;/p&gt;
+&lt;h3&gt;我該用 robots.txt 還是 WAF 來管理 AI 爬蟲？&lt;/h3&gt;
+&lt;p&gt;看你的目的。想「歡迎並引導」合規爬蟲（這是大多數站長的需求）→ 用 &lt;code&gt;robots.txt&lt;/code&gt;，因為合規爬蟲會遵守。想「真的拒絕」不守規矩或惡意的爬取 → 用 WAF / 平台級 Bot 管理，因為它在連線階段就會擋。兩者不衝突：用 &lt;code&gt;robots.txt&lt;/code&gt; 表達意圖，必要時再用 WAF 強制執行。&lt;/p&gt;
+&lt;h3&gt;我是用 Cloudflare Pages 的免費方案，需要特別設定嗎？&lt;/h3&gt;
+&lt;p&gt;建議去 Cloudflare 後台確認一下 AI 爬蟲 / Bot 的設定狀態，因為 Cloudflare 對 AI 爬蟲態度較積極（2025 年起新網域 setup 時會詢問是否允許）。如果你想被 AI 引用，確認沒有在平台層把 AI 爬蟲整批擋掉，再搭配寫對的 &lt;code&gt;robots.txt&lt;/code&gt;，就沒問題。&lt;/p&gt;
+&lt;h2&gt;結語：先把門打開，再談被不被引用&lt;/h2&gt;
+&lt;p&gt;2026 年想被 AI 引用，順序很清楚：&lt;strong&gt;第一步是讓爬蟲進得來，第二步才是內容值不值得被引用。&lt;/strong&gt; 很多台灣站長卡在第一步而不自知——&lt;code&gt;robots.txt&lt;/code&gt; 一行寫錯、安全外掛誤擋、平台層預設封鎖——內容再好都是白費。&lt;/p&gt;
+&lt;p&gt;這篇講的都是「一次設定、長期受益」的事：搞懂 10 種爬蟲的分類、把 &lt;code&gt;robots.txt&lt;/code&gt; 的 5 步走一遍、確認你的部署平台沒有偷偷幫你擋。花 30 分鐘做完，你就比同業多打開了兩條新流量入口。&lt;/p&gt;
+&lt;p&gt;👉 &lt;a href=&quot;https://twtools.cc/seo/&quot;&gt;立刻掃描你的網站，看看 AI 爬蟲開放度幾分 →&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;延伸閱讀：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://twtools.cc/blog/2026-geo-guide-taiwan-perspective/&quot;&gt;2026 GEO 完整指南：台灣站長視角（內含 robots.txt 即時掃描器）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://twtools.cc/blog/why-seo-alone-not-enough-2026/&quot;&gt;2026 年只做 SEO 的網站正在流失隱形流量&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://twtools.cc/blog/seo-geo-aeo-scanner-tutorial-2026/&quot;&gt;三軸掃描器實測教學：30 秒看懂你的網站曝光潛力&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded><category>站長工具</category><category>GEO</category><category>robots.txt</category><category>AI 爬蟲</category></item><item><title>2026 報稅倒數！綜所稅申報只到 6/1，最後一週還沒報的補救與退稅攻略</title><link>https://twtools.cc/blog/2026-final-week-income-tax-filing/</link><guid isPermaLink="true">https://twtools.cc/blog/2026-final-week-income-tax-filing/</guid><description>2026 年綜合所得稅申報到 6 月 1 日截止，最後一週還沒報怎麼辦？本文整理線上申報 3 步驟、114 年度免稅額與扣除額、忘記報稅的滯納金與罰鍰，以及退稅 3 批撥款時程，幫你在期限內 10 分鐘完成。</description><pubDate>Tue, 26 May 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;還沒報稅的人請注意，&lt;strong&gt;2026 年綜合所得稅申報到 6 月 1 日（週一）就截止&lt;/strong&gt;，這是申報 114 年度、也就是 2025 全年所得的最後機會。今天是 5 月 26 日，距離期限只剩不到一週。這篇用最白話的方式，帶你搞懂線上申報怎麼操作、114 年度免稅額與扣除額多少、忘記報稅會被罰多少，以及退稅什麼時候入帳。（本文資料更新至 2026 年 5 月）&lt;/p&gt;
 &lt;h2&gt;2026 報稅期限到底是哪一天？答案是 6 月 1 日&lt;/h2&gt;
 &lt;p&gt;一般綜所稅申報期間是每年 5 月 1 日到 5 月 31 日。但 2026 年的 &lt;strong&gt;5 月 31 日剛好是星期日&lt;/strong&gt;，依規定順延到次一個上班日，因此今年實際截止日是 &lt;strong&gt;6 月 1 日（週一）&lt;/strong&gt;。財政部電子申報繳稅服務網（大家俗稱的報稅系統）會開到當天深夜，但別賭最後一刻——系統尖峰時段常塞車，越接近截止越卡。&lt;/p&gt;
 &lt;p&gt;想知道現在距離截止還剩幾天、或退稅哪天入帳，可以用 日期計算器 直接算出間隔天數，再搭配 倒數計時器 提醒自己別錯過期限。&lt;/p&gt;
