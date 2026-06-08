@@ -1,0 +1,706 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>Schema.org JSON-LD 完全手冊：2026 年台灣站長該裝哪些結構化資料、哪些已經沒用，附可直接複製的範本 | TWTools</title><meta name="description" content="結構化資料（Schema.org JSON-LD）是讓搜尋引擎和 AI 看懂「你是誰、這頁在講什麼」的機器可讀標籤。但 2026 年的現實是：FAQ、HowTo、sitelinks 搜尋框這些 rich result 都已退場，而 schema 能不能讓 AI 引用你，最大型的對照實驗給的答案是「幾乎沒差」。這篇用 Google 官方文件把哪些 schema 還有用、哪些已經死了講清楚，給你 Organization、Article、麵包屑、@graph 四套可以直接複製的 JSON-LD 範本，再教你用兩個驗證工具確認到底有沒有裝對。"><link rel="canonical" href="https://twtools.cc/blog/schema-jsonld-complete-handbook-2026/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:url" content="https://twtools.cc/blog/schema-jsonld-complete-handbook-2026/"><meta property="og:title" content="Schema.org JSON-LD 完全手冊：2026 年台灣站長該裝哪些結構化資料、哪些已經沒用，附可直接複製的範本 | TWTools"><meta property="og:description" content="結構化資料（Schema.org JSON-LD）是讓搜尋引擎和 AI 看懂「你是誰、這頁在講什麼」的機器可讀標籤。但 2026 年的現實是：FAQ、HowTo、sitelinks 搜尋框這些 rich result 都已退場，而 schema 能不能讓 AI 引用你，最大型的對照實驗給的答案是「幾乎沒差」。這篇用 Google 官方文件把哪些 schema 還有用、哪些已經死了講清楚，給你 Organization、Article、麵包屑、@graph 四套可以直接複製的 JSON-LD 範本，再教你用兩個驗證工具確認到底有沒有裝對。"><meta property="og:image" content="https://twtools.cc/blog-images/twtools-complete-guide-cover.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Schema.org JSON-LD 完全手冊：2026 年台灣站長該裝哪些結構化資料、哪些已經沒用，附可直接複製的範本"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Schema.org JSON-LD 完全手冊：2026 年台灣站長該裝哪些結構化資料、哪些已經沒用，附可直接複製的範本 | TWTools"><meta name="twitter:description" content="結構化資料（Schema.org JSON-LD）是讓搜尋引擎和 AI 看懂「你是誰、這頁在講什麼」的機器可讀標籤。但 2026 年的現實是：FAQ、HowTo、sitelinks 搜尋框這些 rich result 都已退場，而 schema 能不能讓 AI 引用你，最大型的對照實驗給的答案是「幾乎沒差」。這篇用 Google 官方文件把哪些 schema 還有用、哪些已經死了講清楚，給你 Organization、Article、麵包屑、@graph 四套可以直接複製的 JSON-LD 範本，再教你用兩個驗證工具確認到底有沒有裝對。"><meta name="twitter:image" content="https://twtools.cc/blog-images/twtools-complete-guide-cover.jpg"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0WTK2LJFTY');
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            /* Morandi Dusty Rose — TWTools 品牌色（OKLCH hue 22） */
+            brand: {
+              50:  '#fceeed',
+              100: '#f2dbda',
+              200: '#e0b9b7',
+              300: '#ca9592',
+              400: '#af7472',
+              500: '#935e5c',
+              600: '#764a49',
+              700: '#583937',
+              800: '#3e2726',
+              900: '#281818',
+              950: '#110c08'
+            },
+            /* 奶油暖灰中性色（OKLCH hue 60） */
+            warm: {
+              50:  '#fcf3ed',
+              100: '#f1e5dc',
+              200: '#e3d0c2',
+              300: '#c9b3a2',
+              400: '#a99483',
+              500: '#887769',
+              600: '#6e6055',
+              700: '#564b42',
+              800: '#3e3630',
+              900: '#2b2520',
+              950: '#15110d'
+            },
+            /* 暖琥珀強調色（OKLCH hue 75） */
+            accent: {
+              50:  '#fdf4e7',
+              100: '#f8e5cb',
+              200: '#eecb9a',
+              300: '#e1ad63',
+              400: '#d49838',
+              500: '#b68028',
+              600: '#906520',
+              700: '#6b4c1d',
+              800: '#4b3617',
+              900: '#32230e',
+              950: '#181005'
+            }
+          }
+        }
+      }
+    }
+  </script><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/BaseLayout.BK2W_m_f.css"></head> <body class="min-h-screen paper-noise">   <button id="sidebar-hamburger" class="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg" style="background:var(--tw-surface);color:var(--tw-text-primary)">☰</button>  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 md:hidden hidden"></div>  <aside id="sidebar-panel" class="fixed top-0 left-0 h-full w-56 z-40 flex flex-col border-r transition-transform -translate-x-full md:translate-x-0" style="background:var(--tw-page-bg);border-color:var(--tw-border)"> <!-- Logo --> <div class="p-4 border-b flex items-center justify-between" style="border-color:var(--tw-border)"> <a href="/" class="flex items-center no-underline"> <img src="data:image/png;base64,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" alt="TWTools" class="w-7 h-7 rounded-lg"> <span class="text-sm font-bold ml-1.5" style="color:var(--tw-brand-accent)">TWTools</span> </a> <button id="sidebar-close" class="md:hidden text-lg leading-none" style="color:var(--tw-text-muted)">✕</button> </div> <!-- Nav items grouped by category --> <nav class="flex-1 py-2 overflow-y-auto"> <div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">檔案處理</div> <a href="/image/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🖼️</span> 圖片工具  </a><a href="/pdf/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📄</span> PDF 工具  </a><a href="/resume/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📋</span> 履歷產生器  </a><a href="/proofread/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">✍️</span> 錯別字檢查  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">生活查詢</div> <a href="/typhoon/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌀</span> 颱風停班停課  </a><a href="/lottery/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎰</span> 台灣彩券  </a><a href="/currency/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💱</span> 匯率換算  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">計算換算</div> <a href="/datecalc/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📅</span> 日期計算器  </a><a href="/countdown/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⏳</span> 倒數計時器  </a><a href="/unit/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📏</span> 單位換算  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">查詢工具</div> <a href="/postal/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📮</span> 郵遞區號  </a><a href="/address/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌐</span> 地址中譯英  </a><a href="/lunar/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 農曆國曆  </a><a href="/solar-terms/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☀️</span> 二十四節氣  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">站長工具</div> <a href="/seo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📊</span> SEO/GEO/AEO  </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">更多</div> <a href="/blog/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-r-2" style="background:rgba(107,115,148,0.15);color:var(--tw-brand-accent);border-color:var(--tw-brand-accent)"> <span class="text-base">📝</span> 知識文章  </a> </div> <!-- TripCraft --> <a href="/trip/" target="_blank" rel="noopener" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-t mt-1" style="color:var(--tw-text-muted);border-color:var(--tw-border)"> <span class="text-base">✈️</span>
+AI 旅行規劃
+<span class="ml-auto text-xs" style="color:var(--tw-text-muted)">↗</span> </a> </nav> <div class="p-3 border-t text-xs text-center space-y-1" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <div class="flex justify-center gap-3"> <a href="/about/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">關於</a> <a href="/privacy/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">隱私權</a> <a href="/terms/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">條款</a> </div>
+打工牛馬的線上工具箱 © 2026
+</div> </aside>  <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8 min-h-screen" style="background:var(--tw-page-bg)">   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Schema.org JSON-LD 完全手冊：2026 年台灣站長該裝哪些結構化資料、哪些已經沒用，附可直接複製的範本","description":"結構化資料（Schema.org JSON-LD）是讓搜尋引擎和 AI 看懂「你是誰、這頁在講什麼」的機器可讀標籤。但 2026 年的現實是：FAQ、HowTo、sitelinks 搜尋框這些 rich result 都已退場，而 schema 能不能讓 AI 引用你，最大型的對照實驗給的答案是「幾乎沒差」。這篇用 Google 官方文件把哪些 schema 還有用、哪些已經死了講清楚，給你 Organization、Article、麵包屑、@graph 四套可以直接複製的 JSON-LD 範本，再教你用兩個驗證工具確認到底有沒有裝對。","image":"https://twtools.cc/blog-images/twtools-complete-guide-cover.jpg","datePublished":"2026-06-05T00:00:00+08:00","dateModified":"2026-06-05T00:00:00+08:00","author":{"@type":"Organization","name":"TWTools 編輯部","url":"https://twtools.cc"},"publisher":{"@type":"Organization","name":"TWTools","url":"https://twtools.cc","logo":{"@type":"ImageObject","url":"https://twtools.cc/favicon.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://twtools.cc/blog/schema-jsonld-complete-handbook-2026/"},"inLanguage":"zh-Hant-TW","keywords":"Schema.org, JSON-LD, 結構化資料, Organization schema, Article schema, 麵包屑 schema, 結構化資料驗證, Rich Results Test, 台灣 SEO 2026"}</script>  <nav class="max-w-5xl mx-auto px-2 md:px-6 pt-2 pb-4 no-print" aria-label="breadcrumb"> <ol class="flex items-center gap-2 text-sm flex-wrap m-0 p-0 list-none" style="color: var(--tw-text-muted);"> <li><a href="/" class="grow-underline">首頁</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><a href="/blog/" class="grow-underline">編輯室</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><span style="color: var(--tw-text-primary);">SEO 策略</span></li> </ol> </nav>  <section class="max-w-5xl mx-auto px-2 md:px-6 pb-6"> <div class="article-col"> <div class="flex items-center gap-3 mb-5 flex-wrap"> <span class="brand-dot"></span> <span class="eyebrow">SEO 策略</span> <span class="printrule hidden md:inline">|</span> <span class="eyebrow">18 分鐘</span> <span class="printrule hidden md:inline">|</span> <span class="updated-pill"><span class="pulse-dot"></span>UPDATED · 2026 / 06 / 05</span> </div> <h1 class="font-serif-tc font-black tracking-cn" style="font-size: clamp(30px, 4.6vw, 52px); line-height: 1.15; color: var(--tw-hero-color); letter-spacing: -0.015em; margin: 0;"> Schema.org JSON-LD 完全手冊：2026 年台灣站長該裝哪些結構化資料、哪些已經沒用，附可直接複製的範本 </h1> <p class="font-serif-tc" style="margin: 24px 0 0; font-size: clamp(16px, 1.8vw, 19px); line-height: 1.65; color: var(--tw-text-secondary); font-weight: 400;"> 結構化資料（Schema.org JSON-LD）是讓搜尋引擎和 AI 看懂「你是誰、這頁在講什麼」的機器可讀標籤。但 2026 年的現實是：FAQ、HowTo、sitelinks 搜尋框這些 rich result 都已退場，而 schema 能不能讓 AI 引用你，最大型的對照實驗給的答案是「幾乎沒差」。這篇用 Google 官方文件把哪些 schema 還有用、哪些已經死了講清楚，給你 Organization、Article、麵包屑、@graph 四套可以直接複製的 JSON-LD 範本，再教你用兩個驗證工具確認到底有沒有裝對。 </p> <div class="mt-8 pt-6 border-t flex items-center gap-x-6 gap-y-2 flex-wrap text-sm no-print" style="border-color: var(--tw-border); color: var(--tw-text-muted);"> <span class="inline-flex items-center gap-2"> <span class="w-7 h-7 rounded-full grid place-items-center" style="background: var(--tw-hero-color); color: #fffbfa; font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 12px;">編</span> <span style="color: var(--tw-text-secondary);">TWTools 編輯部</span> </span> <span class="printrule">|</span> <time datetime="2026-06-05">2026 / 06 / 05</time> <span class="ml-auto inline-flex items-center gap-3"> <a href="/blog/en/schema-jsonld-complete-handbook-2026/" class="grow-underline inline-flex items-center gap-1.5"> <svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="12" cy="12" r="10" />
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+  <path d="M2 12h20" />
+</svg>
+English
+</a> <button type="button" id="print-link" class="grow-underline inline-flex items-center gap-1.5" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0; font: inherit;"> <svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+  <rect x="6" y="14" width="12" height="8" rx="1" />
+</svg>
+列印
+</button> </span> </div> </div> </section>  <figure class="max-w-5xl mx-auto px-2 md:px-6 mb-8 figure"> <div class="article-col"> <img src="/blog-images/twtools-complete-guide-cover.jpg" alt="Schema.org JSON-LD 完全手冊：2026 年台灣站長該裝哪些結構化資料、哪些已經沒用，附可直接複製的範本" class="hero-cover" style="width: 100%; object-fit: cover; background: var(--tw-surface);" loading="eager" fetchpriority="high"> <figcaption><em>Schema.org JSON-LD 完全手冊：2026 年台灣站長該裝哪些結構化資料、哪些已經沒用，附可直接複製的範本</em> <span class="src">— ILLUSTRATION · TWTOOLS EDITORIAL</span></figcaption> </div> </figure> <article class="max-w-5xl mx-auto px-2 md:px-6 mb-12"> <div class="article-frame"> <aside class="article-margin no-print"> <div class="margin-label">SEO 策略 · 2026</div> </aside> <div class="prose-cn"> <!-- TOC --> <details class="toc-block no-print" open> <summary> <div class="toc-head"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 5h.01" />
+  <path d="M3 12h.01" />
+  <path d="M3 19h.01" />
+  <path d="M8 5h13" />
+  <path d="M8 12h13" />
+  <path d="M8 19h13" />
+</svg>
+ <span class="eyebrow">CONTENTS · 目次</span> <h3>本文 10 個段落</h3> </div> <svg aria-hidden="true"
+  class="w-4 h-4 toc-chev lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m6 9 6 6 6-6" />
+</svg>
+ </summary> <div class="toc-list"> <ol> <li> <a href="#先講結論schema-在-2026-年到底還有什麼用"> <span class="toc-num">§ 01</span> <span class="toc-title">先講結論：Schema 在 2026 年到底還有什麼用？</span> </a> </li><li> <a href="#json-ld-是什麼為什麼大家都用它"> <span class="toc-num">§ 02</span> <span class="toc-title">JSON-LD 是什麼？為什麼大家都用它</span> </a> </li><li> <a href="#2026-年哪些-schema-還有-rich-result哪些已經死了"> <span class="toc-num">§ 03</span> <span class="toc-title">2026 年哪些 schema 還有 rich result？哪些已經死了</span> </a> </li><li> <a href="#台灣站長最該先裝的三個-schema附可複製範本"> <span class="toc-num">§ 04</span> <span class="toc-title">台灣站長最該先裝的三個 schema（附可複製範本）</span> </a> </li><li> <a href="#進階用-graph--id-把實體串起來"> <span class="toc-num">§ 05</span> <span class="toc-title">進階：用 @graph + @id 把實體串起來</span> </a> </li><li> <a href="#五個台灣站最常踩的-schema-錯誤"> <span class="toc-num">§ 06</span> <span class="toc-title">五個台灣站最常踩的 schema 錯誤</span> </a> </li><li> <a href="#怎麼驗證你的-schema-對不對"> <span class="toc-num">§ 07</span> <span class="toc-title">怎麼驗證你的 schema 對不對？</span> </a> </li><li> <a href="#那-schema-到底能不能讓-ai-引用我"> <span class="toc-num">§ 08</span> <span class="toc-title">那 Schema 到底能不能讓 AI 引用我？</span> </a> </li><li> <a href="#常見問題"> <span class="toc-num">§ 09</span> <span class="toc-title">常見問題</span> </a> </li><li> <a href="#結語把-schema-當成機器可讀層而不是魔法"> <span class="toc-num">§ 10</span> <span class="toc-title">結語：把 schema 當成「機器可讀層」，而不是魔法</span> </a> </li> </ol> </div> </details> <p>先講一個很常見的場景。</p>
+<p>某位台灣站長看了幾篇教學，知道「要加 schema」，於是用了一個外掛把 FAQPage、HowTo、Organization 一口氣全裝上去。裝完很有成就感，但過了一個月，Google 搜尋結果裡什麼變化都沒有，AI 也沒有比較常引用他。他開始懷疑：<strong>是不是我裝錯了？還是 schema 根本沒用？</strong></p>
+<p>兩個答案都不對。真正的情況是：他裝的東西裡，<strong>有一半在 2026 年已經不再產生任何效果了</strong>——而真正還有用的那幾個，他反而沒裝對。</p>
+<p>這篇手冊要把這件事一次講清楚：結構化資料到底是什麼、2026 年哪些還活著哪些已經死了、台灣站長該優先裝哪幾個，以及——最重要的——怎麼確認你到底有沒有裝對。文章裡的每一段 JSON-LD 都可以直接複製改成你自己的。</p>
+<h2 id="先講結論schema-在-2026-年到底還有什麼用">先講結論：Schema 在 2026 年到底還有什麼用？</h2>
+<p>很多人對 schema 的期待是錯的。所以先把話講白：結構化資料在 2026 年有三個<strong>真實</strong>的用途，以及一個被嚴重高估的用途。</p>
+<p>三個真實用途：</p>
+<ol>
+<li><strong>觸發 Google 的 rich result（複合式搜尋結果）</strong>：例如商品的星等評分、麵包屑路徑、文章的發布日期。這些是 schema 最確定、最看得到的回報。</li>
+<li><strong>建立實體（entity）認知</strong>：透過 Organization schema 加上 <code>sameAs</code>，你等於明確告訴 Google「我是這個品牌，我的官網、FB、IG 是這幾個」，幫助它把你接進知識圖譜（Knowledge Graph）。</li>
+<li><strong>提供機器可讀的事實層</strong>：搜尋引擎和 AI 不必猜，你的作者是誰、發布日期、價格、地址都用標準格式寫好了。這降低被誤讀的機率。</li>
+</ol>
+<p>那個被高估的用途是：<strong>「裝了 schema，AI 就會引用我」</strong>。這個說法在 2026 年站不住腳，後面有一整段專門講。先記住一句話：<strong>schema 是讓機器「看懂」你，不是讓機器「偏愛」你。</strong></p>
+<h2 id="json-ld-是什麼為什麼大家都用它">JSON-LD 是什麼？為什麼大家都用它</h2>
+<p>結構化資料有三種寫法：JSON-LD、Microdata、RDFa。Google 三種都讀得懂，但<strong>官方明確推薦 JSON-LD</strong>，原因很單純：它跟你的網頁內容是分開的。</p>
+<p>Microdata 和 RDFa 要把標記屬性直接塞進一個個 HTML 標籤裡，資料跟版面糾纏在一起，改版只要動到版型就很容易把標記弄壞，維護起來很痛苦。JSON-LD 則是一整塊獨立的 <code>&#x3C;script></code>，放在 <code>&#x3C;head></code>（放 <code>&#x3C;body></code> 也可以），跟你的版面完全分離、不影響畫面，要改就改那一塊，乾淨俐落。對用 Astro、Next.js 這類框架的站來說，JSON-LD 也最好用程式動態產生——把資料當變數帶進去，文章標題、日期一改，標記自動跟著更新，不用手動同步。</p>
+<p>它長這樣：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"application/ld+json"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">  "@context": "https://schema.org",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "@type": "Organization",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "name": "白鹿數位",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "url": "https://example.com.tw/"</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>三個一定要懂的關鍵字：</p>
+<ul>
+<li><code>@context</code>：固定寫 <code>https://schema.org</code>，告訴機器「接下來的詞彙都用 schema.org 這套字典解讀」。</li>
+<li><code>@type</code>：這個東西「是什麼」，例如 <code>Organization</code>（組織）、<code>Article</code>（文章）、<code>Product</code>（商品）。</li>
+<li>其餘的 <code>name</code>、<code>url</code>、<code>logo</code> 這些叫 <strong>property（屬性）</strong>，是這個型別底下可以填的欄位。</li>
+</ul>
+<p>就這麼簡單。schema.org 的字典裡有 800 多種型別、上千個屬性，但你 99% 的時間只會用到其中不到 10 種。不用被嚇到。</p>
+<h2 id="2026-年哪些-schema-還有-rich-result哪些已經死了">2026 年哪些 schema 還有 rich result？哪些已經死了</h2>
+<p>這是最多人沒跟上的部分。Google 這兩年砍掉了一大批結構化資料功能，很多教學文章還停在 2023 年的資訊，照著做等於白做。</p>
+<p>下面這張表是 2026 年 6 月的現況：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>狀態</th><th>結構化資料型別</th><th>說明</th></tr></thead><tbody><tr><td>✅ 還有 rich result</td><td>Product、Review／AggregateRating</td><td>商品星等、價格、庫存</td></tr><tr><td>✅ 還有 rich result</td><td>Article／BlogPosting／NewsArticle</td><td>文章發布日、作者、縮圖</td></tr><tr><td>✅ 還有 rich result</td><td>BreadcrumbList（麵包屑）</td><td>搜尋結果顯示路徑而非裸網址</td></tr><tr><td>✅ 還有 rich result</td><td>Organization、LocalBusiness</td><td>品牌資訊、知識面板、地方商家</td></tr><tr><td>✅ 還有 rich result</td><td>Recipe、Video、Event、JobPosting</td><td>食譜、影片、活動、職缺</td></tr><tr><td>❌ 已退場</td><td><strong>FAQPage</strong></td><td>2026 年 5 月 7 日起 rich result 完全消失</td></tr><tr><td>❌ 已退場</td><td><strong>HowTo</strong></td><td>桌機版 2023 年 9 月就移除了</td></tr><tr><td>❌ 已退場</td><td>Sitelinks 搜尋框（WebSite 的 SearchAction）</td><td>2026 年 1 月停用</td></tr><tr><td>❌ 已退場</td><td>2025 年 6 月一次砍 7 種</td><td>Book Actions、Course Info、Claim Review、Estimated Salary、Learning Video、Special Announcement、Vehicle Listing</td></tr></tbody></table>
+<p>關於已退場的部分，有三件事要特別提醒台灣站長：</p>
+<p><strong>第一，FAQPage 還是有很多人在拼命加，這是白工。</strong> Google 在 2026 年 5 月 7 日正式宣布 FAQ rich result 不再出現於搜尋結果，Search Console 的 FAQ 報表 6 月退場、API 8 月停止支援。你的 FAQPage 標記不會出錯、驗證也會過，但它對搜尋結果的曝光貢獻是<strong>零</strong>。</p>
+<p><strong>第二，HowTo 也一樣。</strong> 桌機版 2023 年就移除了，現在加 HowTo schema 同樣拿不到任何 rich result。</p>
+<p><strong>第三，「驗證通過」不等於「有效果」。</strong> 這是最容易誤會的地方。FAQPage、HowTo 在 schema.org 的字典裡依然是合法型別，丟進驗證工具一定全綠。但「語法正確」和「Google 會拿它做出搜尋結果」是兩回事。⚠️ 不要看到驗證器一片綠就以為自己賺到了。</p>
+<p>那已經裝了 FAQPage 要不要拆掉？Google 的官方立場是：<strong>沒在用的結構化資料不會對搜尋造成問題，但也沒有任何可見效果。</strong> 所以不急著拆，但也別再花時間擴充它。把力氣放在下面這三個還活著的。</p>
+<h2 id="台灣站長最該先裝的三個-schema附可複製範本">台灣站長最該先裝的三個 schema（附可複製範本）</h2>
+<p>如果你的網站是內容站、服務業、個人品牌站、中小企業官網——也就是台灣絕大多數網站——那 ROI 最高的就是這三個：Organization、Article、BreadcrumbList。其他的（Product、Recipe、Event）等你真的有那類內容再加。</p>
+<p>順帶一提，TWTools 三軸掃描器的 GEO「結構化資料」這項，計分邏輯剛好就是：有任何 JSON-LD 給基礎分，再依序看你有沒有 Organization、Article、BreadcrumbList、WebSite 各加分。所以把這三個裝好，這項分數會直接拉起來。</p>
+<h3 id="organization先讓-google-知道你是誰">Organization：先讓 Google 知道你是誰</h3>
+<p>這是全站每一頁都該有的（或至少首頁）。它的核心任務是建立你的品牌實體，<code>logo</code> 決定知識面板顯示什麼圖，<code>sameAs</code> 把你的社群帳號串進知識圖譜。Google 官方說法是 Organization <strong>沒有必填屬性</strong>，但建議盡量填，填越完整實體越清楚。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"application/ld+json"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">  "@context": "https://schema.org",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "@type": "Organization",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "name": "白鹿數位",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "url": "https://example.com.tw/",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "logo": "https://example.com.tw/logo.png",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "description": "專為台灣中小企業設計的數位行銷服務",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "sameAs": [</span></span>
+<span class="line"><span style="color:#E1E4E8">    "https://www.facebook.com/yourpage",</span></span>
+<span class="line"><span style="color:#E1E4E8">    "https://www.instagram.com/yourpage",</span></span>
+<span class="line"><span style="color:#E1E4E8">    "https://www.linkedin.com/company/yourpage"</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p><code>sameAs</code> 是這段裡最被低估的一行。AI 引擎不看反向連結，它判斷「這個站可不可信」很大一部分靠的就是這種明確的實體訊號。把你經營的社群帳號全列上去，而且確保各平台的名稱、logo 一致——一致性越高，機器越容易確認「這些都是同一個品牌」。</p>
+<h3 id="articleblogposting每篇文章都該有">Article／BlogPosting：每篇文章都該有</h3>
+<p>文章頁加這個，Google 才能穩定抓到發布日期、作者、縮圖。注意 <code>author</code> <strong>必須是巢狀的 <code>Person</code> 或 <code>Organization</code>，不能只寫一個名字字串</strong>——這是最常見的錯誤之一。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"application/ld+json"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">  "@context": "https://schema.org",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "@type": "BlogPosting",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "headline": "如何替台灣中小企業挑進銷存系統",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "image": "https://example.com.tw/blog/erp-cover.jpg",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "datePublished": "2026-06-05T08:00:00+08:00",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "dateModified": "2026-06-05T08:00:00+08:00",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "author": {</span></span>
+<span class="line"><span style="color:#E1E4E8">    "@type": "Person",</span></span>
+<span class="line"><span style="color:#E1E4E8">    "name": "王小明",</span></span>
+<span class="line"><span style="color:#E1E4E8">    "url": "https://example.com.tw/author/wang"</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  "publisher": {</span></span>
+<span class="line"><span style="color:#E1E4E8">    "@type": "Organization",</span></span>
+<span class="line"><span style="color:#E1E4E8">    "name": "白鹿數位",</span></span>
+<span class="line"><span style="color:#E1E4E8">    "logo": {</span></span>
+<span class="line"><span style="color:#E1E4E8">      "@type": "ImageObject",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "url": "https://example.com.tw/logo.png"</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>幾個台灣站常踩的細節：<code>datePublished</code> 的時間帶記得用 <code>+08:00</code>（台灣時區），不要直接複製範例的 UTC；<code>headline</code> 盡量控制在 110 字元內；<code>dateModified</code> 真的有改內容才更新，不要每天自動改——假裝「天天更新」騙不到搜尋引擎，反而可能被視為訊號雜訊。</p>
+<h3 id="breadcrumblist讓搜尋結果顯示路徑">BreadcrumbList：讓搜尋結果顯示路徑</h3>
+<p>麵包屑 rich result 是少數還活著、而且幾乎所有網站都適用的。它讓你的搜尋結果顯示「首頁 › 部落格 › 文章標題」而不是一串裸網址，提升點擊率。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"application/ld+json"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">  "@context": "https://schema.org",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "@type": "BreadcrumbList",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "itemListElement": [</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      "@type": "ListItem",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "position": 1,</span></span>
+<span class="line"><span style="color:#E1E4E8">      "name": "首頁",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "item": "https://example.com.tw/"</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      "@type": "ListItem",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "position": 2,</span></span>
+<span class="line"><span style="color:#E1E4E8">      "name": "部落格",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "item": "https://example.com.tw/blog/"</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      "@type": "ListItem",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "position": 3,</span></span>
+<span class="line"><span style="color:#E1E4E8">      "name": "如何替台灣中小企業挑進銷存系統"</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>注意<strong>最後一層（目前這一頁）不要填 <code>item</code> 網址</strong>，只留 <code>name</code>。這是 Google 的規範，最後一項代表使用者當前所在頁面，不需要連結。</p>
+<h3 id="額外加分實體店家請改用-localbusiness">額外加分：實體店家請改用 LocalBusiness</h3>
+<p>如果你不是純線上、而是有實體門市的台灣商家（餐廳、診所、補習班、工作室），那比起一般的 Organization，你更該用 <code>LocalBusiness</code>（或它底下更精確的子型別，例如 <code>Restaurant</code>、<code>MedicalClinic</code>）。它能多帶地址、營業時間、電話、座標這些在地資訊，對 Google 在地搜尋和地圖的呈現幫助很大。寫法跟 Organization 幾乎一樣，只是 <code>@type</code> 換掉、再多填 <code>address</code>、<code>telephone</code>、<code>openingHours</code> 這些欄位。一個店家同時想要品牌實體又想要在地呈現，把主體寫成 <code>LocalBusiness</code> 就一次涵蓋了，不必兩個都裝。</p>
+<h2 id="進階用-graph--id-把實體串起來">進階：用 @graph + @id 把實體串起來</h2>
+<p>當你同一頁有多個 schema（很正常：Organization + WebSite + 文章），與其分成三段各自獨立、<code>Organization</code> 在文章裡又重抄一遍，不如用 <code>@graph</code> 把它們放進同一個圖，再用 <code>@id</code> 互相指涉。每個實體只定義一次，其他地方用 <code>@id</code> 引用。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"application/ld+json"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">  "@context": "https://schema.org",</span></span>
+<span class="line"><span style="color:#E1E4E8">  "@graph": [</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      "@type": "Organization",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "@id": "https://example.com.tw/#org",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "name": "白鹿數位",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "url": "https://example.com.tw/",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "logo": "https://example.com.tw/logo.png",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "sameAs": ["https://www.facebook.com/yourpage"]</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      "@type": "WebSite",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "@id": "https://example.com.tw/#website",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "url": "https://example.com.tw/",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "name": "白鹿數位",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "publisher": { "@id": "https://example.com.tw/#org" }</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      "@type": "BlogPosting",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "@id": "https://example.com.tw/blog/erp/#article",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "headline": "如何替台灣中小企業挑進銷存系統",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "datePublished": "2026-06-05T08:00:00+08:00",</span></span>
+<span class="line"><span style="color:#E1E4E8">      "author": { "@id": "https://example.com.tw/#org" },</span></span>
+<span class="line"><span style="color:#E1E4E8">      "publisher": { "@id": "https://example.com.tw/#org" },</span></span>
+<span class="line"><span style="color:#E1E4E8">      "isPartOf": { "@id": "https://example.com.tw/#website" }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>這裡的重點：</p>
+<ul>
+<li><code>@context</code> 在 <code>@graph</code> 最外層寫一次就好，裡面每個實體不用重複。</li>
+<li><code>@id</code> 是你自己在這份標記裡的內部識別碼（慣例用 <code>網址#org</code> 這種錨點寫法），讓不同實體可以互相指。<code>BlogPosting</code> 的 <code>publisher</code> 直接寫 <code>{ "@id": "...#org" }</code>，不用把整個 Organization 再抄一遍。</li>
+<li>串接外部實體時，如果你不確定對方有沒有維護那個 <code>@id</code>，<strong>記得保留 <code>name</code> 當後備</strong>，這樣就算 <code>@id</code> 指涉不到，關係還是清楚的。</li>
+</ul>
+<p>要不要一定用 <code>@graph</code>？不一定。你也可以放好幾段獨立的 <code>&#x3C;script></code>，每段自己帶 <code>@context</code>，Google 兩種都吃。<code>@graph</code> 的好處是在實體關係複雜時更乾淨、更不容易自相矛盾。單純的小站，分開寫也完全沒問題。</p>
+<h2 id="五個台灣站最常踩的-schema-錯誤">五個台灣站最常踩的 schema 錯誤</h2>
+<h3 id="錯誤-1標記的內容畫面上看不到">錯誤 1：標記的內容畫面上看不到</h3>
+<p>Google 的政策寫得很明白：<strong>結構化資料必須代表頁面上「使用者看得到」的內容</strong>。你不能在 schema 裡寫一個價格、評分或答案，但畫面上根本沒有。這叫做「隱藏內容標記」，是會被當成違規的。同樣的道理也適用於 AI——它主要讀的是可見的 HTML，你藏在 JSON-LD 裡、畫面上卻沒有的東西，幫助有限。</p>
+<h3 id="錯誤-2還在大力擴充-faqpage">錯誤 2：還在大力擴充 FAQPage</h3>
+<p>前面講過了，但值得再說一次，因為太多人卡在這。FAQPage 在 2026 年 5 月後沒有 rich result 了。把原本要塞進 FAQPage 的那些問答，<strong>改成頁面上看得到的問句小標 + 簡短直接回答</strong>，對 SEO、對 AI 引用都更實在。</p>
+<h3 id="錯誤-3author-只寫字串">錯誤 3：<code>author</code> 只寫字串</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#9ECBFF">"author"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"王小明"</span></span></code></pre>
+<p>❌ 上面這樣寫，Google 無法把它連到一個明確的人或組織實體。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#9ECBFF">"author"</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">"@type"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Person"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"name"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"王小明"</span><span style="color:#E1E4E8"> }</span></span></code></pre>
+<p>✅ 一定要用巢狀的 <code>Person</code> 或 <code>Organization</code>。多打幾個字，差很多。</p>
+<h3 id="錯誤-4沒有-sameas品牌實體建不起來">錯誤 4：沒有 sameAs，品牌實體建不起來</h3>
+<p>很多台灣中小企業官網有 logo、有 Organization，就是漏了 <code>sameAs</code>。結果 Google 知道「有這麼一個組織」，卻無法確認「它跟那個有 5 萬粉的 FB 粉專是同一個」。<code>sameAs</code> 是把這些分散的品牌資產綁成一個實體最直接的繩子。</p>
+<h3 id="錯誤-5簡繁語言訊號不一致">錯誤 5：簡繁、語言訊號不一致</h3>
+<p>這是台灣獨有的坑。如果你的網站 <code>&#x3C;html lang></code> 寫 <code>zh-TW</code>，schema 裡的文字卻混了簡體，或者乾脆從中國的範本複製過來沒改，會讓機器對你的語言歸屬產生混淆。對 AI 引擎來說更嚴重——它可能在回答繁體中文問題時，因為判定你是簡中內容而略過你。TWTools 掃描器有內建繁中比例與簡繁混用偵測，就是專門抓這個。</p>
+<h2 id="怎麼驗證你的-schema-對不對">怎麼驗證你的 schema 對不對？</h2>
+<p>裝完一定要驗。盲裝不驗，等於不知道自己有沒有裝對。2026 年有兩個官方等級的工具，分工不同，<strong>兩個都要用</strong>。</p>
+<h3 id="第一步先用-schema-markup-validator-驗語法">第一步：先用 Schema Markup Validator 驗語法</h3>
+<p>到 <a href="https://validator.schema.org/">validator.schema.org</a>，把你的 JSON-LD 貼進去或輸入網址。這個工具由 schema.org 維護，<strong>支援全部 800 多種型別</strong>，只看「你的語法合不合 schema.org 標準」，不管 Google 認不認。語法層的錯誤（拼錯屬性、結構錯誤、少了引號）這裡會抓出來。部署前先在這裡驗，最快。</p>
+<h3 id="第二步再用-google-rich-results-test-看能不能觸發-rich-result">第二步：再用 Google Rich Results Test 看能不能觸發 rich result</h3>
+<p>到 <a href="https://search.google.com/test/rich-results">search.google.com/test/rich-results</a>，輸入你的網址（或貼程式碼）。這個工具只認 Google 支援的那約 30 種 rich result 型別，而且會給你一個<strong>搜尋結果預覽</strong>，讓你看到實際長相。如果你裝的是 FAQPage，這裡會告訴你它偵測到了、但不會給預覽——因為已經沒有 rich result。這一步是確認「Google 端到底會不會拿它做出東西」。</p>
+<h3 id="第三步上線後用-search-console-追蹤">第三步：上線後用 Search Console 追蹤</h3>
+<p>正式上線後，到 Google Search Console 的「結構化資料」相關報表，看 Google 實際爬取後有沒有偵測到、有沒有報錯。validator 是「理論上對不對」，GSC 是「Google 實際看到什麼」，兩者可能有時間差，以 GSC 為準。</p>
+<p>⚠️ 注意：舊版的「結構化資料測試工具」（Structured Data Testing Tool）已經退役，網路上很多教學還在叫你用它，認明上面兩個新工具。</p>
+<p>完整的健檢順序是：<strong>validator.schema.org 驗語法 → 部署到測試環境 → Rich Results Test 看預覽 → 上線後 GSC 追蹤</strong>。</p>
+<h2 id="那-schema-到底能不能讓-ai-引用我">那 Schema 到底能不能讓 AI 引用我？</h2>
+<p>這是最多人想問、也最多人被誤導的問題。直接給你 2026 年最可靠的答案。</p>
+<p>網路上你會看到各種驚人數字：某個單站實驗說「加了 schema，Google AI Overview 引用暴增 611%」，另一個框架說「結構化資料帶來 39% 引用提升」。但同一批實驗裡，ChatGPT 的引用卻<strong>掉了 71%</strong>，Perplexity 的爬蟲根本抓不到測試頁。這些數字彼此矛盾、樣本又小，<strong>不能當成定論</strong>。</p>
+<p>目前規模最大、最接近對照實驗的證據是 Ahrefs 在 2026 年 5 月 11 日發布的研究：他們追蹤了 <strong>1,885 個加上 schema 的頁面</strong>，結果發現 AI 引用「幾乎沒動」，AI Mode 和 ChatGPT 的變化被歸類為隨機雜訊。</p>
+<p>怎麼解讀這個落差？業界目前的共識是：<strong>schema 是入場券（table stakes），不是制勝因子。</strong> 確實有研究指出被引用的頁面裡 81% 都有 schema，但這是相關不是因果——大型網站本來就既有 schema、又有權威內容，是後者讓它被引用。schema 是「該有的衛生條件」，但它本身不會把你推上去。</p>
+<p>更根本的原因是：<strong>AI 引擎主要讀的是你頁面上可見的 HTML 文字</strong>，不是藏在 <code>&#x3C;head></code> 裡的 JSON-LD。所以決定你會不會被引用的，是內容本身寫得夠不夠好引用——結論先講、段落自足、有具體數字——而不是你多塞了幾段 schema。這部分我們在另一篇〈<a href="/blog/how-to-get-cited-by-ai-2026/">如何提高內容被 AI 引用的機率</a>〉裡有完整拆解。</p>
+<p>所以結論是：<strong>該裝 schema 嗎？該。</strong> 它能穩定拿到 Google 的 rich result、能建立品牌實體、能讓事實層機器可讀，這三件事都很實在。但<strong>別把它當成「讓 AI 引用我」的開關</strong>——那個開關在你的內容裡，不在你的 <code>&#x3C;script></code> 標籤裡。</p>
+<h2 id="常見問題">常見問題</h2>
+<h3 id="加了-schema-多久會看到效果">加了 schema 多久會看到效果？</h3>
+<p>要看 Google 重新爬取你的頁面，通常幾天到幾週。Rich result（如麵包屑、文章日期）出現後，你會在搜尋結果直接看到。但記住：schema 觸發的是「呈現方式」的改變，不是排名的暴漲，不要期待加了就流量翻倍。</p>
+<h3 id="schema-要放-head-還是-body">schema 要放 <code>&#x3C;head></code> 還是 <code>&#x3C;body></code>？</h3>
+<p>兩個都可以，Google 都讀得到。慣例上放 <code>&#x3C;head></code> 比較乾淨、好管理。用 WordPress 的話，多數 SEO 外掛會自動幫你放對位置。</p>
+<h3 id="我用-wordpresswix需要自己手寫-json-ld-嗎">我用 WordPress／Wix，需要自己手寫 JSON-LD 嗎？</h3>
+<p>通常不用。WordPress 的 Yoast、Rank Math 等外掛會自動產生 Organization、Article、BreadcrumbList。你要做的是去外掛設定<strong>把品牌名稱、logo、社群連結（sameAs）填好</strong>，然後用驗證工具確認它產出的東西是對的。手寫只在你需要客製、或外掛產不出你要的型別時才需要。</p>
+<h3 id="已經裝了-faqpagehowto要拆掉嗎">已經裝了 FAQPage、HowTo，要拆掉嗎？</h3>
+<p>不急著拆。Google 說沒在用的 schema 不會造成問題，留著無害。但別再花時間擴充它們，把力氣轉到 Organization、Article、麵包屑這些還有效的，以及——更重要的——頁面上看得到的內容品質。</p>
+<h3 id="一個頁面可以放很多段-schema-嗎">一個頁面可以放很多段 schema 嗎？</h3>
+<p>可以。你可以放多段獨立的 <code>&#x3C;script></code>，或用一個 <code>@graph</code> 把多個實體包在一起。Google 兩種都支援。實體關係複雜時用 <code>@graph</code> 比較不容易自相矛盾；簡單的小站分開寫也完全沒問題。</p>
+<h2 id="結語把-schema-當成機器可讀層而不是魔法">結語：把 schema 當成「機器可讀層」，而不是魔法</h2>
+<p>結構化資料不是玄學，也不是萬靈丹。把它想成一層<strong>寫給機器看的事實標籤</strong>：你是誰、這頁在講什麼、誰寫的、什麼時候發的。裝對的回報是穩定的 Google rich result 和清楚的品牌實體；裝錯的代價是花時間在已經死掉的 FAQPage、HowTo 上面打轉。</p>
+<p>2026 年的正確做法很簡單：<strong>裝 Organization（記得 sameAs）、Article（author 用 Person 巢狀）、BreadcrumbList，用兩個 validator 驗過，然後把省下來的力氣全部投到頁面上看得到的內容。</strong> 那才是搜尋引擎和 AI 真正在讀的東西。</p>
+<p>👉 <a href="/seo/">用 TWTools 三軸掃描器，看看你的 schema 拿幾分 →</a></p>
+<p>延伸閱讀：</p>
+<ul>
+<li><a href="/seo/metric/geo/schema/">結構化資料指標說明：掃描器怎麼算你的 schema 分數</a></li>
+<li><a href="/blog/how-to-get-cited-by-ai-2026/">如何提高內容被 AI 引用的機率：ChatGPT、Perplexity、Google AI Overviews 怎麼挑來源</a></li>
+<li><a href="/blog/why-seo-alone-not-enough-2026/">2026 年只做 SEO 的網站正在流失隱形流量</a></li>
+<li><a href="/blog/2026-geo-guide-taiwan-perspective/">2026 GEO 完整指南：台灣站長視角</a></li>
+</ul> <!-- Reactions --> <div class="reactions no-print"> <div class="ask">這篇對你有幫助嗎？</div> <div class="react-buttons"> <button type="button" class="react-btn" data-react="useful"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
+  <path d="M7 10v12" />
+</svg>
+ <span>覺得有用</span> <span class="count" data-react-count="useful">—</span> </button> <button type="button" class="react-btn" data-react="bookmark"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z" />
+</svg>
+ <span>收藏</span> <span class="count" data-react-count="bookmark">—</span> </button> </div> <span class="meta">PUBLISHED · 2026 / 06 / 05</span> </div> <!-- Full CTA --> <div class="cta-full no-print"> <div class="cta-head"> <h4>把這篇帶走</h4> <span class="eyebrow">SAVE · SHARE · FEED</span> </div> <div class="cta-grid"> <a href="#" class="cta-cell" data-action="copy-link"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+</svg>
+</div> <div> <div class="label">複製連結 <span class="kbd">⌘ C</span></div> <div class="desc">把這篇 URL 存到 Notion、Pocket，或直接傳給朋友。</div> </div> </a> <a href="/blog/schema-jsonld-complete-handbook-2026/index.md" class="cta-cell" data-action="copy-md"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+</div> <div> <div class="label">複製 Markdown</div> <div class="desc">原始 .md 內容，餵 NotebookLM、ChatGPT 當研究素材。</div> </div> </a> <a href="https://notebooklm.google.com/?import=https%3A%2F%2Ftwtools.cc%2Fblog%2Fschema-jsonld-complete-handbook-2026%2F" target="_blank" rel="noopener" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
+  <path d="M9 13a4.5 4.5 0 0 0 3-4" />
+  <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" />
+  <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
+  <path d="M6 18a4 4 0 0 1-1.967-.516" />
+  <path d="M12 13h4" />
+  <path d="M12 18h6a2 2 0 0 1 2 2v1" />
+  <path d="M12 8h8" />
+  <path d="M16 8V5a2 2 0 0 1 2-2" />
+  <circle cx="16" cy="13" r=".5" />
+  <circle cx="18" cy="3" r=".5" />
+  <circle cx="20" cy="21" r=".5" />
+  <circle cx="20" cy="8" r=".5" />
+</svg>
+</div> <div> <div class="label">送進 NotebookLM</div> <div class="desc">一鍵把本文加入你的 NotebookLM 來源。</div> </div> </a> <a href="/blog/rss.xml" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 11a9 9 0 0 1 9 9" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <circle cx="5" cy="19" r="1" />
+</svg>
+</div> <div> <div class="label">訂閱 RSS</div> <div class="desc">每週一篇，更新就推到你的 Reader。</div> </div> </a> </div> </div> </div> <aside class="article-margin no-print"> <div class="margin-label">TWTOOLS / EDITORIAL</div> </aside> </div> </article>  <section class="no-print"> <div class="adjacent"> <a href="/blog/how-to-get-cited-by-ai-2026/"> <div class="arrow-row"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m12 19-7-7 7-7" />
+  <path d="M19 12H5" />
+</svg>
+ <span class="eyebrow">PREV · 上一篇</span> </div> <div class="post-title">如何提高內容被 AI 引用的機率：ChatGPT、Perplexity、Google AI Overviews 怎麼挑來源，台灣站長能實際動手的做法</div> </a> <a href="/blog/tax-refund-schedule-2026/" class="right"> <div class="arrow-row"> <span class="eyebrow">NEXT · 下一篇</span> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 12h14" />
+  <path d="m12 5 7 7-7 7" />
+</svg>
+ </div> <div class="post-title">2026 退稅什麼時候入帳？第一批 7/31 直撥！三批退稅時程、查詢方式與聰明用法</div> </a> </div> </section> </main>  <script>
+    (function() {
+      var hamburger = document.getElementById('sidebar-hamburger');
+      var overlay = document.getElementById('sidebar-overlay');
+      var panel = document.getElementById('sidebar-panel');
+      var closeBtn = document.getElementById('sidebar-close');
+
+      function openSidebar() {
+        panel.classList.remove('-translate-x-full');
+        panel.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+      }
+      function closeSidebar() {
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+
+      if (hamburger) hamburger.addEventListener('click', openSidebar);
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    })();
+  </script>  </body></html> <script>
+  (function () {
+    // Print
+    var printBtn = document.getElementById('print-link');
+    if (printBtn) {
+      printBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.print();
+      });
+    }
+
+    // TOC smooth scroll
+    document.querySelectorAll('details.toc-block .toc-list a').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var target = document.querySelector(a.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        var y = target.getBoundingClientRect().top + window.scrollY - 24;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        if (history.replaceState) history.replaceState(null, '', a.getAttribute('href'));
+      });
+    });
+
+    // Mobile TOC collapse by default
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      var toc = document.querySelector('details.toc-block');
+      if (toc) toc.removeAttribute('open');
+    }
+
+    // Reactions — localStorage-backed toggle (per-slug)
+    var slug = location.pathname.replace(/\/+$/, '').split('/').pop() || 'post';
+    var STORAGE_KEY = 'twtools.reactions.' + slug;
+    var BASE = { useful: 0, bookmark: 0 };
+    function readState() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (_) {}
+      return { useful: false, bookmark: false };
+    }
+    function writeState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+    }
+    function renderCount(key, state) {
+      var el = document.querySelector('[data-react-count="' + key + '"]');
+      if (!el) return;
+      el.textContent = String(BASE[key] + (state[key] ? 1 : 0));
+    }
+    function renderActive(key, state) {
+      var btn = document.querySelector('[data-react="' + key + '"]');
+      if (!btn) return;
+      btn.classList.toggle('is-active', !!state[key]);
+    }
+    var state = readState();
+    Object.keys(BASE).forEach(function (k) { renderCount(k, state); renderActive(k, state); });
+    document.querySelectorAll('[data-react]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.getAttribute('data-react');
+        state[key] = !state[key];
+        writeState(state);
+        renderCount(key, state);
+        renderActive(key, state);
+      });
+    });
+
+    // CTA: copy link
+    var copyLink = document.querySelector('[data-action="copy-link"]');
+    if (copyLink) {
+      copyLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(location.href).then(function () {
+            var label = copyLink.querySelector('.label');
+            if (!label) return;
+            var orig = label.innerHTML;
+            label.textContent = '已複製 ✓';
+            setTimeout(function () { label.innerHTML = orig; }, 1400);
+          });
+        }
+      });
+    }
+  })();
+</script>
