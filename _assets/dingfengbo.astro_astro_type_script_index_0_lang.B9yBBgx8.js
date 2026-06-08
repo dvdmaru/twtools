@@ -1,0 +1,46 @@
+import{r as p}from"./index.DrBtkhmp.js";import{c as y}from"./client.r8TJOeK0.js";import{L as z}from"./LangContext.BZz5L0gg.js";import{j as e}from"./jsx-runtime.u17CrQMm.js";const I=typeof window<"u"&&new URLSearchParams(window.location.search).get("api")||"https://twtools-dl.charlie-chien.workers.dev",$=["基隆市","臺北市","新北市","桃園市","新竹市","新竹縣","苗栗縣","臺中市","彰化縣","南投縣","雲林縣","嘉義市","嘉義縣","臺南市","高雄市","屏東縣","宜蘭縣","花蓮縣","臺東縣","澎湖縣","金門縣","連江縣"],P=s=>s?s.includes("雷")?"⛈️":s.includes("雨")?"🌧️":s.includes("陰")?"☁️":s.includes("多雲")?"⛅":s.includes("晴")?"☀️":"🌫️":"·",k=(s,o)=>new Intl.DateTimeFormat("zh-TW",{timeZone:"Asia/Taipei",...o}).format(s),T=s=>k(new Date(s),{hour:"2-digit",hour12:!1}).replace(/^24/,"00")+"時";function N(s){const o=new Date(s),r=Object.fromEntries(new Intl.DateTimeFormat("zh-TW",{timeZone:"Asia/Taipei",month:"numeric",day:"numeric",weekday:"short",hour:"2-digit",hour12:!1}).formatToParts(o).map(c=>[c.type,c.value])),a=parseInt(r.hour,10),l=a<6?"凌晨":a<11?"上午":a<14?"中午":a<18?"下午":a<20?"傍晚":"晚上";return`${r.month}/${r.day}（${r.weekday}）${l}`}function C(s){const o=s.timeline||[];if(!o.length)return null;const r=Date.now();let a=0;for(let d=0;d<o.length;d++)new Date(o[d].time).getTime()<=r&&(a=d);const l=o[a],c=o.slice(a),h=Math.max(...c.map(d=>d.beaufortNum)),w=Math.max(...c.map(d=>d.pop??0)),u=s.peakIndex!=null&&s.peakIndex>=a?s.peakIndex:a;let f=a;for(let d=a;d<o.length;d++)(o[d].pop??-1)>(o[f].pop??-1)&&(f=d);const n=h>=8?"wind":w>=70?"rain":"calm",x=n==="wind"?u:f,t=o[x],g=n==="wind"?"最強時段":n==="rain"?"雨最大時段":"參考時段",i=x>a;let m,b,j,v;return n==="wind"?(m=i?"風雨將增強":"風雨逐漸趨緩",b=`最強風雨在 ${N(t.time)} 前後`,j=`預估陣風 ${t.beaufort} 級・降雨機率 ${t.pop==null?"–":t.pop}%`,v=i?"風雨會在最強時段前增強，<b>趁現在較和緩</b>，可把下面該做的先做完，做完就能安心休息。":"最強時段大致已過、風雨在減弱，仍留意零星強陣風與積水，<b>可逐步恢復作息</b>。"):n==="rain"?(m="留意降雨",b=`${N(t.time)} 前後降雨機率最高`,j=`降雨機率 ${t.pop}%・${t.weather||""}`,v="風不大、但降雨機率偏高，<b>外出帶雨具、留意低窪積水</b>即可，不需特別警戒。"):(m="風雨平穩",b="未來時段無顯著風雨",j=`目前 ${l.weather||""}・陣風 ${l.beaufort} 級`,v="目前風雨平穩，<b>可以安心休息</b>，留意一般降雨即可。"),{tl:o,cur:a,peak:x,C:l,P:t,peakLabel:g,word:m,peakline:b,peaksub:j,advice:v}}const E=["手機、行動電源充飽","手電筒／照明確認","飲用水、即食食物備好","門窗、陽台物品固定","低窪處車輛移到高處"];function S(){const[s,o]=p.useState("臺北市"),[r,a]=p.useState("內湖區"),[l,c]=p.useState(null),[h,w]=p.useState(!0),[u,f]=p.useState("");p.useEffect(()=>{let t=!0;w(!0),f("");const g=`${I}/weather?county=${encodeURIComponent(s)}`+(r?`&town=${encodeURIComponent(r)}`:"");return fetch(g).then(i=>i.json()).then(i=>{t&&(i.ok?(c(i),!r&&i.town&&a(i.town)):(f(i.message||"載入失敗"),c(null)))}).catch(i=>{t&&f("連線失敗："+i.message)}).finally(()=>{t&&w(!1)}),()=>{t=!1}},[s,r]);const n=l?C(l):null,x=l&&l.towns||[];return e.jsxs("div",{className:"dfb",children:[e.jsx("style",{children:`
+        .dfb{max-width:412px;margin:0 auto}
+        .dfb *{box-sizing:border-box}
+        .dfb .sel{display:flex;gap:8px;margin-bottom:14px}
+        .dfb .sel select{flex:1;padding:9px 10px;border:1px solid var(--tw-border,#e7e1d8);border-radius:10px;
+          background:var(--tw-surface,#fff);font-size:14px;color:var(--tw-text,#2b2722);font-family:inherit}
+        .dfb .frame2{background:#faf8f4;border:1px solid #e7e1d8;border-radius:18px;overflow:hidden}
+        .dfb .hd{padding:15px 18px 13px;background:linear-gradient(180deg,#1f2937,#283447);color:#fff}
+        .dfb .hd .loc{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+        .dfb .hd .loc b{font-size:19px}
+        .dfb .hd .loc .t{font-size:13px;opacity:.8;font-family:"JetBrains Mono",monospace}
+        .dfb .hd .sub{margin-top:4px;font-size:12.5px;opacity:.85}
+        .dfb .status{padding:18px 18px 15px;text-align:center;border-bottom:1px solid #e7e1d8}
+        .dfb .word{font-size:25px;font-weight:900;font-family:"Noto Serif TC",serif}
+        .dfb .peakline{margin-top:7px;font-size:15px;color:#b45309;font-weight:700}
+        .dfb .peaksub{margin-top:3px;font-size:12.5px;color:#6b635a}
+        .dfb .sec{padding:13px 16px;border-bottom:1px solid #e7e1d8}
+        .dfb .sec h3{margin:0 0 10px;font-size:12px;color:#6b635a;font-weight:500;letter-spacing:1px}
+        .dfb .tl{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+        .dfb .blk{flex:0 0 auto;width:60px;text-align:center;border-radius:10px;padding:8px 4px;background:#fff;border:1px solid #e7e1d8}
+        .dfb .blk.now{outline:2px solid #0e7490;outline-offset:-2px}
+        .dfb .blk.peak{background:#fff5e8;border-color:#f0c089}
+        .dfb .blk .hr{font-size:11px;color:#6b635a;font-family:"JetBrains Mono",monospace}
+        .dfb .blk .wx{font-size:18px;margin:3px 0}
+        .dfb .blk .bf{font-size:13px;font-weight:700}
+        .dfb .blk .pop{font-size:11px;color:#1d4ed8;font-weight:500}
+        .dfb .blk .tag{font-size:10px;margin-top:3px;font-weight:700}
+        .dfb .blk.now .tag{color:#0e7490}.dfb .blk.peak .tag{color:#b45309}
+        .dfb .cmp{display:flex;align-items:stretch}
+        .dfb .cmp .c{flex:1;padding:12px 14px;text-align:center}
+        .dfb .cmp .c.l{border-right:1px solid #e7e1d8}
+        .dfb .cmp .lbl{font-size:11px;color:#6b635a}
+        .dfb .cmp .big{font-size:20px;font-weight:900;margin-top:4px}
+        .dfb .cmp .small{font-size:12px;color:#1d4ed8;margin-top:2px}
+        .dfb .cmp .arrow{display:flex;align-items:center;color:#6b635a;font-size:18px;padding:0 2px}
+        .dfb .dec{padding:16px 18px;background:#fbf7ef;border-bottom:1px solid #e7e1d8}
+        .dfb .dec .q{font-size:17px;font-weight:900;font-family:"Noto Serif TC",serif}
+        .dfb .dec .advice{margin-top:8px;font-size:13.5px;line-height:1.55}
+        .dfb .dec ul{margin:12px 0 0;padding:0;list-style:none}
+        .dfb .dec li{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:5px 0}
+        .dfb .dec li .bx{flex:0 0 auto;width:15px;height:15px;border:1.6px solid #c9bfae;border-radius:4px;margin-top:2px}
+        .dfb .dec .hint{margin-top:10px;font-size:11.5px;color:#6b635a}
+        .dfb .ft{padding:12px 18px 16px;font-size:11px;color:#6b635a;line-height:1.6}
+        .dfb .ft .warn{color:#b45309}
+        .dfb .msg{padding:48px 20px;text-align:center;color:#6b635a}
+      `}),e.jsxs("div",{className:"sel",children:[e.jsx("select",{value:s,onChange:t=>{o(t.target.value),a("")},children:$.map(t=>e.jsx("option",{value:t,children:t},t))}),e.jsx("select",{value:r,onChange:t=>a(t.target.value),disabled:!x.length,children:x.length?x.map(t=>e.jsx("option",{value:t,children:t},t)):e.jsx("option",{children:r||"—"})})]}),e.jsxs("div",{className:"frame2",children:[h&&e.jsx("div",{className:"msg",children:"載入風雨資料中…"}),!h&&u&&e.jsx("div",{className:"msg",children:u}),!h&&!u&&n&&e.jsxs(e.Fragment,{children:[e.jsxs("div",{className:"hd",children:[e.jsxs("div",{className:"loc",children:[e.jsxs("b",{children:["📍 ",l.county," ",l.town]}),e.jsx("span",{className:"t",children:k(new Date,{hour:"2-digit",minute:"2-digit",hour12:!1})})]}),e.jsx("div",{className:"sub",children:"🌀 目前無發布颱風警報・平日模式"})]}),e.jsxs("div",{className:"status",children:[e.jsx("div",{className:"word",children:n.word}),e.jsx("div",{className:"peakline",children:n.peakline}),e.jsx("div",{className:"peaksub",children:n.peaksub})]}),e.jsxs("div",{className:"sec",children:[e.jsx("h3",{children:"未來時段（每 3 小時・以氣象署預報）"}),e.jsx("div",{className:"tl",children:n.tl.slice(n.cur,n.cur+9).map((t,g)=>{const i=n.cur+g,m=["blk",i===n.cur?"now":"",i===n.peak?"peak":""].join(" ").trim(),b=i===n.cur?"目前":i===n.peak?"最強":"";return e.jsxs("div",{className:m,children:[e.jsx("div",{className:"hr",children:T(t.time)}),e.jsx("div",{className:"wx",children:P(t.weather)}),e.jsxs("div",{className:"bf",children:[t.beaufort,e.jsx("span",{style:{fontSize:10},children:" 級"})]}),e.jsxs("div",{className:"pop",children:["☔",t.pop==null?"–":t.pop,"%"]}),e.jsx("div",{className:"tag",children:b})]},t.time)})})]}),e.jsxs("div",{className:"cmp",children:[e.jsxs("div",{className:"c l",children:[e.jsx("div",{className:"lbl",children:"目前時段"}),e.jsxs("div",{className:"big",children:[n.C.beaufort," 級"]}),e.jsxs("div",{className:"small",children:["☔ ",n.C.pop==null?"–":n.C.pop,"%・",n.C.weather||""]})]}),e.jsx("div",{className:"arrow",children:"→"}),e.jsxs("div",{className:"c",children:[e.jsx("div",{className:"lbl",children:n.peakLabel}),e.jsxs("div",{className:"big",style:{color:"#b45309"},children:[n.P.beaufort," 級"]}),e.jsxs("div",{className:"small",children:["☔ ",n.P.pop==null?"–":n.P.pop,"%・",n.P.weather||""]})]})]}),e.jsxs("div",{className:"dec",children:[e.jsx("div",{className:"q",children:"👉 該繼續睡，還是起來？"}),e.jsx("div",{className:"advice",dangerouslySetInnerHTML:{__html:n.advice}}),e.jsx("ul",{children:E.map(t=>e.jsxs("li",{children:[e.jsx("span",{className:"bx"}),e.jsx("span",{children:t})]},t))}),e.jsx("div",{className:"hint",children:"＊清單為一般準備項目，請依你的居住環境與實際狀況斟酌取捨。"})]}),e.jsxs("div",{className:"ft",children:["資料：",l.source,"・",l.dataset,e.jsx("br",{}),l.fetchedAt&&e.jsxs(e.Fragment,{children:["更新於 ",k(new Date(l.fetchedAt),{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit",hour12:!1}),"（每 6 小時更新）。"]}),e.jsx("span",{className:"warn",children:"本頁為預報參考，請以中央氣象署最新發布為準。"})]})]})]})]})}const D=y.createRoot(document.getElementById("dingfengbo-tool-root"));D.render(p.createElement(z,null,p.createElement(S)));
