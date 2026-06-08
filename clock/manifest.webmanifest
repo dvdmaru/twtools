@@ -1,0 +1,17 @@
+{
+  "name": "翻頁時鐘 FlipClock",
+  "short_name": "翻頁時鐘",
+  "description": "仿 FliTik 的翻頁時鐘：時鐘 / 倒數 / 碼錶，可全螢幕當螢幕保護程式。",
+  "lang": "zh-Hant",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

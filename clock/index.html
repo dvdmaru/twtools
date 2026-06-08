@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="classic" data-font="bold">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="仿 FliTik 的全螢幕翻頁時鐘，支援 12/24 小時制、倒數計時、碼錶與螢幕保護特效。免註冊免安裝，Windows 與 Mac 任何瀏覽器皆可用。">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="翻頁時鐘">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="canonical" href="https://twtools.cc/clock/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://twtools.cc/clock/">
+<meta property="og:title" content="翻頁時鐘 — TWTools">
+<meta property="og:description" content="仿 FliTik 的全螢幕翻頁時鐘：時鐘 / 倒數 / 碼錶，可當螢幕保護程式。免註冊免安裝，Windows 與 Mac 皆可用。">
+<meta property="og:image" content="https://twtools.cc/clock/og-clock.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="翻頁時鐘 — TWTools">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="翻頁時鐘 — TWTools">
+<meta name="twitter:description" content="仿 FliTik 的全螢幕翻頁時鐘：時鐘 / 倒數 / 碼錶，可當螢幕保護程式。免註冊免安裝。">
+<meta name="twitter:image" content="https://twtools.cc/clock/og-clock.png">
+<title>翻頁時鐘 — TWTools | 全螢幕翻頁時鐘・倒數・碼錶</title>
+<style>
+  /* ============================ 主題 ============================ */
+  :root{
+    --bg:#000000; --card:#1b1b1d; --card2:#161618; --digit:#f5f5f7;
+    --divider:rgba(0,0,0,.62); --accent:#ff9f0a; --muted:rgba(255,255,255,.55);
+    --panel:rgba(28,28,30,.96); --line:rgba(255,255,255,.12); --ctrl:rgba(255,255,255,.9);
+  }
+  html[data-theme="midnight"]{
+    --bg:#070b16; --card:#16213e; --card2:#111a31; --digit:#d6e4ff;
+    --divider:rgba(0,0,0,.5); --accent:#4d9fff; --muted:rgba(214,228,255,.55);
+    --panel:rgba(16,23,42,.96); --line:rgba(255,255,255,.12);
+  }
+  html[data-theme="paper"]{
+    --bg:#e9e9ec; --card:#ffffff; --card2:#f4f4f6; --digit:#16161a;
+    --divider:rgba(0,0,0,.1); --accent:#ff5a5f; --muted:rgba(0,0,0,.5);
+    --panel:rgba(255,255,255,.97); --line:rgba(0,0,0,.1); --ctrl:rgba(0,0,0,.8);
+  }
+  html[data-theme="amber"]{
+    --bg:#160f04; --card:#2a1d08; --card2:#221706; --digit:#ffcf7a;
+    --divider:rgba(0,0,0,.55); --accent:#ff8a00; --muted:rgba(255,207,122,.55);
+    --panel:rgba(34,23,6,.96); --line:rgba(255,207,122,.18);
+  }
+  html[data-theme="neon"]{
+    --bg:#03130c; --card:#08241a; --card2:#061c14; --digit:#5dffa6;
+    --divider:rgba(0,0,0,.55); --accent:#00ff95; --muted:rgba(93,255,166,.5);
+    --panel:rgba(6,28,20,.96); --line:rgba(93,255,166,.18);
+  }
+
+  /* ============================ 基礎 ============================ */
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--digit);
+    font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,"PingFang TC","Microsoft JhengHei",sans-serif;
+    overflow:hidden; transition:background .4s ease;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    user-select:none;
+  }
+  body.idle{cursor:none}
+  body.idle .controls,body.idle .stopwatch-bar{opacity:0; pointer-events:none}
+
+  /* 字體變體 */
+  html[data-font="bold"] .card span{font-family:inherit; font-weight:700}
+  html[data-font="mono"] .card span{font-family:"SF Mono",ui-monospace,"JetBrains Mono",Consolas,Menlo,monospace; font-weight:700}
+  html[data-font="thin"] .card span{font-family:inherit; font-weight:300}
+
+  /* ============================ 顯示區 ============================ */
+  .stage{display:flex; flex-direction:column; align-items:center; gap:.28em; z-index:1}
+  .flip-clock{
+    display:flex; align-items:flex-start; justify-content:center;
+    font-size:clamp(54px,15.5vw,228px); line-height:1;
+  }
+  .group{display:flex; flex-direction:column; align-items:center; gap:.14em}
+  .group-cards{display:flex; gap:.07em}
+  .group-label{font-size:.13em; letter-spacing:.18em; color:var(--muted); font-weight:600; text-transform:uppercase}
+  .colon{
+    align-self:flex-start; display:flex; flex-direction:column; justify-content:center;
+    height:1.12em; padding:0 .04em; color:var(--digit);
+  }
+  .colon b{display:block; width:.1em; height:.1em; border-radius:50%; background:var(--digit); margin:.16em 0; opacity:.9}
+  html[data-blink="on"] .colon b{animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:.18}}
+
+  /* ---- 翻頁卡片 ---- */
+  .card{
+    position:relative; width:.74em; height:1.12em; font-size:1em;
+    border-radius:.1em; background:var(--card2);
+    perspective:2.2em;
+    box-shadow:0 .035em .14em rgba(0,0,0,.45);
+  }
+  .card > div{
+    position:absolute; left:0; width:100%; height:.56em; overflow:hidden;
+    background:var(--card); color:var(--digit);
+  }
+  .card .top,.card .topf{top:0; border-radius:.1em .1em 0 0; border-bottom:1px solid var(--divider)}
+  .card .bottom,.card .botf{bottom:0; border-radius:0 0 .1em .1em}
+  .card .topf{z-index:3; transform-origin:bottom; backface-visibility:hidden}
+  .card .botf{z-index:3; transform-origin:top; transform:rotateX(90deg); backface-visibility:hidden}
+  .card > div > span{
+    position:absolute; left:0; width:100%; height:1.12em; line-height:1.12em;
+    text-align:center; font-size:1em;
+  }
+  .card .bottom > span,.card .botf > span{top:-.56em}
+  .card .top > span,.card .topf > span{top:0}
+  /* 立體陰影 */
+  .card .top::after,.card .topf::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(0,0,0,.22))}
+  .card .bottom::after,.card .botf::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.05))}
+
+  .card.flipping .topf{animation:ftop var(--fd,.28s) ease-in forwards}
+  .card.flipping .botf{animation:fbot var(--fd,.28s) ease-out var(--fd,.28s) forwards}
+  @keyframes ftop{from{transform:rotateX(0)}to{transform:rotateX(-90deg)}}
+  @keyframes fbot{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
+
+  /* AM/PM + 日期 */
+  .meridiem{font-size:.16em; font-weight:700; color:var(--accent); align-self:flex-start; margin-left:.3em; margin-top:.2em; letter-spacing:.05em}
+  .subline{font-size:clamp(14px,2.6vw,30px); color:var(--muted); letter-spacing:.14em; font-weight:500; min-height:1.2em; text-align:center}
+  .cd-label{font-size:clamp(15px,3vw,34px); color:var(--accent); letter-spacing:.1em; font-weight:600; text-align:center; margin-bottom:.1em}
+
+  /* ============================ 控制列 ============================ */
+  .controls{
+    position:fixed; top:0; left:0; right:0; display:flex; align-items:center; justify-content:space-between;
+    padding:16px 18px; z-index:20; transition:opacity .4s ease; gap:12px;
+  }
+  .tabs{display:flex; gap:6px; background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:4px; backdrop-filter:blur(10px)}
+  .tab{
+    border:0; background:transparent; color:var(--muted); font:inherit; font-size:15px; font-weight:600;
+    padding:8px 18px; border-radius:999px; cursor:pointer; transition:.2s;
+  }
+  .tab.active{background:var(--accent); color:#fff}
+  html[data-theme="paper"] .tab.active{color:#fff}
+  .right-btns{display:flex; gap:8px}
+  .iconbtn{
+    width:42px; height:42px; border-radius:50%; border:1px solid var(--line); background:var(--panel);
+    color:var(--ctrl); cursor:pointer; font-size:19px; display:flex; align-items:center; justify-content:center;
+    backdrop-filter:blur(10px); transition:.2s;
+  }
+  .iconbtn:hover{border-color:var(--accent); color:var(--accent)}
+
+  /* 碼錶控制 */
+  .stopwatch-bar{
+    position:fixed; bottom:34px; left:50%; transform:translateX(-50%); display:none; gap:12px; z-index:20;
+    transition:opacity .4s ease;
+  }
+  .stopwatch-bar.show{display:flex}
+  .sw-btn{
+    border:1px solid var(--line); background:var(--panel); color:var(--ctrl); font:inherit; font-weight:600;
+    font-size:16px; padding:12px 30px; border-radius:999px; cursor:pointer; backdrop-filter:blur(10px); transition:.2s;
+  }
+  .sw-btn.primary{background:var(--accent); color:#fff; border-color:var(--accent)}
+  .sw-btn:hover{border-color:var(--accent)}
+
+  /* ============================ 設定面板 ============================ */
+  .overlay{position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:40; opacity:0; pointer-events:none; transition:.3s}
+  .overlay.open{opacity:1; pointer-events:auto}
+  .panel{
+    position:fixed; top:0; right:0; height:100%; width:min(380px,90vw); background:var(--panel);
+    border-left:1px solid var(--line); z-index:50; transform:translateX(100%); transition:transform .32s cubic-bezier(.4,0,.2,1);
+    overflow-y:auto; backdrop-filter:blur(16px); color:var(--digit);
+  }
+  .panel.open{transform:translateX(0)}
+  .panel-head{display:flex; align-items:center; justify-content:space-between; padding:20px 22px 8px}
+  .panel-head h2{margin:0; font-size:19px; font-weight:700}
+  .panel-body{padding:8px 22px 40px}
+  .field{padding:14px 0; border-bottom:1px solid var(--line)}
+  .field-row{display:flex; align-items:center; justify-content:space-between; gap:12px}
+  .field label{font-size:15px; font-weight:600}
+  .field .hint{font-size:12.5px; color:var(--muted); margin-top:5px; line-height:1.5}
+  .seg{display:flex; gap:0; border:1px solid var(--line); border-radius:9px; overflow:hidden}
+  .seg button{border:0; background:transparent; color:var(--muted); font:inherit; font-size:14px; font-weight:600; padding:7px 14px; cursor:pointer; transition:.15s}
+  .seg button.active{background:var(--accent); color:#fff}
+  .swatches{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap}
+  .swatch{width:34px; height:34px; border-radius:9px; cursor:pointer; border:2px solid transparent; position:relative}
+  .swatch.active{border-color:var(--accent)}
+  .swatch.active::after{content:"✓"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:15px; text-shadow:0 1px 3px rgba(0,0,0,.6)}
+  /* switch */
+  .switch{position:relative; width:46px; height:26px; flex:0 0 auto}
+  .switch input{opacity:0; width:100%; height:100%; margin:0; cursor:pointer}
+  .slider{position:absolute; inset:0; background:var(--line); border-radius:999px; transition:.2s; pointer-events:none}
+  .slider::before{content:""; position:absolute; width:20px; height:20px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.2s}
+  .switch input:checked + .slider{background:var(--accent)}
+  .switch input:checked + .slider::before{transform:translateX(20px)}
+  input[type="datetime-local"],input[type="text"]{
+    width:100%; margin-top:10px; padding:10px 12px; border-radius:9px; border:1px solid var(--line);
+    background:var(--card2); color:var(--digit); font:inherit; font-size:14px;
+  }
+  .btn{display:inline-block; margin-top:10px; padding:9px 16px; border-radius:9px; border:1px solid var(--line); background:var(--card2); color:var(--digit); font:inherit; font-size:14px; font-weight:600; cursor:pointer; transition:.2s}
+  .btn:hover{border-color:var(--accent)}
+  .btn.accent{background:var(--accent); color:#fff; border-color:var(--accent)}
+  .preset-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+  .group-title{font-size:12px; letter-spacing:.12em; color:var(--muted); text-transform:uppercase; font-weight:700; margin:22px 0 2px}
+  .file-name{font-size:12.5px; color:var(--accent); margin-top:8px; word-break:break-all}
+
+  /* ============================ 慶祝特效 ============================ */
+  .celebrate{position:fixed; inset:0; z-index:60; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.4)}
+  .celebrate.show{display:flex}
+  .celebrate video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:-1}
+  #fireworks{position:absolute; inset:0; width:100%; height:100%}
+  .celebrate-msg{position:relative; z-index:2; font-size:clamp(34px,8vw,110px); font-weight:800; color:#fff; text-shadow:0 4px 40px rgba(0,0,0,.85),0 0 14px rgba(0,0,0,.6); text-align:center; padding:0 20px; animation:pop .6s cubic-bezier(.2,1.3,.4,1)}
+  @keyframes pop{from{transform:scale(.6); opacity:0}to{transform:scale(1); opacity:1}}
+  .celebrate-close{position:fixed; top:20px; right:20px; z-index:61}
+
+  /* 提示 */
+  .empty-hint{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px; z-index:5; color:var(--muted); text-align:center; padding:24px}
+  .empty-hint p{font-size:clamp(16px,3vw,22px); margin:0; line-height:1.6}
+  .empty-hint.hidden{display:none}
+
+  /* 手機直式：時分秒上下堆疊，隱藏冒號，數字維持大字 */
+  @media (max-width:560px) and (orientation:portrait){
+    .flip-clock{flex-direction:column; gap:.16em}
+    .flip-clock .colon{display:none}
+    .controls{padding:12px}
+    .tab{padding:7px 13px; font-size:14px}
+  }
+  /* 尊重系統「減少動態效果」設定 */
+  @media (prefers-reduced-motion:reduce){
+    .card.flipping .topf,.card.flipping .botf{animation-duration:.001s}
+    .celebrate-msg{animation:none}
+  }
+</style>
+</head>
+<body>
+
+  <!-- 控制列 -->
+  <div class="controls">
+    <div class="tabs">
+      <button class="tab active" data-mode="clock">時鐘</button>
+      <button class="tab" data-mode="countdown">倒數</button>
+      <button class="tab" data-mode="stopwatch">碼錶</button>
+    </div>
+    <div class="right-btns">
+      <button class="iconbtn" id="settingsBtn" title="設定 (S)">⚙</button>
+      <button class="iconbtn" id="fsBtn" title="全螢幕 (F)">⛶</button>
+    </div>
+  </div>
+
+  <!-- 顯示區 -->
+  <div class="stage">
+    <div class="cd-label" id="cdLabel" style="display:none"></div>
+    <div class="flip-clock" id="clock"></div>
+    <div class="subline" id="subline"></div>
+  </div>
+
+  <!-- 倒數未設定提示 -->
+  <div class="empty-hint hidden" id="emptyHint">
+    <p>還沒設定倒數目標<br>打開右上角 ⚙ 設定，選一個日期或重要時刻</p>
+    <button class="btn accent" id="openCdSetup">設定倒數目標</button>
+  </div>
+
+  <!-- 碼錶控制 -->
+  <div class="stopwatch-bar" id="swBar">
+    <button class="sw-btn primary" id="swStart">開始</button>
+    <button class="sw-btn" id="swReset">重置</button>
+  </div>
+
+  <!-- 設定面板 -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="panel" id="panel">
+    <div class="panel-head">
+      <h2>設定</h2>
+      <button class="iconbtn" id="closePanel">✕</button>
+    </div>
+    <div class="panel-body">
+
+      <div class="group-title">外觀</div>
+      <div class="field">
+        <div class="field-row"><label>主題</label></div>
+        <div class="swatches" id="themeSwatches">
+          <div class="swatch" data-theme="classic" style="background:#1b1b1d" title="經典黑"></div>
+          <div class="swatch" data-theme="midnight" style="background:#16213e" title="午夜藍"></div>
+          <div class="swatch" data-theme="paper" style="background:#ffffff;border:1px solid #ccc" title="純白"></div>
+          <div class="swatch" data-theme="amber" style="background:#2a1d08" title="暖橘"></div>
+          <div class="swatch" data-theme="neon" style="background:#08241a" title="霓虹綠"></div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-row"><label>字體</label>
+          <div class="seg" id="fontSeg">
+            <button data-font="bold" class="active">粗體</button>
+            <button data-font="mono">等寬</button>
+            <button data-font="thin">細體</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="group-title">時鐘</div>
+      <div class="field">
+        <div class="field-row"><label>時制</label>
+          <div class="seg" id="formatSeg">
+            <button data-fmt="24" class="active">24 小時</button>
+            <button data-fmt="12">12 小時</button>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-row"><label>顯示秒數</label>
+          <span class="switch"><input type="checkbox" id="showSec" checked><span class="slider"></span></span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-row"><label>顯示日期星期</label>
+          <span class="switch"><input type="checkbox" id="showDate" checked><span class="slider"></span></span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-row"><label>冒號閃爍</label>
+          <span class="switch"><input type="checkbox" id="blink"><span class="slider"></span></span>
+        </div>
+      </div>
+
+      <div class="group-title">倒數目標</div>
+      <div class="field">
+        <div class="field-row"><label>目標時間</label></div>
+        <input type="datetime-local" id="cdTarget">
+        <input type="text" id="cdName" placeholder="標題（例如：2027 新年）" maxlength="24">
+        <div class="preset-row">
+          <button class="btn" data-cd-preset="newyear">下個新年</button>
+          <button class="btn" data-cd-preset="midnight">今晚午夜</button>
+          <button class="btn" data-cd-preset="hour1">1 小時後</button>
+        </div>
+        <button class="btn accent" id="cdApply" style="margin-top:12px">套用倒數</button>
+        <div class="hint">倒數歸零時會自動播放慶祝特效。</div>
+      </div>
+
+      <div class="group-title">自訂時間（虛擬時間）</div>
+      <div class="field">
+        <div class="field-row"><label>啟用自訂時間</label>
+          <span class="switch"><input type="checkbox" id="customEnable"><span class="slider"></span></span>
+        </div>
+        <input type="datetime-local" id="customTime">
+        <div class="hint">不更改系統時間，讓時鐘從你設定的時刻開始走 - 方便錄製跨年 / 生日等未來時刻的影片。</div>
+      </div>
+
+      <div class="group-title">慶祝特效</div>
+      <div class="field">
+        <div class="field-row"><label>排定慶祝時刻</label></div>
+        <input type="datetime-local" id="celebTime">
+        <div class="field-row" style="margin-top:12px"><label>自訂背景影片</label></div>
+        <button class="btn" id="pickVideo">選擇本機影片…</button>
+        <input type="file" id="videoFile" accept="video/*" hidden>
+        <div class="file-name" id="videoName"></div>
+        <button class="btn accent" id="testCeleb" style="margin-top:12px">預覽慶祝特效</button>
+        <div class="hint">時鐘模式走到排定時刻會自動播放。影片僅在本次開啟有效（重新整理後需重選）。</div>
+      </div>
+
+      <div class="group-title">關於</div>
+      <div class="field" style="border-bottom:0">
+        <div class="hint">
+          快捷鍵：F 全螢幕 · S 設定 · 空白鍵 碼錶開始/暫停。<br>
+          全螢幕後靜置數秒會自動隱藏控制列，當作螢幕保護程式使用。
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 慶祝特效層 -->
+  <div class="celebrate" id="celebrate">
+    <video id="celebVideo" loop muted playsinline></video>
+    <canvas id="fireworks"></canvas>
+    <div class="celebrate-msg" id="celebMsg">🎉</div>
+    <button class="iconbtn celebrate-close" id="celebClose">✕</button>
+  </div>
+
+<script>
+"use strict";
+/* ============================================================
+   設定狀態 + 持久化
+   ============================================================ */
+const LS_KEY = "flipclock.settings.v1";
+const state = {
+  mode:"clock", theme:"classic", font:"bold", format:"24",
+  showSec:true, showDate:true, blink:false,
+  cdTarget:null, cdName:"", cdDone:false,
+  customEnable:false, customBase:null, customActivatedReal:null,
+  celebTime:null, celebFired:false,
+};
+function save(){
+  const o={...state}; delete o.cdDone; delete o.celebFired;
+  localStorage.setItem(LS_KEY, JSON.stringify(o));
+}
+function load(){
+  try{
+    const o=JSON.parse(localStorage.getItem(LS_KEY)||"{}");
+    Object.assign(state,o);
+  }catch(e){}
+}
+load();
+
+/* ============================================================
+   虛擬時間
+   ============================================================ */
+function now(){
+  if(state.customEnable && state.customBase!=null && state.customActivatedReal!=null){
+    return state.customBase + (Date.now() - state.customActivatedReal);
+  }
+  return Date.now();
+}
+
+/* ============================================================
+   翻頁卡片
+   ============================================================ */
+class FlipCard{
+  constructor(){
+    const el=document.createElement("div"); el.className="card";
+    el.innerHTML=`
+      <div class="top"><span></span></div>
+      <div class="bottom"><span></span></div>
+      <div class="topf"><span></span></div>
+      <div class="botf"><span></span></div>`;
+    this.el=el;
+    this.top=el.querySelector(".top span");
+    this.bottom=el.querySelector(".bottom span");
+    this.topf=el.querySelector(".topf span");
+    this.botf=el.querySelector(".botf span");
+    this.cur=null;
+    el.querySelector(".botf").addEventListener("animationend",()=>{
+      this.bottom.textContent=this.cur;
+      this.topf.textContent=this.cur;
+      el.classList.remove("flipping");
+    });
+  }
+  set(v,animate){
+    v=String(v);
+    if(v===this.cur) return;
+    const old=this.cur;
+    if(!animate || old===null){
+      this.cur=v;
+      this.top.textContent=v; this.bottom.textContent=v;
+      this.topf.textContent=v; this.botf.textContent=v;
+      return;
+    }
+    this.top.textContent=v;     // 新值上半（露在折頁後）
+    this.bottom.textContent=old; // 舊值下半（折頁蓋上前）
+    this.topf.textContent=old;  // 折下的折頁：舊值
+    this.botf.textContent=v;    // 翻上的折頁：新值
+    this.cur=v;
+    this.el.classList.remove("flipping");
+    void this.el.offsetWidth;
+    this.el.classList.add("flipping");
+  }
+}
+
+/* ============================================================
+   顯示佈局
+   ============================================================ */
+const clockEl=document.getElementById("clock");
+const sublineEl=document.getElementById("subline");
+const cdLabelEl=document.getElementById("cdLabel");
+let cards=[];           // 依序的 FlipCard
+let layoutKey="";        // 重建判斷
+
+function makeColon(){
+  const c=document.createElement("div"); c.className="colon";
+  c.innerHTML="<b></b><b></b>"; return c;
+}
+function makeGroup(n,label){
+  const g=document.createElement("div"); g.className="group";
+  const row=document.createElement("div"); row.className="group-cards";
+  const list=[];
+  for(let i=0;i<n;i++){ const fc=new FlipCard(); row.appendChild(fc.el); list.push(fc); }
+  g.appendChild(row);
+  if(label){ const l=document.createElement("div"); l.className="group-label"; l.textContent=label; g.appendChild(l); }
+  return {g,list};
+}
+// segs: [{digits:n,label?}], 之間自動加冒號
+function buildLayout(segs,key){
+  if(key===layoutKey) return;
+  layoutKey=key;
+  clockEl.innerHTML=""; cards=[];
+  segs.forEach((s,i)=>{
+    if(i>0) clockEl.appendChild(makeColon());
+    const {g,list}=makeGroup(s.digits,s.label);
+    clockEl.appendChild(g); cards.push(...list);
+  });
+  fitClock();
+}
+// 依卡數自動縮放，寬高都納入考量，任何模式 / 方向都完整置中不裁切
+function fitClock(){
+  clockEl.style.transform="scale(1)";
+  const w=clockEl.scrollWidth, h=clockEl.scrollHeight;
+  const availW=window.innerWidth*0.94, availH=window.innerHeight*0.70;
+  if(w>0&&h>0){ clockEl.style.transformOrigin="center"; clockEl.style.transform=`scale(${Math.min(1,availW/w,availH/h)})`; }
+}
+function setDigits(str,animate){
+  for(let i=0;i<cards.length;i++) cards[i].set(str[i]??"0",animate);
+}
+
+/* ============================================================
+   模式渲染
+   ============================================================ */
+let meridiemEl=null;
+function ensureMeridiem(show){
+  if(show && !meridiemEl){
+    meridiemEl=document.createElement("div"); meridiemEl.className="meridiem";
+    clockEl.appendChild(meridiemEl);
+  }else if(!show && meridiemEl){ meridiemEl.remove(); meridiemEl=null; }
+}
+const WD=["週日","週一","週二","週三","週四","週五","週六"];
+const pad=(n,w=2)=>String(Math.floor(Math.abs(n))).padStart(w,"0");
+
+function renderClock(animate){
+  const d=new Date(now());
+  let h=d.getHours(), ap="";
+  if(state.format==="12"){ ap=h>=12?"PM":"AM"; h=h%12; if(h===0)h=12; }
+  const segs=[{digits:2},{digits:2}];
+  if(state.showSec) segs.push({digits:2});
+  buildLayout(segs,"clock-"+state.format+"-"+state.showSec);
+  ensureMeridiem(state.format==="12");
+  if(meridiemEl) meridiemEl.textContent=ap;
+  let str=pad(h)+pad(d.getMinutes());
+  if(state.showSec) str+=pad(d.getSeconds());
+  setDigits(str,animate);
+  // 副標
+  if(state.showDate){
+    sublineEl.style.display="";
+    sublineEl.textContent=`${d.getFullYear()} 年 ${d.getMonth()+1} 月 ${d.getDate()} 日　${WD[d.getDay()]}`;
+  }else sublineEl.style.display="none";
+  cdLabelEl.style.display="none";
+}
+
+function renderCountdown(animate){
+  ensureMeridiem(false);
+  if(!state.cdTarget){
+    document.getElementById("emptyHint").classList.remove("hidden");
+    document.querySelector(".stage").style.visibility="hidden";
+    return;
+  }
+  document.getElementById("emptyHint").classList.add("hidden");
+  document.querySelector(".stage").style.visibility="visible";
+  let diff=state.cdTarget-now();
+  const over=diff<=0;
+  if(over) diff=0;
+  const totalSec=Math.floor(diff/1000);
+  const days=Math.floor(totalSec/86400);
+  const hrs=Math.floor((totalSec%86400)/3600);
+  const min=Math.floor((totalSec%3600)/60);
+  const sec=totalSec%60;
+  const showDays=days>0;
+  const dDigits=days>99?3:2;
+  const segs = showDays
+    ? [{digits:dDigits,label:"天"},{digits:2,label:"時"},{digits:2,label:"分"},{digits:2,label:"秒"}]
+    : [{digits:2,label:"時"},{digits:2,label:"分"},{digits:2,label:"秒"}];
+  buildLayout(segs,"cd-"+showDays+"-"+dDigits);
+  const str = showDays ? pad(days,dDigits)+pad(hrs)+pad(min)+pad(sec) : pad(hrs)+pad(min)+pad(sec);
+  setDigits(str,animate);
+  cdLabelEl.style.display = state.cdName ? "" : "none";
+  cdLabelEl.textContent = state.cdName;
+  sublineEl.style.display="none";
+  if(over && !state.cdDone){ state.cdDone=true; fireCelebration(state.cdName||"時間到！"); }
+}
+
+let swElapsed=0, swRunning=false, swLast=0;
+function renderStopwatch(animate){
+  ensureMeridiem(false);
+  const ms = swElapsed + (swRunning ? (Date.now()-swLast) : 0);
+  const totalSec=Math.floor(ms/1000);
+  const hrs=Math.floor(totalSec/3600);
+  const min=Math.floor((totalSec%3600)/60);
+  const sec=totalSec%60;
+  const cs=Math.floor((ms%1000)/10);
+  const segs=[{digits:2,label:"時"},{digits:2,label:"分"},{digits:2,label:"秒"},{digits:2,label:"1/100"}];
+  buildLayout(segs,"sw");
+  setDigits(pad(hrs)+pad(min)+pad(sec)+pad(cs),animate);
+  sublineEl.style.display="none"; cdLabelEl.style.display="none";
+}
+
+/* ============================================================
+   主迴圈
+   ============================================================ */
+let lastTick=-1;
+const reduceMotion=matchMedia("(prefers-reduced-motion:reduce)").matches;
+function loop(){
+  if(state.mode==="clock"){
+    const t=Math.floor(now()/1000);
+    renderClock(t!==lastTick && !reduceMotion); lastTick=t;
+    checkScheduledCeleb();
+  }else if(state.mode==="countdown"){
+    const t=Math.floor(now()/1000);
+    renderCountdown(t!==lastTick && !reduceMotion); lastTick=t;
+  }else if(state.mode==="stopwatch"){
+    renderStopwatch(!reduceMotion); // 含 1/100 秒需高頻
+  }
+  requestAnimationFrame(loop);
+}
+
+/* ============================================================
+   慶祝特效（煙火 + 可選影片 + 訊息）
+   ============================================================ */
+const celebrate=document.getElementById("celebrate");
+const celebMsg=document.getElementById("celebMsg");
+const celebVideo=document.getElementById("celebVideo");
+const fwCanvas=document.getElementById("fireworks");
+const fwCtx=fwCanvas.getContext("2d");
+let fwParticles=[], fwTimer=null, fwRAF=null, customVideoURL=null;
+
+function resizeFW(){ fwCanvas.width=innerWidth; fwCanvas.height=innerHeight; }
+addEventListener("resize",()=>{ resizeFW(); fitClock(); });
+
+function spawnFirework(){
+  const x=Math.random()*fwCanvas.width;
+  const y=Math.random()*fwCanvas.height*0.55+fwCanvas.height*0.08;
+  const hue=Math.floor(Math.random()*360);
+  const count=42+Math.floor(Math.random()*26);
+  for(let i=0;i<count;i++){
+    const a=(Math.PI*2*i)/count, sp=2+Math.random()*4.5;
+    fwParticles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,hue:hue+Math.random()*30,size:1.5+Math.random()*2});
+  }
+}
+function fwLoop(){
+  fwCtx.fillStyle="rgba(0,0,0,.18)"; fwCtx.fillRect(0,0,fwCanvas.width,fwCanvas.height);
+  for(let i=fwParticles.length-1;i>=0;i--){
+    const p=fwParticles[i];
+    p.vy+=0.045; p.x+=p.vx; p.y+=p.vy; p.vx*=0.99; p.vy*=0.99; p.life-=0.012;
+    if(p.life<=0){ fwParticles.splice(i,1); continue; }
+    fwCtx.globalAlpha=Math.max(p.life,0);
+    fwCtx.fillStyle=`hsl(${p.hue},100%,60%)`;
+    fwCtx.beginPath(); fwCtx.arc(p.x,p.y,p.size,0,Math.PI*2); fwCtx.fill();
+  }
+  fwCtx.globalAlpha=1;
+  fwRAF=requestAnimationFrame(fwLoop);
+}
+function fireCelebration(msg,auto){
+  resizeFW();
+  celebrate.classList.add("show");
+  celebMsg.textContent=msg||"🎉";
+  fwParticles=[];
+  if(customVideoURL){ celebVideo.src=customVideoURL; celebVideo.style.display=""; celebVideo.play().catch(()=>{}); }
+  else celebVideo.style.display="none";
+  spawnFirework(); spawnFirework();
+  clearInterval(fwTimer); cancelAnimationFrame(fwRAF);
+  fwTimer=setInterval(spawnFirework,650);
+  fwLoop();
+  if(auto) setTimeout(stopCelebration,20000);
+}
+function stopCelebration(){
+  celebrate.classList.remove("show");
+  clearInterval(fwTimer); cancelAnimationFrame(fwRAF);
+  fwParticles=[]; celebVideo.pause();
+}
+document.getElementById("celebClose").addEventListener("click",stopCelebration);
+
+function checkScheduledCeleb(){
+  if(state.celebTime && !state.celebFired && now()>=state.celebTime && now()-state.celebTime<60000){
+    state.celebFired=true; fireCelebration("🎉 時刻到了！",true);
+  }
+}
+
+/* ============================================================
+   設定 UI 綁定
+   ============================================================ */
+const $=id=>document.getElementById(id);
+function applyAll(){
+  document.documentElement.dataset.theme=state.theme;
+  document.documentElement.dataset.font=state.font;
+  document.documentElement.dataset.blink=state.blink?"on":"off";
+  // tabs
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.mode===state.mode));
+  // swatches / seg
+  document.querySelectorAll("#themeSwatches .swatch").forEach(s=>s.classList.toggle("active",s.dataset.theme===state.theme));
+  document.querySelectorAll("#fontSeg button").forEach(b=>b.classList.toggle("active",b.dataset.font===state.font));
+  document.querySelectorAll("#formatSeg button").forEach(b=>b.classList.toggle("active",b.dataset.fmt===state.format));
+  $("showSec").checked=state.showSec; $("showDate").checked=state.showDate; $("blink").checked=state.blink;
+  $("customEnable").checked=state.customEnable;
+  $("cdName").value=state.cdName||"";
+  $("swBar").classList.toggle("show",state.mode==="stopwatch");
+  layoutKey=""; // 強制重建
+  lastTick=-1;
+}
+function switchMode(m){
+  state.mode=m; state.cdDone=(m==="countdown")?(state.cdTarget&&state.cdTarget-now()<=0):false;
+  document.getElementById("emptyHint").classList.add("hidden");
+  document.querySelector(".stage").style.visibility="visible";
+  applyAll(); save();
+}
+
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>switchMode(t.dataset.mode)));
+$("themeSwatches").addEventListener("click",e=>{const s=e.target.closest(".swatch"); if(!s)return; state.theme=s.dataset.theme; applyAll(); save();});
+$("fontSeg").addEventListener("click",e=>{if(e.target.dataset.font){state.font=e.target.dataset.font; applyAll(); save();}});
+$("formatSeg").addEventListener("click",e=>{if(e.target.dataset.fmt){state.format=e.target.dataset.fmt; applyAll(); save();}});
+$("showSec").addEventListener("change",e=>{state.showSec=e.target.checked; applyAll(); save();});
+$("showDate").addEventListener("change",e=>{state.showDate=e.target.checked; save();});
+$("blink").addEventListener("change",e=>{state.blink=e.target.checked; applyAll(); save();});
+
+// 倒數
+function localDTValue(ms){ const d=new Date(ms-d0offset(ms)); return d.toISOString().slice(0,16); }
+function d0offset(ms){ return new Date(ms).getTimezoneOffset()*60000; }
+function parseDT(v){ return v?new Date(v).getTime():null; }
+$("cdApply").addEventListener("click",()=>{
+  const v=$("cdTarget").value; if(!v){alert("請先選擇目標時間");return;}
+  state.cdTarget=parseDT(v); state.cdName=$("cdName").value.trim(); state.cdDone=false;
+  switchMode("countdown"); closePanel(); save();
+});
+document.querySelectorAll("[data-cd-preset]").forEach(b=>b.addEventListener("click",()=>{
+  const n=new Date(); let t;
+  if(b.dataset.cdPreset==="newyear"){ t=new Date(n.getFullYear()+1,0,1,0,0,0); $("cdName").value=(n.getFullYear()+1)+" 新年"; }
+  else if(b.dataset.cdPreset==="midnight"){ t=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1,0,0,0); $("cdName").value="午夜"; }
+  else { t=new Date(Date.now()+3600000); $("cdName").value="1 小時"; }
+  $("cdTarget").value=localDTValue(t.getTime());
+}));
+
+// 自訂時間
+$("customEnable").addEventListener("change",e=>{
+  state.customEnable=e.target.checked;
+  if(state.customEnable){
+    const v=$("customTime").value;
+    state.customBase = v?parseDT(v):Date.now();
+    state.customActivatedReal=Date.now();
+  }
+  lastTick=-1; save();
+});
+$("customTime").addEventListener("change",e=>{
+  if(state.customEnable && e.target.value){
+    state.customBase=parseDT(e.target.value); state.customActivatedReal=Date.now(); lastTick=-1; save();
+  }
+});
+
+// 慶祝
+$("celebTime").addEventListener("change",e=>{ state.celebTime=parseDT(e.target.value); state.celebFired=false; save(); });
+$("pickVideo").addEventListener("click",()=>$("videoFile").click());
+$("videoFile").addEventListener("change",e=>{
+  const f=e.target.files[0]; if(!f)return;
+  if(customVideoURL) URL.revokeObjectURL(customVideoURL);
+  customVideoURL=URL.createObjectURL(f); $("videoName").textContent="已選：" + f.name;
+});
+$("testCeleb").addEventListener("click",()=>fireCelebration("🎉 預覽",true));
+
+// 碼錶
+function swTick(){}
+$("swStart").addEventListener("click",()=>{
+  if(swRunning){ swElapsed+=Date.now()-swLast; swRunning=false; $("swStart").textContent="繼續"; $("swStart").classList.remove("primary"); }
+  else { swLast=Date.now(); swRunning=true; $("swStart").textContent="暫停"; $("swStart").classList.add("primary"); }
+});
+$("swReset").addEventListener("click",()=>{
+  swRunning=false; swElapsed=0; $("swStart").textContent="開始"; $("swStart").classList.add("primary"); layoutKey=""; renderStopwatch(false);
+});
+
+// 面板開關
+function openPanel(){ $("panel").classList.add("open"); $("overlay").classList.add("open"); }
+function closePanel(){ $("panel").classList.remove("open"); $("overlay").classList.remove("open"); }
+$("settingsBtn").addEventListener("click",openPanel);
+$("closePanel").addEventListener("click",closePanel);
+$("overlay").addEventListener("click",closePanel);
+$("openCdSetup").addEventListener("click",()=>{openPanel(); $("cdTarget").focus();});
+
+// 全螢幕
+function toggleFS(){ if(!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.(); }
+$("fsBtn").addEventListener("click",toggleFS);
+
+// 快捷鍵
+addEventListener("keydown",e=>{
+  if(e.target.matches("input,textarea")) return;
+  const k=e.key.toLowerCase();
+  if(k==="f") toggleFS();
+  else if(k==="s"){ $("panel").classList.contains("open")?closePanel():openPanel(); }
+  else if(k===" " && state.mode==="stopwatch"){ e.preventDefault(); $("swStart").click(); }
+  else if(k==="escape"){ stopCelebration(); closePanel(); }
+});
+
+// 靜置自動隱藏
+let idleTimer=null;
+function poke(){ document.body.classList.remove("idle"); clearTimeout(idleTimer); idleTimer=setTimeout(()=>document.body.classList.add("idle"),3500); }
+["mousemove","mousedown","keydown","touchstart"].forEach(ev=>addEventListener(ev,poke));
+poke();
+
+/* ============================================================
+   啟動
+   ============================================================ */
+// 啟動守門：已過期的倒數不要在 reload 時重播慶祝（只在實際走到零那刻觸發）
+if(state.mode==="countdown" && state.cdTarget && state.cdTarget<=now()) state.cdDone=true;
+// 還原自訂時間輸入框
+if(state.customBase) $("customTime").value=localDTValue(state.customBase);
+if(state.cdTarget) $("cdTarget").value=localDTValue(state.cdTarget);
+if(state.celebTime) $("celebTime").value=localDTValue(state.celebTime);
+applyAll();
+resizeFW();
+loop();
+
+// PWA：可安裝 / 加到主畫面 / 離線（僅 http(s) 下註冊，file:// 直接略過）
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+  addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+</script>
+</body>
+</html>
