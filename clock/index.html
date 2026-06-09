@@ -74,7 +74,7 @@
   html[data-font="thin"] .card span{font-family:inherit; font-weight:300}
 
   /* ============================ 顯示區 ============================ */
-  .stage{display:flex; flex-direction:column; align-items:center; gap:.28em; z-index:1}
+  .stage{display:flex; flex-direction:column; align-items:center; gap:clamp(20px,4.5vh,52px); z-index:1}
   .flip-clock{
     display:flex; align-items:flex-start; justify-content:center;
     font-size:clamp(54px,15.5vw,228px); line-height:1;
@@ -122,7 +122,9 @@
 
   /* AM/PM + 日期 */
   .meridiem{font-size:.16em; font-weight:700; color:var(--accent); align-self:flex-start; margin-left:.3em; margin-top:.2em; letter-spacing:.05em}
-  .subline{font-size:clamp(14px,2.6vw,30px); color:var(--muted); letter-spacing:.14em; font-weight:500; min-height:1.2em; text-align:center}
+  .subline{display:flex; flex-direction:column; align-items:center; gap:.5em; min-height:1.2em; text-align:center}
+  .subline-main{font-size:clamp(14px,2.6vw,30px); color:var(--muted); letter-spacing:.14em; font-weight:500}
+  .subline-lunar{font-size:clamp(12px,2vw,22px); color:var(--muted); opacity:.72; letter-spacing:.1em; font-weight:500}
   .cd-label{font-size:clamp(15px,3vw,34px); color:var(--accent); letter-spacing:.1em; font-weight:600; text-align:center; margin-bottom:.1em}
 
   /* ============================ 控制列 ============================ */
@@ -246,7 +248,7 @@
   <div class="stage">
     <div class="cd-label" id="cdLabel" style="display:none"></div>
     <div class="flip-clock" id="clock"></div>
-    <div class="subline" id="subline"></div>
+    <div class="subline" id="subline"><span class="subline-main" id="sublineMain"></span><span class="subline-lunar" id="sublineLunar"></span></div>
   </div>
 
   <!-- 倒數未設定提示 -->
@@ -308,6 +310,11 @@
       <div class="field">
         <div class="field-row"><label>顯示日期星期</label>
           <span class="switch"><input type="checkbox" id="showDate" checked><span class="slider"></span></span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-row"><label>顯示農曆</label>
+          <span class="switch"><input type="checkbox" id="showLunar" checked><span class="slider"></span></span>
         </div>
       </div>
       <div class="field">
@@ -377,7 +384,7 @@
 const LS_KEY = "flipclock.settings.v1";
 const state = {
   mode:"clock", theme:"classic", font:"bold", format:"24",
-  showSec:true, showDate:true, blink:false,
+  showSec:true, showDate:true, showLunar:true, blink:false,
   cdTarget:null, cdName:"", cdDone:false,
   customEnable:false, customBase:null, customActivatedReal:null,
   celebTime:null, celebFired:false,
@@ -453,6 +460,8 @@ class FlipCard{
    ============================================================ */
 const clockEl=document.getElementById("clock");
 const sublineEl=document.getElementById("subline");
+const sublineMainEl=document.getElementById("sublineMain");
+const sublineLunarEl=document.getElementById("sublineLunar");
 const cdLabelEl=document.getElementById("cdLabel");
 let cards=[];           // 依序的 FlipCard
 let layoutKey="";        // 重建判斷
@@ -504,6 +513,62 @@ function ensureMeridiem(show){
   }else if(!show && meridiemEl){ meridiemEl.remove(); meridiemEl=null; }
 }
 const WD=["週日","週一","週二","週三","週四","週五","週六"];
+/* 農曆轉換（1900–2100）— 萬年曆查表，演算法源自 jjonline/calendar.js（MIT），離線可用 */
+const LUNAR={
+  info:[0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
+    0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
+    0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
+    0x06566,0x0d4a0,0x0ea50,0x16a95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
+    0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,
+    0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,
+    0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,
+    0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,
+    0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
+    0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x05ac0,0x0ab60,0x096d5,0x092e0,
+    0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,
+    0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,
+    0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,
+    0x05aa0,0x076a3,0x096d0,0x04afb,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,
+    0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,
+    0x14b63,0x09370,0x049f8,0x04970,0x064b0,0x168a6,0x0ea50,0x06b20,0x1a6c4,0x0aae0,
+    0x092e0,0x0d2e3,0x0c960,0x0d557,0x0d4a0,0x0da50,0x05d55,0x056a0,0x0a6d0,0x055d4,
+    0x052d0,0x0a9b8,0x0a950,0x0b4a0,0x0b6a6,0x0ad50,0x055a0,0x0aba4,0x0a5b0,0x052b0,
+    0x0b273,0x06930,0x07337,0x06aa0,0x0ad50,0x14b55,0x04b60,0x0a570,0x054e4,0x0d160,
+    0x0e968,0x0d520,0x0daa0,0x16aa6,0x056d0,0x04ae0,0x0a9d4,0x0a2d0,0x0d150,0x0f252,0x0d520],
+  Gan:["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"],
+  Zhi:["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"],
+  Animals:["鼠","牛","虎","兔","龍","蛇","馬","羊","猴","雞","狗","豬"],
+  d1:["日","一","二","三","四","五","六","七","八","九","十"],
+  d2:["初","十","廿","卅"],
+  m3:["正","二","三","四","五","六","七","八","九","十","冬","臘"],
+  leapMonth(y){return this.info[y-1900]&0xf;},
+  leapDays(y){return this.leapMonth(y)?((this.info[y-1900]&0x10000)?30:29):0;},
+  monthDays(y,m){return (this.info[y-1900]&(0x10000>>m))?30:29;},
+  lYearDays(y){let s=348;for(let i=0x8000;i>0x8;i>>=1)s+=(this.info[y-1900]&i)?1:0;return s+this.leapDays(y);},
+  gzYear(ly){let g=(ly-3)%10,z=(ly-3)%12;if(g===0)g=10;if(z===0)z=12;return this.Gan[g-1]+this.Zhi[z-1];},
+  animal(y){return this.Animals[(y-4)%12];},
+  cnMonth(m){return this.m3[m-1]+"月";},
+  cnDay(d){if(d===10)return"初十";if(d===20)return"二十";if(d===30)return"三十";return this.d2[Math.floor(d/10)]+this.d1[d%10];},
+  fromDate(dt){
+    const y=dt.getFullYear(),m=dt.getMonth()+1,da=dt.getDate();
+    if(y<1900||y>2100)return null;
+    let offset=(Date.UTC(y,m-1,da)-Date.UTC(1900,0,31))/86400000;
+    let i,temp=0;
+    for(i=1900;i<2101&&offset>0;i++){temp=this.lYearDays(i);offset-=temp;}
+    if(offset<0){offset+=temp;i--;}
+    const year=i,leap=this.leapMonth(i);let isLeap=false;
+    for(i=1;i<13&&offset>0;i++){
+      if(leap>0&&i===(leap+1)&&isLeap===false){--i;isLeap=true;temp=this.leapDays(year);}
+      else{temp=this.monthDays(year,i);}
+      if(isLeap===true&&i===(leap+1))isLeap=false;
+      offset-=temp;
+    }
+    if(offset===0&&leap>0&&i===leap+1){if(isLeap){isLeap=false;}else{isLeap=true;--i;}}
+    if(offset<0){offset+=temp;--i;}
+    return {monthCn:(isLeap?"閏":"")+this.cnMonth(i),dayCn:this.cnDay(offset+1),
+      gz:this.gzYear(year),animal:this.animal(year)};
+  }
+};
 const pad=(n,w=2)=>String(Math.floor(Math.abs(n))).padStart(w,"0");
 
 function renderClock(animate){
@@ -518,10 +583,14 @@ function renderClock(animate){
   let str=pad(h)+pad(d.getMinutes());
   if(state.showSec) str+=pad(d.getSeconds());
   setDigits(str,animate);
-  // 副標
-  if(state.showDate){
+  // 副標：國曆 + 農曆
+  const L = state.showLunar ? LUNAR.fromDate(d) : null;
+  if(state.showDate || L){
     sublineEl.style.display="";
-    sublineEl.textContent=`${d.getFullYear()} 年 ${d.getMonth()+1} 月 ${d.getDate()} 日　${WD[d.getDay()]}`;
+    sublineMainEl.style.display = state.showDate ? "" : "none";
+    if(state.showDate) sublineMainEl.textContent=`${d.getFullYear()} 年 ${d.getMonth()+1} 月 ${d.getDate()} 日　${WD[d.getDay()]}`;
+    sublineLunarEl.style.display = L ? "" : "none";
+    if(L) sublineLunarEl.textContent=`農曆 ${L.monthCn}${L.dayCn}　${L.gz}${L.animal}年`;
   }else sublineEl.style.display="none";
   cdLabelEl.style.display="none";
 }
@@ -667,7 +736,7 @@ function applyAll(){
   document.querySelectorAll("#themeSwatches .swatch").forEach(s=>s.classList.toggle("active",s.dataset.theme===state.theme));
   document.querySelectorAll("#fontSeg button").forEach(b=>b.classList.toggle("active",b.dataset.font===state.font));
   document.querySelectorAll("#formatSeg button").forEach(b=>b.classList.toggle("active",b.dataset.fmt===state.format));
-  $("showSec").checked=state.showSec; $("showDate").checked=state.showDate; $("blink").checked=state.blink;
+  $("showSec").checked=state.showSec; $("showDate").checked=state.showDate; $("showLunar").checked=state.showLunar; $("blink").checked=state.blink;
   $("customEnable").checked=state.customEnable;
   $("cdName").value=state.cdName||"";
   $("swBar").classList.toggle("show",state.mode==="stopwatch");
@@ -686,7 +755,8 @@ $("themeSwatches").addEventListener("click",e=>{const s=e.target.closest(".swatc
 $("fontSeg").addEventListener("click",e=>{if(e.target.dataset.font){state.font=e.target.dataset.font; applyAll(); save();}});
 $("formatSeg").addEventListener("click",e=>{if(e.target.dataset.fmt){state.format=e.target.dataset.fmt; applyAll(); save();}});
 $("showSec").addEventListener("change",e=>{state.showSec=e.target.checked; applyAll(); save();});
-$("showDate").addEventListener("change",e=>{state.showDate=e.target.checked; save();});
+$("showDate").addEventListener("change",e=>{state.showDate=e.target.checked; lastTick=-1; save();});
+$("showLunar").addEventListener("change",e=>{state.showLunar=e.target.checked; lastTick=-1; save();});
 $("blink").addEventListener("change",e=>{state.blink=e.target.checked; applyAll(); save();});
 
 // 倒數
