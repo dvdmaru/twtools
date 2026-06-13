@@ -54,6 +54,31 @@
     --divider:rgba(0,0,0,.55); --accent:#00ff95; --muted:rgba(93,255,166,.5);
     --panel:rgba(6,28,20,.96); --line:rgba(93,255,166,.18);
   }
+  html[data-theme="rose"]{
+    --bg:#1a1014; --card:#2e1b22; --card2:#26161c; --digit:#ffd9e2;
+    --divider:rgba(0,0,0,.5); --accent:#ff6b9d; --muted:rgba(255,217,226,.55);
+    --panel:rgba(38,22,28,.96); --line:rgba(255,217,226,.16);
+  }
+  html[data-theme="forest"]{
+    --bg:#0a140d; --card:#16271b; --card2:#112016; --digit:#cfe9d4;
+    --divider:rgba(0,0,0,.5); --accent:#5fc27e; --muted:rgba(207,233,212,.5);
+    --panel:rgba(17,32,22,.96); --line:rgba(207,233,212,.16);
+  }
+  html[data-theme="ocean"]{
+    --bg:#04141c; --card:#0a2733; --card2:#08202a; --digit:#bdeaf7;
+    --divider:rgba(0,0,0,.5); --accent:#22c1dc; --muted:rgba(189,234,247,.5);
+    --panel:rgba(8,32,42,.96); --line:rgba(189,234,247,.16);
+  }
+  html[data-theme="sakura"]{
+    --bg:#fdeef2; --card:#ffffff; --card2:#fbe3ea; --digit:#5a2a3a;
+    --divider:rgba(0,0,0,.08); --accent:#ff8fb3; --muted:rgba(90,42,58,.5);
+    --panel:rgba(255,255,255,.97); --line:rgba(90,42,58,.12); --ctrl:rgba(90,42,58,.8);
+  }
+  html[data-theme="grape"]{
+    --bg:#120a1c; --card:#231634; --card2:#1c112a; --digit:#e0d2ff;
+    --divider:rgba(0,0,0,.5); --accent:#a06bff; --muted:rgba(224,210,255,.52);
+    --panel:rgba(28,17,42,.96); --line:rgba(224,210,255,.16);
+  }
 
   /* ============================ 基礎 ============================ */
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
@@ -72,6 +97,8 @@
   html[data-font="bold"] .card span{font-family:inherit; font-weight:700}
   html[data-font="mono"] .card span{font-family:"SF Mono",ui-monospace,"JetBrains Mono",Consolas,Menlo,monospace; font-weight:700}
   html[data-font="thin"] .card span{font-family:inherit; font-weight:300}
+  html[data-font="serif"] .card span{font-family:Georgia,"Times New Roman","Songti TC","Noto Serif TC",serif; font-weight:700}
+  html[data-font="round"] .card span{font-family:ui-rounded,"SF Pro Rounded","Hiragino Maru Gothic ProN","Yuanti TC",sans-serif; font-weight:700}
 
   /* ============================ 顯示區 ============================ */
   .stage{display:flex; flex-direction:column; align-items:center; gap:clamp(20px,4.5vh,52px); z-index:1}
@@ -176,7 +203,7 @@
   .field-row{display:flex; align-items:center; justify-content:space-between; gap:12px}
   .field label{font-size:15px; font-weight:600}
   .field .hint{font-size:12.5px; color:var(--muted); margin-top:5px; line-height:1.5}
-  .seg{display:flex; gap:0; border:1px solid var(--line); border-radius:9px; overflow:hidden}
+  .seg{display:flex; flex-wrap:wrap; gap:0; border:1px solid var(--line); border-radius:9px; overflow:hidden}
   .seg button{border:0; background:transparent; color:var(--muted); font:inherit; font-size:14px; font-weight:600; padding:7px 14px; cursor:pointer; transition:.15s}
   .seg button.active{background:var(--accent); color:#fff}
   .swatches{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap}
@@ -281,15 +308,21 @@
           <div class="swatch" data-theme="paper" style="background:#ffffff;border:1px solid #ccc" title="純白"></div>
           <div class="swatch" data-theme="amber" style="background:#2a1d08" title="暖橘"></div>
           <div class="swatch" data-theme="neon" style="background:#08241a" title="霓虹綠"></div>
+          <div class="swatch" data-theme="rose" style="background:#2e1b22" title="玫瑰金"></div>
+          <div class="swatch" data-theme="forest" style="background:#16271b" title="森林綠"></div>
+          <div class="swatch" data-theme="ocean" style="background:#0a2733" title="海洋藍"></div>
+          <div class="swatch" data-theme="sakura" style="background:#fbe3ea;border:1px solid #e8c4cf" title="櫻花粉"></div>
+          <div class="swatch" data-theme="grape" style="background:#231634" title="葡萄紫"></div>
         </div>
       </div>
       <div class="field">
-        <div class="field-row"><label>字體</label>
-          <div class="seg" id="fontSeg">
-            <button data-font="bold" class="active">粗體</button>
-            <button data-font="mono">等寬</button>
-            <button data-font="thin">細體</button>
-          </div>
+        <div class="field-row"><label>字體</label></div>
+        <div class="seg" id="fontSeg" style="margin-top:12px">
+          <button data-font="bold" class="active">粗體</button>
+          <button data-font="mono">等寬</button>
+          <button data-font="thin">細體</button>
+          <button data-font="serif">襯線</button>
+          <button data-font="round">圓體</button>
         </div>
       </div>
 
@@ -321,6 +354,25 @@
         <div class="field-row"><label>冒號閃爍</label>
           <span class="switch"><input type="checkbox" id="blink"><span class="slider"></span></span>
         </div>
+      </div>
+
+      <div class="group-title">整點報時</div>
+      <div class="field">
+        <div class="field-row"><label>啟用整點報時</label>
+          <span class="switch"><input type="checkbox" id="chime"><span class="slider"></span></span>
+        </div>
+        <div class="field-row" style="margin-top:14px"><label>音色</label>
+          <div class="seg" id="chimeSoundSeg">
+            <button data-sound="bell" class="active">鐘聲</button>
+            <button data-sound="beep">嗶聲</button>
+            <button data-sound="cuckoo">布穀</button>
+          </div>
+        </div>
+        <div class="field-row" style="margin-top:14px"><label>報出點數</label>
+          <span class="switch"><input type="checkbox" id="chimeStrike"><span class="slider"></span></span>
+        </div>
+        <button class="btn" id="testChime" style="margin-top:12px">測試報時</button>
+        <div class="hint">每到整點自動響。開啟「報出點數」會依小時敲對應次數（12 小時制，如下午 3 點敲 3 響）。瀏覽器需在頁面點過一次才允許發聲。</div>
       </div>
 
       <div class="group-title">倒數目標</div>
@@ -385,6 +437,7 @@ const LS_KEY = "flipclock.settings.v1";
 const state = {
   mode:"clock", theme:"classic", font:"bold", format:"24",
   showSec:true, showDate:true, showLunar:true, blink:false,
+  chime:false, chimeSound:"bell", chimeStrike:false,
   cdTarget:null, cdName:"", cdDone:false,
   customEnable:false, customBase:null, customActivatedReal:null,
   celebTime:null, celebFired:false,
@@ -513,6 +566,7 @@ function ensureMeridiem(show){
   }else if(!show && meridiemEl){ meridiemEl.remove(); meridiemEl=null; }
 }
 const WD=["週日","週一","週二","週三","週四","週五","週六"];
+
 /* 農曆轉換（1900–2100）— 萬年曆查表，演算法源自 jjonline/calendar.js（MIT），離線可用 */
 const LUNAR={
   info:[0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
@@ -571,6 +625,61 @@ const LUNAR={
 };
 const pad=(n,w=2)=>String(Math.floor(Math.abs(n))).padStart(w,"0");
 
+/* ============================================================
+   整點報時（WebAudio 即時合成，零外部音檔、離線可用）
+   ============================================================ */
+let audioCtx=null;
+function getAudio(){
+  if(!audioCtx){ try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return null; } }
+  if(audioCtx.state==="suspended") audioCtx.resume().catch(()=>{});
+  return audioCtx;
+}
+// 鐘聲：基音 + 非諧泛音 + 指數衰減，聽起來像金屬鐘
+function bellAt(t,freq,dur,vol){
+  const ac=audioCtx; if(!ac)return;
+  const o=ac.createOscillator(), g=ac.createGain();
+  const o2=ac.createOscillator(), g2=ac.createGain();
+  o.type="sine"; o.frequency.value=freq;
+  o2.type="sine"; o2.frequency.value=freq*2.76;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+0.008);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  g2.gain.setValueAtTime(0,t); g2.gain.linearRampToValueAtTime(vol*0.35,t+0.008);
+  g2.gain.exponentialRampToValueAtTime(0.0001,t+dur*0.6);
+  o.connect(g).connect(ac.destination); o2.connect(g2).connect(ac.destination);
+  o.start(t); o.stop(t+dur); o2.start(t); o2.stop(t+dur*0.6);
+}
+// 嗶聲：短促三角波
+function beepAt(t,freq,dur,vol){
+  const ac=audioCtx; if(!ac)return;
+  const o=ac.createOscillator(), g=ac.createGain();
+  o.type="triangle"; o.frequency.value=freq;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+0.01);
+  g.gain.setValueAtTime(vol,t+dur-0.03);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g).connect(ac.destination); o.start(t); o.stop(t+dur);
+}
+function playChime(hour12){
+  const ac=getAudio(); if(!ac) return;
+  const strikes = state.chimeStrike ? (hour12||12) : 1;
+  let t=ac.currentTime+0.06;
+  if(state.chimeSound==="cuckoo"){
+    for(let i=0;i<strikes;i++){ bellAt(t,784,0.5,0.32); bellAt(t+0.27,587,0.6,0.30); t+=0.82; }
+  }else if(state.chimeSound==="beep"){
+    for(let i=0;i<strikes;i++){ beepAt(t,880,0.16,0.22); t+=0.32; }
+  }else{ // bell
+    for(let i=0;i<strikes;i++){ bellAt(t,523.25,1.6,0.34); t += state.chimeStrike?0.95:1.6; }
+  }
+}
+let lastChimeHour=-1;
+function checkChime(d){
+  if(!state.chime) return;
+  if(d.getMinutes()===0 && d.getSeconds()===0 && d.getHours()!==lastChimeHour){
+    lastChimeHour=d.getHours();
+    let h12=d.getHours()%12; if(h12===0)h12=12;
+    playChime(h12);
+  }
+}
+
 function renderClock(animate){
   const d=new Date(now());
   let h=d.getHours(), ap="";
@@ -593,6 +702,7 @@ function renderClock(animate){
     if(L) sublineLunarEl.textContent=`農曆 ${L.monthCn}${L.dayCn}　${L.gz}${L.animal}年`;
   }else sublineEl.style.display="none";
   cdLabelEl.style.display="none";
+  checkChime(d);
 }
 
 function renderCountdown(animate){
@@ -737,6 +847,8 @@ function applyAll(){
   document.querySelectorAll("#fontSeg button").forEach(b=>b.classList.toggle("active",b.dataset.font===state.font));
   document.querySelectorAll("#formatSeg button").forEach(b=>b.classList.toggle("active",b.dataset.fmt===state.format));
   $("showSec").checked=state.showSec; $("showDate").checked=state.showDate; $("showLunar").checked=state.showLunar; $("blink").checked=state.blink;
+  $("chime").checked=state.chime; $("chimeStrike").checked=state.chimeStrike;
+  document.querySelectorAll("#chimeSoundSeg button").forEach(b=>b.classList.toggle("active",b.dataset.sound===state.chimeSound));
   $("customEnable").checked=state.customEnable;
   $("cdName").value=state.cdName||"";
   $("swBar").classList.toggle("show",state.mode==="stopwatch");
@@ -758,6 +870,10 @@ $("showSec").addEventListener("change",e=>{state.showSec=e.target.checked; apply
 $("showDate").addEventListener("change",e=>{state.showDate=e.target.checked; lastTick=-1; save();});
 $("showLunar").addEventListener("change",e=>{state.showLunar=e.target.checked; lastTick=-1; save();});
 $("blink").addEventListener("change",e=>{state.blink=e.target.checked; applyAll(); save();});
+$("chime").addEventListener("change",e=>{state.chime=e.target.checked; if(state.chime) getAudio(); save();});
+$("chimeStrike").addEventListener("change",e=>{state.chimeStrike=e.target.checked; save();});
+$("chimeSoundSeg").addEventListener("click",e=>{if(e.target.dataset.sound){state.chimeSound=e.target.dataset.sound; applyAll(); save();}});
+$("testChime").addEventListener("click",()=>{ getAudio(); let h12=new Date(now()).getHours()%12; if(h12===0)h12=12; playChime(h12); });
 
 // 倒數
 function localDTValue(ms){ const d=new Date(ms-d0offset(ms)); return d.toISOString().slice(0,16); }
@@ -839,6 +955,8 @@ let idleTimer=null;
 function poke(){ document.body.classList.remove("idle"); clearTimeout(idleTimer); idleTimer=setTimeout(()=>document.body.classList.add("idle"),3500); }
 ["mousemove","mousedown","keydown","touchstart"].forEach(ev=>addEventListener(ev,poke));
 poke();
+// 首次點擊/按鍵/觸控時解鎖音訊（瀏覽器自動播放政策），之後整點才能自動發聲
+["pointerdown","keydown","touchstart"].forEach(ev=>addEventListener(ev,()=>{ if(state.chime) getAudio(); },{passive:true}));
 
 /* ============================================================
    啟動
