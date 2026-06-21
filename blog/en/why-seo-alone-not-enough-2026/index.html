@@ -160,13 +160,13 @@ AI 旅行規劃
 
 
 <table><thead><tr><th>Factor</th><th>SEO Cares About</th><th>GEO Cares About</th></tr></thead><tbody><tr><td>Crawlers</td><td>Googlebot</td><td>GPTBot / ClaudeBot / PerplexityBot + 10 AI bots</td></tr><tr><td>Structure</td><td>title / description / H1</td><td>JSON-LD schema / citable paragraphs / E-E-A-T signals</td></tr><tr><td>Brand</td><td>Backlinks</td><td>Organization schema + multi-platform brand consistency</td></tr><tr><td>Content format</td><td>Long-tail keyword density</td><td>Factual statements, specific numbers, cited sources</td></tr><tr><td>Blocking</td><td>Usually open to Googlebot</td><td>Many sites actively block AI bots</td></tr></tbody></table>
-<p>The biggest gap comes from <strong>the first and last rows</strong>: most websites have never configured anything for AI crawlers. Some sites use WordPress security plugins that block all non-Googlebot crawlers by default — <strong>your robots.txt may be blocking ChatGPT right now, and you have no idea.</strong></p>
+<p>The biggest gap comes from <strong>the first and last rows</strong>: most websites have never configured anything for AI crawlers. Some sites use WordPress security plugins that block all non-Googlebot crawlers by default — <strong>it is worth checking whether your robots.txt or a security plugin is blocking AI crawlers you actually want to allow.</strong></p>
 <h2 id="aeo-the-most-overlooked-third-path">AEO: The Most Overlooked Third Path</h2>
 <p>Many site owners know SEO, have heard of GEO, but AEO (Answer Engine Optimization) is still unfamiliar territory.</p>
 <p>AEO targets the “answer blocks” on Google’s own results page:</p>
 <ul>
 <li><strong>Featured Snippets</strong>: The large box at the top of search results showing a direct answer</li>
-<li><strong>AI Overview</strong>: Google’s AI-generated summary launched in 2025, appearing above organic results</li>
+<li><strong>AI Overview</strong>: Google’s AI-generated summary, appearing above organic results. Google’s AI Overviews and AI Mode have expanded rapidly since their rollout, changing how users encounter answers on search results pages.</li>
 <li><strong>People Also Ask (PAA)</strong>: Expandable Q&#x26;A sections</li>
 </ul>
 <p>These blocks share one trait: <strong>users get the answer without clicking through to your site.</strong> If your content gets selected, you earn brand visibility and authority. If a competitor’s content gets selected instead, users never learn you exist.</p>
@@ -183,45 +183,15 @@ AI 旅行規劃
 <p>Popular WordPress security plugins (Wordfence, Sucuri, All In One Security) include “bot protection” that blocks crawlers not on a whitelist. GPTBot, ClaudeBot, and PerplexityBot are usually not whitelisted. <strong>You think your site is open to everyone, but AI engines see nothing.</strong></p>
 <p>How to check: Open <code>yoursite.com/robots.txt</code> and search for <code>GPTBot</code> and <code>ClaudeBot</code>. If you see <code>Disallow: /</code>, you are actively blocking them.</p>
 <h3 id="pitfall-2-no-organization-json-ld">Pitfall 2: No Organization JSON-LD</h3>
-<p>Google can infer brand authority from backlinks, but AI engines do not weigh backlinks the same way. AI engines rely heavily on <strong>JSON-LD structured data</strong> to determine “is this site trustworthy?” — specifically, whether you have declared your brand name, official URL, logo, and social profiles using schema.org standards.</p>
-<p>Over 70% of Taiwan SME websites have zero JSON-LD. Adding an Organization schema takes 10 lines of code and can lift your GEO score by 10-15 points.</p>
+<p>Google can infer brand authority from backlinks, but AI engines do not weigh backlinks the same way. Structured data such as Organization JSON-LD can help clarify brand identity and entity information, but it is only one signal among many and is not a guaranteed ranking or citation factor — for example, whether you have declared your brand name, official URL, logo, and social profiles using schema.org standards.</p>
+<p>Many Taiwan SME websites still have no structured data at all. Adding an Organization schema takes only about 10 lines of code and is a low-effort way to make your brand identity clearer to both search and AI engines.</p>
 <h3 id="pitfall-3-mixed-simplifiedtraditional-chinese">Pitfall 3: Mixed Simplified/Traditional Chinese</h3>
 <p>This is a Taiwan-specific issue. Many site owners copy content from Simplified Chinese tutorials or use CMS templates built for Simplified Chinese, leaving stray simplified characters they never notice. For Google, this is a language consistency issue. For AI engines, it is worse — <strong>your site may be classified as Simplified Chinese content, which means it will not be cited when answering Traditional Chinese queries.</strong></p>
 <p>The TWTools three-axis scanner includes built-in Traditional Chinese ratio detection and mixed-script detection specifically for this.</p>
-<h2 id="real-data-the-three-axis-gap">Real Data: The Three-Axis Gap</h2>
-<p>We scanned 50 Taiwan business websites (e-commerce, B2B software, professional services, media) using TWTools. Average scores:</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<table><thead><tr><th>Axis</th><th>Average</th><th>Highest</th><th>Lowest</th></tr></thead><tbody><tr><td>SEO</td><td>55</td><td>82</td><td>23</td></tr><tr><td>GEO</td><td>34</td><td>71</td><td>8</td></tr><tr><td>AEO</td><td>28</td><td>65</td><td>5</td></tr></tbody></table>
-<p><strong>GEO and AEO averages are barely half of SEO.</strong> The widest gaps: GEO “AI Crawler Access” (over 60% of sites fully blocked) and AEO “FAQ Structure” (under 15% of sites have FAQPage schema).</p>
-<p>What does this mean? Competition for GEO and AEO is extremely low right now. <strong>Your competitors have likely not started.</strong> The early-mover advantage is exponential.</p>
+<h2 id="the-three-axis-gap">The Three-Axis Gap</h2>
+<p>When you look across typical Taiwan business websites (e-commerce, B2B software, professional services, media), a consistent pattern emerges: most sites that score reasonably well on traditional SEO score much lower on GEO and AEO.</p>
+<p><strong>GEO and AEO readiness tends to lag well behind SEO.</strong> The widest gaps usually show up in two places: AI crawler access (many sites still block AI bots, often unintentionally) and FAQ structure (relatively few sites have FAQPage schema in place).</p>
+<p>What does this mean? Competition for GEO and AEO is still relatively low. <strong>Many of your competitors have likely not started.</strong> That leaves real room for an early-mover advantage.</p>
 <h2 id="where-to-start-high-roi-fix-order">Where to Start: High-ROI Fix Order</h2>
 <p>If your time and technical resources are limited, follow this priority:</p>
 <h3 id="priority-1-open-ai-crawlers-geo-5-minutes">Priority 1: Open AI Crawlers (GEO, 5 minutes)</h3>
