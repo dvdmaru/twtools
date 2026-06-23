@@ -228,6 +228,65 @@
   .group-title{font-size:12px; letter-spacing:.12em; color:var(--muted); text-transform:uppercase; font-weight:700; margin:22px 0 2px}
   .file-name{font-size:12.5px; color:var(--accent); margin-top:8px; word-break:break-all}
 
+  /* ============================ 資訊抽屜（左側） ============================ */
+  .panel.left{right:auto; left:0; border-left:0; border-right:1px solid var(--line); transform:translateX(-100%)}
+  .panel.left.open{transform:translateX(0)}
+  .info-tabs{display:flex; gap:5px; margin:6px 0 16px; flex-wrap:wrap}
+  .info-tabs button{flex:1 1 0; min-width:58px; border:1px solid var(--line); background:transparent; color:var(--muted); font:inherit; font-size:13.5px; font-weight:600; padding:9px 4px; border-radius:9px; cursor:pointer; transition:.15s}
+  .info-tabs button.active{background:var(--accent); color:#fff; border-color:var(--accent)}
+  .info-sec{display:none} .info-sec.active{display:block}
+  .info-date{font-size:13px; color:var(--muted); text-align:center; margin-bottom:12px; letter-spacing:.05em}
+  /* 黃曆 */
+  .alm-gz{display:flex; gap:8px; flex-wrap:wrap}
+  .alm-card{flex:1 1 88px; background:var(--card2); border:1px solid var(--line); border-radius:11px; padding:11px 6px; text-align:center}
+  .alm-card .lab{font-size:11px; color:var(--muted); letter-spacing:.1em}
+  .alm-card .val{font-size:19px; font-weight:800; margin-top:4px}
+  .alm-card .sub{font-size:11px; color:var(--muted); margin-top:3px}
+  .alm-meta{display:flex; justify-content:space-between; gap:10px; margin-top:12px; font-size:13px; color:var(--muted)}
+  .alm-meta b{color:var(--digit); font-weight:700}
+  .yiji{margin-top:14px}
+  .yiji-row{display:flex; gap:10px; align-items:flex-start; padding:9px 0; border-top:1px solid var(--line)}
+  .yiji-tag{flex:0 0 auto; width:26px; height:26px; border-radius:7px; font-size:14px; font-weight:800; display:flex; align-items:center; justify-content:center; color:#fff}
+  .yiji-tag.yi{background:#3a9b5c} .yiji-tag.ji{background:#c0504d}
+  .yiji-txt{font-size:14px; line-height:1.6; padding-top:2px}
+  .sc-title{font-size:12px; letter-spacing:.12em; color:var(--muted); font-weight:700; margin:18px 0 8px; text-transform:uppercase}
+  .sc-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:6px}
+  .sc-cell{border:1px solid var(--line); border-radius:9px; padding:8px 2px; text-align:center}
+  .sc-cell .t{font-weight:800; font-size:15px}
+  .sc-cell .g{font-size:10.5px; color:var(--muted); margin-top:2px}
+  .sc-cell.good{border-color:rgba(95,206,134,.5)} .sc-cell.good .t{color:#5fce86}
+  .sc-cell.bad .t{color:#e08b8b}
+  .alm-note{font-size:11.5px; color:var(--muted); margin-top:14px; line-height:1.55; opacity:.8}
+  /* 節氣 */
+  .term-big{text-align:center; padding:8px 0 4px}
+  .term-big .name{font-size:46px; font-weight:800; color:var(--accent); line-height:1.1}
+  .term-big .when{font-size:14px; color:var(--muted); margin-top:8px}
+  .term-big .cd{font-size:13px; color:var(--digit); margin-top:4px; font-weight:600}
+  .term-list{margin-top:14px}
+  .term-li{display:flex; justify-content:space-between; padding:8px 2px; border-top:1px solid var(--line); font-size:13.5px}
+  .term-li .tn{font-weight:600}
+  .term-li.passed{opacity:.45}
+  .term-li.next{color:var(--accent); font-weight:700}
+  /* 日出日落 */
+  .sun-arc{position:relative; height:118px; margin:6px 0 4px}
+  .sun-stat{display:flex; justify-content:space-between; align-items:center; padding:10px 2px; font-size:14px; border-top:1px solid var(--line)}
+  .sun-stat .k{color:var(--muted)} .sun-stat .v{font-weight:700; font-variant-numeric:tabular-nums}
+  .sun-loc{font-size:12px; color:var(--muted); text-align:center; margin-top:10px}
+  .sun-loc a{color:var(--accent); cursor:pointer; text-decoration:underline}
+  /* 世界時區 */
+  .city-add{display:flex; gap:8px; margin-bottom:8px}
+  .city-add input{margin-top:0}
+  .city-results{max-height:210px; overflow:auto; margin-bottom:10px}
+  .city-opt{padding:10px 12px; border-radius:9px; cursor:pointer; font-size:14px; display:flex; justify-content:space-between}
+  .city-opt:hover{background:var(--card2)} .city-opt .o-sub{color:var(--muted); font-size:12px}
+  .city-row{display:flex; align-items:center; justify-content:space-between; padding:12px 2px; border-top:1px solid var(--line); gap:10px}
+  .city-name{font-size:15px; font-weight:600} .city-sub{font-size:11px; color:var(--muted); margin-top:2px}
+  .city-r{display:flex; align-items:center; gap:10px}
+  .city-time{font-size:21px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.1}
+  .city-day{font-size:11px; color:var(--muted); text-align:right}
+  .city-del{border:0; background:transparent; color:var(--muted); cursor:pointer; font-size:17px; line-height:1; padding:4px}
+  .city-del:hover{color:#e08b8b}
+
   /* ============================ 慶祝特效 ============================ */
   .celebrate{position:fixed; inset:0; z-index:60; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.4)}
   .celebrate.show{display:flex}
@@ -266,6 +325,7 @@
       <button class="tab" data-mode="stopwatch">碼錶</button>
     </div>
     <div class="right-btns">
+      <button class="iconbtn" id="infoBtn" title="黃曆 / 節氣 / 日出 / 世界時區 (I)">曆</button>
       <button class="iconbtn" id="settingsBtn" title="設定 (S)">⚙</button>
       <button class="iconbtn" id="fsBtn" title="全螢幕 (F)">⛶</button>
     </div>
@@ -275,7 +335,7 @@
   <div class="stage">
     <div class="cd-label" id="cdLabel" style="display:none"></div>
     <div class="flip-clock" id="clock"></div>
-    <div class="subline" id="subline"><span class="subline-main" id="sublineMain"></span><span class="subline-lunar" id="sublineLunar"></span></div>
+    <div class="subline" id="subline"><span class="subline-main" id="sublineMain"></span><span class="subline-lunar" id="sublineLunar"></span><span class="subline-lunar" id="sublineTerm"></span><span class="subline-lunar" id="sublineSun"></span></div>
   </div>
 
   <!-- 倒數未設定提示 -->
@@ -351,6 +411,17 @@
         </div>
       </div>
       <div class="field">
+        <div class="field-row"><label>顯示下個節氣</label>
+          <span class="switch"><input type="checkbox" id="showTerm"><span class="slider"></span></span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-row"><label>顯示日出日落</label>
+          <span class="switch"><input type="checkbox" id="showSun"><span class="slider"></span></span>
+        </div>
+        <div class="hint">需允許瀏覽器定位才能算你所在地的日出日落；未授權則以台北為準。詳細資訊與半圓日行軌跡見左上角「曆」。</div>
+      </div>
+      <div class="field">
         <div class="field-row"><label>冒號閃爍</label>
           <span class="switch"><input type="checkbox" id="blink"><span class="slider"></span></span>
         </div>
@@ -420,6 +491,26 @@
     </div>
   </aside>
 
+  <!-- 資訊抽屜（左側）：黃曆 / 節氣 / 日出 / 世界時區 -->
+  <aside class="panel left" id="infoPanel">
+    <div class="panel-head">
+      <h2>資訊</h2>
+      <button class="iconbtn" id="closeInfo">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="info-tabs" id="infoTabs">
+        <button data-info="almanac" class="active">黃曆</button>
+        <button data-info="term">節氣</button>
+        <button data-info="sun">日出</button>
+        <button data-info="world">世界</button>
+      </div>
+      <div class="info-sec active" id="secAlmanac"></div>
+      <div class="info-sec" id="secTerm"></div>
+      <div class="info-sec" id="secSun"></div>
+      <div class="info-sec" id="secWorld"></div>
+    </div>
+  </aside>
+
   <!-- 慶祝特效層 -->
   <div class="celebrate" id="celebrate">
     <video id="celebVideo" loop muted playsinline></video>
@@ -437,10 +528,13 @@ const LS_KEY = "flipclock.settings.v1";
 const state = {
   mode:"clock", theme:"classic", font:"bold", format:"24",
   showSec:true, showDate:true, showLunar:true, blink:false,
+  showTerm:false, showSun:false,
   chime:false, chimeSound:"bell", chimeStrike:false,
   cdTarget:null, cdName:"", cdDone:false,
   customEnable:false, customBase:null, customActivatedReal:null,
   celebTime:null, celebFired:false,
+  lat:null, lng:null, locName:null,
+  infoTab:"almanac", cities:["Asia/Taipei","Asia/Shanghai","America/New_York","Europe/London","Europe/Paris","Europe/Moscow"],
 };
 function save(){
   const o={...state}; delete o.cdDone; delete o.celebFired;
@@ -515,6 +609,14 @@ const clockEl=document.getElementById("clock");
 const sublineEl=document.getElementById("subline");
 const sublineMainEl=document.getElementById("sublineMain");
 const sublineLunarEl=document.getElementById("sublineLunar");
+const sublineTermEl=document.getElementById("sublineTerm");
+const sublineSunEl=document.getElementById("sublineSun");
+// 取目前定位（含預設台北）
+function activeLoc(){
+  if(state.lat!=null && state.lng!=null) return {lat:state.lat,lng:state.lng,name:state.locName||"目前位置"};
+  return {lat:25.033,lng:121.565,name:"台北（預設）"};
+}
+function localTzHours(){ return -new Date().getTimezoneOffset()/60; }
 const cdLabelEl=document.getElementById("cdLabel");
 let cards=[];           // 依序的 FlipCard
 let layoutKey="";        // 重建判斷
@@ -626,6 +728,147 @@ const LUNAR={
 const pad=(n,w=2)=>String(Math.floor(Math.abs(n))).padStart(w,"0");
 
 /* ============================================================
+   天文 / 黃曆核心（純前端離線：節氣、日出日落、干支老黃曆）
+   ============================================================ */
+const RAD=Math.PI/180;
+function julianDay(Y,M,D){if(M<=2){Y-=1;M+=12;}const A=Math.floor(Y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(Y+4716))+Math.floor(30.6001*(M+1))+D+B-1524.5;}
+function deltaTsec(y){const t=y-2000;return 63.86+0.3345*t-0.060374*t*t+0.000651814*t*t;}
+// 太陽視黃經 (度) by JDE(力學時)，Meeus 低精度 ~0.01°
+function sunLong(jde){const T=(jde-2451545)/36525;const L0=(280.46646+36000.76983*T+0.0003032*T*T)%360;const M=(357.52911+35999.05029*T-0.0001537*T*T)*RAD;const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(M)+(0.019993-0.000101*T)*Math.sin(2*M)+0.000289*Math.sin(3*M);const om=(125.04-1934.136*T)*RAD;return(((L0+C-0.00569-0.00478*Math.sin(om))%360)+360)%360;}
+// 24 節氣表：目標黃經、約略公曆(作 Newton 種子)、名稱、月建支(僅「節」有 zhi)
+const SOLAR_TERMS=[
+ {n:"小寒",lo:285,m:1,d:6,zhi:1},{n:"大寒",lo:300,m:1,d:20},
+ {n:"立春",lo:315,m:2,d:4,zhi:2},{n:"雨水",lo:330,m:2,d:19},
+ {n:"驚蟄",lo:345,m:3,d:6,zhi:3},{n:"春分",lo:0,m:3,d:21},
+ {n:"清明",lo:15,m:4,d:5,zhi:4},{n:"穀雨",lo:30,m:4,d:20},
+ {n:"立夏",lo:45,m:5,d:6,zhi:5},{n:"小滿",lo:60,m:5,d:21},
+ {n:"芒種",lo:75,m:6,d:6,zhi:6},{n:"夏至",lo:90,m:6,d:21},
+ {n:"小暑",lo:105,m:7,d:7,zhi:7},{n:"大暑",lo:120,m:7,d:23},
+ {n:"立秋",lo:135,m:8,d:8,zhi:8},{n:"處暑",lo:150,m:8,d:23},
+ {n:"白露",lo:165,m:9,d:8,zhi:9},{n:"秋分",lo:180,m:9,d:23},
+ {n:"寒露",lo:195,m:10,d:8,zhi:10},{n:"霜降",lo:210,m:10,d:24},
+ {n:"立冬",lo:225,m:11,d:7,zhi:11},{n:"小雪",lo:240,m:11,d:22},
+ {n:"大雪",lo:255,m:12,d:7,zhi:0},{n:"冬至",lo:270,m:12,d:22}];
+const _termCache={};
+function termMs(year,i){
+  const key=year*100+i; if(_termCache[key]!=null)return _termCache[key];
+  const t=SOLAR_TERMS[i]; let est=julianDay(year,t.m,t.d+0.5);
+  for(let k=0;k<8;k++){let diff=t.lo-sunLong(est);while(diff>180)diff-=360;while(diff<-180)diff+=360;est+=diff/0.9856473;}
+  const jdUT=est-deltaTsec(year)/86400;
+  return _termCache[key]=Math.round((jdUT-2440587.5)*86400000);
+}
+function termsAround(year){const arr=[];for(const y of[year-1,year,year+1])SOLAR_TERMS.forEach((t,i)=>arr.push({n:t.n,zhi:t.zhi,year:y,ms:termMs(y,i)}));arr.sort((a,b)=>a.ms-b.ms);return arr;}
+function nextTerm(nowMs){const y=new Date(nowMs).getFullYear();return termsAround(y).find(t=>t.ms>nowMs);}
+function currentTermInfo(nowMs){const y=new Date(nowMs).getFullYear();const arr=termsAround(y);let passed=arr[0],monthZhi=2;for(const t of arr){if(t.ms<=nowMs){passed=t;if(t.zhi!==undefined)monthZhi=t.zhi;}else break;}return{passed,monthZhi};}
+function lichunYear(nowMs){const y=new Date(nowMs).getFullYear();return nowMs<termMs(y,2)?y-1:y;}
+// 日出日落 (NOAA)，回當地午夜起分鐘數
+function sunRiseSet(lat,lng,Y,M,D,tz){
+  const zen=90.833,jd=julianDay(Y,M,D+0.5),T=(jd-2451545)/36525;
+  let L0=(280.46646+36000.76983*T+0.0003032*T*T)%360;if(L0<0)L0+=360;
+  const Md=357.52911+35999.05029*T-0.0001537*T*T,e=0.016708634-0.000042037*T-0.0000001267*T*T,Mr=Md*RAD;
+  const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(Mr)+(0.019993-0.000101*T)*Math.sin(2*Mr)+0.000289*Math.sin(3*Mr);
+  const tl=L0+C,om=125.04-1934.136*T,lam=tl-0.00569-0.00478*Math.sin(om*RAD);
+  const ep0=23+(26+(21.448-T*(46.815+T*(0.00059-T*0.001813)))/60)/60,ep=ep0+0.00256*Math.cos(om*RAD);
+  const dec=Math.asin(Math.sin(ep*RAD)*Math.sin(lam*RAD))/RAD;
+  const yv=Math.tan(ep/2*RAD)**2,L0r=L0*RAD;
+  const eq=4*(yv*Math.sin(2*L0r)-2*e*Math.sin(Mr)+4*e*yv*Math.sin(Mr)*Math.cos(2*L0r)-0.5*yv*yv*Math.sin(4*L0r)-1.25*e*e*Math.sin(2*Mr))/RAD;
+  const cosH=(Math.cos(zen*RAD)-Math.sin(lat*RAD)*Math.sin(dec*RAD))/(Math.cos(lat*RAD)*Math.cos(dec*RAD));
+  const noon=720-4*lng-eq+tz*60;
+  if(cosH>1)return{polar:"night",noon};if(cosH<-1)return{polar:"day",noon};
+  const H=Math.acos(cosH)/RAD;return{sunrise:noon-4*H,sunset:noon+4*H,noon,dayLenMin:8*H};
+}
+// 老黃曆
+const GAN=["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"],ZHI=["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+const SX=["鼠","牛","虎","兔","龍","蛇","馬","羊","猴","雞","狗","豬"];
+const NAYIN=["海中金","爐中火","大林木","路旁土","劍鋒金","山頭火","澗下水","城頭土","白蠟金","楊柳木","泉中水","屋上土","霹靂火","松柏木","長流水","沙中金","山下火","平地木","壁上土","金箔金","覆燈火","天河水","大驛土","釵釧金","桑柘木","大溪水","沙中土","天上火","石榴木","大海水"];
+const gzName=i=>GAN[((i%10)+10)%10]+ZHI[((i%12)+12)%12],nayinOf=i=>NAYIN[Math.floor((((i%60)+60)%60)/2)];
+function gzIdx(g,z){for(let i=0;i<60;i++)if(i%10===g&&i%12===z)return i;return 0;}
+function dayGZ(Y,M,D){const jdn=Math.floor(julianDay(Y,M,D+0.5)+0.5);return(((jdn-2451551)%60)+60)%60;}
+function monthGZ(yearGan,mZhi){const first=[2,4,6,8,0][yearGan%5];const steps=(((mZhi-2)%12)+12)%12;return gzIdx((first+steps)%10,mZhi);}
+const CHONG=["馬","羊","猴","雞","狗","豬","鼠","牛","虎","兔","龍","蛇"];
+function shaOf(z){if([8,0,4].includes(z))return"南";if([5,9,1].includes(z))return"東";if([2,6,10].includes(z))return"北";return"西";}
+const JC=["建","除","滿","平","定","執","破","危","成","收","開","閉"];
+const JC_YI={建:"出行·上樑·豎柱",除:"沐浴·掃舍·療病",滿:"祭祀·祈福·開市",平:"修飾垣牆·平治道塗",定:"祭祀·訂盟·納采",執:"捕捉·結網·祭祀",破:"破屋·壞垣·求醫",危:"安床·祭祀·會友",成:"開市·入學·結婚",收:"祭祀·捕捉·進人口",開:"祭祀·祈福·開市·入學",閉:"築堤·填穴·安葬"};
+const JC_JI={建:"動土·開倉",除:"嫁娶·遠行",滿:"安葬·療病",平:"嫁娶·開市",定:"訴訟·出行",執:"開市·移徙",破:"諸事不宜",危:"登高·乘船",成:"訴訟",收:"放債·出行",開:"安葬",閉:"出行·求醫"};
+const QL={0:8,6:8,1:10,7:10,2:0,8:0,3:2,9:2,4:4,10:4,5:6,11:6};
+const HDAO=["青龍","明堂","天刑","朱雀","金匱","天德","白虎","玉堂","天牢","玄武","司命","勾陳"];
+const HJI={青龍:1,明堂:1,金匱:1,天德:1,玉堂:1,司命:1};
+function almanac(nowMs){
+  const d=new Date(nowMs),Y=d.getFullYear(),M=d.getMonth()+1,D=d.getDate();
+  const ly=lichunYear(nowMs),yIdx=(((ly-4)%60)+60)%60;
+  const mZhi=currentTermInfo(nowMs).monthZhi,mIdx=monthGZ(yIdx%10,mZhi);
+  const dIdx=dayGZ(Y,M,D),dZhi=dIdx%12,jc=JC[(((dZhi-mZhi)%12)+12)%12];
+  const start=QL[dZhi],shichen=[];
+  const span=["23-01","01-03","03-05","05-07","07-09","09-11","11-13","13-15","15-17","17-19","19-21","21-23"];
+  for(let h=0;h<12;h++){const idx=(((h-start)%12)+12)%12,g=HDAO[idx];shichen.push({zhi:ZHI[h],span:span[h],god:g,ji:!!HJI[g]});}
+  return{yGZ:gzName(yIdx),yNY:nayinOf(yIdx),sx:SX[(((ly-4)%12)+12)%12],mGZ:gzName(mIdx),mNY:nayinOf(mIdx),
+    dGZ:gzName(dIdx),dNY:nayinOf(dIdx),chong:CHONG[dZhi],chongZhi:ZHI[(dZhi+6)%12],sha:shaOf(dZhi),
+    jianchu:jc,yi:JC_YI[jc],ji:JC_JI[jc],shichen};
+}
+const hhmm=m=>{m=((Math.round(m)%1440)+1440)%1440;return pad(Math.floor(m/60))+":"+pad(m%60);};
+
+/* ============================================================
+   世界城市（中英拼音搜尋；時間用 Intl 原生、零資料離線）
+   ============================================================ */
+const CITIES=[
+ {tz:"Asia/Taipei",zh:"台北",en:"Taipei",py:"taibei tw taiwan"},
+ {tz:"Asia/Shanghai",zh:"北京",en:"Beijing",py:"beijing china cn shanghai"},
+ {tz:"Asia/Hong_Kong",zh:"香港",en:"Hong Kong",py:"xianggang hongkong hk"},
+ {tz:"Asia/Tokyo",zh:"東京",en:"Tokyo",py:"dongjing japan jp"},
+ {tz:"Asia/Seoul",zh:"首爾",en:"Seoul",py:"shouer korea kr"},
+ {tz:"Asia/Singapore",zh:"新加坡",en:"Singapore",py:"xinjiapo sg"},
+ {tz:"Asia/Bangkok",zh:"曼谷",en:"Bangkok",py:"mangu thailand th"},
+ {tz:"Asia/Jakarta",zh:"雅加達",en:"Jakarta",py:"yajiada indonesia id"},
+ {tz:"Asia/Kolkata",zh:"新德里",en:"New Delhi",py:"xindeli india in mumbai"},
+ {tz:"Asia/Dubai",zh:"杜拜",en:"Dubai",py:"dubai uae ae"},
+ {tz:"Asia/Kuala_Lumpur",zh:"吉隆坡",en:"Kuala Lumpur",py:"jilongpo malaysia my"},
+ {tz:"Asia/Manila",zh:"馬尼拉",en:"Manila",py:"manila philippines ph"},
+ {tz:"Asia/Ho_Chi_Minh",zh:"胡志明市",en:"Ho Chi Minh",py:"huzhiming vietnam vn saigon"},
+ {tz:"Europe/London",zh:"倫敦",en:"London",py:"lundun uk britain gb"},
+ {tz:"Europe/Paris",zh:"巴黎",en:"Paris",py:"bali france fr"},
+ {tz:"Europe/Moscow",zh:"莫斯科",en:"Moscow",py:"mosike russia ru"},
+ {tz:"Europe/Berlin",zh:"柏林",en:"Berlin",py:"bolin germany de"},
+ {tz:"Europe/Rome",zh:"羅馬",en:"Rome",py:"luoma italy it"},
+ {tz:"Europe/Madrid",zh:"馬德里",en:"Madrid",py:"madeli spain es"},
+ {tz:"Europe/Amsterdam",zh:"阿姆斯特丹",en:"Amsterdam",py:"amusitedan netherlands nl"},
+ {tz:"Europe/Zurich",zh:"蘇黎世",en:"Zurich",py:"sulishi switzerland ch"},
+ {tz:"Europe/Istanbul",zh:"伊斯坦堡",en:"Istanbul",py:"yisitanbao turkey tr"},
+ {tz:"America/New_York",zh:"紐約",en:"New York",py:"niuyue usa us washington"},
+ {tz:"America/Chicago",zh:"芝加哥",en:"Chicago",py:"zhijiage usa us"},
+ {tz:"America/Denver",zh:"丹佛",en:"Denver",py:"danfo usa us"},
+ {tz:"America/Los_Angeles",zh:"洛杉磯",en:"Los Angeles",py:"luoshanji usa us san francisco seattle"},
+ {tz:"America/Toronto",zh:"多倫多",en:"Toronto",py:"duolunduo canada ca"},
+ {tz:"America/Vancouver",zh:"溫哥華",en:"Vancouver",py:"wengehua canada ca"},
+ {tz:"America/Mexico_City",zh:"墨西哥城",en:"Mexico City",py:"moxigecheng mexico mx"},
+ {tz:"America/Sao_Paulo",zh:"聖保羅",en:"São Paulo",py:"shengbaoluo brazil br"},
+ {tz:"America/Argentina/Buenos_Aires",zh:"布宜諾斯艾利斯",en:"Buenos Aires",py:"buyinuosi argentina ar"},
+ {tz:"Africa/Cairo",zh:"開羅",en:"Cairo",py:"kailuo egypt eg"},
+ {tz:"Africa/Johannesburg",zh:"約翰尼斯堡",en:"Johannesburg",py:"yuehannisibao south africa za"},
+ {tz:"Australia/Sydney",zh:"雪梨",en:"Sydney",py:"xueli sydney australia au"},
+ {tz:"Pacific/Auckland",zh:"奧克蘭",en:"Auckland",py:"aokelan new zealand nz"},
+ {tz:"Pacific/Honolulu",zh:"檀香山",en:"Honolulu",py:"tanxiangshan hawaii usa us"}];
+const cityByTz=tz=>CITIES.find(c=>c.tz===tz);
+// 取某時區「現在」的時分秒與年月日（用 Intl，離線）
+function tzParts(tz,nowMs){
+  const f=new Intl.DateTimeFormat("en-CA",{timeZone:tz,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false});
+  const p={}; for(const x of f.formatToParts(new Date(nowMs))) p[x.type]=x.value;
+  let H=p.hour==="24"?"00":p.hour;
+  return {Y:+p.year,M:+p.month,D:+p.day,h:H,m:p.minute,s:p.second};
+}
+// 時區相對本地的偏差天數（今天/+1天/-1天）
+function tzDayDelta(tz,nowMs){
+  const here=new Date(nowMs); const lp=tzParts(tz,nowMs);
+  const a=Date.UTC(lp.Y,lp.M-1,lp.D), b=Date.UTC(here.getFullYear(),here.getMonth(),here.getDate());
+  const d=Math.round((a-b)/86400000); return d===0?"今天":(d>0?"+"+d+" 天":d+" 天");
+}
+// 時區 UTC 偏移字串（如 UTC+8）
+function tzOffsetLabel(tz,nowMs){
+  const f=new Intl.DateTimeFormat("en-US",{timeZone:tz,timeZoneName:"shortOffset"});
+  const p=f.formatToParts(new Date(nowMs)).find(x=>x.type==="timeZoneName");
+  return p?p.value.replace("GMT","UTC"):"";
+}
+
+/* ============================================================
    整點報時（WebAudio 即時合成，零外部音檔、離線可用）
    ============================================================ */
 let audioCtx=null;
@@ -701,6 +944,23 @@ function renderClock(animate){
     sublineLunarEl.style.display = L ? "" : "none";
     if(L) sublineLunarEl.textContent=`農曆 ${L.monthCn}${L.dayCn}　${L.gz}${L.animal}年`;
   }else sublineEl.style.display="none";
+  // 節氣 / 日出 副標（任一開啟也要顯示 subline 容器）
+  let extra=false;
+  if(state.showTerm){
+    const nowMs=now(),cur=currentTermInfo(nowMs).passed,nx=nextTerm(nowMs);
+    const isToday=cur&&new Date(cur.ms).toDateString()===d.toDateString();
+    if(isToday) sublineTermEl.textContent=`今日 ${cur.n}`;
+    else if(nx){ const days=Math.ceil((nx.ms-nowMs)/86400000); sublineTermEl.textContent=`下個節氣 ${nx.n} · ${new Date(nx.ms).getMonth()+1}/${new Date(nx.ms).getDate()}（${days} 天後）`; }
+    sublineTermEl.style.display=""; extra=true;
+  } else sublineTermEl.style.display="none";
+  if(state.showSun){
+    const lc=activeLoc(),s=sunRiseSet(lc.lat,lc.lng,d.getFullYear(),d.getMonth()+1,d.getDate(),localTzHours());
+    if(s.polar==="day") sublineSunEl.textContent="永晝（極區）";
+    else if(s.polar==="night") sublineSunEl.textContent="永夜（極區）";
+    else sublineSunEl.textContent=`日出 ${hhmm(s.sunrise)} · 日落 ${hhmm(s.sunset)} · 白晝 ${Math.floor(s.dayLenMin/60)}h${pad(s.dayLenMin%60)}m`;
+    sublineSunEl.style.display=""; extra=true;
+  } else sublineSunEl.style.display="none";
+  if(extra) sublineEl.style.display="";
   cdLabelEl.style.display="none";
   checkChime(d);
 }
@@ -757,6 +1017,10 @@ function renderStopwatch(animate){
 let lastTick=-1;
 const reduceMotion=matchMedia("(prefers-reduced-motion:reduce)").matches;
 function loop(){
+  if(infoPanel.classList.contains("open")){
+    const ts=Math.floor(now()/1000);
+    if(ts!==lastInfoSec){ lastInfoSec=ts; if(state.infoTab==="world") tickWorld(); }
+  }
   if(state.mode==="clock"){
     const t=Math.floor(now()/1000);
     renderClock(t!==lastTick && !reduceMotion); lastTick=t;
@@ -847,6 +1111,7 @@ function applyAll(){
   document.querySelectorAll("#fontSeg button").forEach(b=>b.classList.toggle("active",b.dataset.font===state.font));
   document.querySelectorAll("#formatSeg button").forEach(b=>b.classList.toggle("active",b.dataset.fmt===state.format));
   $("showSec").checked=state.showSec; $("showDate").checked=state.showDate; $("showLunar").checked=state.showLunar; $("blink").checked=state.blink;
+  $("showTerm").checked=state.showTerm; $("showSun").checked=state.showSun;
   $("chime").checked=state.chime; $("chimeStrike").checked=state.chimeStrike;
   document.querySelectorAll("#chimeSoundSeg button").forEach(b=>b.classList.toggle("active",b.dataset.sound===state.chimeSound));
   $("customEnable").checked=state.customEnable;
@@ -874,6 +1139,129 @@ $("chime").addEventListener("change",e=>{state.chime=e.target.checked; if(state.
 $("chimeStrike").addEventListener("change",e=>{state.chimeStrike=e.target.checked; save();});
 $("chimeSoundSeg").addEventListener("click",e=>{if(e.target.dataset.sound){state.chimeSound=e.target.dataset.sound; applyAll(); save();}});
 $("testChime").addEventListener("click",()=>{ getAudio(); let h12=new Date(now()).getHours()%12; if(h12===0)h12=12; playChime(h12); });
+$("showTerm").addEventListener("change",e=>{state.showTerm=e.target.checked; lastTick=-1; save();});
+$("showSun").addEventListener("change",e=>{state.showSun=e.target.checked; if(state.showSun && state.lat==null) requestGeo(); lastTick=-1; save();});
+
+/* ============================================================
+   資訊抽屜：黃曆 / 節氣 / 日出 / 世界時區
+   ============================================================ */
+const infoPanel=$("infoPanel");
+let lastInfoSec=-1;
+function renderAlmanac(){
+  const a=almanac(now()),d=new Date(now());
+  const sc=a.shichen.map(s=>`<div class="sc-cell ${s.ji?'good':'bad'}"><div class="t">${s.zhi}</div><div class="g">${s.span}</div><div class="g">${s.ji?'吉·':'凶·'}${s.god}</div></div>`).join("");
+  $("secAlmanac").innerHTML=`
+    <div class="info-date">${d.getFullYear()} 年 ${d.getMonth()+1} 月 ${d.getDate()} 日　${WD[d.getDay()]}</div>
+    <div class="alm-gz">
+      <div class="alm-card"><div class="lab">年</div><div class="val">${a.yGZ}</div><div class="sub">${a.yNY}·${a.sx}年</div></div>
+      <div class="alm-card"><div class="lab">月</div><div class="val">${a.mGZ}</div><div class="sub">${a.mNY}</div></div>
+      <div class="alm-card"><div class="lab">日</div><div class="val">${a.dGZ}</div><div class="sub">${a.dNY}</div></div>
+    </div>
+    <div class="alm-meta"><span>沖 <b>${a.chong}（${a.chongZhi}）</b></span><span>煞 <b>${a.sha}</b></span><span>值日 <b>${a.jianchu}日</b></span></div>
+    <div class="yiji">
+      <div class="yiji-row"><span class="yiji-tag yi">宜</span><span class="yiji-txt">${a.yi.replace(/·/g,"　")}</span></div>
+      <div class="yiji-row"><span class="yiji-tag ji">忌</span><span class="yiji-txt">${a.ji.replace(/·/g,"　")}</span></div>
+    </div>
+    <div class="sc-title">十二時辰吉凶 · 青龍黃黑道</div>
+    <div class="sc-grid">${sc}</div>
+    <div class="alm-note">傳統黃曆「建除十二神」推算，時辰採「日上起時黃黑道」。干支、納音、生肖、沖煞為確定值；宜忌與時辰吉凶各家曆書略有出入，僅供參考、非命理建議。</div>`;
+}
+function renderTerm(){
+  const nowMs=now(),y=new Date(nowMs).getFullYear(),nx=nextTerm(nowMs);
+  const list=SOLAR_TERMS.map((t,i)=>({n:t.n,ms:termMs(y,i)})).sort((a,b)=>a.ms-b.ms);
+  const rows=list.map(t=>{const dd=new Date(t.ms),passed=t.ms<nowMs,isNext=nx&&t.ms===nx.ms;
+    return `<div class="term-li ${passed?"passed":""} ${isNext?"next":""}"><span class="tn">${t.n}</span><span>${dd.getMonth()+1}/${dd.getDate()}　${pad(dd.getHours())}:${pad(dd.getMinutes())}</span></div>`;}).join("");
+  const days=nx?Math.ceil((nx.ms-nowMs)/86400000):0,nd=nx?new Date(nx.ms):null;
+  $("secTerm").innerHTML=`
+    <div class="term-big"><div class="name">${nx?nx.n:""}</div>
+      <div class="when">${nd?(nd.getMonth()+1)+" 月 "+nd.getDate()+" 日 · 約 "+pad(nd.getHours())+":"+pad(nd.getMinutes()):""}</div>
+      <div class="cd">還有 ${days} 天</div></div>
+    <div class="sc-title">${y} 年 二十四節氣</div>
+    <div class="term-list">${rows}</div>
+    <div class="alm-note">太陽黃經天文計算離線推算：日期準確，時間約 ±15 分。</div>`;
+}
+function renderSun(){
+  const lc=activeLoc(),d=new Date(now()),tz=localTzHours();
+  const s=sunRiseSet(lc.lat,lc.lng,d.getFullYear(),d.getMonth()+1,d.getDate(),tz);
+  let body;
+  if(s.polar){body=`<div class="term-big"><div class="name" style="font-size:30px">${s.polar==="day"?"永晝":"永夜"}</div><div class="when">此緯度今日無日出日落</div></div>`;}
+  else{
+    const nowMin=d.getHours()*60+d.getMinutes()+d.getSeconds()/60;
+    const frac=Math.min(1,Math.max(0,(nowMin-s.sunrise)/(s.sunset-s.sunrise)));
+    const W=300,H=110,cx=20+frac*(W-40),cy=H-10-Math.sin(frac*Math.PI)*(H-30);
+    const up=nowMin>=s.sunrise&&nowMin<=s.sunset;
+    const arc=`<svg viewBox="0 0 ${W} ${H+14}" width="100%" preserveAspectRatio="xMidYMid meet">
+      <path d="M20 ${H-10} A ${(W-40)/2} ${H-30} 0 0 1 ${W-20} ${H-10}" fill="none" stroke="var(--line)" stroke-width="2" stroke-dasharray="4 4"/>
+      <line x1="10" y1="${H-10}" x2="${W-10}" y2="${H-10}" stroke="var(--line)" stroke-width="1"/>
+      ${up?`<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="7" fill="var(--accent)"/>`:""}
+      <text x="20" y="${H+8}" fill="var(--muted)" font-size="12" text-anchor="middle">☀</text>
+      <text x="${W-20}" y="${H+8}" fill="var(--muted)" font-size="12" text-anchor="middle">☾</text></svg>`;
+    body=`<div class="sun-arc">${arc}</div>
+      <div class="sun-stat"><span class="k">日出</span><span class="v">${hhmm(s.sunrise)}</span></div>
+      <div class="sun-stat"><span class="k">日落</span><span class="v">${hhmm(s.sunset)}</span></div>
+      <div class="sun-stat"><span class="k">正午（太陽最高）</span><span class="v">${hhmm(s.noon)}</span></div>
+      <div class="sun-stat"><span class="k">白晝時長</span><span class="v">${Math.floor(s.dayLenMin/60)} 時 ${pad(s.dayLenMin%60)} 分</span></div>
+      <div class="sun-stat"><span class="k">晨昏精華時段</span><span class="v" style="font-size:12px">${hhmm(s.sunrise)}–${hhmm(s.sunrise+60)}　${hhmm(s.sunset-60)}–${hhmm(s.sunset)}</span></div>`;
+  }
+  $("secSun").innerHTML=`<div class="info-date">${lc.name}　${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}</div>${body}
+    <div class="sun-loc"><a id="relocate">📍 重新定位</a>（未授權則以台北為準）</div>`;
+  const r=$("relocate"); if(r) r.addEventListener("click",requestGeo);
+}
+function renderWorld(){
+  const nowMs=now();
+  const rows=state.cities.map(tz=>{
+    const c=cityByTz(tz)||{tz,zh:tz,en:""},p=tzParts(tz,nowMs);
+    return `<div class="city-row" data-tz="${tz}">
+      <div><div class="city-name">${c.zh} <span style="color:var(--muted);font-weight:400;font-size:12px">${c.en}</span></div>
+        <div class="city-sub">${tzOffsetLabel(tz,nowMs)} · ${tzDayDelta(tz,nowMs)}</div></div>
+      <div class="city-r"><div style="text-align:right"><div class="city-time">${p.h}:${p.m}</div><div class="city-day">:${p.s}</div></div>
+        <button class="city-del" data-del="${tz}" title="移除">✕</button></div></div>`;
+  }).join("");
+  $("secWorld").innerHTML=`
+    <div class="city-add"><input type="text" id="citySearch" placeholder="搜尋城市（中文／英文／拼音）" autocomplete="off"></div>
+    <div class="city-results" id="cityResults"></div>${rows||'<div class="alm-note">尚未加入城市，用上方搜尋加入。</div>'}`;
+  const inp=$("citySearch"); if(inp) inp.addEventListener("input",onCitySearch);
+}
+function tickWorld(){
+  const nowMs=now();
+  document.querySelectorAll("#secWorld .city-row").forEach(row=>{
+    const tz=row.dataset.tz,p=tzParts(tz,nowMs);
+    const t=row.querySelector(".city-time"),dd=row.querySelector(".city-day"),sub=row.querySelector(".city-sub");
+    if(t)t.textContent=p.h+":"+p.m; if(dd)dd.textContent=":"+p.s;
+    if(sub)sub.textContent=tzOffsetLabel(tz,nowMs)+" · "+tzDayDelta(tz,nowMs);
+  });
+}
+function onCitySearch(e){
+  const q=e.target.value.trim().toLowerCase(),box=$("cityResults"); if(!box)return;
+  if(!q){box.innerHTML="";return;}
+  const hits=CITIES.filter(c=>!state.cities.includes(c.tz)&&(c.zh.includes(q)||c.en.toLowerCase().includes(q)||c.py.includes(q))).slice(0,8);
+  box.innerHTML=hits.length?hits.map(c=>`<div class="city-opt" data-add="${c.tz}"><span>${c.zh}　${c.en}</span><span class="o-sub">${tzOffsetLabel(c.tz,now())}</span></div>`).join(""):'<div class="city-opt" style="color:var(--muted);cursor:default">查無城市</div>';
+}
+$("secWorld").addEventListener("click",e=>{
+  const add=e.target.closest("[data-add]"),del=e.target.closest("[data-del]");
+  if(add){ if(!state.cities.includes(add.dataset.add)) state.cities.push(add.dataset.add); save(); renderWorld(); }
+  else if(del){ state.cities=state.cities.filter(t=>t!==del.dataset.del); save(); renderWorld(); }
+});
+const SEC_FN={almanac:renderAlmanac,term:renderTerm,sun:renderSun,world:renderWorld};
+const SEC_ID={almanac:"secAlmanac",term:"secTerm",sun:"secSun",world:"secWorld"};
+function renderInfo(){
+  document.querySelectorAll("#infoTabs button").forEach(b=>b.classList.toggle("active",b.dataset.info===state.infoTab));
+  document.querySelectorAll(".info-sec").forEach(s=>s.classList.remove("active"));
+  $(SEC_ID[state.infoTab]).classList.add("active");
+  SEC_FN[state.infoTab]();
+}
+function openInfo(){ closePanel(); infoPanel.classList.add("open"); $("overlay").classList.add("open"); renderInfo(); if(state.infoTab==="sun"&&state.lat==null) requestGeo(); }
+function closeInfo(){ infoPanel.classList.remove("open"); $("overlay").classList.remove("open"); }
+function requestGeo(){
+  if(!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(pos=>{
+    state.lat=+pos.coords.latitude.toFixed(4); state.lng=+pos.coords.longitude.toFixed(4); state.locName="目前位置"; save(); lastTick=-1;
+    if(infoPanel.classList.contains("open")&&state.infoTab==="sun") renderInfo();
+  },()=>{ if(infoPanel.classList.contains("open")&&state.infoTab==="sun") renderInfo(); },{timeout:8000,maximumAge:3600000});
+}
+$("infoBtn").addEventListener("click",()=>infoPanel.classList.contains("open")?closeInfo():openInfo());
+$("closeInfo").addEventListener("click",closeInfo);
+$("infoTabs").addEventListener("click",e=>{ if(e.target.dataset.info){ state.infoTab=e.target.dataset.info; save(); renderInfo(); if(state.infoTab==="sun"&&state.lat==null) requestGeo(); } });
 
 // 倒數
 function localDTValue(ms){ const d=new Date(ms-d0offset(ms)); return d.toISOString().slice(0,16); }
@@ -933,7 +1321,7 @@ function openPanel(){ $("panel").classList.add("open"); $("overlay").classList.a
 function closePanel(){ $("panel").classList.remove("open"); $("overlay").classList.remove("open"); }
 $("settingsBtn").addEventListener("click",openPanel);
 $("closePanel").addEventListener("click",closePanel);
-$("overlay").addEventListener("click",closePanel);
+$("overlay").addEventListener("click",()=>{closePanel(); closeInfo();});
 $("openCdSetup").addEventListener("click",()=>{openPanel(); $("cdTarget").focus();});
 
 // 全螢幕
@@ -946,8 +1334,9 @@ addEventListener("keydown",e=>{
   const k=e.key.toLowerCase();
   if(k==="f") toggleFS();
   else if(k==="s"){ $("panel").classList.contains("open")?closePanel():openPanel(); }
+  else if(k==="i"){ infoPanel.classList.contains("open")?closeInfo():openInfo(); }
   else if(k===" " && state.mode==="stopwatch"){ e.preventDefault(); $("swStart").click(); }
-  else if(k==="escape"){ stopCelebration(); closePanel(); }
+  else if(k==="escape"){ stopCelebration(); closePanel(); closeInfo(); }
 });
 
 // 靜置自動隱藏
