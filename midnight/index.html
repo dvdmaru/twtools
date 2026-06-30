@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>深夜宵夜所 — 虛擬外送｜TWTools</title>
+<meta name="description" content="半夜嘴饞先逛一輪再說。深夜宵夜所是一個虛擬外送體驗：逛菜單、加購物車、假結帳，最後看見今晚省下多少錢、吃下 0 卡。">
+<link rel="canonical" href="https://twtools.cc/midnight/">
+<meta name="theme-color" content="#2a1715">
+<link rel="icon" href="/favicon.png" type="image/png">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TWTools">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:url" content="https://twtools.cc/midnight/">
+<meta property="og:title" content="深夜宵夜所 — 虛擬外送｜TWTools">
+<meta property="og:description" content="半夜嘴饞先逛一輪再說。逛菜單、加購物車、假結帳，最後看見今晚省下 NT$ 多少。">
+<meta property="og:image" content="https://twtools.cc/midnight/og-midnight.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="深夜宵夜所 — 虛擬外送｜TWTools">
+<meta name="twitter:description" content="逛了不點，省了不胖。這是模擬下單，不會真的送餐也不會扣款。">
+<meta name="twitter:image" content="https://twtools.cc/midnight/og-midnight.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --tw-page-bg:#faefee; --tw-surface:#fffbfa; --tw-surface-hover:#f2e4e3;
+    --tw-text-primary:#201914; --tw-text-secondary:#5a4845; --tw-text-muted:#786866;
+    --tw-border:#e5d3d1;
+    --tw-brand-text:#935e5c; --tw-hero-color:#7c4241; --tw-brand-accent:#7e5400;
+    --serif:"Noto Serif TC",serif; --sans:"Noto Sans TC",sans-serif; --mono:"JetBrains Mono",monospace;
+    --night-1:#180f13; --night-2:#2a1715; --night-3:#4a2521; --warm:#f0b26b; --steam:#ffe4c4;
+    --good:#5a8d55; --warn:#b56b26;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    font-family:var(--sans); color:var(--tw-text-primary); background:var(--tw-page-bg);
+    -webkit-font-smoothing:antialiased; line-height:1.7; overflow-x:hidden;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.46;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+  }
+  a{color:var(--tw-brand-accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  button,input{font-family:inherit}
+  .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 22px}
+
+  /* ====== ENTRY（入口頁，品牌淺色） ====== */
+  #entry{min-height:100dvh;display:flex;flex-direction:column}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--tw-brand-text);font-weight:500}
+  header.site{padding:20px 0 8px;display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-weight:700;color:var(--tw-hero-color)}
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--tw-brand-accent);box-shadow:0 0 0 4px #7e540022}
+  header.site nav a{font-size:.84rem;color:var(--tw-text-secondary);margin-left:16px}
+  .hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 0 10px}
+  .hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.25rem,8vw,3.55rem);color:var(--tw-hero-color);letter-spacing:.02em;line-height:1.18}
+  .hero .sub{margin-top:14px;color:var(--tw-text-secondary);font-size:clamp(.98rem,2.6vw,1.12rem);max-width:34ch;font-weight:300}
+  .livecount{margin:26px 0 6px;display:inline-flex;align-items:center;gap:9px;font-size:.95rem;color:var(--tw-text-secondary);background:var(--tw-surface);border:1px solid var(--tw-border);padding:8px 16px;border-radius:999px}
+  .pulse{width:9px;height:9px;border-radius:50%;background:#d68a45;box-shadow:0 0 0 0 #d68a4588;animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 #d68a4566}70%{box-shadow:0 0 0 9px #d68a4500}100%{box-shadow:0 0 0 0 #d68a4500}}
+  .livecount b{color:var(--tw-hero-color);font-weight:700;font-variant-numeric:tabular-nums}
+  .start{margin-top:26px;font-family:var(--serif);font-size:1.22rem;font-weight:600;color:#fff;background:linear-gradient(135deg,#a06a5f,#7c4241);border:none;padding:18px 52px;border-radius:999px;cursor:pointer;box-shadow:0 10px 30px -8px #7c424166;transition:transform .2s,box-shadow .2s}
+  .start:hover{transform:translateY(-2px);box-shadow:0 16px 38px -8px #7c424180}
+  .start:active{transform:translateY(0)}
+  .start-hint{margin-top:12px;font-size:.82rem;color:var(--tw-text-muted)}
+  .menu-preview{margin:42px 0 30px;width:100%}
+  .menu-preview .label{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .menu-preview .label .eyebrow{flex:none}
+  .menu-preview .label .rule{flex:1;height:1px;background:var(--tw-border)}
+  .preview-list{display:grid;gap:8px}
+  .preview-item{background:var(--tw-surface);border:1px solid var(--tw-border);border-left:3px solid var(--tw-brand-text);border-radius:10px;padding:10px 14px;font-size:.92rem;color:var(--tw-text-secondary);display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+  .preview-item b{font-family:var(--serif);color:var(--tw-text-primary);font-weight:700}
+  .preview-item span:last-child{font-family:var(--mono);font-size:.78rem;color:var(--tw-text-muted);flex:none}
+  footer.site{padding:24px 0 34px;border-top:1px solid var(--tw-border);margin-top:10px;font-size:.8rem;color:var(--tw-text-muted);text-align:center}
+  footer.site .care{margin-top:10px;font-size:.78rem;color:var(--tw-text-secondary);background:var(--tw-surface);border:1px solid var(--tw-border);border-radius:10px;padding:10px 14px;display:inline-block}
+  footer.site .privacy{margin-top:12px;max-width:50ch;margin-left:auto;margin-right:auto;line-height:1.6}
+
+  /* ====== MIDNIGHT（虛擬外送模式，全螢幕夜市） ====== */
+  #midnight{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;background:radial-gradient(ellipse at 50% 20%,var(--night-3),var(--night-2) 42%,var(--night-1));color:#f8eadf;overflow:hidden}
+  #midnight.on{display:flex}
+  .steam{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .steam i{position:absolute;bottom:-80px;width:12px;height:120px;border-radius:999px;background:linear-gradient(to top,#ffffff00,#ffe4c444,#ffffff00);filter:blur(6px);animation:steamUp linear infinite}
+  @keyframes steamUp{from{transform:translateY(0) translateX(0) scale(.8);opacity:0}20%{opacity:.75}to{transform:translateY(-115vh) translateX(28px) scale(1.25);opacity:0}}
+  .m-top{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;padding:18px 22px;font-size:.85rem;color:#f8eadfcc}
+  .m-top .together{display:inline-flex;align-items:center;gap:8px}
+  .m-top .together b{color:#fff;font-variant-numeric:tabular-nums}
+  .exit{background:transparent;border:1px solid #f8eadf44;color:#f8eadf;border-radius:999px;padding:7px 16px;font-size:.82rem;cursor:pointer}
+  .exit:hover{background:#f8eadf11}
+  .menu-stage{position:relative;z-index:2;flex:1;display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:22px;width:min(1180px,100%);margin:0 auto;padding:8px 22px 22px;min-height:0}
+  .menu-panel{min-height:0;display:flex;flex-direction:column}
+  .stage-head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:16px}
+  .stage-head h2{font-family:var(--serif);font-size:clamp(1.6rem,3.5vw,2.45rem);line-height:1.18;color:#fff}
+  .stage-head p{max-width:36ch;font-size:.9rem;color:#f8eadfaa}
+  .tabs{display:flex;gap:8px;overflow:auto;padding-bottom:10px;margin-bottom:12px;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:none;border:1px solid #f8eadf2e;background:#ffffff12;color:#f8eadfcc;border-radius:999px;padding:9px 14px;font-size:.85rem;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--warm);color:#2a1715;border-color:var(--warm);font-weight:700}
+  .menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;overflow:auto;padding:2px 2px 120px;scrollbar-color:#ffffff30 transparent}
+  .food-card{position:relative;display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;align-items:center;border:1px solid #ffffff1e;background:#fff8f012;color:#f8eadf;border-radius:12px;padding:12px;min-height:104px;box-shadow:0 20px 50px -36px #000;transition:transform .18s,background .18s,border-color .18s}
+  .food-card:hover{transform:translateY(-2px);background:#fff8f01c;border-color:#f0b26b66}
+  .food-card.pop{animation:pop .28s ease-out}
+  @keyframes pop{50%{transform:scale(1.035)}}
+  .food-emoji{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;background:radial-gradient(circle at 35% 28%,#fff3,#ffffff0c 68%);box-shadow:inset 0 0 0 1px #ffffff20}
+  .food-info{min-width:0}
+  .food-name{font-family:var(--serif);font-size:1.05rem;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .food-meta{display:flex;gap:10px;align-items:center;margin-top:2px;font-size:.78rem;color:#f8eadfaa}
+  .food-price{font-family:var(--mono);font-weight:700;color:#ffd79a}
+  .add{margin-top:9px;border:none;background:#f8eadf;color:#2a1715;border-radius:999px;padding:7px 13px;font-size:.82rem;font-weight:700;cursor:pointer}
+  .add:hover{background:#ffd79a}
+  .mcontrols{position:absolute;left:22px;bottom:24px;display:flex;gap:10px;z-index:5}
+  .ctrl{position:relative;display:flex;align-items:center;gap:7px;background:#ffffff26;border:1px solid #ffffff4d;color:#fff;border-radius:999px;padding:10px 14px;cursor:pointer;transition:all .2s;font-size:.82rem}
+  .ctrl:hover{background:#ffffff3a}
+  .ctrl.off{opacity:.68}
+  .cart-panel{position:relative;background:#fffbfa;color:var(--tw-text-primary);border:1px solid #fff4;border-radius:14px;box-shadow:0 30px 90px -42px #000;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+  .cart-head{padding:18px 18px 12px;border-bottom:1px solid var(--tw-border);display:flex;justify-content:space-between;gap:12px;align-items:start}
+  .cart-head h2{font-family:var(--serif);font-size:1.25rem;color:var(--tw-hero-color)}
+  .cart-head p{font-size:.78rem;color:var(--tw-text-muted);margin-top:2px}
+  .cart-count{font-family:var(--mono);background:#f2e4e3;border:1px solid var(--tw-border);border-radius:999px;padding:5px 10px;font-size:.78rem}
+  .cart-items{flex:1;overflow:auto;padding:12px 18px;display:flex;flex-direction:column;gap:9px}
+  .empty{margin:auto;text-align:center;color:var(--tw-text-muted);font-size:.9rem;max-width:22ch}
+  .cart-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border-bottom:1px solid #e5d3d177;padding-bottom:9px}
+  .cart-row strong{font-size:.92rem;color:var(--tw-text-primary)}
+  .cart-row small{display:block;color:var(--tw-text-muted);font-family:var(--mono);font-size:.72rem}
+  .qty{display:flex;align-items:center;gap:6px}
+  .qty button{width:26px;height:26px;border-radius:50%;border:1px solid var(--tw-border);background:#fff;color:var(--tw-hero-color);cursor:pointer;font-weight:700}
+  .cart-foot{border-top:1px solid var(--tw-border);padding:14px 18px 18px;background:#fff8f5}
+  .estimate{display:flex;justify-content:space-between;font-size:.82rem;color:var(--tw-text-secondary);margin-bottom:10px}
+  .total{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+  .total span{font-size:.85rem;color:var(--tw-text-muted)}
+  .total b{font-family:var(--mono);font-size:1.45rem;color:var(--tw-hero-color)}
+  .checkout{width:100%;border:none;border-radius:999px;background:linear-gradient(135deg,#a06a5f,#7c4241);color:#fff;padding:13px 16px;font-weight:700;cursor:pointer}
+  .checkout:disabled{opacity:.45;cursor:not-allowed}
+  .clear{width:100%;margin-top:8px;background:transparent;border:none;color:var(--tw-text-muted);font-size:.8rem;cursor:pointer}
+  .result{display:none;padding:18px;background:#fff8f5;border-top:1px solid var(--tw-border)}
+  .result.on{display:block}
+  .result h3{font-family:var(--serif);font-size:1.35rem;color:var(--tw-hero-color);line-height:1.25}
+  .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+  .result-card{background:#fff;border:1px solid var(--tw-border);border-radius:10px;padding:10px;text-align:center}
+  .result-card span{display:block;font-size:.72rem;color:var(--tw-text-muted)}
+  .result-card b{font-family:var(--mono);color:var(--good)}
+  .result-actions{display:flex;gap:8px}
+  .result-actions button{flex:1;border:1px solid var(--tw-border);border-radius:999px;background:#fff;padding:9px 10px;color:var(--tw-hero-color);font-weight:700;cursor:pointer}
+  .floating-cart{display:none;position:fixed;right:18px;bottom:18px;z-index:8;border:none;border-radius:999px;background:#f8eadf;color:#2a1715;padding:13px 16px;font-weight:700;box-shadow:0 14px 34px -14px #000;cursor:pointer}
+  .floating-cart b{font-family:var(--mono);background:#7c4241;color:#fff;border-radius:999px;padding:2px 7px;margin-left:6px}
+  .toast{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:#000000aa;color:#fff;padding:9px 18px;border-radius:999px;font-size:.85rem;z-index:70;opacity:0;transition:opacity .25s;pointer-events:none}
+  .toast.show{opacity:1}
+
+  @media(max-width:880px){
+    .menu-stage{grid-template-columns:1fr;padding-bottom:82px}
+    .cart-panel{position:fixed;left:12px;right:12px;bottom:12px;max-height:72dvh;z-index:10;display:none}
+    .cart-panel.open{display:flex}
+    #midnight:has(.cart-panel.open) .floating-cart,
+    #midnight:has(.cart-panel.open) .mcontrols{display:none}
+    .toast{bottom:auto;top:62px;z-index:90}
+    .floating-cart{display:block}
+    .mcontrols{bottom:82px}
+    .menu-grid{grid-template-columns:1fr;padding-bottom:170px}
+  }
+  @media(max-width:520px){
+    header.site nav a{margin-left:10px}
+    .hero h1{font-size:2.25rem}
+    .stage-head{display:block}
+    .stage-head p{margin-top:8px}
+    .food-card{grid-template-columns:54px minmax(0,1fr)}
+    .food-emoji{width:54px;height:54px;font-size:1.75rem}
+    .m-top{padding:14px 16px}
+    .m-top .together{max-width:56vw;line-height:1.35}
+    .result-grid{grid-template-columns:1fr}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .pulse,.steam i{animation:none}.food-card,.start{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ====================== ENTRY ====================== -->
+<section id="entry">
+  <div class="wrap" style="width:100%">
+    <header class="site">
+      <span class="brand"><span class="dot"></span>TWTools</span>
+      <nav><a href="/breathe/">喘口氣</a><a href="/clock/">翻頁時鐘</a></nav>
+    </header>
+  </div>
+
+  <div class="wrap hero">
+    <span class="eyebrow">深夜宵夜所 · 虛擬外送</span>
+    <h1>半夜嘴饞？<br>先逛一輪再說</h1>
+    <p class="sub">把想吃的都加進購物車，最後送出一張不會扣款、不會送餐的虛擬訂單。</p>
+
+    <div class="livecount">
+      <span class="pulse"></span>今晚已有 <b id="entryCount">—</b> 人逛了宵夜、零下單
+    </div>
+
+    <button class="start" id="startBtn">開始逛宵夜</button>
+    <div class="start-hint">虛擬體驗 · 不會真的下單 · 熱量 0</div>
+
+    <div class="menu-preview">
+      <div class="label"><span class="eyebrow">今晚熱門</span><span class="rule"></span></div>
+      <div class="preview-list" id="entryPreview"></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <footer class="site">
+      <div class="care">這是模擬下單，不會真的送餐、扣款或連到任何外送平台。</div>
+      <div class="privacy">購物車只存在你的瀏覽器 localStorage。本站不蒐集個資、不上傳訂單，也不使用真實品牌、店名或商品照片。</div>
+      <div style="margin-top:14px">© TWTools · 逛了不點，省了不胖</div>
+    </footer>
+  </div>
+</section>
+
+<!-- ====================== MIDNIGHT ====================== -->
+<section id="midnight">
+  <div class="steam" id="steam"></div>
+
+  <div class="m-top">
+    <span class="together"><span class="pulse"></span>今晚 <b id="liveCount">—</b> 人正在虛擬逛宵夜</span>
+    <button class="exit" id="exitBtn">回入口</button>
+  </div>
+
+  <div class="menu-stage">
+    <main class="menu-panel">
+      <div class="stage-head">
+        <div>
+          <span class="eyebrow">MENU · 0 CAL CHECKOUT</span>
+          <h2>想吃什麼，都先放進來</h2>
+        </div>
+        <p>價格、星等、送達時間皆為虛構展示。這裡只負責滿足想像，不負責宵夜熱量。</p>
+      </div>
+      <div class="tabs" id="tabs" role="tablist" aria-label="宵夜分類"></div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </main>
+
+    <aside class="cart-panel" id="cartPanel" aria-label="虛擬購物車">
+      <div class="cart-head">
+        <div>
+          <h2>虛擬購物車</h2>
+          <p>不會真的送餐，也不會扣款。</p>
+        </div>
+        <span class="cart-count"><b id="cartCount">0</b> 件</span>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-foot">
+        <div class="estimate"><span>預估送達</span><b id="eta">28 分鐘 ★4.9</b></div>
+        <div class="total"><span>今晚可以省下</span><b id="total">NT$ 0</b></div>
+        <button class="checkout" id="checkoutBtn" disabled>送出虛擬訂單</button>
+        <button class="clear" id="clearBtn">清空購物車</button>
+      </div>
+      <div class="result" id="result"></div>
+    </aside>
+  </div>
+
+  <div class="mcontrols">
+    <button class="ctrl" id="randomBtn"><span>🎲</span><span>隨機抽一份</span></button>
+    <button class="ctrl" id="soundBtn" title="音效開關"><span>♪</span><span>叮聲</span></button>
+  </div>
+
+  <button class="floating-cart" id="floatingCart">購物車 <b id="floatingCount">0</b></button>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MENU = [
+  { id:"fried", name:"鹹酥雞", items:[
+    ["popcorn-chicken","鹹酥雞","🍗",75,420,4.8],["chicken-cutlet","厚切雞排","🍖",95,590,4.7],["sweet-potato-fries","梅粉地瓜條","🍠",55,310,4.6],["tempura","甜不辣","🍢",45,260,4.5],["green-beans","炸四季豆","🫛",50,190,4.6],["rice-blood","米血糕","◼️",35,210,4.4],["squid","酥炸魷魚","🦑",90,360,4.8],["mushroom","椒鹽杏鮑菇","🍄",65,240,4.7]
+  ]},
+  { id:"drinks", name:"手搖", items:[
+    ["pearl-milk-tea","珍珠奶茶","🧋",60,520,4.8],["black-tea","古早味紅茶","🥤",30,160,4.5],["green-tea","茉香綠茶","🍵",35,120,4.4],["wintermelon","冬瓜檸檬","🍋",45,210,4.6],["taro-milk","芋頭鮮奶","🥛",75,430,4.7],["grass-jelly","仙草凍奶茶","🟤",65,390,4.6],["fruit-tea","水果茶","🍊",70,260,4.7]
+  ]},
+  { id:"braised", name:"滷味", items:[
+    ["braised-tofu","滷豆干","🟫",30,160,4.5],["braised-egg","滷蛋","🥚",18,90,4.6],["noodles","王子麵","🍜",25,280,4.7],["cabbage","高麗菜","🥬",35,80,4.4],["fish-cake","魚板","🍥",35,140,4.5],["radish","白蘿蔔","⚪",25,60,4.3],["duck-blood","鴨血","🟥",45,170,4.6],["corn","玉米筍","🌽",35,75,4.4]
+  ]},
+  { id:"savory", name:"鹹食", items:[
+    ["rice-ball","炙燒飯糰","🍙",65,380,4.6],["scallion-pancake","蔥抓餅","🫓",55,360,4.7],["dumpling","煎餃","🥟",60,340,4.8],["noodle-soup","熱湯麵","🍜",85,510,4.5],["egg-cake","起司蛋餅","🧀",50,330,4.7],["sticky-rice","油飯小碗","🍚",55,420,4.4],["salty-chicken","鹽水雞","🥗",95,300,4.8]
+  ]},
+  { id:"dessert", name:"甜點", items:[
+    ["taro-ball","芋圓甜湯","🍡",60,330,4.7],["wheel-cake","奶油車輪餅","🥞",25,180,4.6],["sweet-potato-ball","地瓜球","🟠",45,260,4.8],["tofu-pudding","豆花","🍮",50,220,4.5],["peanut-ice","花生捲冰淇淋","🍨",65,350,4.8],["pudding","布丁","🍮",35,210,4.4],["red-bean","紅豆湯","🫘",45,250,4.5]
+  ]}
+].map(cat => ({...cat, items: cat.items.map(([id,name,emoji,price,kcal,rating]) => ({id,name,emoji,price,kcal,rating,cat:cat.id,catName:cat.name}))}));
+
+const $ = (id) => document.getElementById(id);
+const state = {
+  category: MENU[0].id,
+  cart: JSON.parse(localStorage.getItem("twtools_midnight_cart_v1") || "{}"),
+  sound: true,
+  checkingOut: false
+};
+const allItems = MENU.flatMap(c => c.items);
+const randomLines = ["錢包鬆一口氣。","胃也謝謝你。","明天的你會感謝現在的你。","這份自制力，值得加一顆星。"];
+
+function money(n){ return "NT$ " + n.toLocaleString("zh-TW"); }
+function saveCart(){ localStorage.setItem("twtools_midnight_cart_v1", JSON.stringify(state.cart)); }
+function cartEntries(){ return Object.entries(state.cart).map(([id,qty]) => ({...allItems.find(i => i.id === id), qty})).filter(i => i.id); }
+function totals(){
+  const entries = cartEntries();
+  return {
+    count: entries.reduce((s,i)=>s+i.qty,0),
+    amount: entries.reduce((s,i)=>s+i.price*i.qty,0),
+    kcal: entries.reduce((s,i)=>s+i.kcal*i.qty,0)
+  };
+}
+function showToast(msg){
+  $("toast").textContent = msg;
+  $("toast").classList.add("show");
+  clearTimeout(showToast.t);
+  showToast.t = setTimeout(() => $("toast").classList.remove("show"), 1500);
+}
+function ding(){
+  if(!state.sound) return;
+  try{
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + .08);
+    gain.gain.setValueAtTime(.0001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.08, ctx.currentTime + .015);
+    gain.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + .16);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + .18);
+  }catch(e){}
+}
+function renderTabs(){
+  $("tabs").innerHTML = MENU.map(cat => `<button class="tab" role="tab" aria-selected="${cat.id===state.category}" data-cat="${cat.id}">${cat.name}</button>`).join("");
+  document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => {
+    state.category = btn.dataset.cat;
+    renderTabs(); renderMenu();
+  }));
+}
+function renderMenu(){
+  const cat = MENU.find(c => c.id === state.category);
+  $("menuGrid").innerHTML = cat.items.map(item => `
+    <article class="food-card" data-id="${item.id}">
+      <div class="food-emoji" aria-hidden="true">${item.emoji}</div>
+      <div class="food-info">
+        <div class="food-name">${item.name}</div>
+        <div class="food-meta"><span class="food-price">${money(item.price)}</span><span>${item.rating.toFixed(1)} ★</span><span>${item.kcal} kcal</span></div>
+        <button class="add" data-id="${item.id}">加入購物車 +</button>
+      </div>
+    </article>
+  `).join("");
+  document.querySelectorAll(".add").forEach(btn => btn.addEventListener("click", () => addItem(btn.dataset.id)));
+}
+function renderCart(){
+  const entries = cartEntries();
+  const t = totals();
+  $("cartCount").textContent = t.count;
+  $("floatingCount").textContent = t.count;
+  $("total").textContent = money(t.amount);
+  $("checkoutBtn").disabled = !t.count || state.checkingOut;
+  $("eta").textContent = `${22 + Math.min(18,t.count*2)} 分鐘 ★${(4.7 + Math.min(.2,t.count*.02)).toFixed(1)}`;
+  if(!entries.length){
+    $("cartItems").innerHTML = `<div class="empty">購物車是空的。先把今晚想吃的都放進來。</div>`;
+  }else{
+    $("cartItems").innerHTML = entries.map(item => `
+      <div class="cart-row">
+        <div><strong>${item.emoji} ${item.name}</strong><small>${money(item.price)} · ${item.kcal} kcal · ${item.catName}</small></div>
+        <div class="qty">
+          <button data-dec="${item.id}" aria-label="減少 ${item.name}">−</button>
+          <span>${item.qty}</span>
+          <button data-inc="${item.id}" aria-label="增加 ${item.name}">+</button>
+        </div>
+      </div>
+    `).join("");
+  }
+  document.querySelectorAll("[data-inc]").forEach(btn => btn.addEventListener("click", () => addItem(btn.dataset.inc, false)));
+  document.querySelectorAll("[data-dec]").forEach(btn => btn.addEventListener("click", () => removeItem(btn.dataset.dec)));
+}
+function addItem(id, pulse=true){
+  state.cart[id] = (state.cart[id] || 0) + 1;
+  saveCart(); renderCart(); ding();
+  const item = allItems.find(i => i.id === id);
+  showToast(`${item.name} 已加入虛擬購物車`);
+  if(pulse){
+    const card = document.querySelector(`.food-card[data-id="${id}"]`);
+    if(card){ card.classList.remove("pop"); void card.offsetWidth; card.classList.add("pop"); }
+  }
+}
+function removeItem(id){
+  if(!state.cart[id]) return;
+  state.cart[id] -= 1;
+  if(state.cart[id] <= 0) delete state.cart[id];
+  saveCart(); renderCart();
+}
+function clearCart(){
+  state.cart = {};
+  saveCart(); renderCart();
+  $("result").classList.remove("on");
+  $("result").innerHTML = "";
+  showToast("購物車已清空");
+}
+function checkout(){
+  const t = totals();
+  if(!t.count || state.checkingOut) return;
+  state.checkingOut = true;
+  $("checkoutBtn").disabled = true;
+  $("checkoutBtn").textContent = "模擬送出中…";
+  $("result").classList.remove("on");
+  setTimeout(() => {
+    const line = randomLines[Math.floor(Math.random()*randomLines.length)];
+    $("result").innerHTML = `
+      <h3>今晚省下 ${money(t.amount)}</h3>
+      <p style="margin-top:8px;color:var(--tw-text-secondary);font-size:.88rem">這是模擬下單，不會真的送餐也不會扣款。${line}</p>
+      <div class="result-grid">
+        <div class="result-card"><span>省下金額</span><b>${money(t.amount)}</b></div>
+        <div class="result-card"><span>想像熱量</span><b>${t.kcal} → 0</b></div>
+        <div class="result-card"><span>罪惡感</span><b>0</b></div>
+      </div>
+      <div class="result-actions">
+        <button id="againBtn">再逛一輪</button>
+        <button id="resultClearBtn">清空購物車</button>
+      </div>`;
+    $("result").classList.add("on");
+    $("checkoutBtn").textContent = "送出虛擬訂單";
+    state.checkingOut = false;
+    renderCart();
+    $("againBtn").addEventListener("click", () => { $("result").classList.remove("on"); showToast("可以繼續逛，但不用真的吃"); });
+    $("resultClearBtn").addEventListener("click", clearCart);
+  }, 1500);
+}
+function renderPreview(){
+  const picks = ["鹹酥雞","珍珠奶茶","蔥抓餅"];
+  $("entryPreview").innerHTML = picks.map((name, idx) => `<div class="preview-item"><b>${name}</b><span>虛擬熱賣 №0${idx+1}</span></div>`).join("");
+}
+function setupSteam(){
+  $("steam").innerHTML = Array.from({length:18}, (_,i) => `<i style="left:${(i*11+7)%100}%;animation-duration:${8+(i%5)*1.7}s;animation-delay:${-i*.8}s"></i>`).join("");
+}
+function setCounts(){
+  const base = 420 + Math.floor((Date.now() / 60000) % 180);
+  $("entryCount").textContent = base.toLocaleString("zh-TW");
+  $("liveCount").textContent = base.toLocaleString("zh-TW");
+}
+
+$("startBtn").addEventListener("click", () => { $("midnight").classList.add("on"); renderMenu(); renderCart(); });
+$("exitBtn").addEventListener("click", () => $("midnight").classList.remove("on"));
+$("floatingCart").addEventListener("click", () => $("cartPanel").classList.toggle("open"));
+$("randomBtn").addEventListener("click", () => addItem(allItems[Math.floor(Math.random()*allItems.length)].id));
+$("soundBtn").addEventListener("click", () => { state.sound = !state.sound; $("soundBtn").classList.toggle("off", !state.sound); showToast(state.sound ? "叮聲已開啟" : "叮聲已關閉"); });
+$("checkoutBtn").addEventListener("click", checkout);
+$("clearBtn").addEventListener("click", clearCart);
+
+renderPreview(); renderTabs(); renderMenu(); renderCart(); setupSteam(); setCounts();
+setInterval(setCounts, 60000);
+</script>
+</body>
+</html>
