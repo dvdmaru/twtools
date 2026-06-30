@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>一起喘口氣 — 線上放空站｜TWTools</title>
+<meta name="description" content="按一下，和此刻在線的人一起放空。沒有待辦、沒有通知，只有 4-7-8 呼吸節律、雨聲與飄過的念頭。一個零負擔的線上喘息角落。">
+<link rel="canonical" href="https://twtools.cc/breathe/">
+<meta name="theme-color" content="#1a1626">
+<link rel="icon" href="/favicon.png" type="image/png">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TWTools">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:url" content="https://twtools.cc/breathe/">
+<meta property="og:title" content="一起喘口氣 — 線上放空站｜TWTools">
+<meta property="og:description" content="按一下，和此刻在線的人一起放空。沒有待辦、沒有通知，只有 4-7-8 呼吸節律、雨聲與飄過的念頭。">
+<meta property="og:image" content="https://twtools.cc/breathe/og-breathe.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="一起喘口氣 — 線上放空站｜TWTools">
+<meta name="twitter:description" content="和此刻在線的人一起放空，4-7-8 呼吸 + 雨聲 + 飄過的念頭。">
+<meta name="twitter:image" content="https://twtools.cc/breathe/og-breathe.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Firebase RTDB（複用 twtools typhoon 同一組 compat SDK 9.22.0 / 專案 taiwan-lottery-535c2） -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<style>
+  :root{
+    /* twtools 玫瑰木 / 暗金 tokens（與主站一致） */
+    --tw-page-bg:#faefee; --tw-surface:#fffbfa; --tw-surface-hover:#f2e4e3;
+    --tw-text-primary:#201914; --tw-text-secondary:#5a4845; --tw-text-muted:#786866;
+    --tw-border:#e5d3d1;
+    --tw-brand-text:#935e5c;   /* 玫瑰木 */
+    --tw-hero-color:#7c4241;   /* 玫瑰木 deep */
+    --tw-brand-accent:#7e5400; /* 暗金 */
+    --serif:"Noto Serif TC",serif; --sans:"Noto Sans TC",sans-serif; --mono:"JetBrains Mono",monospace;
+    /* 放空模式暮色 */
+    --dusk-1:#1a1626; --dusk-2:#2a2138; --dusk-3:#3d2f44; --dusk-glow:#e7b9a6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:var(--sans); color:var(--tw-text-primary); background:var(--tw-page-bg);
+    -webkit-font-smoothing:antialiased; line-height:1.7; overflow-x:hidden;
+  }
+  /* paper noise */
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+  }
+  a{color:var(--tw-brand-accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 22px}
+
+  /* ====== ENTRY（入口頁，品牌淺色） ====== */
+  #entry{min-height:100dvh;display:flex;flex-direction:column}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--tw-brand-text);font-weight:500}
+  header.site{padding:20px 0 8px;display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-weight:700;color:var(--tw-hero-color)}
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--tw-brand-accent);box-shadow:0 0 0 4px #7e540022}
+  header.site nav a{font-size:.84rem;color:var(--tw-text-secondary);margin-left:16px}
+
+  .hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 0 10px}
+  .hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.3rem,8vw,3.4rem);color:var(--tw-hero-color);letter-spacing:.02em;line-height:1.2}
+  .hero .sub{margin-top:14px;color:var(--tw-text-secondary);font-size:clamp(.98rem,2.6vw,1.12rem);max-width:30ch;font-weight:300}
+
+  .livecount{margin:26px 0 6px;display:inline-flex;align-items:center;gap:9px;font-size:.95rem;color:var(--tw-text-secondary);background:var(--tw-surface);border:1px solid var(--tw-border);padding:8px 16px;border-radius:999px}
+  .pulse{width:9px;height:9px;border-radius:50%;background:#4fae6e;box-shadow:0 0 0 0 #4fae6e88;animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 #4fae6e66}70%{box-shadow:0 0 0 9px #4fae6e00}100%{box-shadow:0 0 0 0 #4fae6e00}}
+  .livecount b{color:var(--tw-hero-color);font-weight:700;font-variant-numeric:tabular-nums}
+
+  .start{margin-top:26px;font-family:var(--serif);font-size:1.22rem;font-weight:600;color:#fff;background:linear-gradient(135deg,#a06a5f,#7c4241);border:none;padding:18px 52px;border-radius:999px;cursor:pointer;box-shadow:0 10px 30px -8px #7c424166;transition:transform .2s,box-shadow .2s}
+  .start:hover{transform:translateY(-2px);box-shadow:0 16px 38px -8px #7c424180}
+  .start:active{transform:translateY(0)}
+  .start-hint{margin-top:12px;font-size:.82rem;color:var(--tw-text-muted)}
+
+  /* 留言牆 preview */
+  .wall-preview{margin:42px 0 30px}
+  .wall-preview .label{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .wall-preview .label .eyebrow{flex:none}
+  .wall-preview .label .rule{flex:1;height:1px;background:var(--tw-border)}
+  .notes{display:flex;flex-direction:column;gap:8px}
+  .note{background:var(--tw-surface);border:1px solid var(--tw-border);border-left:3px solid var(--tw-brand-text);border-radius:10px;padding:10px 14px;font-size:.92rem;color:var(--tw-text-secondary);display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+  .note .t{flex:1}
+  .note .ago{font-family:var(--mono);font-size:.7rem;color:var(--tw-text-muted);flex:none}
+
+  footer.site{padding:24px 0 34px;border-top:1px solid var(--tw-border);margin-top:10px;font-size:.8rem;color:var(--tw-text-muted);text-align:center}
+  footer.site .care{margin-top:10px;font-size:.78rem;color:var(--tw-text-secondary);background:var(--tw-surface);border:1px solid var(--tw-border);border-radius:10px;padding:10px 14px;display:inline-block}
+  footer.site .privacy{margin-top:12px;max-width:46ch;margin-left:auto;margin-right:auto;line-height:1.6}
+
+  /* ====== BREATHE（放空模式，全螢幕暮色） ====== */
+  #breathe{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;
+    background:radial-gradient(ellipse at 50% 30%,var(--dusk-3),var(--dusk-2) 45%,var(--dusk-1));color:#f3e7df;overflow:hidden}
+  #breathe.on{display:flex}
+  /* drifting stars */
+  .stars{position:absolute;inset:0;pointer-events:none}
+  .star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.0;animation:twk linear infinite}
+  @keyframes twk{0%{opacity:0;transform:translateY(0)}50%{opacity:.6}100%{opacity:0;transform:translateY(-40px)}}
+
+  .b-top{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:18px 22px;font-size:.85rem;color:#f3e7dfcc}
+  .b-top .together{display:inline-flex;align-items:center;gap:8px}
+  .b-top .together .pulse{background:var(--dusk-glow);box-shadow:0 0 0 0 var(--dusk-glow)}
+  .b-top .together b{color:#fff;font-variant-numeric:tabular-nums}
+  .exit{background:transparent;border:1px solid #f3e7df44;color:#f3e7df;border-radius:999px;padding:7px 16px;font-size:.82rem;cursor:pointer;font-family:var(--sans)}
+  .exit:hover{background:#f3e7df11}
+
+  .breath-stage{display:flex;flex-direction:column;align-items:center;gap:30px}
+  .orb-wrap{position:relative;width:min(64vw,300px);height:min(64vw,300px);display:flex;align-items:center;justify-content:center}
+  .orb{position:absolute;width:100%;height:100%;border-radius:50%;
+    background:radial-gradient(circle at 38% 34%,#f6d3c0,#e7b9a6 40%,#bb7d77 78%,#7c4241);
+    box-shadow:0 0 70px -8px #e7b9a688, inset 0 0 50px -10px #fff6;
+    transform:scale(.62);transition:transform 4s cubic-bezier(.45,0,.55,1)}
+  .orb.inhale{transform:scale(1)}
+  .orb-ring{position:absolute;width:100%;height:100%;border-radius:50%;border:1px solid #f3e7df33}
+  .breath-text{font-family:var(--serif);font-size:1.5rem;letter-spacing:.34em;color:#fff;text-shadow:0 1px 16px #00000040;min-height:1.6em}
+  .timer{font-family:var(--mono);font-size:.82rem;letter-spacing:.12em;color:#f3e7dfaa}
+  .timer b{color:#fff}
+
+  /* drifting thoughts */
+  .driftzone{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .drift{position:absolute;white-space:nowrap;font-size:.92rem;color:#f3e7dfcc;background:#ffffff12;border:1px solid #ffffff1f;backdrop-filter:blur(2px);padding:6px 14px;border-radius:999px;animation:drift linear forwards}
+  @keyframes drift{from{transform:translateX(102vw)}to{transform:translateX(-60vw)}}
+
+  .b-bottom{position:absolute;bottom:0;left:0;right:0;padding:16px 22px 26px;display:flex;flex-direction:column;align-items:center;gap:12px}
+  .compose{display:flex;gap:8px;width:min(92vw,520px)}
+  .compose input{flex:1;background:#ffffff14;border:1px solid #ffffff2e;color:#fff;border-radius:999px;padding:12px 18px;font-size:.95rem;font-family:var(--sans);outline:none}
+  .compose input::placeholder{color:#f3e7df88}
+  .compose button{background:var(--dusk-glow);color:#3a221d;border:none;border-radius:999px;padding:0 22px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+  .compose .meta{display:flex;justify-content:space-between;width:min(92vw,520px);font-size:.72rem;color:#f3e7df88;font-family:var(--mono)}
+  .bcontrols{position:absolute;left:20px;bottom:96px;display:flex;flex-direction:column;gap:12px;z-index:5}
+  .ctrl{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;background:#ffffff26;border:1px solid #ffffff4d;color:#fff;border-radius:16px;width:62px;padding:9px 0 7px;cursor:pointer;transition:all .2s}
+  .ctrl:hover{background:#ffffff3a}
+  .ctrl .ic{font-size:1.25rem;line-height:1}
+  .ctrl .lb{font-size:.66rem;letter-spacing:.06em;opacity:.9}
+  .ctrl.off{background:#ffffff0f;border-color:#ffffff22;opacity:.7}
+  .ctrl.off .ic{opacity:.4}
+  .ctrl.off::after{content:"✕";position:absolute;top:-7px;right:-7px;width:19px;height:19px;line-height:19px;text-align:center;font-size:.72rem;font-weight:700;color:#fff;background:#c0564e;border-radius:50%;box-shadow:0 1px 5px #0007}
+  .toast{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:#000000aa;color:#fff;padding:9px 18px;border-radius:999px;font-size:.85rem;z-index:60;opacity:0;transition:opacity .25s;pointer-events:none}
+  .toast.show{opacity:1}
+
+  @media(max-width:520px){
+    .breath-text{font-size:1.25rem}
+    .compose .meta{width:92vw}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .orb{transition:none}.drift{animation-duration:1s}.star{animation:none;opacity:.3}
+  }
+</style>
+</head>
+<body>
+
+<!-- ====================== ENTRY ====================== -->
+<section id="entry">
+  <div class="wrap" style="width:100%">
+    <header class="site">
+      <span class="brand"><span class="dot"></span>TWTools</span>
+      <nav><a href="#" id="aboutLink">關於</a><a href="/clock/">翻頁時鐘</a></nav>
+    </header>
+  </div>
+
+  <div class="wrap hero">
+    <span class="eyebrow">線上放空站 · 一起喘口氣</span>
+    <h1>累了，就一起<br>喘口氣</h1>
+    <p class="sub">沒有待辦、沒有通知。按一下，和此刻在線的人一起放空幾分鐘。</p>
+
+    <div class="livecount">
+      <span class="pulse"></span>此刻 <b id="entryCount">—</b> 人在線放空
+    </div>
+
+    <button class="start" id="startBtn">開始放空</button>
+    <div class="start-hint">免註冊 · 免費 · 隨時可離開</div>
+
+    <div class="wall-preview">
+      <div class="label"><span class="eyebrow">飄過的念頭</span><span class="rule"></span></div>
+      <div class="notes" id="entryNotes"><!-- mock notes injected --></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <footer class="site">
+      <div class="care">心情真的卡住了？安心專線 <b>1925</b>（24h）· 生命線 <b>1995</b>，有人願意聽你說。</div>
+      <div class="privacy">留言為公開的匿名訊息，會即時上傳並對所有人顯示，請勿輸入個資、聯絡方式或廣告。本站不需登入、不蒐集你的身分。</div>
+      <div style="margin-top:14px">© TWTools · 一個零負擔的線上喘息角落</div>
+    </footer>
+  </div>
+</section>
+
+<!-- ====================== BREATHE ====================== -->
+<section id="breathe">
+  <div class="stars" id="stars"></div>
+  <div class="driftzone" id="driftzone"></div>
+
+  <div class="b-top">
+    <span class="together"><span class="pulse"></span>和 <b id="liveCount">—</b> 人一起放空中</span>
+    <button class="exit" id="exitBtn">結束放空</button>
+  </div>
+
+  <div class="breath-stage">
+    <div class="orb-wrap">
+      <div class="orb-ring"></div>
+      <div class="orb" id="orb"></div>
+    </div>
+    <div class="breath-text" id="breathText">準備好了嗎</div>
+    <div class="timer">你已經放空了 <b id="timer">0</b> 分鐘</div>
+  </div>
+
+  <div class="bcontrols">
+    <button class="ctrl" id="soundBtn" title="雨聲環境音"><span class="ic">♪</span><span class="lb">雨聲</span></button>
+    <button class="ctrl" id="danmuBtn" title="彈幕開關"><span class="ic">💬</span><span class="lb">彈幕</span></button>
+  </div>
+  <audio id="bgm" loop preload="none"></audio>
+
+  <div class="b-bottom">
+    <div class="compose">
+      <input id="msgInput" maxlength="60" placeholder="留下一個飄過的念頭…（匿名）" autocomplete="off">
+      <button id="sendBtn">送出</button>
+    </div>
+    <div class="meta"><span id="msgCount">0 / 60</span><span>送出後所有人都看得到</span></div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   DATA LAYER — Firebase RTDB（複用 taiwan-lottery-535c2，typhoon 同一組）
+   路徑（皆在 /twTools_breathe/，不碰 /twTools_typhoon/）：
+     - presence：push() 一筆 + onDisconnect().remove()；線上數 = numChildren()
+     - messages：push({text, ts:ServerValue.TIMESTAMP})；orderByChild('ts').limitToLast(50)
+     - control ：{frozen, notice} → frozen=true 時前端熄燈停收留言
+   UI 只依賴 Store 的 onCount / onNotes / getNotes / send / onControl，
+   Firebase 不可用時自動 fallback 到 local-only（仍可放空、留言只本機）。
+   ============================================================ */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCDL-vcBH5nRs_FK4iWSqbVPJ7MMNqMmMU",
+  authDomain: "taiwan-lottery-535c2.firebaseapp.com",
+  databaseURL: "https://taiwan-lottery-535c2-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "taiwan-lottery-535c2",
+  storageBucket: "taiwan-lottery-535c2.firebasestorage.app",
+  messagingSenderId: "953322474907",
+  appId: "1:953322474907:web:263c741b993e85e6cc653e"
+};
+const ROOT = "/twTools_breathe";
+const PRUNE_MS = 6*60*60*1000; // 顯示只取最近 50 則，>6h 的機會性刪除
+
+function makeFirebaseStore(){
+  if (typeof window==="undefined" || !window.firebase) return null;
+  try{
+    if(!window.firebase.apps.length) window.firebase.initializeApp(FIREBASE_CONFIG);
+    const db = window.firebase.database();
+    const SV = window.firebase.database.ServerValue;
+    const countCbs=[], noteCbs=[], ctrlCbs=[];
+    let notes=[], firstLoaded=false;
+
+    // presence：本頁存在期間佔一格，斷線自動移除
+    const myPresence = db.ref(ROOT+"/presence").push();
+    db.ref(".info/connected").on("value", snap=>{
+      if(snap.val()===true){ myPresence.onDisconnect().remove(); myPresence.set(Date.now()); }
+    });
+    db.ref(ROOT+"/presence").on("value", snap=>{
+      const c = snap.numChildren(); countCbs.forEach(f=>f(c));
+    });
+
+    // messages：最近 50 則即時同步
+    const mq = db.ref(ROOT+"/messages").orderByChild("ts").limitToLast(50);
+    mq.on("value", snap=>{
+      const arr=[]; snap.forEach(ch=>{ const v=ch.val()||{}; arr.push({id:ch.key, text:v.text||"", ts:v.ts||Date.now()}); });
+      arr.reverse(); // 新→舊
+      notes=arr; firstLoaded=true;
+      noteCbs.forEach(f=>f(null, notes));
+      pruneOld(snap);
+    });
+    // 新留言飄入（初次載入的 50 則不觸發，只飄真正後到的）
+    mq.on("child_added", snap=>{
+      if(!firstLoaded) return;
+      const v=snap.val()||{}; noteCbs.forEach(f=>f({id:snap.key, text:v.text||"", ts:v.ts||Date.now()}, notes));
+    });
+
+    // control：熄燈開關
+    db.ref(ROOT+"/control").on("value", snap=>{
+      const c = snap.val()||{}; ctrlCbs.forEach(f=>f({frozen: !!c.frozen, notice: c.notice||""}));
+    });
+
+    function pruneOld(snap){
+      const cut=Date.now()-PRUNE_MS; let n=0;
+      snap.forEach(ch=>{ const v=ch.val()||{}; if(typeof v.ts==="number" && v.ts<cut && n<5){ db.ref(ROOT+"/messages/"+ch.key).remove().catch(()=>{}); n++; } });
+    }
+    return {
+      mode:"firebase",
+      onCount(cb){ countCbs.push(cb); },
+      onNotes(cb){ noteCbs.push(cb); if(firstLoaded) cb(null,notes); },
+      onControl(cb){ ctrlCbs.push(cb); },
+      getNotes(){ return notes; },
+      send(text){ return db.ref(ROOT+"/messages").push({text, ts: SV.TIMESTAMP}); }
+    };
+  }catch(e){ console.warn("[breathe] Firebase init failed, fallback to local:", e); return null; }
+}
+
+function makeLocalStore(){ // CDN 被擋/init 失敗時的降級：仍可放空，留言只本機
+  const POOL=["有人也在嗎","放空中…","今天辛苦了","世界安靜了一下","休息一下不是罪","會好的"];
+  let notes=["報告寫不完，先放空三分鐘","半夜睡不著的舉手","一起撐，快下班了","深呼吸，沒事的","今天也辛苦了","明天再煩惱明天的事","剛被主管唸，喘口氣","考試週，腦袋需要重開機","想吃宵夜但忍住了","謝謝這個安靜的角落"].map((t,i)=>({id:"l"+i,text:t,ts:Date.now()-(i*47000+9000)}));
+  let countCbs=[], noteCbs=[];
+  let count=1; // 離線只算自己
+  setTimeout(()=>countCbs.forEach(f=>f(count)),0);
+  return {
+    mode:"local",
+    onCount(cb){ countCbs.push(cb); cb(count); },
+    onNotes(cb){ noteCbs.push(cb); cb(null,notes); },
+    onControl(){},
+    getNotes(){ return notes; },
+    send(text){ const n={id:Date.now(),text,ts:Date.now()}; notes.unshift(n); notes=notes.slice(0,50); noteCbs.forEach(f=>f(n,notes)); return Promise.resolve(); }
+  };
+}
+
+const Store = makeFirebaseStore() || makeLocalStore();
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+function ago(ts){ const s=Math.floor((Date.now()-ts)/1000); if(s<60)return"剛剛"; const m=Math.floor(s/60); if(m<60)return m+" 分前"; return Math.floor(m/60)+" 小時前"; }
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),1900); }
+
+/* ---------- 防濫用（客戶端守則；正式版 + Firebase rules） ---------- */
+const BAD=["幹","靠北","白痴","智障","垃圾","fuck","shit"]; // demo 用，正式版擴充
+const URL_RE=/(https?:\/\/|www\.|\.com|\.tw|\.net|t\.me|line\.me|@)/i;
+let lastSent=0;
+function validate(text){
+  text=text.trim();
+  if(!text) return {ok:false,msg:"先寫點什麼吧"};
+  if(text.length>60) return {ok:false,msg:"太長了，60 字以內"};
+  if(URL_RE.test(text)) return {ok:false,msg:"這裡不放連結或聯絡方式"};
+  if(BAD.some(w=>text.includes(w))) return {ok:false,msg:"換個溫柔點的說法 🙂"};
+  if(Date.now()-lastSent<30000) return {ok:false,msg:"歇一下，30 秒後再留一則"};
+  return {ok:true,text};
+}
+
+/* ---------- ENTRY 渲染 ---------- */
+function renderEntryNotes(notes){
+  $("#entryNotes").innerHTML = notes.slice(0,5).map(n=>
+    `<div class="note"><span class="t">${escapeHtml(n.text)}</span><span class="ago">${ago(n.ts)}</span></div>`).join("");
+}
+function escapeHtml(s){ return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ---------- 在線數：真實 presence + 不夠時的 ~120 暖場基線（仿 v1） ---------- */
+let realCount=0;
+let ambient=118+Math.floor(Math.random()*16); // 起始 ~118–133
+function shownCount(){ return Math.max(realCount, ambient); }
+function paintCount(){ const n=shownCount(); const a=$("#entryCount"), b=$("#liveCount"); if(a)a.textContent=n; if(b)b.textContent=n; }
+setInterval(()=>{ ambient += (Math.random()<.5?-1:1)*(Math.random()<.35?2:1); ambient=Math.max(96,Math.min(168,ambient)); paintCount(); }, 4200);
+Store.onCount(c=>{ realCount=c; paintCount(); });
+paintCount();
+
+Store.onNotes((n,all)=>renderEntryNotes(all));
+
+/* ---------- 放空模式 ---------- */
+const breathe=$("#breathe"), orb=$("#orb"), breathText=$("#breathText");
+let breatheTimer=null, sessionStart=0, breathPhase=null;
+/* 4-7-8 呼吸法：吸氣 4s → 停住 7s → 吐氣 8s */
+const PHASES=[
+  {label:"吸 氣", scale:"in",   dur:4000},
+  {label:"停 住", scale:"hold", dur:7000},
+  {label:"吐 氣", scale:"out",  dur:8000}
+];
+function startBreathe(){
+  breathe.classList.add("on"); sessionStart=Date.now();
+  document.body.style.overflow="hidden";
+  spawnStars(); runBreathLoop(); startTimer(); seedDrift(); startAmbientDrift();
+}
+function runBreathLoop(){
+  let i=0;
+  const step=()=>{
+    const p=PHASES[i%PHASES.length];
+    breathText.textContent=p.label;
+    if(p.scale==="in"){ orb.style.transitionDuration="4s"; orb.classList.add("inhale"); }
+    else if(p.scale==="out"){ orb.style.transitionDuration="8s"; orb.classList.remove("inhale"); }
+    /* hold：維持現狀不縮放 */
+    i++; breathPhase=setTimeout(step,p.dur);
+  };
+  step();
+}
+function startTimer(){
+  const upd=()=>{ const m=Math.floor((Date.now()-sessionStart)/60000); $("#timer").textContent=m; };
+  upd(); breatheTimer=setInterval(upd,5000);
+}
+function stopBreathe(){
+  breathe.classList.remove("on"); document.body.style.overflow="";
+  clearInterval(breatheTimer); clearTimeout(breathPhase); clearInterval(ambientDriftTimer);
+  $("#stars").innerHTML=""; $("#driftzone").innerHTML="";
+}
+function spawnStars(){
+  const box=$("#stars"); box.innerHTML="";
+  for(let i=0;i<46;i++){ const s=document.createElement("div"); s.className="star";
+    s.style.left=Math.random()*100+"%"; s.style.top=Math.random()*100+"%";
+    s.style.animationDuration=(3+Math.random()*5)+"s"; s.style.animationDelay=(Math.random()*5)+"s";
+    box.appendChild(s); }
+}
+/* 飄過的念頭（彈幕，可關閉） */
+let danmuOn = localStorage.getItem("breathe_danmu")!=="off";
+function drift(text){
+  if(!danmuOn) return;
+  const z=$("#driftzone"); const d=document.createElement("div"); d.className="drift";
+  d.textContent=text; d.style.top=(12+Math.random()*64)+"%";
+  d.style.animationDuration=(13+Math.random()*9)+"s";
+  z.appendChild(d); setTimeout(()=>d.remove(),24000);
+}
+/* 暖場灌水彈幕：真實留言少時混入，避免只重複那一兩則（真實留言多了就讓位） */
+const FILLER=[
+  "今天也辛苦了","一起深呼吸","慢慢來，沒關係","世界安靜了一下","你已經做得很好了",
+  "休息也是一種努力","這一刻先不想那些","有人陪著，真好","撐到現在很不容易","喝口水，放鬆肩膀",
+  "把煩惱先放門外","謝謝你願意停下來","一切都會過去的","你不是一個人","深夜也有人醒著",
+  "給自己三分鐘就好","別對自己太嚴格","風會把累帶走一點","明天的事明天再說","現在只要呼吸就好",
+  "肩膀放下來","眼睛閉一下下","這裡很安全","慢慢吐氣","看見情緒，就好",
+  "辛苦了，真的","抱抱自己","放空不是浪費","就待著，什麼都不用做","晚點再當大人",
+  "讓腦袋放個假","聽著雨，慢慢來","這裡沒有待辦","累了就靠一下","你值得休息一下",
+  "再撐一下下就好","靜靜待著也很好","把肩膀的重量放下","明天會更好一點","謝謝你今天的努力"
+];
+let lastDrift="";
+function pickDriftText(){
+  const real=Store.getNotes().map(n=>n.text);
+  const pool = real.length>=10 ? real : real.concat(FILLER); // 真實留言夠多就純真實，少則灌水補滿
+  let t,tries=0; do{ t=pool[Math.floor(Math.random()*pool.length)]; tries++; }while(t===lastDrift && tries<6);
+  lastDrift=t; return t;
+}
+function seedDrift(){ for(let i=0;i<6;i++) setTimeout(()=>drift(pickDriftText()), i*2200); }
+/* 讓畫面保持有念頭飄過（即使當下少有新留言）：每 ~6.5s 飄一則（真實+灌水混池） */
+let ambientDriftTimer=null;
+function startAmbientDrift(){ clearInterval(ambientDriftTimer); ambientDriftTimer=setInterval(()=>{
+  if(!danmuOn || !breathe.classList.contains("on")) return;
+  drift(pickDriftText());
+}, 6500); }
+Store.onNotes((n)=>{ if(n && breathe.classList.contains("on")) drift(n.text); });
+
+/* ---------- 送出留言 ---------- */
+$("#msgInput").addEventListener("input",e=>$("#msgCount").textContent=`${e.target.value.length} / 60`);
+let FROZEN=false, noticeText="";
+Store.onControl(c=>{
+  FROZEN=c.frozen; noticeText=c.notice;
+  const inp=$("#msgInput"), btn=$("#sendBtn");
+  if(inp){ inp.disabled=FROZEN; inp.placeholder = FROZEN ? (noticeText||"留言牆暫時休息中…") : "留下一個飄過的念頭…（匿名）"; }
+  if(btn) btn.disabled=FROZEN;
+});
+function send(){
+  if(FROZEN){ toast(noticeText||"留言牆暫時休息中"); return; }
+  const v=validate($("#msgInput").value);
+  if(!v.ok){ toast(v.msg); return; }
+  lastSent=Date.now();
+  Store.send(v.text).catch(()=>toast("送出失敗，稍後再試")); // realtime echo 會自己把它飄進來，不在此 drift
+  $("#msgInput").value=""; $("#msgCount").textContent="0 / 60"; toast("已送出，謝謝你 🤍");
+}
+$("#sendBtn").addEventListener("click",send);
+$("#msgInput").addEventListener("keydown",e=>{ if(e.key==="Enter")send(); });
+
+/* ---------- 環境音 ----------
+   AUDIO_SRC 設成 Calm Atlas 的 web 可播放 loop（mp3/ogg public URL）後，
+   ♪ 就播你的音樂；留空時退回 WebAudio 合成 pad（零音檔離線 fallback）。 */
+const AUDIO_SRC = "/breathe/audio/calm-atlas-rain.mp3"; // Calm Atlas 雨夜 loop（twtools public）
+let audioOn=false, actx=null, padNodes=null;
+const bgm=$("#bgm");
+$("#soundBtn").classList.add("off"); // 音樂預設關，顯示 ✗
+$("#soundBtn").addEventListener("click",()=>{
+  audioOn=!audioOn; $("#soundBtn").classList.toggle("off",!audioOn);
+  if(audioOn){ startAmbient(); } else { stopAmbient(); }
+});
+function startAmbient(){
+  if(AUDIO_SRC){ if(!bgm.src) bgm.src=AUDIO_SRC; bgm.volume=0; bgm.play().then(()=>fadeAudio(bgm,.55,2500)).catch(()=>startPad()); }
+  else startPad();
+}
+function stopAmbient(){
+  if(AUDIO_SRC && bgm.src){ fadeAudio(bgm,0,1200,()=>bgm.pause()); }
+  else stopPad();
+}
+function fadeAudio(el,to,ms,done){ const from=el.volume,t0=performance.now();
+  (function step(t){ const k=Math.min(1,(t-t0)/ms); el.volume=from+(to-from)*k; if(k<1)requestAnimationFrame(step); else if(done)done(); })(t0);
+}
+function startPad(){
+  actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==="suspended")actx.resume();
+  const out=actx.createGain(); out.gain.value=0; out.connect(actx.destination);
+  out.gain.linearRampToValueAtTime(.08, actx.currentTime+3);
+  const freqs=[146.83,220,277.18]; // 柔和小三和弦 pad
+  const oscs=freqs.map(f=>{ const o=actx.createOscillator(); o.type="sine"; o.frequency.value=f;
+    const lfo=actx.createOscillator(); const lg=actx.createGain(); lfo.frequency.value=0.07+Math.random()*0.05; lg.gain.value=3; lfo.connect(lg); lg.connect(o.frequency); lfo.start();
+    o.connect(out); o.start(); return o; });
+  padNodes={out,oscs};
+}
+function stopPad(){ if(!padNodes)return; padNodes.out.gain.linearRampToValueAtTime(0,actx.currentTime+1.5); setTimeout(()=>{padNodes.oscs.forEach(o=>o.stop());padNodes=null;},1600); }
+
+/* ---------- 彈幕開關 ---------- */
+$("#danmuBtn").classList.toggle("off",!danmuOn);
+$("#danmuBtn").addEventListener("click",()=>{
+  danmuOn=!danmuOn; localStorage.setItem("breathe_danmu", danmuOn?"on":"off");
+  $("#danmuBtn").classList.toggle("off",!danmuOn);
+  if(!danmuOn){ $("#driftzone").innerHTML=""; toast("已關閉彈幕"); }
+  else { toast("已開啟彈幕"); seedDrift(); }
+});
+
+/* ---------- 綁定 ---------- */
+$("#startBtn").addEventListener("click",startBreathe);
+$("#exitBtn").addEventListener("click",stopBreathe);
+$("#aboutLink").addEventListener("click",e=>{e.preventDefault();toast("一個零負擔的線上喘息角落 · prototype");});
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&breathe.classList.contains("on"))stopBreathe(); });
+</script>
+</body>
+</html>
