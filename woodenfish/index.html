@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>電子木魚 — 功德 +1｜TWTools</title>
+<meta name="description" content="敲一下電子木魚，叩一聲，功德 +1。純前端的賽博功德小站，支援連敲、今日功德、靜音與自動敲木魚。">
+<link rel="canonical" href="https://twtools.cc/woodenfish/">
+<meta name="theme-color" content="#2b1a14">
+<link rel="icon" href="/favicon.png" type="image/png">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TWTools">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:url" content="https://twtools.cc/woodenfish/">
+<meta property="og:title" content="電子木魚 — 功德 +1｜TWTools">
+<meta property="og:description" content="敲一下叩一聲，功德 +1。純前端、零後端、零安裝的賽博積德解壓小站。">
+<meta property="og:image" content="https://twtools.cc/woodenfish/og-woodenfish.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="電子木魚 — 功德 +1｜TWTools">
+<meta name="twitter:description" content="叩一聲，功德 +1。電子積德，純粹解壓。">
+<meta name="twitter:image" content="https://twtools.cc/woodenfish/og-woodenfish.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --tw-page-bg:#faefee; --tw-surface:#fffbfa; --tw-surface-hover:#f2e4e3;
+    --tw-text-primary:#201914; --tw-text-secondary:#5a4845; --tw-text-muted:#786866;
+    --tw-border:#e5d3d1;
+    --tw-brand-text:#935e5c; --tw-hero-color:#7c4241; --tw-brand-accent:#7e5400;
+    --serif:"Noto Serif TC",serif; --sans:"Noto Sans TC",sans-serif; --mono:"JetBrains Mono",monospace;
+    --wood-1:#2b1a14; --wood-2:#43251a; --wood-3:#6c3d27; --wood-4:#9f6840;
+    --gold:#d7a34a; --cream:#fff2df; --mist:#f6d7c2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:var(--sans); color:var(--tw-text-primary); background:var(--tw-page-bg);
+    -webkit-font-smoothing:antialiased; line-height:1.7; overflow-x:hidden;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.48;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+  }
+  a{color:var(--tw-brand-accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  button{font-family:inherit}
+  .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 22px}
+
+  /* ====== ENTRY（入口頁，品牌淺色） ====== */
+  #entry{min-height:100dvh;display:flex;flex-direction:column}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--tw-brand-text);font-weight:500}
+  header.site{padding:20px 0 8px;display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-weight:700;color:var(--tw-hero-color)}
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--tw-brand-accent);box-shadow:0 0 0 4px #7e540022}
+  header.site nav a{font-size:.84rem;color:var(--tw-text-secondary);margin-left:16px}
+  .hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 0 10px}
+  .hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.3rem,8vw,3.65rem);color:var(--tw-hero-color);letter-spacing:.02em;line-height:1.18}
+  .hero .sub{margin-top:14px;color:var(--tw-text-secondary);font-size:clamp(.98rem,2.6vw,1.12rem);max-width:34ch;font-weight:300}
+  .livecount{margin:26px 0 6px;display:inline-flex;align-items:center;gap:9px;font-size:.95rem;color:var(--tw-text-secondary);background:var(--tw-surface);border:1px solid var(--tw-border);padding:8px 16px;border-radius:999px}
+  .pulse{width:9px;height:9px;border-radius:50%;background:var(--tw-brand-accent);box-shadow:0 0 0 0 #7e540088;animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 #7e540066}70%{box-shadow:0 0 0 9px #7e540000}100%{box-shadow:0 0 0 0 #7e540000}}
+  .livecount b{color:var(--tw-hero-color);font-weight:700;font-variant-numeric:tabular-nums}
+  .start{margin-top:26px;font-family:var(--serif);font-size:1.22rem;font-weight:600;color:#fff;background:linear-gradient(135deg,#a06a5f,#7c4241);border:none;padding:18px 52px;border-radius:999px;cursor:pointer;box-shadow:0 10px 30px -8px #7c424166;transition:transform .2s,box-shadow .2s}
+  .start:hover{transform:translateY(-2px);box-shadow:0 16px 38px -8px #7c424180}
+  .start:active{transform:translateY(0)}
+  .start-hint{margin-top:12px;font-size:.82rem;color:var(--tw-text-muted)}
+  .preview{margin:42px 0 30px;width:100%}
+  .preview .label{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .preview .label .eyebrow{flex:none}
+  .preview .label .rule{flex:1;height:1px;background:var(--tw-border)}
+  .preview-list{display:grid;gap:8px}
+  .preview-item{background:var(--tw-surface);border:1px solid var(--tw-border);border-left:3px solid var(--tw-brand-text);border-radius:10px;padding:10px 14px;font-size:.92rem;color:var(--tw-text-secondary);display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+  .preview-item b{font-family:var(--serif);color:var(--tw-text-primary);font-weight:700}
+  .preview-item span:last-child{font-family:var(--mono);font-size:.78rem;color:var(--tw-text-muted);flex:none}
+  footer.site{padding:24px 0 34px;border-top:1px solid var(--tw-border);margin-top:10px;font-size:.8rem;color:var(--tw-text-muted);text-align:center}
+  footer.site .care{margin-top:10px;font-size:.78rem;color:var(--tw-text-secondary);background:var(--tw-surface);border:1px solid var(--tw-border);border-radius:10px;padding:10px 14px;display:inline-block}
+  footer.site .privacy{margin-top:12px;max-width:52ch;margin-left:auto;margin-right:auto;line-height:1.6}
+
+  /* ====== WOODENFISH（電子木魚模式，全螢幕暖木色） ====== */
+  #woodenfish{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;background:radial-gradient(ellipse at 50% 16%,#6a3b28,var(--wood-2) 42%,var(--wood-1));color:#fff2df;overflow:hidden;touch-action:manipulation}
+  #woodenfish.on{display:flex}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.28;background:
+    radial-gradient(circle at 18% 22%,#ffffff14 0 2px,transparent 3px),
+    radial-gradient(circle at 74% 18%,#ffd89b1a 0 2px,transparent 3px),
+    repeating-linear-gradient(12deg,#ffffff08 0 1px,transparent 1px 18px)}
+  .w-top{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;padding:18px 22px;font-size:.85rem;color:#fff2dfcc}
+  .w-top .together{display:inline-flex;align-items:center;gap:8px}
+  .w-top b{color:#fff;font-variant-numeric:tabular-nums}
+  .exit{background:transparent;border:1px solid #fff2df44;color:#fff2df;border-radius:999px;padding:7px 16px;font-size:.82rem;cursor:pointer}
+  .exit:hover{background:#fff2df11}
+  .merit-stage{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8px 22px 122px}
+  .stage-copy{margin-bottom:22px}
+  .stage-copy .eyebrow{color:#f0c77e}
+  .stage-copy h2{margin-top:6px;font-family:var(--serif);font-size:clamp(1.85rem,5vw,3rem);line-height:1.16;color:#fff}
+  .stage-copy p{margin:10px auto 0;max-width:38ch;color:#fff2dfbb;font-size:.92rem}
+  .counter{display:grid;grid-template-columns:repeat(3,minmax(92px,1fr));gap:10px;width:min(560px,100%);margin-bottom:18px}
+  .stat{background:#fff7eb13;border:1px solid #fff2df22;border-radius:12px;padding:10px 12px;box-shadow:0 18px 60px -44px #000}
+  .stat span{display:block;font-size:.72rem;color:#fff2dfaa}
+  .stat b{display:block;font-family:var(--mono);font-size:clamp(1.3rem,4vw,2rem);line-height:1.18;color:#ffe0a3;font-variant-numeric:tabular-nums}
+  .fish-zone{position:relative;width:min(74vw,430px);height:min(58vw,330px);min-height:250px;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none}
+  .fish-button{position:relative;width:min(68vw,360px);height:min(42vw,230px);min-width:250px;min-height:166px;border:0;background:transparent;cursor:pointer;filter:drop-shadow(0 34px 38px #0008);outline-offset:10px;touch-action:manipulation}
+  .fish-button:focus-visible{outline:2px solid #ffe0a3;border-radius:44%}
+  .fish-body{position:absolute;inset:12% 5% 6%;border-radius:48% 48% 42% 42% / 58% 58% 38% 38%;background:
+    radial-gradient(circle at 35% 26%,#d29a5e 0 8%,transparent 26%),
+    radial-gradient(ellipse at 50% 18%,#b57948,#7a4429 55%,#3b2118 100%);
+    border:3px solid #d7a34a;box-shadow:inset 0 22px 24px #fff4,inset 0 -26px 34px #1b0f0dcc}
+  .fish-body::before{content:"";position:absolute;left:17%;right:17%;top:28%;height:20%;border-radius:999px;background:radial-gradient(ellipse at 50% 20%,#120b09,#27120c 58%,#5f321e);box-shadow:inset 0 8px 16px #000,0 2px 0 #e1aa5a88}
+  .fish-body::after{content:"";position:absolute;left:18%;right:18%;bottom:18%;height:18%;border-radius:50%;border-top:2px solid #e2b35d77;opacity:.7}
+  .grain-lines{position:absolute;inset:24% 12% 14%;border-radius:45%;overflow:hidden;opacity:.35}
+  .grain-lines i{position:absolute;left:-8%;right:-8%;height:1px;background:#f4d09a;transform:rotate(-8deg)}
+  .grain-lines i:nth-child(1){top:20%}.grain-lines i:nth-child(2){top:39%;opacity:.7}.grain-lines i:nth-child(3){top:62%;opacity:.55}.grain-lines i:nth-child(4){top:78%;opacity:.35}
+  .mallet{position:absolute;right:7%;top:5%;width:32%;height:12%;border-radius:999px;background:linear-gradient(90deg,#f1c37a,#8f542f 70%,#3a2117);transform:rotate(-28deg);transform-origin:80% 50%;box-shadow:0 8px 14px #0005;border:1px solid #e7bd74}
+  .mallet::after{content:"";position:absolute;left:-16%;top:-68%;width:28%;height:236%;border-radius:18px;background:linear-gradient(180deg,#f3cc87,#7a4629);border:1px solid #e7bd74}
+  .fish-button.hit{animation:hit .22s ease-out}
+  .fish-button.hit .mallet{animation:mallet .22s ease-out}
+  @keyframes hit{45%{transform:translateY(8px) scale(.96)}100%{transform:translateY(0) scale(1)}}
+  @keyframes mallet{45%{transform:rotate(-36deg) translate(-4px,4px)}100%{transform:rotate(-28deg)}}
+  .ripple{position:absolute;left:50%;top:52%;width:40px;height:40px;border-radius:50%;border:1px solid #ffe0a3;transform:translate(-50%,-50%) scale(.2);opacity:.9;animation:ripple .65s ease-out forwards;pointer-events:none}
+  @keyframes ripple{to{transform:translate(-50%,-50%) scale(5.2);opacity:0}}
+  .float-zone{position:absolute;inset:0;pointer-events:none;overflow:visible}
+  .float-text{position:absolute;left:50%;top:22%;transform:translate(-50%,0);font-family:var(--serif);font-weight:700;color:#ffe0a3;background:#2b1a14c9;border:1px solid #ffe0a344;border-radius:999px;padding:6px 14px;white-space:nowrap;box-shadow:0 8px 20px #0005;animation:floatMerit 1s ease-out forwards}
+  @keyframes floatMerit{0%{opacity:0;transform:translate(-50%,14px) scale(.88)}15%{opacity:1}100%{opacity:0;transform:translate(-50%,-72px) scale(1.08)}}
+  .combo{min-height:28px;margin-top:4px;font-family:var(--mono);font-size:.9rem;color:#f4c979;letter-spacing:.08em}
+  .wcontrols{position:absolute;left:22px;right:22px;bottom:24px;z-index:5;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+  .ctrl{position:relative;display:flex;align-items:center;gap:7px;background:#ffffff26;border:1px solid #ffffff4d;color:#fff;border-radius:999px;padding:10px 14px;cursor:pointer;transition:all .2s;font-size:.82rem}
+  .ctrl:hover{background:#ffffff3a}
+  .ctrl[aria-pressed="true"]{background:#ffe0a3;color:#2b1a14;border-color:#ffe0a3;font-weight:700}
+  .ctrl.off{opacity:.68}
+  .toast{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:#000000aa;color:#fff;padding:9px 18px;border-radius:999px;font-size:.85rem;z-index:70;opacity:0;transition:opacity .25s;pointer-events:none}
+  .toast.show{opacity:1}
+
+  @media(max-width:640px){
+    header.site nav a{margin-left:10px}
+    .hero h1{font-size:2.35rem}
+    .merit-stage{justify-content:flex-start;padding-top:18px;padding-bottom:118px}
+    .counter{grid-template-columns:1fr 1fr 1fr;gap:7px}
+    .stat{padding:8px 6px}
+    .stat b{font-size:1.2rem}
+    .fish-zone{width:100%;height:300px;min-height:300px}
+    .fish-button{min-width:260px;min-height:176px}
+    .w-top{padding:14px 16px}
+    .w-top .together{max-width:60vw;line-height:1.35}
+    .wcontrols{bottom:18px;gap:8px}
+    .ctrl{padding:9px 11px;font-size:.78rem}
+    .toast{bottom:92px;top:auto;z-index:90}
+  }
+  @media(max-width:390px){
+    .stage-copy h2{font-size:1.72rem}
+    .stage-copy p{font-size:.84rem}
+    .fish-zone{height:276px;min-height:276px}
+    .fish-button{min-width:236px;min-height:160px}
+    .counter{grid-template-columns:1fr}
+    .stat{display:flex;align-items:baseline;justify-content:space-between}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .pulse,.fish-button.hit,.fish-button.hit .mallet,.ripple,.float-text{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ====================== ENTRY ====================== -->
+<section id="entry">
+  <div class="wrap" style="width:100%">
+    <header class="site">
+      <span class="brand"><span class="dot"></span>TWTools</span>
+      <nav><a href="/breathe/">喘口氣</a><a href="/midnight/">宵夜所</a></nav>
+    </header>
+  </div>
+
+  <div class="wrap hero">
+    <span class="eyebrow">電子木魚 · 功德 +1</span>
+    <h1>敲一下，<br>功德 +1</h1>
+    <p class="sub">叩一聲，讓手指忙一點，讓腦袋安靜一點。這是一個純前端的賽博積德解壓小站。</p>
+
+    <div class="livecount">
+      <span class="pulse"></span>本機已累積 <b id="entryCount">0</b> 點功德
+    </div>
+
+    <button class="start" id="startBtn">開始敲木魚</button>
+    <div class="start-hint">純前端 · 僅存 localStorage · 可靜音</div>
+
+    <div class="preview">
+      <div class="label"><span class="eyebrow">今日修行進度</span><span class="rule"></span></div>
+      <div class="preview-list">
+        <div class="preview-item"><b>今日功德</b><span id="previewToday">0</span></div>
+        <div class="preview-item"><b>最高連擊</b><span id="previewBest">0</span></div>
+        <div class="preview-item"><b>資料保存</b><span>本機</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <footer class="site">
+      <div class="care">這是輕鬆迷因玩法，不代表宗教主張，也不連到任何寺廟、品牌或外部服務。</div>
+      <div class="privacy">功德數字只存在你的瀏覽器 localStorage。本站不需登入、不蒐集資料，紀錄只留在本機。</div>
+      <div style="margin-top:14px">© TWTools · 電子積德，純粹解壓</div>
+    </footer>
+  </div>
+</section>
+
+<!-- ====================== WOODENFISH ====================== -->
+<section id="woodenfish">
+  <div class="grain"></div>
+  <div class="w-top">
+    <span class="together"><span class="pulse"></span>今日已敲 <b id="todayTop">0</b> 下</span>
+    <button class="exit" id="exitBtn">回入口</button>
+  </div>
+
+  <main class="merit-stage">
+    <div class="stage-copy">
+      <span class="eyebrow">CYBER MERIT · TAP TO KNOCK</span>
+      <h2>電子木魚</h2>
+      <p>點木魚、按空白鍵，或開啟自動敲。聲音由 WebAudio 即時合成，沒有音檔。</p>
+    </div>
+
+    <section class="counter" aria-label="功德計數">
+      <div class="stat"><span>總功德</span><b id="totalMerit">0</b></div>
+      <div class="stat"><span>今日功德</span><b id="todayMerit">0</b></div>
+      <div class="stat"><span>目前連擊</span><b id="comboMerit">0</b></div>
+    </section>
+
+    <div class="fish-zone" id="fishZone">
+      <button class="fish-button" id="fishBtn" aria-label="敲電子木魚，功德加一">
+        <span class="mallet"></span>
+        <span class="fish-body"><span class="grain-lines"><i></i><i></i><i></i><i></i></span></span>
+      </button>
+      <div class="float-zone" id="floatZone"></div>
+    </div>
+    <div class="combo" id="comboText"></div>
+  </main>
+
+  <div class="wcontrols">
+    <button class="ctrl" id="autoBtn" aria-pressed="false"><span>自動</span><span>敲木魚</span></button>
+    <button class="ctrl" id="soundBtn" aria-pressed="true"><span>♪</span><span>叩聲</span></button>
+    <button class="ctrl" id="resetTodayBtn"><span>今日</span><span>歸零</span></button>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = "twtools_woodenfish_v1";
+const $ = (id) => document.getElementById(id);
+const todayKey = () => new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Taipei" });
+const state = {
+  sound: true,
+  auto: false,
+  autoTimer: null,
+  audio: null,
+  combo: 0,
+  bestCombo: 0,
+  lastHit: 0,
+  floats: 0,
+  data: loadState()
+};
+
+function loadState(){
+  const fallback = { total:0, days:{}, bestCombo:0 };
+  try{
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+    if(!raw || typeof raw !== "object") return fallback;
+    return { total:Number(raw.total)||0, days:raw.days||{}, bestCombo:Number(raw.bestCombo)||0 };
+  }catch(_){
+    return fallback;
+  }
+}
+function saveState(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
+}
+function todayCount(){
+  return Number(state.data.days[todayKey()] || 0);
+}
+function setToday(value){
+  state.data.days[todayKey()] = Math.max(0, value);
+  saveState();
+}
+function format(n){
+  return Number(n || 0).toLocaleString("zh-TW");
+}
+function showToast(msg){
+  $("toast").textContent = msg;
+  $("toast").classList.add("show");
+  clearTimeout(showToast.t);
+  showToast.t = setTimeout(() => $("toast").classList.remove("show"), 1500);
+}
+function ensureAudio(){
+  if(state.audio) return state.audio;
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if(!AudioContext) return null;
+  state.audio = new AudioContext();
+  return state.audio;
+}
+function knockSound(){
+  if(!state.sound) return;
+  const ctx = ensureAudio();
+  if(!ctx) return;
+  if(ctx.state === "suspended") ctx.resume();
+  const now = ctx.currentTime;
+
+  const bodyGain = ctx.createGain();
+  bodyGain.gain.setValueAtTime(0.0001, now);
+  bodyGain.gain.exponentialRampToValueAtTime(0.42, now + 0.006);
+  bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+  bodyGain.connect(ctx.destination);
+
+  const osc = ctx.createOscillator();
+  osc.type = "triangle";
+  osc.frequency.setValueAtTime(218 + Math.random()*18, now);
+  osc.frequency.exponentialRampToValueAtTime(128, now + 0.14);
+  osc.connect(bodyGain);
+  osc.start(now);
+  osc.stop(now + 0.17);
+
+  const buffer = ctx.createBuffer(1, Math.max(1, Math.floor(ctx.sampleRate * 0.018)), ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<data.length;i++){
+    const decay = 1 - i / data.length;
+    data[i] = (Math.random()*2 - 1) * decay * decay;
+  }
+  const noise = ctx.createBufferSource();
+  noise.buffer = buffer;
+  const filter = ctx.createBiquadFilter();
+  filter.type = "highpass";
+  filter.frequency.value = 2200;
+  const noiseGain = ctx.createGain();
+  noiseGain.gain.setValueAtTime(0.16, now);
+  noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.026);
+  noise.connect(filter);
+  filter.connect(noiseGain);
+  noiseGain.connect(ctx.destination);
+  noise.start(now);
+  noise.stop(now + 0.03);
+}
+function addRipple(){
+  const el = document.createElement("span");
+  el.className = "ripple";
+  $("fishZone").appendChild(el);
+  setTimeout(() => el.remove(), 700);
+}
+function addFloat(){
+  if(state.floats > 14) return;
+  state.floats++;
+  const el = document.createElement("span");
+  el.className = "float-text";
+  el.textContent = "功德 +1";
+  el.style.left = `${46 + Math.random()*12}%`;
+  el.style.top = `${18 + Math.random()*16}%`;
+  $("floatZone").appendChild(el);
+  setTimeout(() => { el.remove(); state.floats--; }, 1050);
+}
+function updateCombo(){
+  const now = performance.now();
+  state.combo = now - state.lastHit < 900 ? state.combo + 1 : 1;
+  state.lastHit = now;
+  if(state.combo > state.bestCombo){
+    state.bestCombo = state.combo;
+    state.data.bestCombo = Math.max(state.data.bestCombo || 0, state.bestCombo);
+  }
+  clearTimeout(updateCombo.t);
+  updateCombo.t = setTimeout(() => {
+    state.combo = 0;
+    $("comboMerit").textContent = "0";
+    $("comboText").textContent = "";
+  }, 1000);
+}
+function render(){
+  const today = todayCount();
+  $("entryCount").textContent = format(state.data.total);
+  $("previewToday").textContent = format(today);
+  $("previewBest").textContent = `×${format(state.data.bestCombo || 0)}`;
+  $("todayTop").textContent = format(today);
+  $("totalMerit").textContent = format(state.data.total);
+  $("todayMerit").textContent = format(today);
+  $("comboMerit").textContent = format(state.combo);
+  $("comboText").textContent = state.combo >= 3 ? `連擊 ×${state.combo}` : "";
+  $("soundBtn").setAttribute("aria-pressed", state.sound ? "true" : "false");
+  $("soundBtn").classList.toggle("off", !state.sound);
+  $("autoBtn").setAttribute("aria-pressed", state.auto ? "true" : "false");
+}
+function knock(manual=true){
+  if(manual) ensureAudio();
+  state.data.total += 1;
+  setToday(todayCount() + 1);
+  updateCombo();
+  saveState();
+  knockSound();
+  const fish = $("fishBtn");
+  fish.classList.remove("hit");
+  void fish.offsetWidth;
+  fish.classList.add("hit");
+  addRipple();
+  addFloat();
+  render();
+}
+function setAuto(on){
+  state.auto = on;
+  clearInterval(state.autoTimer);
+  state.autoTimer = null;
+  if(on){
+    ensureAudio();
+    state.autoTimer = setInterval(() => knock(false), 880);
+    showToast("自動敲木魚已開啟");
+  }else{
+    showToast("自動敲木魚已關閉");
+  }
+  render();
+}
+
+$("startBtn").addEventListener("click", () => {
+  ensureAudio();
+  $("entry").style.display = "none";
+  $("woodenfish").classList.add("on");
+  $("fishBtn").focus({ preventScroll:true });
+  showToast("點木魚或按空白鍵開始");
+});
+$("exitBtn").addEventListener("click", () => {
+  setAuto(false);
+  $("woodenfish").classList.remove("on");
+  $("entry").style.display = "";
+  render();
+});
+$("fishBtn").addEventListener("click", () => knock(true));
+$("autoBtn").addEventListener("click", () => setAuto(!state.auto));
+$("soundBtn").addEventListener("click", () => {
+  state.sound = !state.sound;
+  if(state.sound) ensureAudio();
+  showToast(state.sound ? "叩聲已開啟" : "已靜音");
+  render();
+});
+$("resetTodayBtn").addEventListener("click", () => {
+  const today = todayCount();
+  state.data.total = Math.max(0, state.data.total - today);
+  setToday(0);
+  state.combo = 0;
+  saveState();
+  showToast("今日功德已歸零");
+  render();
+});
+window.addEventListener("keydown", (event) => {
+  if(!$("woodenfish").classList.contains("on")) return;
+  if(event.code === "Space"){
+    event.preventDefault();
+    knock(true);
+  }
+});
+render();
+</script>
+</body>
+</html>
