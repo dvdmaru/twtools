@@ -58,7 +58,7 @@ jobs:
               echo "spot check $first → HTTP $code"
               exit 0
             fi
-            sleep 15
+            sleep 30
           done
           echo "TIMEOUT waiting for pages build of $GITHUB_SHA"; exit 1
 
