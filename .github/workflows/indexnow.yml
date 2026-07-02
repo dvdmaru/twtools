@@ -45,13 +45,19 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # 接受條件:latest build 已 built 且(commit==本 SHA,或 build 開始時間晚於本 commit
+          # 的 push 時間——代表是從包含本 commit 的更新 branch tip build 的,連續 push 時舊 SHA
+          # 會被新 build 蓋掉,嚴格等 SHA 相等會永遠 timeout)。
+          MY_EPOCH=$(git show -s --format=%ct HEAD)
           for i in $(seq 1 40); do
             resp=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
               "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages/builds/latest")
             status=$(echo "$resp" | jq -r '.status // empty')
             commit=$(echo "$resp" | jq -r '.commit // empty')
-            echo "pages build: status=$status commit=$commit (want $GITHUB_SHA, try $i/40)"
-            if [ "$status" = "built" ] && [ "$commit" = "$GITHUB_SHA" ]; then
+            created=$(echo "$resp" | jq -r '.created_at // empty')
+            created_epoch=$(date -d "$created" +%s 2>/dev/null || echo 0)
+            echo "pages build: status=$status commit=$commit created=$created (want $GITHUB_SHA @ epoch $MY_EPOCH, try $i/40)"
+            if [ "$status" = "built" ] && { [ "$commit" = "$GITHUB_SHA" ] || [ "$created_epoch" -gt "$MY_EPOCH" ]; }; then
               sleep 30  # CDN 緩衝
               first=$(head -1 urls.txt)
               code=$(curl -s -o /dev/null -w '%{http_code}' "$first")
