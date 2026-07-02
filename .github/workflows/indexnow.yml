@@ -1,0 +1,75 @@
+# IndexNow — deploy repo 有新 push(手動 SOP 或 blog launchd 自動發文皆會觸發)時,
+# 等 GitHub Pages 把「本 commit」build 完上線,再把本次新增/變動的 URL 推給
+# Bing 系引擎(api.indexnow.org;Bing 索引另餵 ChatGPT search / Copilot)。
+# Google 不吃 IndexNow(那邊照舊走 sitemap)。
+#
+# ⚠️ 本檔活在 deploy repo(rsync 產物)——source repo 的 rsync 指令與兩支
+#    blog-auto-upload 腳本都必須帶 --exclude='.github',否則下次部署會被 --delete 刪掉。
+# 本機手動 ping 的對應腳本在 source repo scripts/indexnow-ping.mjs(HOST/KEY 相同)。
+name: indexnow-ping
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Collect changed URLs(只取本次 push 新增/修改的頁面,協定要求別全站掃)
+        id: collect
+        run: |
+          BASE="https://twtools.cc"
+          if ! git rev-parse HEAD^ >/dev/null 2>&1; then
+            echo "no parent commit (initial/force push) — skip"; echo "count=0" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          git diff --name-only --diff-filter=AM HEAD^ HEAD -- '*.html' 'llms.txt' \
+            | grep -v -E '^(404\.html|admin\.html|seed_articles\.html|google[0-9a-f]+\.html)$' \
+            | grep -v -E '^(japan|sticker)/' \
+            | sed -E 's|index\.html$||' \
+            | sed -E "s|^|$BASE/|" \
+            | sort -u | head -500 > urls.txt
+          echo "count=$(wc -l < urls.txt | tr -d ' ')" >> "$GITHUB_OUTPUT"
+          echo "── URLs to ping:"; cat urls.txt
+
+      - name: Wait for GitHub Pages to serve this commit
+        if: steps.collect.outputs.count != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 40); do
+            resp=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages/builds/latest")
+            status=$(echo "$resp" | jq -r '.status // empty')
+            commit=$(echo "$resp" | jq -r '.commit // empty')
+            echo "pages build: status=$status commit=$commit (want $GITHUB_SHA, try $i/40)"
+            if [ "$status" = "built" ] && [ "$commit" = "$GITHUB_SHA" ]; then
+              sleep 30  # CDN 緩衝
+              first=$(head -1 urls.txt)
+              code=$(curl -s -o /dev/null -w '%{http_code}' "$first")
+              echo "spot check $first → HTTP $code"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "TIMEOUT waiting for pages build of $GITHUB_SHA"; exit 1
+
+      - name: Ping IndexNow(200/202 都算成功)
+        if: steps.collect.outputs.count != '0'
+        run: |
+          KEY="cbbb13fb5399df10c1512a671c09f438"
+          jq -Rn --arg host "twtools.cc" --arg key "$KEY" \
+            '{host:$host, key:$key, keyLocation:("https://twtools.cc/"+$key+".txt"), urlList:[inputs | select(length>0)]}' \
+            < urls.txt > payload.json
+          code=$(curl -s -o resp.txt -w '%{http_code}' -X POST 'https://api.indexnow.org/indexnow' \
+            -H 'Content-Type: application/json; charset=utf-8' --data-binary @payload.json)
+          echo "IndexNow → HTTP $code $(cat resp.txt)"
+          if [ "$code" != "200" ] && [ "$code" != "202" ]; then exit 1; fi
