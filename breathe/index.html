@@ -152,6 +152,14 @@
     .orb{transition:none}.drift{animation-duration:1s}.star{animation:none;opacity:.3}
   }
 </style>
+<!-- Google Analytics (async, non-blocking) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-0WTK2LJFTY');
+</script>
 </head>
 <body>
 
@@ -501,7 +509,7 @@ $("#danmuBtn").addEventListener("click",()=>{
 });
 
 /* ---------- 綁定 ---------- */
-$("#startBtn").addEventListener("click",startBreathe);
+$("#startBtn").addEventListener("click",()=>{ if(typeof gtag==="function")gtag("event","breathe_start"); startBreathe(); });
 $("#exitBtn").addEventListener("click",stopBreathe);
 $("#aboutLink").addEventListener("click",e=>{e.preventDefault();toast("一個零負擔的線上喘息角落 · prototype");});
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&breathe.classList.contains("on"))stopBreathe(); });
