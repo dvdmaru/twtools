@@ -5,6 +5,7 @@
 重要事實:
 - 所有工具免費使用,無需帳號。
 - 停班停課資料來源為行政院人事行政總處 (DGPA);彩券同步台灣彩券官方開獎;匯率來自 ExchangeRate-API。
+- 水庫即時水情 (/reservoir/) 直連經濟部水利署與臺北翡翠水庫管理局開放資料,涵蓋翡翠、曾文、阿公店、牡丹四座水庫的每小時水位、蓄水量與蓄水率,每筆數字標示官方資料時間;來源無回應時明示「無法取得」,不顯示過期數字。
 - 站方聯絡:hi@twtools.cc
 
 ## 工具
@@ -18,6 +19,7 @@
 ### 生活查詢
 - [颱風停班停課](https://twtools.cc/typhoon/)
 - [定風波 風雨時間軸](https://twtools.cc/dingfengbo/)
+- [水庫即時水情](https://twtools.cc/reservoir/)
 - [台灣彩券](https://twtools.cc/lottery/)
 - [匯率換算](https://twtools.cc/currency/)
 
