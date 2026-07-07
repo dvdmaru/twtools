@@ -372,8 +372,9 @@
 </div> <div class="flex items-center gap-2 eyebrow"> <span class="brand-dot"></span> 為打工牛馬而作
 </div> </div> </div> </footer> </main> </div> <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"蓄水率是怎麼算的?為什麼跟新聞報的數字略有出入?","acceptedAnswer":{"@type":"Answer","text":"翡翠水庫的蓄水率直接採用翡翠水庫管理局公告的官方百分比,不另行計算。曾文、阿公店、牡丹三座的官方即時資料只提供「有效蓄水量」,本頁以 即時有效蓄水量 ÷ 水利署「水庫每日營運狀況」公告的有效容量 推算,並在數字旁標「推算」。有效容量會隨淤積測量結果更新,不同媒體引用的容量基準或觀測時點若不同,百分比就會略有出入 —— 一切以經濟部水利署及各水庫管理機關公告為準。"}},{"@type":"Question","name":"資料多久更新一次?卡片上的「資料時間」是什麼意思?","acceptedAnswer":{"@type":"Answer","text":"水位與蓄水量由各水庫管理單位每小時整點登錄一次,本頁透過代理伺服器直連官方開放資料,快取約 10 分鐘。卡片上的「資料時間」是官方觀測時間,不是你打開頁面的時間 —— 這是刻意設計:即時資料頁永遠標明資料是幾點的。如果來源暫時抓不到,本頁會直接顯示「目前無法取得即時資料」,不會拿舊數字假裝即時。"}},{"@type":"Question","name":"阿公店水庫蓄水率怎麼那麼低?是缺水了嗎?","acceptedAnswer":{"@type":"Answer","text":"不一定。阿公店水庫以防洪為主要任務,依水庫運用規定每年汛期(約 6 至 9 月)實施「空庫防洪」與排砂操作:刻意把水放空,騰出庫容準備承接颱風豪雨,順便沖排淤砂。所以夏天看到阿公店蓄水率只有個位數,多半是正常調度而不是乾旱警訊;是否缺水請以經濟部水利署與台水公司的水情燈號公告為準。"}},{"@type":"Question","name":"為什麼只有四座?石門、德基、日月潭的即時水情去哪看?","acceptedAnswer":{"@type":"Answer","text":"目前政府資料開放平臺上,以每小時更新的開放 API 提供即時水情的水庫就是這四座(翡翠由翡管局提供,曾文、阿公店、牡丹由水利署南區水資源分署提供);其他水庫的開放資料以「每日營運狀況」形式每天公布一筆。想看全台各水庫的即時水情總覽,請至經濟部水利署防災資訊服務網 (fhy.wra.gov.tw)。若日後有更多水庫開放逐時 API,本頁會跟進擴充。"}}]}</script> <script>
     (function () {
-      // 主端點 + 預留備援位(日後掛 rt.twtools.cc 自訂網域時把它排第一)
+      // 主端點=自訂網域(2026-07-07 掛上,避開 workers.dev 被廣告封鎖清單擋的風險);workers.dev 當備援
       var ENDPOINTS = [
+        'https://rt.twtools.cc/v1/reservoirs',
         'https://twtools-rt.charlie-chien.workers.dev/v1/reservoirs',
       ];
       var statusEl = document.getElementById('rt-status');
