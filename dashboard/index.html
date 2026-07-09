@@ -176,7 +176,7 @@
   <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
   <path d="M8 16H3v5" />
 </svg>
- 官方訊號即時彙整 </span> </div> </section> <!-- ============== 儀表板本體(client 端彙整四個即時來源) ============== --> <section class="max-w-6xl mx-auto mb-16"> <div class="tool-shell p-5 md:p-7"> <div class="flex items-baseline justify-between mb-4 flex-wrap gap-2"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h2 class="font-serif-tc text-lg font-bold tracking-cn">你的地區</h2> <span class="rt-live-dot" aria-hidden="true"></span> </div> <span class="eyebrow">DASHBOARD · MY AREA · LIVE</span> </div> <!-- 地區選擇 --> <div class="flex flex-wrap items-center gap-2 mb-4"> <select id="db-county" class="text-sm px-3 py-2 font-mono-tc" style="border: 1.5px solid var(--tw-border); background: var(--tw-surface); color: inherit;"></select> <select id="db-town" class="text-sm px-3 py-2 font-mono-tc" style="border: 1.5px solid var(--tw-border); background: var(--tw-surface); color: inherit;" disabled> <option value="">全縣市</option> </select> <span class="rt-source" id="db-remember"></span> </div> <!-- 狀態橫幅 --> <div id="db-banner" class="rt-card mb-4" style="border-width: 2px;"> <div class="flex items-center gap-2 flex-wrap"> <span class="font-serif-tc text-base font-bold tracking-cn" id="db-banner-title">正在確認官方警報狀態…</span> </div> <p class="text-sm mt-1 mb-0" id="db-banner-desc" style="line-height: 1.8;"></p> <p class="rt-time mt-2 mb-0" id="db-banner-time"></p> </div> <!-- 全台警特報著色格(氣象署 W-C0033) --> <div class="rt-card mb-4" id="db-warnmap-wrap"> <div class="flex items-baseline justify-between gap-2 mb-2 flex-wrap"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">全台警特報</h3> <span class="rt-source" id="db-warnmap-meta">載入中…</span> </div> <div class="flex flex-wrap gap-4 items-start"> <div class="tw-map" id="db-warnmap" aria-label="各縣市生效中天氣警特報"></div> <div class="text-sm flex-1 min-w-[180px]" id="db-warnmap-side" style="line-height: 1.9;"></div> </div> </div> <!-- 現況卡片 --> <div class="rt-grid" id="db-cards"> <article class="rt-card" id="db-card-alerts"> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">生效中告警</h3> <a href="/alerts/" class="rt-source" style="text-decoration: underline;">全部告警 →</a> </div> <div class="text-sm" data-slot="body" style="line-height: 1.8;">載入中…</div> <p class="rt-time mt-2 mb-0" data-slot="meta"></p> </article> <article class="rt-card" id="db-card-rain"> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">即時雨量</h3> <a href="/rain/" class="rt-source" style="text-decoration: underline;">全台雨量 →</a> </div> <div class="text-sm" data-slot="body" style="line-height: 1.8;">載入中…</div> <p class="rt-time mt-2 mb-0" data-slot="meta"></p> </article> <article class="rt-card" id="db-card-typhoon"> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">停班停課</h3> <a href="/typhoon/" class="rt-source" style="text-decoration: underline;">全台公告 →</a> </div> <div class="text-sm" data-slot="body" style="line-height: 1.8;">載入中…</div> <p class="rt-time mt-2 mb-0" data-slot="meta"></p> </article> <article class="rt-card" id="db-card-forecast"> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">風雨預報</h3> <a href="/dingfengbo/" class="rt-source" style="text-decoration: underline;">逐時段時間軸 →</a> </div> <div class="text-sm" data-slot="body" style="line-height: 1.8;">載入中…</div> <p class="rt-time mt-2 mb-0" data-slot="meta"></p> </article> <article class="rt-card" id="db-card-satellite"> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">颱風動態(衛星雲圖)</h3> <a href="https://watch.ncdr.nat.gov.tw/" target="_blank" rel="noopener noreferrer" class="rt-source" style="text-decoration: underline;">NCDR 互動地圖 →</a> </div> <a href="https://www.cwa.gov.tw/V8/C/W/OBS_Sat.html" target="_blank" rel="noopener noreferrer" style="display: block;" title="點圖看中央氣象署衛星頁"> <img id="db-sat-img" alt="Himawari 紅外線衛星雲圖(中央氣象署)" width="1000" height="1000" loading="lazy" decoding="async" style="width: 100%; height: auto; border-radius: 6px; display: block; background: #1a2233;"> </a> <div class="text-sm" id="db-sat-fail" hidden style="line-height: 1.8;"></div> <p class="rt-time mt-2 mb-0" id="db-sat-meta">載入中…</p> </article> <article class="rt-card" id="db-card-reservoir" hidden> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">你的水庫</h3> <a href="/reservoir/" class="rt-source" style="text-decoration: underline;">水庫水情 →</a> </div> <div class="text-sm" data-slot="body" style="line-height: 1.8;">載入中…</div> <p class="rt-time mt-2 mb-0" data-slot="meta"></p> </article> <article class="rt-card" id="db-card-actions"> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn" data-slot="title">現在可以做的事</h3> </div> <div class="text-sm" data-slot="body" style="line-height: 2;"></div> </article> </div> <!-- 轉傳提示:台灣防災資訊的真 broadcast 是 LINE 家人群 --> <div class="rt-card mt-4" style="border-style: dashed;"> <div class="flex items-center justify-between flex-wrap gap-3"> <p class="text-sm m-0" style="line-height: 1.7;">覺得有用?<strong>把這頁傳給你的家人群組</strong>——選好自己的縣市和區,颱風天長輩也看得懂。</p> <button type="button" class="rt-refresh font-mono-tc" id="db-share"> <svg aria-hidden="true"
+ 官方訊號即時彙整 </span> </div> </section> <!-- ============== 儀表板本體(client 端彙整四個即時來源) ============== --> <section class="max-w-6xl mx-auto mb-16"> <div class="tool-shell p-5 md:p-7"> <div class="flex items-baseline justify-between mb-4 flex-wrap gap-2"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h2 class="font-serif-tc text-lg font-bold tracking-cn">你的地區</h2> <span class="rt-live-dot" aria-hidden="true"></span> </div> <span class="eyebrow">DASHBOARD · MY AREA · LIVE</span> </div> <!-- 地區選擇 --> <div class="flex flex-wrap items-center gap-2 mb-4"> <select id="db-county" class="text-sm px-3 py-2 font-mono-tc" style="border: 1.5px solid var(--tw-border); background: var(--tw-surface); color: inherit;"></select> <select id="db-town" class="text-sm px-3 py-2 font-mono-tc" style="border: 1.5px solid var(--tw-border); background: var(--tw-surface); color: inherit;" disabled> <option value="">全縣市</option> </select> <span class="rt-source" id="db-remember"></span> </div> <!-- 狀態橫幅 --> <div id="db-banner" class="rt-card mb-4" style="border-width: 2px;"> <div class="flex items-center gap-2 flex-wrap"> <span class="font-serif-tc text-base font-bold tracking-cn" id="db-banner-title">正在確認官方警報狀態…</span> </div> <p class="text-sm mt-1 mb-0" id="db-banner-desc" style="line-height: 1.8;"></p> <p class="rt-time mt-2 mb-0" id="db-banner-time"></p> </div> <!-- 全台警特報著色格(氣象署 W-C0033) --> <div class="rt-card mb-4" id="db-warnmap-wrap"> <div class="flex items-baseline justify-between gap-2 mb-2 flex-wrap"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">全台警特報</h3> <span class="rt-source" id="db-warnmap-meta">載入中…</span> </div> <div class="flex flex-wrap gap-4 items-start"> <div class="tw-map" id="db-warnmap" aria-label="各縣市生效中天氣警特報"></div> <div class="text-sm flex-1 min-w-[180px]" id="db-warnmap-side" style="line-height: 1.9;"></div> </div> </div> <!-- 現況卡片 --> <div class="rt-grid" id="db-cards"> <article class="rt-card" id="db-card-alerts"> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">生效中告警</h3> <a href="/alerts/" class="rt-source" style="text-decoration: underline;">全部告警 →</a> </div> <div class="text-sm" data-slot="body" style="line-height: 1.8;">載入中…</div> <p class="rt-time mt-2 mb-0" data-slot="meta"></p> </article> <article class="rt-card" id="db-card-rain"> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">即時雨量</h3> <a href="/rain/" class="rt-source" style="text-decoration: underline;">全台雨量 →</a> </div> <div class="text-sm" data-slot="body" style="line-height: 1.8;">載入中…</div> <p class="rt-time mt-2 mb-0" data-slot="meta"></p> </article> <article class="rt-card" id="db-card-typhoon"> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">停班停課</h3> <a href="/typhoon/" class="rt-source" style="text-decoration: underline;">全台公告 →</a> </div> <div class="text-sm" data-slot="body" style="line-height: 1.8;">載入中…</div> <p class="rt-time mt-2 mb-0" data-slot="meta"></p> </article> <article class="rt-card" id="db-card-forecast"> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">風雨預報</h3> <a href="/dingfengbo/" class="rt-source" style="text-decoration: underline;">逐時段時間軸 →</a> </div> <div class="text-sm" data-slot="body" style="line-height: 1.8;">載入中…</div> <p class="rt-time mt-2 mb-0" data-slot="meta"></p> </article> <!-- 颱風動態卡:事件性顯示 — 氣象署路徑資料有編號颱風才出現,平時整卡隱藏 --> <article class="rt-card" id="db-card-tyvisual" hidden> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">颱風動態</h3> <a href="https://watch.ncdr.nat.gov.tw/" target="_blank" rel="noopener noreferrer" class="rt-source" style="text-decoration: underline;">NCDR 互動地圖 →</a> </div> <div class="flex gap-1.5 mb-2 flex-wrap" id="db-ty-tabs" role="tablist"> <button type="button" class="rt-refresh font-mono-tc" data-tytab="sat" aria-selected="true">衛星動畫</button> <button type="button" class="rt-refresh font-mono-tc" data-tytab="pta" aria-selected="false">路徑潛勢</button> <button type="button" class="rt-refresh font-mono-tc" data-tytab="wsp" aria-selected="false">侵襲機率</button> </div> <div data-typane="sat"> <img id="db-ty-sat" alt="Himawari 紅外線衛星雲圖動畫(中央氣象署)" width="1000" height="1000" decoding="async" style="width: 100%; height: auto; border-radius: 6px; display: block; background: #1a2233;"> <div class="flex items-center justify-between mt-1"> <span class="rt-source" id="db-ty-sat-time">載入中…</span> <button type="button" class="rt-refresh font-mono-tc" id="db-ty-sat-toggle">⏸ 暫停</button> </div> </div> <div data-typane="pta" hidden> <a href="https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html" target="_blank" rel="noopener noreferrer" style="display: block;" title="點圖看氣象署颱風消息"> <img id="db-ty-pta" alt="颱風路徑潛勢預報圖(中央氣象署)" width="478" height="350" loading="lazy" decoding="async" style="width: 100%; height: auto; border-radius: 6px; display: block; background: #dfeaf2;"> </a> </div> <div data-typane="wsp" hidden> <a href="https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html" target="_blank" rel="noopener noreferrer" style="display: block;" title="點圖看氣象署颱風消息"> <img id="db-ty-wsp" alt="各縣市暴風侵襲機率圖(中央氣象署)" width="400" height="500" loading="lazy" decoding="async" style="width: 100%; height: auto; border-radius: 6px; display: block; background: #ffffff;"> </a> </div> <p class="rt-time mt-2 mb-0" id="db-ty-meta"></p> </article> <article class="rt-card" id="db-card-reservoir" hidden> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">你的水庫</h3> <a href="/reservoir/" class="rt-source" style="text-decoration: underline;">水庫水情 →</a> </div> <div class="text-sm" data-slot="body" style="line-height: 1.8;">載入中…</div> <p class="rt-time mt-2 mb-0" data-slot="meta"></p> </article> <article class="rt-card" id="db-card-actions"> <div class="flex items-baseline justify-between gap-2 mb-2"> <h3 class="font-serif-tc text-sm font-bold tracking-cn" data-slot="title">現在可以做的事</h3> </div> <div class="text-sm" data-slot="body" style="line-height: 2;"></div> </article> </div> <!-- 轉傳提示:台灣防災資訊的真 broadcast 是 LINE 家人群 --> <div class="rt-card mt-4" style="border-style: dashed;"> <div class="flex items-center justify-between flex-wrap gap-3"> <p class="text-sm m-0" style="line-height: 1.7;">覺得有用?<strong>把這頁傳給你的家人群組</strong>——選好自己的縣市和區,颱風天長輩也看得懂。</p> <button type="button" class="rt-refresh font-mono-tc" id="db-share"> <svg aria-hidden="true"
   class="w-3.5 h-3.5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -555,28 +555,101 @@
         c.meta.textContent = '來源:行政院人事行政總處(DGPA)';
       }
 
-      // ── 颱風動態衛星雲圖(CWA Himawari 紅外線「最新一張」穩定網址,約 10 分鐘更新)──
-      // 只換 img.src 不打 API;10 分鐘桶 cache-buster 讓瀏覽器拿得到新圖又不重複下載。
-      function renderSatellite() {
-        var img = document.getElementById('db-sat-img');
-        var fail = document.getElementById('db-sat-fail');
-        var meta = document.getElementById('db-sat-meta');
-        if (!img) return;
-        var bucket = Math.floor(Date.now() / 600000);
-        if (img.getAttribute('data-bucket') === String(bucket) && img.complete && img.naturalWidth > 0) return;
-        img.setAttribute('data-bucket', String(bucket));
-        img.onload = function () {
-          img.style.display = 'block';
-          fail.hidden = true;
-          meta.textContent = '資料來源:中央氣象署(約每 10 分鐘更新);點圖看氣象署衛星頁,互動追蹤看 NCDR。';
-        };
-        img.onerror = function () {
-          img.style.display = 'none';
-          fail.hidden = false;
-          fail.innerHTML = '<span style="color: #b45309; font-weight: 700;">目前無法載入衛星雲圖</span> — 請改看 <a href="https://www.cwa.gov.tw/V8/C/W/OBS_Sat.html" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">中央氣象署衛星頁</a>。';
-          meta.textContent = '';
-        };
-        img.src = 'https://www.cwa.gov.tw/Data/satellite/LCC_IR1_CR_1000/LCC_IR1_CR_1000.jpg?v=' + bucket;
+      // ── 颱風動態卡(事件性:/typhoon-images 回報有編號颱風才顯示整卡)──
+      // 衛星動畫=前端輪播氣象署每 10 分鐘一張的歷史圖檔(檔名時戳=台北時間,跳過最新兩格給上檔時間);
+      // 路徑潛勢/侵襲機率=worker /typhoon-images 端點解析氣象署官網公開檔的官方產品圖。
+      var tyVis = { frames: [], idx: 0, timer: null, playing: true, refreshTimer: null };
+
+      function tySatUrl(ms) {
+        var d = new Date(ms + 8 * 3600000); // 檔名用台北時間
+        function p2(x) { return String(x).padStart(2, '0'); }
+        var stamp = d.getUTCFullYear() + '-' + p2(d.getUTCMonth() + 1) + '-' + p2(d.getUTCDate()) + '-' + p2(d.getUTCHours()) + '-' + p2(d.getUTCMinutes());
+        return 'https://www.cwa.gov.tw/Data/satellite/LCC_IR1_CR_1000/LCC_IR1_CR_1000-' + stamp + '.jpg';
+      }
+
+      function tyLoadSatFrames() {
+        var slots = [];
+        var t = Math.floor(Date.now() / 600000) * 600000;
+        for (var i = 2; i < 10; i++) slots.push(t - i * 600000); // 最近 8 幀(跳過最新 2 格)
+        var loaded = [];
+        var pending = slots.length;
+        var finished = false;
+        function finish() {
+          if (finished) return;
+          finished = true;
+          loaded.sort(function (a, b) { return a.ms - b.ms; });
+          if (loaded.length >= 3) { tyVis.frames = loaded; tyStartSatLoop(); }
+          else tySatFallback();
+        }
+        setTimeout(finish, 12000); // 個別請求懸掛時強制收尾,有幾幀播幾幀
+        slots.forEach(function (ms) {
+          var im = new Image();
+          im.onload = function () { loaded.push({ ms: ms, img: im }); if (--pending === 0) finish(); };
+          im.onerror = function () { if (--pending === 0) finish(); };
+          im.src = tySatUrl(ms);
+        });
+      }
+
+      function tySatShow(f) {
+        var img = document.getElementById('db-ty-sat');
+        var tl = document.getElementById('db-ty-sat-time');
+        img.src = f.img.src;
+        tl.textContent = '觀測 ' + new Date(f.ms + 8 * 3600000).toISOString().slice(11, 16) + '(台北時間,每 10 分鐘一幀)';
+      }
+
+      function tyStartSatLoop() {
+        clearInterval(tyVis.timer);
+        // 先無條件畫最新一幀:分頁在背景載入時輪播不跑,沒這行切回來會是黑框
+        tySatShow(tyVis.frames[tyVis.frames.length - 1]);
+        tyVis.idx = 0;
+        var hold = 0;
+        tyVis.timer = setInterval(function () {
+          if (!tyVis.playing || document.hidden || !tyVis.frames.length) return;
+          if (hold > 0) { hold--; return; }
+          var f = tyVis.frames[tyVis.idx];
+          tySatShow(f);
+          if (tyVis.idx === tyVis.frames.length - 1) hold = 3; // 最新一幀多停一下
+          tyVis.idx = (tyVis.idx + 1) % tyVis.frames.length;
+        }, 600);
+      }
+
+      function tySatFallback() {
+        var img = document.getElementById('db-ty-sat');
+        var tl = document.getElementById('db-ty-sat-time');
+        img.src = 'https://www.cwa.gov.tw/Data/satellite/LCC_IR1_CR_1000/LCC_IR1_CR_1000.jpg?v=' + Math.floor(Date.now() / 600000);
+        tl.textContent = '最新單張(動畫幀暫時抓不到)';
+      }
+
+      function renderTyVisual() {
+        var cardEl = document.getElementById('db-card-tyvisual');
+        if (!cardEl) return;
+        var d = cache.tyimages;
+        var show = !!(d && d.ok && d.hasTyphoon);
+        cardEl.hidden = !show;
+        if (!show) {
+          // 平時:整卡收起、停掉所有 timer,零負擔
+          clearInterval(tyVis.timer); tyVis.timer = null;
+          clearInterval(tyVis.refreshTimer); tyVis.refreshTimer = null;
+          return;
+        }
+        var names = (d.typhoons || []).map(function (t) { return t.nameZh; }).filter(Boolean).join('、');
+        document.getElementById('db-ty-meta').textContent =
+          (names ? '颱風' + names + '・' : '') + (d.issued ? '官方圖 ' + d.issued + '發布・' : '') +
+          '資料來源:中央氣象署' + (d.stale ? '(端點壅塞,顯示最近成功資料)' : '');
+        var pta = document.getElementById('db-ty-pta');
+        var wsp = document.getElementById('db-ty-wsp');
+        if (d.images && d.images.pta && pta && pta.src !== d.images.pta) pta.src = d.images.pta;
+        if (d.images && d.images.wspCounty && wsp && wsp.src !== d.images.wspCounty) wsp.src = d.images.wspCounty;
+        if (!tyVis.timer) tyLoadSatFrames();
+        if (!tyVis.refreshTimer) {
+          tyVis.refreshTimer = setInterval(function () {
+            if (document.hidden) return;
+            tyLoadSatFrames(); // 每 10 分鐘補新幀
+            getJson(DL + '/typhoon-images', 15000)
+              .then(function (x) { cache.tyimages = x; renderTyVisual(); })
+              .catch(function () { /* 保持現有畫面,下輪再試 */ });
+          }, 600000);
+        }
       }
 
       // ── 全台警特報著色格(W-C0033;只翻譯官方 phenomena,不加工)──
@@ -735,7 +808,7 @@
         renderRain(county, town);
         renderTyphoon(county);
         renderReservoir(county);
-        renderSatellite();
+        renderTyVisual();
       }
 
       function fetchShared() {
@@ -745,6 +818,7 @@
           getJson(DL + '/typhoon', 20000).then(function (d) { cache.typhoon = d; }).catch(function () { cache.typhoon = null; }),
           getJsonRT('/v1/reservoirs').then(function (d) { cache.reservoirs = d; }).catch(function () { cache.reservoirs = null; }),
           getJson(DL + '/warnings', 20000).then(function (d) { cache.warnings = d; }).catch(function () { cache.warnings = null; }),
+          getJson(DL + '/typhoon-images', 20000).then(function (d) { cache.tyimages = d; }).catch(function () { cache.tyimages = null; }),
         ]);
       }
 
@@ -760,6 +834,36 @@
         report('dashboard_region', { county: countySel.value });
         renderAll();
       });
+      // 颱風動態卡:分頁切換/動畫暫停/官方圖載入失敗 fail-honest
+      document.getElementById('db-ty-tabs').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-tytab]');
+        if (!btn) return;
+        var key = btn.getAttribute('data-tytab');
+        this.querySelectorAll('button[data-tytab]').forEach(function (b) {
+          var on = b === btn;
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
+          b.style.opacity = on ? '1' : '0.55';
+        });
+        document.querySelectorAll('#db-card-tyvisual [data-typane]').forEach(function (p) {
+          p.hidden = p.getAttribute('data-typane') !== key;
+        });
+      });
+      document.querySelectorAll('#db-ty-tabs button[data-tytab]').forEach(function (b) {
+        b.style.opacity = b.getAttribute('aria-selected') === 'true' ? '1' : '0.55';
+      });
+      document.getElementById('db-ty-sat-toggle').addEventListener('click', function () {
+        tyVis.playing = !tyVis.playing;
+        this.textContent = tyVis.playing ? '⏸ 暫停' : '▶ 播放';
+      });
+      ['db-ty-pta', 'db-ty-wsp'].forEach(function (id) {
+        var im = document.getElementById(id);
+        if (!im) return;
+        im.addEventListener('error', function () {
+          var pane = im.closest('[data-typane]');
+          if (pane) pane.innerHTML = '<span style="color: #b45309; font-weight: 700;">目前無法載入官方圖</span> — 請直接看 <a href="https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">氣象署颱風消息頁</a>。';
+        });
+      });
+
       // 著色格點縣市 → 切換儀表板地區
       document.getElementById('db-warnmap').addEventListener('click', function (e) {
         var btn = e.target.closest('button[data-county]');
