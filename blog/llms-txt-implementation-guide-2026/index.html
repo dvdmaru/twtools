@@ -1,0 +1,667 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>llms.txt 完整實作教學（2026）：什麼是 llms.txt、和 robots.txt／sitemap 差在哪、誰真的會讀，附可直接複製的範本 | TWTools</title><meta name="description" content="llms.txt 是一份放在網站根目錄的 Markdown 檔，用人類與 AI 都讀得懂的格式，把你最重要的內容整理成一份「給語言模型看的導覽」。聽起來很美好，但 2026 年的現實要先講清楚：它目前只是社群提案，還不是 IETF／W3C 正式標準，而且 Google Search 代表曾公開表示不支援、也不打算支援 llms.txt，其餘各家也都沒承諾會讀——Ahrefs 的伺服器日誌研究（log study，非學術研究）掃了 13.7 萬個網域，發現 97% 的 llms.txt 在當月「零請求」。這篇用官方文件與規格頁，把 llms.txt 是什麼、跟 robots.txt／sitemap.xml 差在哪、格式怎麼寫、誰真的會讀（誠實版）、台灣靜態站／Astro 怎麼產生與部署講清楚，並附上可直接複製的範本。"><link rel="canonical" href="https://twtools.cc/blog/llms-txt-implementation-guide-2026/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:url" content="https://twtools.cc/blog/llms-txt-implementation-guide-2026/"><meta property="og:title" content="llms.txt 完整實作教學（2026）：什麼是 llms.txt、和 robots.txt／sitemap 差在哪、誰真的會讀，附可直接複製的範本 | TWTools"><meta property="og:description" content="llms.txt 是一份放在網站根目錄的 Markdown 檔，用人類與 AI 都讀得懂的格式，把你最重要的內容整理成一份「給語言模型看的導覽」。聽起來很美好，但 2026 年的現實要先講清楚：它目前只是社群提案，還不是 IETF／W3C 正式標準，而且 Google Search 代表曾公開表示不支援、也不打算支援 llms.txt，其餘各家也都沒承諾會讀——Ahrefs 的伺服器日誌研究（log study，非學術研究）掃了 13.7 萬個網域，發現 97% 的 llms.txt 在當月「零請求」。這篇用官方文件與規格頁，把 llms.txt 是什麼、跟 robots.txt／sitemap.xml 差在哪、格式怎麼寫、誰真的會讀（誠實版）、台灣靜態站／Astro 怎麼產生與部署講清楚，並附上可直接複製的範本。"><meta property="og:image" content="https://twtools.cc/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="llms.txt 完整實作教學（2026）：什麼是 llms.txt、和 robots.txt／sitemap 差在哪、誰真的會讀，附可直接複製的範本"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="llms.txt 完整實作教學（2026）：什麼是 llms.txt、和 robots.txt／sitemap 差在哪、誰真的會讀，附可直接複製的範本 | TWTools"><meta name="twitter:description" content="llms.txt 是一份放在網站根目錄的 Markdown 檔，用人類與 AI 都讀得懂的格式，把你最重要的內容整理成一份「給語言模型看的導覽」。聽起來很美好，但 2026 年的現實要先講清楚：它目前只是社群提案，還不是 IETF／W3C 正式標準，而且 Google Search 代表曾公開表示不支援、也不打算支援 llms.txt，其餘各家也都沒承諾會讀——Ahrefs 的伺服器日誌研究（log study，非學術研究）掃了 13.7 萬個網域，發現 97% 的 llms.txt 在當月「零請求」。這篇用官方文件與規格頁，把 llms.txt 是什麼、跟 robots.txt／sitemap.xml 差在哪、格式怎麼寫、誰真的會讀（誠實版）、台灣靜態站／Astro 怎麼產生與部署講清楚，並附上可直接複製的範本。"><meta name="twitter:image" content="https://twtools.cc/og-image.png"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0WTK2LJFTY');
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            /* Morandi Dusty Rose — TWTools 品牌色（OKLCH hue 22） */
+            brand: {
+              50:  '#fceeed',
+              100: '#f2dbda',
+              200: '#e0b9b7',
+              300: '#ca9592',
+              400: '#af7472',
+              500: '#935e5c',
+              600: '#764a49',
+              700: '#583937',
+              800: '#3e2726',
+              900: '#281818',
+              950: '#110c08'
+            },
+            /* 奶油暖灰中性色（OKLCH hue 60） */
+            warm: {
+              50:  '#fcf3ed',
+              100: '#f1e5dc',
+              200: '#e3d0c2',
+              300: '#c9b3a2',
+              400: '#a99483',
+              500: '#887769',
+              600: '#6e6055',
+              700: '#564b42',
+              800: '#3e3630',
+              900: '#2b2520',
+              950: '#15110d'
+            },
+            /* 暖琥珀強調色（OKLCH hue 75） */
+            accent: {
+              50:  '#fdf4e7',
+              100: '#f8e5cb',
+              200: '#eecb9a',
+              300: '#e1ad63',
+              400: '#d49838',
+              500: '#b68028',
+              600: '#906520',
+              700: '#6b4c1d',
+              800: '#4b3617',
+              900: '#32230e',
+              950: '#181005'
+            }
+          }
+        }
+      }
+    }
+  </script><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/BaseLayout.Bv7zJW0n.css">
+<style>.db-callout[data-astro-cid-lqth5lif]{display:flex;align-items:center;gap:12px;border:1.5px solid var(--tw-hero-color);background:var(--tw-surface);padding:12px 16px;margin:0 0 20px;text-decoration:none;color:inherit;transition:transform .15s ease}.db-callout[data-astro-cid-lqth5lif]:hover{transform:translateY(-1px)}.db-callout-icon[data-astro-cid-lqth5lif]{font-size:22px;flex-shrink:0}.db-callout-text[data-astro-cid-lqth5lif]{display:flex;flex-direction:column;gap:1px;min-width:0}.db-callout-text[data-astro-cid-lqth5lif] strong[data-astro-cid-lqth5lif]{font-size:15px}.db-callout-text[data-astro-cid-lqth5lif] span[data-astro-cid-lqth5lif]{font-size:12.5px;color:var(--tw-text-secondary);line-height:1.5}.db-callout-go[data-astro-cid-lqth5lif]{margin-left:auto;flex-shrink:0;font-size:12px;color:var(--tw-hero-color);border:1px solid var(--tw-hero-color);padding:5px 10px;white-space:nowrap}
+</style></head> <body class="min-h-screen paper-noise">   <button id="sidebar-hamburger" class="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg" style="background:var(--tw-surface);color:var(--tw-text-primary)">☰</button>  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 md:hidden hidden"></div>  <aside id="sidebar-panel" class="fixed top-0 left-0 h-full w-56 z-40 flex flex-col border-r transition-transform -translate-x-full md:translate-x-0" style="background:var(--tw-page-bg);border-color:var(--tw-border)"> <!-- Logo --> <div class="p-4 border-b flex items-center justify-between" style="border-color:var(--tw-border)"> <a href="/" class="flex items-center no-underline"> <img src="data:image/png;base64,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" alt="TWTools" class="w-7 h-7 rounded-lg"> <span class="text-sm font-bold ml-1.5" style="color:var(--tw-brand-accent)">TWTools</span> </a> <button id="sidebar-close" class="md:hidden text-lg leading-none" style="color:var(--tw-text-muted)">✕</button> </div> <!-- Nav items grouped by category --> <nav class="flex-1 py-2 overflow-y-auto"> <div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">檔案處理</div> <a href="/image/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🖼️</span> 圖片工具 </a><a href="/pdf/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📄</span> PDF 工具 </a><a href="/resume/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📋</span> 履歷產生器 </a><a href="/proofread/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">✍️</span> 錯別字檢查 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">生活查詢</div> <a href="/dashboard/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛡️</span> 防災儀表板 </a><a href="/typhoon/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌀</span> 颱風停班停課 </a><a href="/dingfengbo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌧️</span> 定風波 風雨時間軸 </a><a href="/reservoir/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💧</span> 水庫即時水情 </a><a href="/alerts/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🚨</span> 災害即時告警 </a><a href="/rain/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☔</span> 即時雨量 </a><a href="/oil-recall/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛢️</span> 問題沙拉油查詢 </a><a href="/lottery/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎰</span> 台灣彩券 </a><a href="/currency/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💱</span> 匯率換算 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">計算換算</div> <a href="/datecalc/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📅</span> 日期計算器 </a><a href="/countdown/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⏳</span> 倒數計時器 </a><a href="/unit/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📏</span> 單位換算 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">查詢工具</div> <a href="/postal/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📮</span> 郵遞區號 </a><a href="/address/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌐</span> 地址中譯英 </a><a href="/lunar/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 農曆國曆 </a><a href="/solar-terms/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☀️</span> 二十四節氣 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">學習工具</div> <a href="/vocabulary/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎓</span> 英文單字片語 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">站長工具</div> <a href="/seo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📊</span> SEO/GEO/AEO </a><a href="/clock/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🕐</span> 翻頁時鐘 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">放鬆小站</div> <a href="/breathe/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">😮‍💨</span> 一起喘口氣 </a><a href="/midnight/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 深夜宵夜所 </a><a href="/woodenfish/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🪵</span> 電子木魚 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">更多</div> <a href="/blog/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-r-2" style="background:rgba(107,115,148,0.15);color:var(--tw-brand-accent);border-color:var(--tw-brand-accent)"> <span class="text-base">📝</span> 知識文章 </a> </div>   </nav> <div class="p-3 border-t text-xs text-center space-y-1" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <div class="flex justify-center gap-3"> <a href="/about/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">關於</a> <a href="/privacy/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">隱私權</a> <a href="/terms/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">條款</a> </div>
+打工牛馬的線上工具箱 © 2026
+</div> </aside>  <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8 min-h-screen" style="background:var(--tw-page-bg)">   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"llms.txt 完整實作教學（2026）：什麼是 llms.txt、和 robots.txt／sitemap 差在哪、誰真的會讀，附可直接複製的範本","description":"llms.txt 是一份放在網站根目錄的 Markdown 檔，用人類與 AI 都讀得懂的格式，把你最重要的內容整理成一份「給語言模型看的導覽」。聽起來很美好，但 2026 年的現實要先講清楚：它目前只是社群提案，還不是 IETF／W3C 正式標準，而且 Google Search 代表曾公開表示不支援、也不打算支援 llms.txt，其餘各家也都沒承諾會讀——Ahrefs 的伺服器日誌研究（log study，非學術研究）掃了 13.7 萬個網域，發現 97% 的 llms.txt 在當月「零請求」。這篇用官方文件與規格頁，把 llms.txt 是什麼、跟 robots.txt／sitemap.xml 差在哪、格式怎麼寫、誰真的會讀（誠實版）、台灣靜態站／Astro 怎麼產生與部署講清楚，並附上可直接複製的範本。","image":"https://twtools.cc/og-image.png","datePublished":"2026-07-09T00:00:00+08:00","dateModified":"2026-07-09T00:00:00+08:00","author":{"@type":"Organization","name":"TWTools 編輯部","url":"https://twtools.cc"},"publisher":{"@type":"Organization","name":"TWTools","url":"https://twtools.cc","logo":{"@type":"ImageObject","url":"https://twtools.cc/favicon.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://twtools.cc/blog/llms-txt-implementation-guide-2026/"},"inLanguage":"zh-Hant-TW","keywords":"llms.txt, llms-full.txt, llmstxt.org, GEO 優化, AI 爬蟲, AI 搜尋, Astro 靜態站, 台灣 SEO 2026, sitemap.xml, robots.txt"}</script>  <nav class="max-w-5xl mx-auto px-2 md:px-6 pt-2 pb-4 no-print" aria-label="breadcrumb"> <ol class="flex items-center gap-2 text-sm flex-wrap m-0 p-0 list-none" style="color: var(--tw-text-muted);"> <li><a href="/" class="grow-underline">首頁</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><a href="/blog/" class="grow-underline">編輯室</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><span style="color: var(--tw-text-primary);">SEO 策略</span></li> </ol> </nav>  <section class="max-w-5xl mx-auto px-2 md:px-6 pb-6"> <div class="article-col"> <div class="flex items-center gap-3 mb-5 flex-wrap"> <span class="brand-dot"></span> <span class="eyebrow">SEO 策略</span> <span class="printrule hidden md:inline">|</span> <span class="eyebrow">17 分鐘</span> <span class="printrule hidden md:inline">|</span> <span class="updated-pill"><span class="pulse-dot"></span>UPDATED · 2026 / 07 / 09</span> </div> <h1 class="font-serif-tc font-black tracking-cn" style="font-size: clamp(30px, 4.6vw, 52px); line-height: 1.15; color: var(--tw-hero-color); letter-spacing: -0.015em; margin: 0;"> llms.txt 完整實作教學（2026）：什麼是 llms.txt、和 robots.txt／sitemap 差在哪、誰真的會讀，附可直接複製的範本 </h1> <p class="font-serif-tc" style="margin: 24px 0 0; font-size: clamp(16px, 1.8vw, 19px); line-height: 1.65; color: var(--tw-text-secondary); font-weight: 400;"> llms.txt 是一份放在網站根目錄的 Markdown 檔，用人類與 AI 都讀得懂的格式，把你最重要的內容整理成一份「給語言模型看的導覽」。聽起來很美好，但 2026 年的現實要先講清楚：它目前只是社群提案，還不是 IETF／W3C 正式標準，而且 Google Search 代表曾公開表示不支援、也不打算支援 llms.txt，其餘各家也都沒承諾會讀——Ahrefs 的伺服器日誌研究（log study，非學術研究）掃了 13.7 萬個網域，發現 97% 的 llms.txt 在當月「零請求」。這篇用官方文件與規格頁，把 llms.txt 是什麼、跟 robots.txt／sitemap.xml 差在哪、格式怎麼寫、誰真的會讀（誠實版）、台灣靜態站／Astro 怎麼產生與部署講清楚，並附上可直接複製的範本。 </p> <div class="mt-8 pt-6 border-t flex items-center gap-x-6 gap-y-2 flex-wrap text-sm no-print" style="border-color: var(--tw-border); color: var(--tw-text-muted);"> <span class="inline-flex items-center gap-2"> <span class="w-7 h-7 rounded-full grid place-items-center" style="background: var(--tw-hero-color); color: #fffbfa; font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 12px;">編</span> <span style="color: var(--tw-text-secondary);">TWTools 編輯部</span> </span> <span class="printrule">|</span> <time datetime="2026-07-09">2026 / 07 / 09</time> <span class="ml-auto inline-flex items-center gap-3"> <a href="/blog/en/llms-txt-implementation-guide-2026/" class="grow-underline inline-flex items-center gap-1.5"> <svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="12" cy="12" r="10" />
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+  <path d="M2 12h20" />
+</svg>
+English
+</a> <button type="button" id="print-link" class="grow-underline inline-flex items-center gap-1.5" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0; font: inherit;"> <svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+  <rect x="6" y="14" width="12" height="8" rx="1" />
+</svg>
+列印
+</button> </span> </div> </div> </section>   <article class="max-w-5xl mx-auto px-2 md:px-6 mb-12"> <div class="article-frame"> <aside class="article-margin no-print"> <div class="margin-label">SEO 策略 · 2026</div> </aside> <div class="prose-cn"> <!-- TOC --> <details class="toc-block no-print" open> <summary> <div class="toc-head"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 5h.01" />
+  <path d="M3 12h.01" />
+  <path d="M3 19h.01" />
+  <path d="M8 5h13" />
+  <path d="M8 12h13" />
+  <path d="M8 19h13" />
+</svg>
+ <span class="eyebrow">CONTENTS · 目次</span> <h3>本文 10 個段落</h3> </div> <svg aria-hidden="true"
+  class="w-4 h-4 toc-chev lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m6 9 6 6 6-6" />
+</svg>
+ </summary> <div class="toc-list"> <ol> <li> <a href="#什麼是-llmstxt一句話與一個比喻"> <span class="toc-num">§ 01</span> <span class="toc-title">什麼是 llms.txt？一句話與一個比喻</span> </a> </li><li> <a href="#llmstxt-vs-robotstxt-vs-sitemapxml一張表看懂分工"> <span class="toc-num">§ 02</span> <span class="toc-title">llms.txt vs robots.txt vs sitemap.xml：一張表看懂分工</span> </a> </li><li> <a href="#llmstxt-的格式規格照-llmstxtorg-寫"> <span class="toc-num">§ 03</span> <span class="toc-title">llms.txt 的格式規格：照 llmstxt.org 寫</span> </a> </li><li> <a href="#llmstxt-與-llms-fulltxt-差在哪"> <span class="toc-num">§ 04</span> <span class="toc-title">/llms.txt 與 /llms-full.txt 差在哪？</span> </a> </li><li> <a href="#誰真的會讀-llmstxt誠實版這段最重要"> <span class="toc-num">§ 05</span> <span class="toc-title">誰真的會讀 llms.txt？（誠實版，這段最重要）</span> </a> </li><li> <a href="#台灣站怎麼產生-llmstxt"> <span class="toc-num">§ 06</span> <span class="toc-title">台灣站怎麼產生 llms.txt？</span> </a> </li><li> <a href="#astro靜態站怎麼部署-llmstxt"> <span class="toc-num">§ 07</span> <span class="toc-title">Astro／靜態站怎麼部署 llms.txt</span> </a> </li><li> <a href="#一份可以直接複製的完整範本"> <span class="toc-num">§ 08</span> <span class="toc-title">一份可以直接複製的完整範本</span> </a> </li><li> <a href="#常見問題faq"> <span class="toc-num">§ 09</span> <span class="toc-title">常見問題（FAQ）</span> </a> </li><li> <a href="#結語把-llmstxt-當成低成本的未來選擇權"> <span class="toc-num">§ 10</span> <span class="toc-title">結語：把 llms.txt 當成「低成本的未來選擇權」</span> </a> </li> </ol> </div> </details>  <p>先把話講在前面，免得你看完整篇還抱著錯誤期待。</p>
+<p>2026 年你會在很多地方看到一種說法：「裝了 llms.txt，ChatGPT 和 Claude 就會優先讀你、優先引用你。」這句話<strong>不是真的</strong>。llms.txt 是一個有想法、值得認識的社群提案，但它目前的真實處境是：還不是任何國際標準組織認可的正式規格，主流 AI 公司沒有一家公開承諾它的線上系統會讀這個檔，連最大規模的實測都顯示絕大多數 llms.txt 根本沒有被抓取過。</p>
+<p>那為什麼還要寫這篇、為什麼截至撰稿時，可觀察到一些技術公司與開發者工具站放置 llms.txt（這類名單會隨時間變動）？因為「現在沒人讀」跟「永遠沒用」是兩回事，而且對某些用途（特別是 AI 開發工具讀技術文件）它確實已經在發揮作用。這篇要做的，是把這條線畫清楚：llms.txt 是什麼、跟你已經很熟的 robots.txt／sitemap.xml 差在哪、格式規格怎麼寫、<code>/llms.txt</code> 與 <code>/llms-full.txt</code> 的分工、<strong>誰真的會讀（誠實版）</strong>、以及台灣站長（尤其用 Astro、靜態站的）怎麼產生與部署。文章裡的範本都可以直接複製改成你自己的。</p>
+<h2 id="什麼是-llmstxt一句話與一個比喻">什麼是 llms.txt？一句話與一個比喻</h2>
+<p>llms.txt 是一份放在網站根目錄（<code>你的網域/llms.txt</code>）的純文字檔，用 <strong>Markdown</strong> 格式寫成，目的是把你網站上最重要、最值得被語言模型讀到的內容，整理成一份精簡的「導覽地圖」。</p>
+<p>它由 Answer.AI 的 Jeremy Howard 在 2024 年 9 月提出，規格公開在 <a href="https://llmstxt.org/">llmstxt.org</a>。提案的核心動機很實際：語言模型的 context window（一次能讀的內容量）有限，而你的網站首頁往往塞滿導覽列、廣告、JavaScript、彈窗——對模型來說雜訊很多、訊號很少。llms.txt 的想法是，<strong>與其讓模型在一堆 HTML 裡撈，不如你主動給它一份乾淨、結構化、人類和機器都讀得懂的重點清單</strong>。</p>
+<p>一個好懂的比喻：如果 sitemap.xml 是給搜尋引擎看的「全站地址簿」（每一頁都列、給機器解析），那 llms.txt 比較像你親手寫給訪客的「這個站最該看的 10 篇，各一句話介紹」——它是策展（curation），不是窮舉。</p>
+<p>要特別澄清一個常見誤解：llms.txt <strong>不是用來「擋」AI 的</strong>。擋不擋 AI 爬蟲是 robots.txt 的工作。llms.txt 從頭到尾都是「歡迎讀、而且我幫你整理好了」的善意提供，它沒有任何封鎖語意。</p>
+<h2 id="llmstxt-vs-robotstxt-vs-sitemapxml一張表看懂分工">llms.txt vs robots.txt vs sitemap.xml：一張表看懂分工</h2>
+<p>這三個檔都放在網站根目錄、都是給機器看的純文字檔，最容易被搞混。但它們的目的、格式、權威性完全不同：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>比較項目</th><th>llms.txt</th><th>robots.txt</th><th>sitemap.xml</th></tr></thead><tbody><tr><td>主要目的</td><td>給語言模型一份「重點內容導覽」</td><td>告訴爬蟲哪些路徑可抓／不可抓</td><td>列出全站網址幫爬蟲發現頁面</td></tr><tr><td>格式</td><td>Markdown（人類也好讀）</td><td>純文字指令（User-agent／Allow／Disallow）</td><td>XML</td></tr><tr><td>語意</td><td>「歡迎讀，重點在這」（策展）</td><td>「請勿進入」或「歡迎進入」（門禁）</td><td>「我有這些頁」（清單）</td></tr><tr><td>標準地位</td><td>社群提案，<strong>非</strong>正式標準</td><td>RFC 9309 正式標準（2022）</td><td>sitemaps.org 業界協定</td></tr><tr><td>主流支援</td><td>各家 AI <strong>皆未承諾</strong>線上讀取</td><td>Google／Bing 等主流搜尋爬蟲通常遵守（是否遵守取決於各爬蟲）</td><td>Google／Bing 等搜尋引擎廣泛支援</td></tr><tr><td>放置位置</td><td><code>/llms.txt</code></td><td><code>/robots.txt</code></td><td><code>/sitemap.xml</code></td></tr><tr><td>不裝會怎樣</td><td>幾乎無差別（目前少有引擎讀）</td><td>AI 爬蟲視為「全開放」</td><td>搜尋引擎靠連結自行爬，發現較慢</td></tr></tbody></table>
+<p>從這張表可以看出三件事：</p>
+<ol>
+<li><strong>robots.txt 是門禁，sitemap.xml 是清單，llms.txt 是導覽。</strong> 三者不衝突、也不互相取代。你可以三個都有。</li>
+<li><strong>權威性差很多。</strong> robots.txt 是 IETF 的 RFC 9309 正式標準，主流搜尋爬蟲通常遵守（RFC 9309 是標準，但實務上是否遵守仍取決於各爬蟲）；sitemap.xml 是行之有年、搜尋引擎普遍吃的協定；而 llms.txt 到 2026 年仍只是社群提案，沒有任何標準組織背書，主流引擎也沒承諾會讀。</li>
+<li><strong>「不裝的代價」也差很多。</strong> robots.txt 寫錯會把 AI 爬蟲整批擋在門外（這是真的會出事的）；sitemap 沒有頂多讓收錄慢一點；而 llms.txt 目前裝或不裝，對你被不被引用，老實說差別很小。</li>
+</ol>
+<p>換句話說：<strong>如果你只有時間做一件事，先把 robots.txt 寫對（別擋到該開放的 AI 爬蟲），再補 sitemap.xml，最後才輪到 llms.txt。</strong> 這個優先順序反映的就是「實際回報」的高低。robots.txt 怎麼寫，我們在〈<a href="/blog/ai-crawler-setup-guide-2026/">10 種 AI 爬蟲完整設定指南</a>〉裡有完整拆解。</p>
+<h2 id="llmstxt-的格式規格照-llmstxtorg-寫">llms.txt 的格式規格：照 llmstxt.org 寫</h2>
+<p>llms.txt 的規格其實很簡潔，<a href="https://llmstxt.org/">llmstxt.org</a> 定義的結構由上而下是這樣：</p>
+<ol>
+<li><strong>一個 H1 標題</strong>（<code>#</code>）：你的網站或專案名稱。這是規格裡<strong>唯一必填</strong>的區塊。</li>
+<li><strong>一段引文摘要</strong>（<code>></code> blockquote）：用一句到幾句話講清楚這個站／專案是什麼，附上理解全站所需的關鍵資訊。</li>
+<li><strong>零或多個說明段落</strong>：除了標題以外的任意 Markdown 內容（段落、清單都行），用來補充背景。</li>
+<li><strong>零或多個用 H2（<code>##</code>）分隔的檔案清單區塊</strong>：這是 llms.txt 的主體。每個 H2 是一個分類（例如「文件」「教學」「API」），底下用連結清單列出該分類的重點頁面。</li>
+<li><strong>一個名為 <code>## Optional</code> 的特殊區塊</strong>（可選）：放進這裡的連結代表「次要、可略過」——當模型需要更短的 context 時，可以跳過這一段。</li>
+</ol>
+<p>檔案清單裡每一條連結的寫法是固定格式：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>- [連結標題](網址): 選填的一句話說明</span></span></code></pre>
+<p>把這些組合起來，一份最小但完整的 llms.txt 長這樣：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold"># 白鹿數位</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#85E89D">> 專為台灣中小企業設計的數位行銷與 SEO 服務。本站提供 SEO／GEO 教學、</span></span>
+<span class="line"><span style="color:#85E89D">> 工具評比與實作指南，內容以繁體中文撰寫，面向台灣站長與內容經營者。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">白鹿數位專注於協助台灣中小企業在搜尋引擎與 AI 引擎上被看見。</span></span>
+<span class="line"><span style="color:#E1E4E8">以下是本站最具代表性的內容。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## 核心教學</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">2026 GEO 完整指南</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://example.com.tw/blog/geo-guide/</span><span style="color:#E1E4E8">): 台灣站長視角的生成式引擎優化總覽</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">AI 爬蟲設定指南</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://example.com.tw/blog/ai-crawler/</span><span style="color:#E1E4E8">): robots.txt 怎麼寫才不會擋到 AI</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">Schema JSON-LD 手冊</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://example.com.tw/blog/schema/</span><span style="color:#E1E4E8">): 2026 還有效的結構化資料</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## 工具</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">SEO 三軸掃描器</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://example.com.tw/seo/</span><span style="color:#E1E4E8">): 一次檢測 SEO／GEO／AEO 體質</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## Optional</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">關於我們</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://example.com.tw/about/</span><span style="color:#E1E4E8">): 公司背景</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">聯絡方式</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://example.com.tw/contact/</span><span style="color:#E1E4E8">): 合作洽詢</span></span></code></pre>
+<p>幾個寫的時候要注意的細節：</p>
+<ul>
+<li><strong>連結指向的頁面，最好本身就是乾淨、好讀的內容。</strong> llms.txt 的精神是「給模型省事」，如果你連過去的頁面一樣塞滿雜訊，等於沒幫到忙。提案作者建議重要頁面可同時提供 Markdown 版（例如在原網址後加 <code>.md</code>），但這是進階做法，不是必須。</li>
+<li><strong>描述要誠實、要精準。</strong> 一句話說明就是讓模型快速判斷「這頁值不值得讀」，灌關鍵字、誇大內容只會降低這份檔的可信度——而這正是 Google 拿它跟「關鍵字 meta 標籤」相提並論的原因（下一段詳述）。</li>
+<li><strong>不要把整站每一頁都列進去。</strong> 那是 sitemap.xml 的工作。llms.txt 是策展，列你最希望被理解、被引用的那 10～30 篇就好。</li>
+</ul>
+<h2 id="llmstxt-與-llms-fulltxt-差在哪"><code>/llms.txt</code> 與 <code>/llms-full.txt</code> 差在哪？</h2>
+<p>你會看到兩種檔名，分工如下：</p>
+<ul>
+<li><strong><code>/llms.txt</code></strong>：上面講的那份「導覽＋連結清單」。它本身<strong>不含</strong>頁面全文，模型看到清單後，需要時再去抓對應的網址。檔案小、給的是地圖。</li>
+<li><strong><code>/llms-full.txt</code></strong>：把重點內容的<strong>全文</strong>直接攤平、串接進同一個檔案。模型不用再一頁一頁去抓，一次就能把你的核心內容全部讀進 context。</li>
+</ul>
+<p>要釐清一個容易混淆的點：<strong><code>llms-full.txt</code> 這個確切檔名並不在 llmstxt.org 原始規格的明文定義裡</strong>。規格本身談的是 <code>llms.txt</code> 這份導覽檔，以及由工具（如官方的 <code>llms_txt2ctx</code>）產生的「展開版 context 檔」。<code>llms-full.txt</code> 是社群在實作中約定俗成、用來指「全文展開版」的慣用檔名——Anthropic 等公司就同時提供 <code>llms.txt</code> 與 <code>llms-full.txt</code> 兩份，前者是目錄、後者是把整套 API 文件攤平。</p>
+<p>實務上怎麼選？</p>
+<ul>
+<li>內容站、部落格、中小企業官網 → <strong>先做 <code>/llms.txt</code> 就好</strong>。一份策展導覽足夠，維護成本低。</li>
+<li>文件密集的產品／開發者文件站 → 可以<strong>兩份都做</strong>：<code>/llms.txt</code> 當目錄，<code>/llms-full.txt</code> 給需要一次吃完整套文件的 AI 工具。注意 <code>llms-full.txt</code> 可能很大（幾百 KB 到數 MB），別把不相干的內容也塞進去。</li>
+</ul>
+<h2 id="誰真的會讀-llmstxt誠實版這段最重要">誰真的會讀 llms.txt？（誠實版，這段最重要）</h2>
+<p>這是整篇的核心，也是最多文章誇大的地方。我把 2026 年各方的<strong>官方表態</strong>與<strong>實測數據</strong>並陳，你自己判斷。</p>
+<h3 id="主流-ai-公司的官方立場">主流 AI 公司的官方立場</h3>
+<ul>
+<li><strong>Google Search 代表：公開表示「不支援、也不打算支援」。</strong> Google 的 John Mueller 與 Gary Illyes 在 2025 年都以個人身分公開表態（屬員工發言，非 Google 正式產品政策聲明）。Illyes 把 llms.txt 直接類比成 1990 年代的「關鍵字 meta 標籤」（keywords meta tag）——一個因為「完全由站方自己填、容易灌水操弄」而被搜尋引擎棄用十多年的東西。Mueller 則說：「就我所知，沒有任何 AI 服務說它們在用 llms.txt，而且你看伺服器 log 會發現它們根本連抓都沒去抓。」他形容它「不是為搜尋而做」，比較像是 AI 寫程式工具拿來省 token 的「暫時性拐杖」。</li>
+<li><strong>OpenAI：未公開承諾。</strong> 截至 2026 年第一季，OpenAI 沒有公開聲明它的線上系統會讀取或依據 llms.txt 行動。</li>
+<li><strong>Anthropic：立場較模糊，但未承諾自動讀取。</strong> Anthropic 自己有放 <code>llms.txt</code> 與 <code>llms-full.txt</code>（涵蓋整套 API 文件），但截至 2026 年也未發表「我們會自動讀別人網站 llms.txt」的聲明。它放這份檔，比較像是「方便讀我文件的 AI 工具」，不等於「我去讀你的」。</li>
+</ul>
+<p>一句話總結官方面：<strong>到 2026 年初，OpenAI、Google、Anthropic、Perplexity 沒有任何一家公開確認它們的線上檢索系統會消費 llms.txt。</strong> 其中 Google 甚至是明確否定。</p>
+<h3 id="實測數據絕大多數-llmstxt-沒被讀過">實測數據：絕大多數 llms.txt 沒被讀過</h3>
+<p>光看表態還不夠，看實際的伺服器 log 最誠實：</p>
+<ul>
+<li><strong>Ahrefs 在 2026 年 6 月發表的<a href="https://ahrefs.com/blog/llmstxt-study/">伺服器日誌研究</a>（log study，分析伺服器日誌與實際流量、非學術研究）掃了 13.7 萬個網域，發現當月有 97% 的 llms.txt 收到「零請求」</strong>，而少數有被抓的，多半也是來自一般 bot 而非主流 AI 引擎的檢索爬蟲。</li>
+<li>各家自行公布的 log 分析也一致：部分第三方 log 分析觀察到少量 AI bot 請求 llms.txt，但頻率很低；而 ClaudeBot、Google-Extended、PerplexityBot 幾乎不抓。在某個橫跨 90 天、超過 5 億次 AI bot 造訪的監測裡，直接針對 llms.txt 的請求只有區區數百次。</li>
+</ul>
+<h3 id="那為什麼還是有人裝">那為什麼還是有人裝？</h3>
+<p>把上面兩塊放在一起，結論不是「llms.txt 一無是處」，而是要分清楚它<strong>現在</strong>有用的地方和被高估的地方：</p>
+<ul>
+<li><strong>目前確實有用的場景</strong>：AI 開發工具（Cursor、各種 coding agent）在你<strong>主動把某個文件站餵給它</strong>時，會用 llms.txt／llms-full.txt 快速抓重點、省 context。這也是為什麼放它的多半是文件密集的開發者公司。</li>
+<li><strong>被高估的場景</strong>：「裝了它，ChatGPT／Perplexity 在一般使用者提問時就會更常引用我。」這在 2026 年沒有證據支持。決定你會不會被 AI 引用的，仍然是你<strong>頁面上可見的內容</strong>寫得夠不夠好引用，以及你的 robots.txt 有沒有讓搜尋型爬蟲進得來——不是這份 <code>/llms.txt</code>。</li>
+<li><strong>為什麼還是可以放</strong>：成本極低（一個檔），語法不會傷害 SEO，而且它是一張「未來選擇權」——萬一某天某家引擎開始正式讀，你已經就位。把它當成「低成本、可能有上檔、幾乎沒有下檔」的小投資，而不是「裝了就會被引用」的開關，心態就對了。</li>
+</ul>
+<h2 id="台灣站怎麼產生-llmstxt">台灣站怎麼產生 llms.txt？</h2>
+<p>依你的網站類型，方法不同。</p>
+<h3 id="手寫最推薦給內容站">手寫（最推薦給內容站）</h3>
+<p>對部落格、中小企業官網、個人品牌站來說，<strong>手寫一份就夠了</strong>，而且最可控。打開純文字編輯器，照前面的格式：H1 站名 → <code>></code> 摘要 → 幾個 <code>##</code> 分類各列重點連結 → 選填 <code>## Optional</code>。列你最希望被理解的 10～30 篇，每篇配一句誠實的說明。存成 <code>llms.txt</code>，上傳到網站根目錄。完成。</p>
+<p>手寫的好處是：你最清楚自己哪幾篇最值得被讀，這種策展判斷目前還沒有工具做得比人好。</p>
+<h3 id="用工具產生">用工具產生</h3>
+<ul>
+<li><strong>官方 CLI <code>llms_txt2ctx</code></strong>：llmstxt.org 提供的工具，主要用途是把一份 <code>llms.txt</code> 展開成可直接餵給模型的 context 檔（也就是前面說的展開版）。它解決的是「展開」而非「從零生成」。</li>
+<li><strong>第三方產生器與平台外掛</strong>：2026 年有不少線上產生器與 CMS 外掛（含部分 SEO 平台）能掃你的 sitemap 自動生出 llms.txt。⚠️ 自動生成的最大問題是<strong>它不會幫你做策展判斷</strong>——往往把全站都倒進去，變成 sitemap 的 Markdown 版，失去 llms.txt「給重點」的本意。用工具產出後，務必人工刪減、改寫描述。</li>
+</ul>
+<h3 id="cms-內建">CMS 內建</h3>
+<p>部分文件平台（如 Mintlify、GitBook）已內建自動產生 llms.txt／llms-full.txt 的功能。如果你用的平台有，開啟即可，但同樣建議檢查它列了什麼、描述對不對。</p>
+<h2 id="astro靜態站怎麼部署-llmstxt">Astro／靜態站怎麼部署 llms.txt</h2>
+<p>TWTools 自己就是 Astro 靜態站，這段講靜態站的具體做法。原則只有一條：<strong>llms.txt 必須能用 <code>你的網域/llms.txt</code> 直接存取，回傳的是純文字（Markdown 原文），不是被包進 HTML 版型的頁面。</strong></p>
+<h3 id="做法一放進-public最簡單推薦">做法一：放進 <code>public/</code>（最簡單，推薦）</h3>
+<p>Astro 會把 <code>public/</code> 目錄的檔案原封不動複製到網站根目錄。所以最省事的做法是：</p>
+<ol>
+<li>在專案的 <code>public/</code> 目錄下，新增一個檔案 <code>llms.txt</code>。</li>
+<li>把你寫好的 Markdown 內容貼進去。</li>
+<li>build、部署。完成後 <code>你的網域/llms.txt</code> 就會回傳這份原文。</li>
+</ol>
+<p>這個做法適合「內容相對穩定、手動維護」的站。改內容就是改 <code>public/llms.txt</code> 再重新部署，跟改 robots.txt 一模一樣。TWTools 的 robots.txt 與 sitemap 走的也是同一套靜態檔思路。</p>
+<h3 id="做法二用-endpoint-動態產生內容多想自動同步時">做法二：用 endpoint 動態產生（內容多、想自動同步時）</h3>
+<p>如果你的文章很多、又希望 llms.txt 永遠跟著文章列表自動更新，可以用 Astro 的檔案式 endpoint：建一個 <code>src/pages/llms.txt.ts</code>（或 <code>.js</code>），讓它讀取你的內容集合（content collections）、組出 Markdown 字串回傳，並把 <code>Content-Type</code> 設成 <code>text/plain</code>。這樣每次 build 都會依當下的文章自動生成最新的 llms.txt，不用手改。</p>
+<p>要提醒的是：就算用自動產生，<strong>還是要保留策展邏輯</strong>——例如只挑 <code>featured</code> 標記的文章、或限制數量、或排除測試頁，別讓它變成全站傾倒。自動化解決的是「同步」，不是「該不該幫你篩」。</p>
+<h3 id="部署後一定要驗證">部署後一定要驗證</h3>
+<p>不論哪種做法，部署完都用瀏覽器打開 <code>你的網域/llms.txt</code> 確認三件事：</p>
+<ol>
+<li><strong>回傳的是純文字 Markdown 原文</strong>，不是被套進網站版型、變成一個 HTML 頁面。</li>
+<li><strong>HTTP 狀態是 200</strong>，不是 404 或被重導。</li>
+<li><strong>內容是你預期的最新版</strong>（特別是動態產生時，確認文章列表正確）。</li>
+</ol>
+<p>如果你的站在 Cloudflare 後面，也順手確認沒有任何 Bot 規則把 <code>/llms.txt</code> 這個路徑當成可疑請求擋掉——雖然少見，但靜態檔被 WAF 規則誤傷的情況偶爾會發生。</p>
+<h2 id="一份可以直接複製的完整範本">一份可以直接複製的完整範本</h2>
+<p>把前面所有規格組合起來，這是一份「內容型台灣網站」可以直接拿去改的完整 <code>llms.txt</code>：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#79B8FF;font-weight:bold"># 你的站名</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#85E89D">> 一到兩句話：這個站是什麼、為誰寫、主要內容領域、語言。</span></span>
+<span class="line"><span style="color:#85E89D">> 例如：本站提供台灣中小企業的 SEO 與 GEO 實作教學，內容以繁體中文撰寫。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">（這裡放一段背景說明，補充模型理解全站所需的脈絡，可省略。）</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## 核心教學</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">文章標題 A</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://你的網域/blog/a/</span><span style="color:#E1E4E8">): 一句話誠實說明這篇在講什麼</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">文章標題 B</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://你的網域/blog/b/</span><span style="color:#E1E4E8">): 一句話說明</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">文章標題 C</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://你的網域/blog/c/</span><span style="color:#E1E4E8">): 一句話說明</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## 工具／服務</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">工具或服務名稱</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://你的網域/tool/</span><span style="color:#E1E4E8">): 一句話說明它能做什麼</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## 關於</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">關於我們</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://你的網域/about/</span><span style="color:#E1E4E8">): 公司或作者背景</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## Optional</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">次要頁面</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://你的網域/secondary/</span><span style="color:#E1E4E8">): 可在需要精簡 context 時略過</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">聯絡方式</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://你的網域/contact/</span><span style="color:#E1E4E8">): 合作洽詢</span></span></code></pre>
+<p>把它存成 <code>llms.txt</code>，丟進 Astro 的 <code>public/</code>（或其他框架的對應靜態目錄），部署，用瀏覽器驗證。整個過程通常不到 10 分鐘。</p>
+<h2 id="常見問題faq">常見問題（FAQ）</h2>
+<h3 id="裝了-llmstxtchatgpt-和-claude-就會引用我嗎">裝了 llms.txt，ChatGPT 和 Claude 就會引用我嗎？</h3>
+<p>目前沒有證據支持這個說法。截至 2026 年，OpenAI、Anthropic、Google、Perplexity 都沒有公開承諾它們的線上系統會讀取 llms.txt，伺服器 log 實測也顯示主流 AI 引擎幾乎不抓這個檔。決定你被不被引用的，仍是你頁面上可見內容的品質，以及 robots.txt 有沒有讓搜尋型爬蟲進得來。把 llms.txt 當成低成本的未來選擇權，不要當成被引用的開關。</p>
+<h3 id="llmstxt-是正式標準嗎">llms.txt 是正式標準嗎？</h3>
+<p>不是。它是 Answer.AI 的 Jeremy Howard 在 2024 年提出的社群提案，規格在 llmstxt.org，到 2026 年仍由社群維護，沒有經過 IETF 或 W3C 等標準組織正式制定。這跟 robots.txt（RFC 9309 正式標準）的地位差很多。</p>
+<h3 id="那我到底要不要裝">那我到底要不要裝？</h3>
+<p>看你的網站類型。<strong>文件密集的開發者／產品文件站</strong>值得裝（甚至連 llms-full.txt 一起），因為 AI 開發工具確實會用它省 context。<strong>一般內容站、中小企業官網</strong>可以裝、成本很低，但別期待立刻有回報；如果時間有限，先把 robots.txt 寫對、sitemap 補好，這兩件的實際回報遠高於 llms.txt。</p>
+<h3 id="llmstxt-會影響我的-google-搜尋排名嗎">llms.txt 會影響我的 Google 搜尋排名嗎？</h3>
+<p>不會。Google Search 代表已公開表示不支援 llms.txt，它不是排名因子，裝或不裝都不影響你在 Google 一般搜尋的收錄與排名。它純粹是「提供給語言模型的內容導覽」，跟搜尋排名是兩條線。</p>
+<h3 id="llmstxt-和-llms-fulltxt-一定要兩個都做嗎">llms.txt 和 llms-full.txt 一定要兩個都做嗎？</h3>
+<p>不用。一般站做 <code>/llms.txt</code> 一份（策展導覽）就夠了。<code>/llms-full.txt</code>（全文展開版）主要對文件密集的站有意義，讓 AI 工具一次讀完整套內容。注意 <code>llms-full.txt</code> 這個檔名是社群慣例，不在 llmstxt.org 原始規格的明文定義裡。</p>
+<h3 id="我用-wordpresswix沒辦法放根目錄檔怎麼辦">我用 WordPress／Wix，沒辦法放根目錄檔怎麼辦？</h3>
+<p>WordPress 可透過 FTP 或檔案管理器把 llms.txt 放進站台根目錄，也有外掛能自動產生（用外掛同樣要檢查它列了什麼、有沒有過度傾倒全站）。部分託管型平台（如某些 Wix 方案）對根目錄純文字檔的支援有限，這種情況以平台官方文件為準；真的放不了，也不必勉強——目前 llms.txt 的實際回報本來就有限。</p>
+<h3 id="llmstxt-會不會被人拿來灌關鍵字操弄">llms.txt 會不會被人拿來灌關鍵字操弄？</h3>
+<p>會，而這正是 Google 不採用它的主要理由之一——因為內容完全由站方自己填、無法被外部驗證，跟當年被棄用的「關鍵字 meta 標籤」是同類問題。所以寫 llms.txt 時，描述務必誠實精準；灌水不但沒有好處，還會在未來真有引擎讀它時降低你的可信度。</p>
+<h3 id="我已經有-sitemapxml-了還需要-llmstxt-嗎">我已經有 sitemap.xml 了，還需要 llms.txt 嗎？</h3>
+<p>兩者目的不同，不互相取代。sitemap.xml 是給搜尋引擎的全站網址清單（XML、窮舉）；llms.txt 是給語言模型的重點內容導覽（Markdown、策展、人也讀得懂）。有 sitemap 是必要的基本盤；llms.txt 是可選的加分項，且目前回報有限。</p>
+<h2 id="結語把-llmstxt-當成低成本的未來選擇權">結語：把 llms.txt 當成「低成本的未來選擇權」</h2>
+<p>llms.txt 是個方向正確的提案：在 AI 讀網路的時代，主動給模型一份乾淨、結構化、人機都讀得懂的重點導覽，邏輯上是對的。但 2026 年的誠實現況是——它還是社群提案、不是正式標準，Google Search 代表已公開表示不支援、也不打算支援，其餘各家未承諾，實測絕大多數 llms.txt 根本沒被讀過。</p>
+<p>所以正確的做法是：<strong>先把回報明確的事做好</strong>——robots.txt 別擋到該開放的 AI 爬蟲、sitemap.xml 補齊、頁面上可見的內容寫得值得被引用。把這些做完之後，再花 10 分鐘放一份誠實、策展過的 llms.txt，當成一張幾乎沒有下檔風險的未來選擇權。它不會立刻讓你被引用，但萬一風向變了，你已經就位。</p>
+<p>延伸閱讀：</p>
+<ul>
+<li><a href="/blog/ai-crawler-setup-guide-2026/">10 種 AI 爬蟲完整設定指南：robots.txt 怎麼寫才不會擋到 AI</a></li>
+<li><a href="/blog/schema-jsonld-complete-handbook-2026/">Schema.org JSON-LD 完全手冊（2026）</a></li>
+<li><a href="/">用 TWTools 三軸掃描器，一次檢測 SEO／GEO／AEO 體質</a></li>
+</ul>
+<p>一手來源（請以官方最新文件為準）：</p>
+<ul>
+<li><a href="https://llmstxt.org/">llmstxt.org — llms.txt 官方規格頁</a></li>
+<li><a href="https://ahrefs.com/blog/llmstxt-study/">Ahrefs 伺服器日誌研究（2026 年 6 月）：分析 13.7 萬網域，97% 的 llms.txt 從未被讀取</a></li>
+<li><a href="https://www.seroundtable.com/google-parallel-meta-keywords-llmstxt-39862.html">Search Engine Roundtable：Google 將 llms.txt 類比為已淘汰的關鍵字 meta 標籤</a></li>
+<li><a href="https://ahrefs.com/blog/what-is-llms-txt/">Ahrefs：什麼是 llms.txt、它有用嗎</a></li>
+</ul>
+<blockquote>
+<p>免責：llms.txt 為社群演進中的提案，各 AI 平台支援度請以官方最新文件為準。</p>
+</blockquote>   <!-- Reactions --> <div class="reactions no-print"> <div class="ask">這篇對你有幫助嗎？</div> <div class="react-buttons"> <button type="button" class="react-btn" data-react="useful"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
+  <path d="M7 10v12" />
+</svg>
+ <span>覺得有用</span> <span class="count" data-react-count="useful">—</span> </button> <button type="button" class="react-btn" data-react="bookmark"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z" />
+</svg>
+ <span>收藏</span> <span class="count" data-react-count="bookmark">—</span> </button> </div> <span class="meta">PUBLISHED · 2026 / 07 / 09</span> </div> <!-- Full CTA --> <div class="cta-full no-print"> <div class="cta-head"> <h4>把這篇帶走</h4> <span class="eyebrow">SAVE · SHARE · FEED</span> </div> <div class="cta-grid"> <a href="#" class="cta-cell" data-action="copy-link"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+</svg>
+</div> <div> <div class="label">複製連結 <span class="kbd">⌘ C</span></div> <div class="desc">把這篇 URL 存到 Notion、Pocket，或直接傳給朋友。</div> </div> </a> <a href="/blog/llms-txt-implementation-guide-2026/index.md" class="cta-cell" data-action="copy-md"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+</div> <div> <div class="label">複製 Markdown</div> <div class="desc">原始 .md 內容，餵 NotebookLM、ChatGPT 當研究素材。</div> </div> </a> <a href="https://notebooklm.google.com/?import=https%3A%2F%2Ftwtools.cc%2Fblog%2Fllms-txt-implementation-guide-2026%2F" target="_blank" rel="noopener" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
+  <path d="M9 13a4.5 4.5 0 0 0 3-4" />
+  <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" />
+  <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
+  <path d="M6 18a4 4 0 0 1-1.967-.516" />
+  <path d="M12 13h4" />
+  <path d="M12 18h6a2 2 0 0 1 2 2v1" />
+  <path d="M12 8h8" />
+  <path d="M16 8V5a2 2 0 0 1 2-2" />
+  <circle cx="16" cy="13" r=".5" />
+  <circle cx="18" cy="3" r=".5" />
+  <circle cx="20" cy="21" r=".5" />
+  <circle cx="20" cy="8" r=".5" />
+</svg>
+</div> <div> <div class="label">送進 NotebookLM</div> <div class="desc">一鍵把本文加入你的 NotebookLM 來源。</div> </div> </a> <a href="/blog/rss.xml" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 11a9 9 0 0 1 9 9" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <circle cx="5" cy="19" r="1" />
+</svg>
+</div> <div> <div class="label">訂閱 RSS</div> <div class="desc">每週一篇，更新就推到你的 Reader。</div> </div> </a> </div> </div> </div> <aside class="article-margin no-print"> <div class="margin-label">TWTOOLS / EDITORIAL</div> </aside> </div> </article>  <section class="no-print"> <div class="adjacent"> <a href="/blog/typhoon-day-commute-transport-guide-2026/"> <div class="arrow-row"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m12 19-7-7 7-7" />
+  <path d="M19 12H5" />
+</svg>
+ <span class="eyebrow">PREV · 上一篇</span> </div> <div class="post-title">颱風天交通與通勤應變指南（2026）：航班改期、高鐵台鐵客運停駛退票、國道封閉與上班決策</div> </a> <div style="background: var(--tw-page-bg);"></div> </div> </section> <div class="max-w-6xl mx-auto pb-2"> <div class="pt-5 mt-6 border-t flex flex-col md:flex-row md:items-baseline gap-x-6 gap-y-2" style="border-color: var(--tw-border);"> <span class="eyebrow shrink-0">姊妹站 · FAMILY</span> <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm" style="color: var(--tw-text-muted);"> <a href="https://aire.twtools.cc/" title="aire — AI Tool Atlas·AI 工具圖鑑" class="grow-underline whitespace-nowrap">aire — AI Tool Atlas·AI 工具圖鑑</a><a href="https://tree.twtools.cc/" title="樹洞21號 — 匿名 AI 心事平台" class="grow-underline whitespace-nowrap">樹洞21號 — 匿名 AI 心事平台</a><a href="https://foootball.twtools.cc/" title="@foootball — 2026 世界盃賽程" class="grow-underline whitespace-nowrap">@foootball — 2026 世界盃賽程</a><a href="https://baseball.twtools.cc/" title="@baseball — 中職 CPBL＋MLB 深度戰報" class="grow-underline whitespace-nowrap">@baseball — 中職 CPBL＋MLB 深度戰報</a><a href="https://dvdmaru.com/" title="dvdmaru — 把事實和敘事分開來看" class="grow-underline whitespace-nowrap">dvdmaru — 把事實和敘事分開來看</a> </div> </div> </div> </main>  <script>
+    (function() {
+      var hamburger = document.getElementById('sidebar-hamburger');
+      var overlay = document.getElementById('sidebar-overlay');
+      var panel = document.getElementById('sidebar-panel');
+      var closeBtn = document.getElementById('sidebar-close');
+
+      function openSidebar() {
+        panel.classList.remove('-translate-x-full');
+        panel.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+      }
+      function closeSidebar() {
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+
+      if (hamburger) hamburger.addEventListener('click', openSidebar);
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    })();
+  </script>  <!-- Affiliates.One / Adotone Ad Link 網站驗證碼（須 is:inline 才會原樣輸出，勿移除 is:inline） --> <script>var ConverlyCustomData = {channelId: null};</script> <script async defer src="https://cdn.adotone.com/production/adlinks/676dd203e573377526b0bfa14fb812f5265fb0db262acf5759eaf3acb67f8e66.js"></script> </body> </html> <script>
+  (function () {
+    // Print
+    var printBtn = document.getElementById('print-link');
+    if (printBtn) {
+      printBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.print();
+      });
+    }
+
+    // TOC smooth scroll
+    document.querySelectorAll('details.toc-block .toc-list a').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var target = document.querySelector(a.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        var y = target.getBoundingClientRect().top + window.scrollY - 24;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        if (history.replaceState) history.replaceState(null, '', a.getAttribute('href'));
+      });
+    });
+
+    // Mobile TOC collapse by default
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      var toc = document.querySelector('details.toc-block');
+      if (toc) toc.removeAttribute('open');
+    }
+
+    // Reactions — localStorage-backed toggle (per-slug)
+    var slug = location.pathname.replace(/\/+$/, '').split('/').pop() || 'post';
+    var STORAGE_KEY = 'twtools.reactions.' + slug;
+    var BASE = { useful: 0, bookmark: 0 };
+    function readState() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (_) {}
+      return { useful: false, bookmark: false };
+    }
+    function writeState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+    }
+    function renderCount(key, state) {
+      var el = document.querySelector('[data-react-count="' + key + '"]');
+      if (!el) return;
+      el.textContent = String(BASE[key] + (state[key] ? 1 : 0));
+    }
+    function renderActive(key, state) {
+      var btn = document.querySelector('[data-react="' + key + '"]');
+      if (!btn) return;
+      btn.classList.toggle('is-active', !!state[key]);
+    }
+    var state = readState();
+    Object.keys(BASE).forEach(function (k) { renderCount(k, state); renderActive(k, state); });
+    document.querySelectorAll('[data-react]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.getAttribute('data-react');
+        state[key] = !state[key];
+        writeState(state);
+        renderCount(key, state);
+        renderActive(key, state);
+      });
+    });
+
+    // CTA: copy link
+    var copyLink = document.querySelector('[data-action="copy-link"]');
+    if (copyLink) {
+      copyLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(location.href).then(function () {
+            var label = copyLink.querySelector('.label');
+            if (!label) return;
+            var orig = label.innerHTML;
+            label.textContent = '已複製 ✓';
+            setTimeout(function () { label.innerHTML = orig; }, 1400);
+          });
+        }
+      });
+    }
+  })();
+</script>

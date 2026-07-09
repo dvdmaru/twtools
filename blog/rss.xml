@@ -1,4 +1,249 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TWTools · Blog</title><description>打工牛馬的線上工具箱 — 台灣使用者免費線上工具集，每週更新生活實用知識文章。</description><link>https://twtools.cc/</link><language>zh-TW</language><atom:link href="https://twtools.cc/blog/rss.xml" rel="self" type="application/rss+xml"/><item><title>颱風天交通與通勤應變指南（2026）：航班改期、高鐵台鐵客運停駛退票、國道封閉與上班決策</title><link>https://twtools.cc/blog/typhoon-day-commute-transport-guide-2026/</link><guid isPermaLink="true">https://twtools.cc/blog/typhoon-day-commute-transport-guide-2026/</guid><description>颱風來襲，最讓人手忙腳亂的往往不是家裡會不會淹水，而是「我到底走不走得了」：機票要不要改、高鐵台鐵停不停、國道會不會封、公司宣布照常上班但捷運客運都停了怎麼辦。本文聚焦移動與交通，整理 2026 年最新的航班改退規則、各大眾運輸停駛與退票標準對照表、國道與機場接駁停擺時的替代路線，以及用在地風雨時間軸抓出門空檔的實際做法，搭配 5 組以上常見問題。</description><pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;颱風來的時候，真正讓人手忙腳亂的，常常不是「家裡會不會進水」，而是更現實的一句話：**我到底走不走得了？**後天的機票要不要改、明天的高鐵停不停、台鐵退票會不會被扣手續費、國道會不會封、公司還沒宣布停班但捷運客運都收班了怎麼辦。這些問題分散在十幾個官網與新聞快訊裡，偏偏又是要在很短的時間內做決定。&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TWTools · Blog</title><description>打工牛馬的線上工具箱 — 台灣使用者免費線上工具集，每週更新生活實用知識文章。</description><link>https://twtools.cc/</link><language>zh-TW</language><atom:link href="https://twtools.cc/blog/rss.xml" rel="self" type="application/rss+xml"/><item><title>llms.txt 完整實作教學（2026）：什麼是 llms.txt、和 robots.txt／sitemap 差在哪、誰真的會讀，附可直接複製的範本</title><link>https://twtools.cc/blog/llms-txt-implementation-guide-2026/</link><guid isPermaLink="true">https://twtools.cc/blog/llms-txt-implementation-guide-2026/</guid><description>llms.txt 是一份放在網站根目錄的 Markdown 檔，用人類與 AI 都讀得懂的格式，把你最重要的內容整理成一份「給語言模型看的導覽」。聽起來很美好，但 2026 年的現實要先講清楚：它目前只是社群提案，還不是 IETF／W3C 正式標準，而且 Google Search 代表曾公開表示不支援、也不打算支援 llms.txt，其餘各家也都沒承諾會讀——Ahrefs 的伺服器日誌研究（log study，非學術研究）掃了 13.7 萬個網域，發現 97% 的 llms.txt 在當月「零請求」。這篇用官方文件與規格頁，把 llms.txt 是什麼、跟 robots.txt／sitemap.xml 差在哪、格式怎麼寫、誰真的會讀（誠實版）、台灣靜態站／Astro 怎麼產生與部署講清楚，並附上可直接複製的範本。</description><pubDate>Thu, 09 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;先把話講在前面，免得你看完整篇還抱著錯誤期待。&lt;/p&gt;
+&lt;p&gt;2026 年你會在很多地方看到一種說法：「裝了 llms.txt，ChatGPT 和 Claude 就會優先讀你、優先引用你。」這句話&lt;strong&gt;不是真的&lt;/strong&gt;。llms.txt 是一個有想法、值得認識的社群提案，但它目前的真實處境是：還不是任何國際標準組織認可的正式規格，主流 AI 公司沒有一家公開承諾它的線上系統會讀這個檔，連最大規模的實測都顯示絕大多數 llms.txt 根本沒有被抓取過。&lt;/p&gt;
+&lt;p&gt;那為什麼還要寫這篇、為什麼截至撰稿時，可觀察到一些技術公司與開發者工具站放置 llms.txt（這類名單會隨時間變動）？因為「現在沒人讀」跟「永遠沒用」是兩回事，而且對某些用途（特別是 AI 開發工具讀技術文件）它確實已經在發揮作用。這篇要做的，是把這條線畫清楚：llms.txt 是什麼、跟你已經很熟的 robots.txt／sitemap.xml 差在哪、格式規格怎麼寫、&lt;code&gt;/llms.txt&lt;/code&gt; 與 &lt;code&gt;/llms-full.txt&lt;/code&gt; 的分工、&lt;strong&gt;誰真的會讀（誠實版）&lt;/strong&gt;、以及台灣站長（尤其用 Astro、靜態站的）怎麼產生與部署。文章裡的範本都可以直接複製改成你自己的。&lt;/p&gt;
+&lt;h2&gt;什麼是 llms.txt？一句話與一個比喻&lt;/h2&gt;
+&lt;p&gt;llms.txt 是一份放在網站根目錄（&lt;code&gt;你的網域/llms.txt&lt;/code&gt;）的純文字檔，用 &lt;strong&gt;Markdown&lt;/strong&gt; 格式寫成，目的是把你網站上最重要、最值得被語言模型讀到的內容，整理成一份精簡的「導覽地圖」。&lt;/p&gt;
+&lt;p&gt;它由 &lt;a href=&quot;http://Answer.AI&quot;&gt;Answer.AI&lt;/a&gt; 的 Jeremy Howard 在 2024 年 9 月提出，規格公開在 &lt;a href=&quot;https://llmstxt.org/&quot;&gt;llmstxt.org&lt;/a&gt;。提案的核心動機很實際：語言模型的 context window（一次能讀的內容量）有限，而你的網站首頁往往塞滿導覽列、廣告、JavaScript、彈窗——對模型來說雜訊很多、訊號很少。llms.txt 的想法是，&lt;strong&gt;與其讓模型在一堆 HTML 裡撈，不如你主動給它一份乾淨、結構化、人類和機器都讀得懂的重點清單&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;一個好懂的比喻：如果 sitemap.xml 是給搜尋引擎看的「全站地址簿」（每一頁都列、給機器解析），那 llms.txt 比較像你親手寫給訪客的「這個站最該看的 10 篇，各一句話介紹」——它是策展（curation），不是窮舉。&lt;/p&gt;
+&lt;p&gt;要特別澄清一個常見誤解：llms.txt &lt;strong&gt;不是用來「擋」AI 的&lt;/strong&gt;。擋不擋 AI 爬蟲是 robots.txt 的工作。llms.txt 從頭到尾都是「歡迎讀、而且我幫你整理好了」的善意提供，它沒有任何封鎖語意。&lt;/p&gt;
+&lt;h2&gt;llms.txt vs robots.txt vs sitemap.xml：一張表看懂分工&lt;/h2&gt;
+&lt;p&gt;這三個檔都放在網站根目錄、都是給機器看的純文字檔，最容易被搞混。但它們的目的、格式、權威性完全不同：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;比較項目&lt;/th&gt;
+&lt;th&gt;llms.txt&lt;/th&gt;
+&lt;th&gt;robots.txt&lt;/th&gt;
+&lt;th&gt;sitemap.xml&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;主要目的&lt;/td&gt;
+&lt;td&gt;給語言模型一份「重點內容導覽」&lt;/td&gt;
+&lt;td&gt;告訴爬蟲哪些路徑可抓／不可抓&lt;/td&gt;
+&lt;td&gt;列出全站網址幫爬蟲發現頁面&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;格式&lt;/td&gt;
+&lt;td&gt;Markdown（人類也好讀）&lt;/td&gt;
+&lt;td&gt;純文字指令（User-agent／Allow／Disallow）&lt;/td&gt;
+&lt;td&gt;XML&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;語意&lt;/td&gt;
+&lt;td&gt;「歡迎讀，重點在這」（策展）&lt;/td&gt;
+&lt;td&gt;「請勿進入」或「歡迎進入」（門禁）&lt;/td&gt;
+&lt;td&gt;「我有這些頁」（清單）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;標準地位&lt;/td&gt;
+&lt;td&gt;社群提案，&lt;strong&gt;非&lt;/strong&gt;正式標準&lt;/td&gt;
+&lt;td&gt;RFC 9309 正式標準（2022）&lt;/td&gt;
+&lt;td&gt;&lt;a href=&quot;http://sitemaps.org&quot;&gt;sitemaps.org&lt;/a&gt; 業界協定&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;主流支援&lt;/td&gt;
+&lt;td&gt;各家 AI &lt;strong&gt;皆未承諾&lt;/strong&gt;線上讀取&lt;/td&gt;
+&lt;td&gt;Google／Bing 等主流搜尋爬蟲通常遵守（是否遵守取決於各爬蟲）&lt;/td&gt;
+&lt;td&gt;Google／Bing 等搜尋引擎廣泛支援&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;放置位置&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;/llms.txt&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;/robots.txt&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;/sitemap.xml&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;不裝會怎樣&lt;/td&gt;
+&lt;td&gt;幾乎無差別（目前少有引擎讀）&lt;/td&gt;
+&lt;td&gt;AI 爬蟲視為「全開放」&lt;/td&gt;
+&lt;td&gt;搜尋引擎靠連結自行爬，發現較慢&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;從這張表可以看出三件事：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;robots.txt 是門禁，sitemap.xml 是清單，llms.txt 是導覽。&lt;/strong&gt; 三者不衝突、也不互相取代。你可以三個都有。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;權威性差很多。&lt;/strong&gt; robots.txt 是 IETF 的 RFC 9309 正式標準，主流搜尋爬蟲通常遵守（RFC 9309 是標準，但實務上是否遵守仍取決於各爬蟲）；sitemap.xml 是行之有年、搜尋引擎普遍吃的協定；而 llms.txt 到 2026 年仍只是社群提案，沒有任何標準組織背書，主流引擎也沒承諾會讀。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;「不裝的代價」也差很多。&lt;/strong&gt; robots.txt 寫錯會把 AI 爬蟲整批擋在門外（這是真的會出事的）；sitemap 沒有頂多讓收錄慢一點；而 llms.txt 目前裝或不裝，對你被不被引用，老實說差別很小。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;換句話說：&lt;strong&gt;如果你只有時間做一件事，先把 robots.txt 寫對（別擋到該開放的 AI 爬蟲），再補 sitemap.xml，最後才輪到 llms.txt。&lt;/strong&gt; 這個優先順序反映的就是「實際回報」的高低。robots.txt 怎麼寫，我們在〈&lt;a href=&quot;https://twtools.cc/blog/ai-crawler-setup-guide-2026/&quot;&gt;10 種 AI 爬蟲完整設定指南&lt;/a&gt;〉裡有完整拆解。&lt;/p&gt;
+&lt;h2&gt;llms.txt 的格式規格：照 &lt;a href=&quot;http://llmstxt.org&quot;&gt;llmstxt.org&lt;/a&gt; 寫&lt;/h2&gt;
+&lt;p&gt;llms.txt 的規格其實很簡潔，&lt;a href=&quot;https://llmstxt.org/&quot;&gt;llmstxt.org&lt;/a&gt; 定義的結構由上而下是這樣：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;一個 H1 標題&lt;/strong&gt;（&lt;code&gt;#&lt;/code&gt;）：你的網站或專案名稱。這是規格裡&lt;strong&gt;唯一必填&lt;/strong&gt;的區塊。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;一段引文摘要&lt;/strong&gt;（&lt;code&gt;&amp;gt;&lt;/code&gt; blockquote）：用一句到幾句話講清楚這個站／專案是什麼，附上理解全站所需的關鍵資訊。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;零或多個說明段落&lt;/strong&gt;：除了標題以外的任意 Markdown 內容（段落、清單都行），用來補充背景。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;零或多個用 H2（&lt;code&gt;##&lt;/code&gt;）分隔的檔案清單區塊&lt;/strong&gt;：這是 llms.txt 的主體。每個 H2 是一個分類（例如「文件」「教學」「API」），底下用連結清單列出該分類的重點頁面。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;一個名為 &lt;code&gt;## Optional&lt;/code&gt; 的特殊區塊&lt;/strong&gt;（可選）：放進這裡的連結代表「次要、可略過」——當模型需要更短的 context 時，可以跳過這一段。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;檔案清單裡每一條連結的寫法是固定格式：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;- [連結標題](網址): 選填的一句話說明
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;把這些組合起來，一份最小但完整的 llms.txt 長這樣：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 白鹿數位
+
+&amp;gt; 專為台灣中小企業設計的數位行銷與 SEO 服務。本站提供 SEO／GEO 教學、
+&amp;gt; 工具評比與實作指南，內容以繁體中文撰寫，面向台灣站長與內容經營者。
+
+白鹿數位專注於協助台灣中小企業在搜尋引擎與 AI 引擎上被看見。
+以下是本站最具代表性的內容。
+
+## 核心教學
+
+- [2026 GEO 完整指南](https://example.com.tw/blog/geo-guide/): 台灣站長視角的生成式引擎優化總覽
+- [AI 爬蟲設定指南](https://example.com.tw/blog/ai-crawler/): robots.txt 怎麼寫才不會擋到 AI
+- [Schema JSON-LD 手冊](https://example.com.tw/blog/schema/): 2026 還有效的結構化資料
+
+## 工具
+
+- [SEO 三軸掃描器](https://example.com.tw/seo/): 一次檢測 SEO／GEO／AEO 體質
+
+## Optional
+
+- [關於我們](https://example.com.tw/about/): 公司背景
+- [聯絡方式](https://example.com.tw/contact/): 合作洽詢
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;幾個寫的時候要注意的細節：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;連結指向的頁面，最好本身就是乾淨、好讀的內容。&lt;/strong&gt; llms.txt 的精神是「給模型省事」，如果你連過去的頁面一樣塞滿雜訊，等於沒幫到忙。提案作者建議重要頁面可同時提供 Markdown 版（例如在原網址後加 &lt;code&gt;.md&lt;/code&gt;），但這是進階做法，不是必須。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;描述要誠實、要精準。&lt;/strong&gt; 一句話說明就是讓模型快速判斷「這頁值不值得讀」，灌關鍵字、誇大內容只會降低這份檔的可信度——而這正是 Google 拿它跟「關鍵字 meta 標籤」相提並論的原因（下一段詳述）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;不要把整站每一頁都列進去。&lt;/strong&gt; 那是 sitemap.xml 的工作。llms.txt 是策展，列你最希望被理解、被引用的那 10～30 篇就好。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;code&gt;/llms.txt&lt;/code&gt; 與 &lt;code&gt;/llms-full.txt&lt;/code&gt; 差在哪？&lt;/h2&gt;
+&lt;p&gt;你會看到兩種檔名，分工如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;/llms.txt&lt;/code&gt;&lt;/strong&gt;：上面講的那份「導覽＋連結清單」。它本身&lt;strong&gt;不含&lt;/strong&gt;頁面全文，模型看到清單後，需要時再去抓對應的網址。檔案小、給的是地圖。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;/llms-full.txt&lt;/code&gt;&lt;/strong&gt;：把重點內容的&lt;strong&gt;全文&lt;/strong&gt;直接攤平、串接進同一個檔案。模型不用再一頁一頁去抓，一次就能把你的核心內容全部讀進 context。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;要釐清一個容易混淆的點：&lt;strong&gt;&lt;code&gt;llms-full.txt&lt;/code&gt; 這個確切檔名並不在 &lt;a href=&quot;http://llmstxt.org&quot;&gt;llmstxt.org&lt;/a&gt; 原始規格的明文定義裡&lt;/strong&gt;。規格本身談的是 &lt;code&gt;llms.txt&lt;/code&gt; 這份導覽檔，以及由工具（如官方的 &lt;code&gt;llms_txt2ctx&lt;/code&gt;）產生的「展開版 context 檔」。&lt;code&gt;llms-full.txt&lt;/code&gt; 是社群在實作中約定俗成、用來指「全文展開版」的慣用檔名——Anthropic 等公司就同時提供 &lt;code&gt;llms.txt&lt;/code&gt; 與 &lt;code&gt;llms-full.txt&lt;/code&gt; 兩份，前者是目錄、後者是把整套 API 文件攤平。&lt;/p&gt;
+&lt;p&gt;實務上怎麼選？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;內容站、部落格、中小企業官網 → &lt;strong&gt;先做 &lt;code&gt;/llms.txt&lt;/code&gt; 就好&lt;/strong&gt;。一份策展導覽足夠，維護成本低。&lt;/li&gt;
+&lt;li&gt;文件密集的產品／開發者文件站 → 可以&lt;strong&gt;兩份都做&lt;/strong&gt;：&lt;code&gt;/llms.txt&lt;/code&gt; 當目錄，&lt;code&gt;/llms-full.txt&lt;/code&gt; 給需要一次吃完整套文件的 AI 工具。注意 &lt;code&gt;llms-full.txt&lt;/code&gt; 可能很大（幾百 KB 到數 MB），別把不相干的內容也塞進去。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;誰真的會讀 llms.txt？（誠實版，這段最重要）&lt;/h2&gt;
+&lt;p&gt;這是整篇的核心，也是最多文章誇大的地方。我把 2026 年各方的&lt;strong&gt;官方表態&lt;/strong&gt;與&lt;strong&gt;實測數據&lt;/strong&gt;並陳，你自己判斷。&lt;/p&gt;
+&lt;h3&gt;主流 AI 公司的官方立場&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Google Search 代表：公開表示「不支援、也不打算支援」。&lt;/strong&gt; Google 的 John Mueller 與 Gary Illyes 在 2025 年都以個人身分公開表態（屬員工發言，非 Google 正式產品政策聲明）。Illyes 把 llms.txt 直接類比成 1990 年代的「關鍵字 meta 標籤」（keywords meta tag）——一個因為「完全由站方自己填、容易灌水操弄」而被搜尋引擎棄用十多年的東西。Mueller 則說：「就我所知，沒有任何 AI 服務說它們在用 llms.txt，而且你看伺服器 log 會發現它們根本連抓都沒去抓。」他形容它「不是為搜尋而做」，比較像是 AI 寫程式工具拿來省 token 的「暫時性拐杖」。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;OpenAI：未公開承諾。&lt;/strong&gt; 截至 2026 年第一季，OpenAI 沒有公開聲明它的線上系統會讀取或依據 llms.txt 行動。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Anthropic：立場較模糊，但未承諾自動讀取。&lt;/strong&gt; Anthropic 自己有放 &lt;code&gt;llms.txt&lt;/code&gt; 與 &lt;code&gt;llms-full.txt&lt;/code&gt;（涵蓋整套 API 文件），但截至 2026 年也未發表「我們會自動讀別人網站 llms.txt」的聲明。它放這份檔，比較像是「方便讀我文件的 AI 工具」，不等於「我去讀你的」。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一句話總結官方面：&lt;strong&gt;到 2026 年初，OpenAI、Google、Anthropic、Perplexity 沒有任何一家公開確認它們的線上檢索系統會消費 llms.txt。&lt;/strong&gt; 其中 Google 甚至是明確否定。&lt;/p&gt;
+&lt;h3&gt;實測數據：絕大多數 llms.txt 沒被讀過&lt;/h3&gt;
+&lt;p&gt;光看表態還不夠，看實際的伺服器 log 最誠實：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Ahrefs 在 2026 年 6 月發表的&lt;a href=&quot;https://ahrefs.com/blog/llmstxt-study/&quot;&gt;伺服器日誌研究&lt;/a&gt;（log study，分析伺服器日誌與實際流量、非學術研究）掃了 13.7 萬個網域，發現當月有 97% 的 llms.txt 收到「零請求」&lt;/strong&gt;，而少數有被抓的，多半也是來自一般 bot 而非主流 AI 引擎的檢索爬蟲。&lt;/li&gt;
+&lt;li&gt;各家自行公布的 log 分析也一致：部分第三方 log 分析觀察到少量 AI bot 請求 llms.txt，但頻率很低；而 ClaudeBot、Google-Extended、PerplexityBot 幾乎不抓。在某個橫跨 90 天、超過 5 億次 AI bot 造訪的監測裡，直接針對 llms.txt 的請求只有區區數百次。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;那為什麼還是有人裝？&lt;/h3&gt;
+&lt;p&gt;把上面兩塊放在一起，結論不是「llms.txt 一無是處」，而是要分清楚它&lt;strong&gt;現在&lt;/strong&gt;有用的地方和被高估的地方：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;目前確實有用的場景&lt;/strong&gt;：AI 開發工具（Cursor、各種 coding agent）在你&lt;strong&gt;主動把某個文件站餵給它&lt;/strong&gt;時，會用 llms.txt／llms-full.txt 快速抓重點、省 context。這也是為什麼放它的多半是文件密集的開發者公司。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;被高估的場景&lt;/strong&gt;：「裝了它，ChatGPT／Perplexity 在一般使用者提問時就會更常引用我。」這在 2026 年沒有證據支持。決定你會不會被 AI 引用的，仍然是你&lt;strong&gt;頁面上可見的內容&lt;/strong&gt;寫得夠不夠好引用，以及你的 robots.txt 有沒有讓搜尋型爬蟲進得來——不是這份 &lt;code&gt;/llms.txt&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;為什麼還是可以放&lt;/strong&gt;：成本極低（一個檔），語法不會傷害 SEO，而且它是一張「未來選擇權」——萬一某天某家引擎開始正式讀，你已經就位。把它當成「低成本、可能有上檔、幾乎沒有下檔」的小投資，而不是「裝了就會被引用」的開關，心態就對了。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;台灣站怎麼產生 llms.txt？&lt;/h2&gt;
+&lt;p&gt;依你的網站類型，方法不同。&lt;/p&gt;
+&lt;h3&gt;手寫（最推薦給內容站）&lt;/h3&gt;
+&lt;p&gt;對部落格、中小企業官網、個人品牌站來說，&lt;strong&gt;手寫一份就夠了&lt;/strong&gt;，而且最可控。打開純文字編輯器，照前面的格式：H1 站名 → &lt;code&gt;&amp;gt;&lt;/code&gt; 摘要 → 幾個 &lt;code&gt;##&lt;/code&gt; 分類各列重點連結 → 選填 &lt;code&gt;## Optional&lt;/code&gt;。列你最希望被理解的 10～30 篇，每篇配一句誠實的說明。存成 &lt;code&gt;llms.txt&lt;/code&gt;，上傳到網站根目錄。完成。&lt;/p&gt;
+&lt;p&gt;手寫的好處是：你最清楚自己哪幾篇最值得被讀，這種策展判斷目前還沒有工具做得比人好。&lt;/p&gt;
+&lt;h3&gt;用工具產生&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;官方 CLI &lt;code&gt;llms_txt2ctx&lt;/code&gt;&lt;/strong&gt;：&lt;a href=&quot;http://llmstxt.org&quot;&gt;llmstxt.org&lt;/a&gt; 提供的工具，主要用途是把一份 &lt;code&gt;llms.txt&lt;/code&gt; 展開成可直接餵給模型的 context 檔（也就是前面說的展開版）。它解決的是「展開」而非「從零生成」。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;第三方產生器與平台外掛&lt;/strong&gt;：2026 年有不少線上產生器與 CMS 外掛（含部分 SEO 平台）能掃你的 sitemap 自動生出 llms.txt。⚠️ 自動生成的最大問題是&lt;strong&gt;它不會幫你做策展判斷&lt;/strong&gt;——往往把全站都倒進去，變成 sitemap 的 Markdown 版，失去 llms.txt「給重點」的本意。用工具產出後，務必人工刪減、改寫描述。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;CMS 內建&lt;/h3&gt;
+&lt;p&gt;部分文件平台（如 Mintlify、GitBook）已內建自動產生 llms.txt／llms-full.txt 的功能。如果你用的平台有，開啟即可，但同樣建議檢查它列了什麼、描述對不對。&lt;/p&gt;
+&lt;h2&gt;Astro／靜態站怎麼部署 llms.txt&lt;/h2&gt;
+&lt;p&gt;TWTools 自己就是 Astro 靜態站，這段講靜態站的具體做法。原則只有一條：&lt;strong&gt;llms.txt 必須能用 &lt;code&gt;你的網域/llms.txt&lt;/code&gt; 直接存取，回傳的是純文字（Markdown 原文），不是被包進 HTML 版型的頁面。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;做法一：放進 &lt;code&gt;public/&lt;/code&gt;（最簡單，推薦）&lt;/h3&gt;
+&lt;p&gt;Astro 會把 &lt;code&gt;public/&lt;/code&gt; 目錄的檔案原封不動複製到網站根目錄。所以最省事的做法是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在專案的 &lt;code&gt;public/&lt;/code&gt; 目錄下，新增一個檔案 &lt;code&gt;llms.txt&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;把你寫好的 Markdown 內容貼進去。&lt;/li&gt;
+&lt;li&gt;build、部署。完成後 &lt;code&gt;你的網域/llms.txt&lt;/code&gt; 就會回傳這份原文。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;這個做法適合「內容相對穩定、手動維護」的站。改內容就是改 &lt;code&gt;public/llms.txt&lt;/code&gt; 再重新部署，跟改 robots.txt 一模一樣。TWTools 的 robots.txt 與 sitemap 走的也是同一套靜態檔思路。&lt;/p&gt;
+&lt;h3&gt;做法二：用 endpoint 動態產生（內容多、想自動同步時）&lt;/h3&gt;
+&lt;p&gt;如果你的文章很多、又希望 llms.txt 永遠跟著文章列表自動更新，可以用 Astro 的檔案式 endpoint：建一個 &lt;code&gt;src/pages/llms.txt.ts&lt;/code&gt;（或 &lt;code&gt;.js&lt;/code&gt;），讓它讀取你的內容集合（content collections）、組出 Markdown 字串回傳，並把 &lt;code&gt;Content-Type&lt;/code&gt; 設成 &lt;code&gt;text/plain&lt;/code&gt;。這樣每次 build 都會依當下的文章自動生成最新的 llms.txt，不用手改。&lt;/p&gt;
+&lt;p&gt;要提醒的是：就算用自動產生，&lt;strong&gt;還是要保留策展邏輯&lt;/strong&gt;——例如只挑 &lt;code&gt;featured&lt;/code&gt; 標記的文章、或限制數量、或排除測試頁，別讓它變成全站傾倒。自動化解決的是「同步」，不是「該不該幫你篩」。&lt;/p&gt;
+&lt;h3&gt;部署後一定要驗證&lt;/h3&gt;
+&lt;p&gt;不論哪種做法，部署完都用瀏覽器打開 &lt;code&gt;你的網域/llms.txt&lt;/code&gt; 確認三件事：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;回傳的是純文字 Markdown 原文&lt;/strong&gt;，不是被套進網站版型、變成一個 HTML 頁面。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;HTTP 狀態是 200&lt;/strong&gt;，不是 404 或被重導。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;內容是你預期的最新版&lt;/strong&gt;（特別是動態產生時，確認文章列表正確）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如果你的站在 Cloudflare 後面，也順手確認沒有任何 Bot 規則把 &lt;code&gt;/llms.txt&lt;/code&gt; 這個路徑當成可疑請求擋掉——雖然少見，但靜態檔被 WAF 規則誤傷的情況偶爾會發生。&lt;/p&gt;
+&lt;h2&gt;一份可以直接複製的完整範本&lt;/h2&gt;
+&lt;p&gt;把前面所有規格組合起來，這是一份「內容型台灣網站」可以直接拿去改的完整 &lt;code&gt;llms.txt&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 你的站名
+
+&amp;gt; 一到兩句話：這個站是什麼、為誰寫、主要內容領域、語言。
+&amp;gt; 例如：本站提供台灣中小企業的 SEO 與 GEO 實作教學，內容以繁體中文撰寫。
+
+（這裡放一段背景說明，補充模型理解全站所需的脈絡，可省略。）
+
+## 核心教學
+
+- [文章標題 A](https://你的網域/blog/a/): 一句話誠實說明這篇在講什麼
+- [文章標題 B](https://你的網域/blog/b/): 一句話說明
+- [文章標題 C](https://你的網域/blog/c/): 一句話說明
+
+## 工具／服務
+
+- [工具或服務名稱](https://你的網域/tool/): 一句話說明它能做什麼
+
+## 關於
+
+- [關於我們](https://你的網域/about/): 公司或作者背景
+
+## Optional
+
+- [次要頁面](https://你的網域/secondary/): 可在需要精簡 context 時略過
+- [聯絡方式](https://你的網域/contact/): 合作洽詢
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;把它存成 &lt;code&gt;llms.txt&lt;/code&gt;，丟進 Astro 的 &lt;code&gt;public/&lt;/code&gt;（或其他框架的對應靜態目錄），部署，用瀏覽器驗證。整個過程通常不到 10 分鐘。&lt;/p&gt;
+&lt;h2&gt;常見問題（FAQ）&lt;/h2&gt;
+&lt;h3&gt;裝了 llms.txt，ChatGPT 和 Claude 就會引用我嗎？&lt;/h3&gt;
+&lt;p&gt;目前沒有證據支持這個說法。截至 2026 年，OpenAI、Anthropic、Google、Perplexity 都沒有公開承諾它們的線上系統會讀取 llms.txt，伺服器 log 實測也顯示主流 AI 引擎幾乎不抓這個檔。決定你被不被引用的，仍是你頁面上可見內容的品質，以及 robots.txt 有沒有讓搜尋型爬蟲進得來。把 llms.txt 當成低成本的未來選擇權，不要當成被引用的開關。&lt;/p&gt;
+&lt;h3&gt;llms.txt 是正式標準嗎？&lt;/h3&gt;
+&lt;p&gt;不是。它是 &lt;a href=&quot;http://Answer.AI&quot;&gt;Answer.AI&lt;/a&gt; 的 Jeremy Howard 在 2024 年提出的社群提案，規格在 &lt;a href=&quot;http://llmstxt.org&quot;&gt;llmstxt.org&lt;/a&gt;，到 2026 年仍由社群維護，沒有經過 IETF 或 W3C 等標準組織正式制定。這跟 robots.txt（RFC 9309 正式標準）的地位差很多。&lt;/p&gt;
+&lt;h3&gt;那我到底要不要裝？&lt;/h3&gt;
+&lt;p&gt;看你的網站類型。&lt;strong&gt;文件密集的開發者／產品文件站&lt;/strong&gt;值得裝（甚至連 llms-full.txt 一起），因為 AI 開發工具確實會用它省 context。&lt;strong&gt;一般內容站、中小企業官網&lt;/strong&gt;可以裝、成本很低，但別期待立刻有回報；如果時間有限，先把 robots.txt 寫對、sitemap 補好，這兩件的實際回報遠高於 llms.txt。&lt;/p&gt;
+&lt;h3&gt;llms.txt 會影響我的 Google 搜尋排名嗎？&lt;/h3&gt;
+&lt;p&gt;不會。Google Search 代表已公開表示不支援 llms.txt，它不是排名因子，裝或不裝都不影響你在 Google 一般搜尋的收錄與排名。它純粹是「提供給語言模型的內容導覽」，跟搜尋排名是兩條線。&lt;/p&gt;
+&lt;h3&gt;llms.txt 和 llms-full.txt 一定要兩個都做嗎？&lt;/h3&gt;
+&lt;p&gt;不用。一般站做 &lt;code&gt;/llms.txt&lt;/code&gt; 一份（策展導覽）就夠了。&lt;code&gt;/llms-full.txt&lt;/code&gt;（全文展開版）主要對文件密集的站有意義，讓 AI 工具一次讀完整套內容。注意 &lt;code&gt;llms-full.txt&lt;/code&gt; 這個檔名是社群慣例，不在 &lt;a href=&quot;http://llmstxt.org&quot;&gt;llmstxt.org&lt;/a&gt; 原始規格的明文定義裡。&lt;/p&gt;
+&lt;h3&gt;我用 WordPress／Wix，沒辦法放根目錄檔怎麼辦？&lt;/h3&gt;
+&lt;p&gt;WordPress 可透過 FTP 或檔案管理器把 llms.txt 放進站台根目錄，也有外掛能自動產生（用外掛同樣要檢查它列了什麼、有沒有過度傾倒全站）。部分託管型平台（如某些 Wix 方案）對根目錄純文字檔的支援有限，這種情況以平台官方文件為準；真的放不了，也不必勉強——目前 llms.txt 的實際回報本來就有限。&lt;/p&gt;
+&lt;h3&gt;llms.txt 會不會被人拿來灌關鍵字操弄？&lt;/h3&gt;
+&lt;p&gt;會，而這正是 Google 不採用它的主要理由之一——因為內容完全由站方自己填、無法被外部驗證，跟當年被棄用的「關鍵字 meta 標籤」是同類問題。所以寫 llms.txt 時，描述務必誠實精準；灌水不但沒有好處，還會在未來真有引擎讀它時降低你的可信度。&lt;/p&gt;
+&lt;h3&gt;我已經有 sitemap.xml 了，還需要 llms.txt 嗎？&lt;/h3&gt;
+&lt;p&gt;兩者目的不同，不互相取代。sitemap.xml 是給搜尋引擎的全站網址清單（XML、窮舉）；llms.txt 是給語言模型的重點內容導覽（Markdown、策展、人也讀得懂）。有 sitemap 是必要的基本盤；llms.txt 是可選的加分項，且目前回報有限。&lt;/p&gt;
+&lt;h2&gt;結語：把 llms.txt 當成「低成本的未來選擇權」&lt;/h2&gt;
+&lt;p&gt;llms.txt 是個方向正確的提案：在 AI 讀網路的時代，主動給模型一份乾淨、結構化、人機都讀得懂的重點導覽，邏輯上是對的。但 2026 年的誠實現況是——它還是社群提案、不是正式標準，Google Search 代表已公開表示不支援、也不打算支援，其餘各家未承諾，實測絕大多數 llms.txt 根本沒被讀過。&lt;/p&gt;
+&lt;p&gt;所以正確的做法是：&lt;strong&gt;先把回報明確的事做好&lt;/strong&gt;——robots.txt 別擋到該開放的 AI 爬蟲、sitemap.xml 補齊、頁面上可見的內容寫得值得被引用。把這些做完之後，再花 10 分鐘放一份誠實、策展過的 llms.txt，當成一張幾乎沒有下檔風險的未來選擇權。它不會立刻讓你被引用，但萬一風向變了，你已經就位。&lt;/p&gt;
+&lt;p&gt;延伸閱讀：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://twtools.cc/blog/ai-crawler-setup-guide-2026/&quot;&gt;10 種 AI 爬蟲完整設定指南：robots.txt 怎麼寫才不會擋到 AI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://twtools.cc/blog/schema-jsonld-complete-handbook-2026/&quot;&gt;Schema.org JSON-LD 完全手冊（2026）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/&quot;&gt;用 TWTools 三軸掃描器，一次檢測 SEO／GEO／AEO 體質&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一手來源（請以官方最新文件為準）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://llmstxt.org/&quot;&gt;llmstxt.org — llms.txt 官方規格頁&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://ahrefs.com/blog/llmstxt-study/&quot;&gt;Ahrefs 伺服器日誌研究（2026 年 6 月）：分析 13.7 萬網域，97% 的 llms.txt 從未被讀取&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.seroundtable.com/google-parallel-meta-keywords-llmstxt-39862.html&quot;&gt;Search Engine Roundtable：Google 將 llms.txt 類比為已淘汰的關鍵字 meta 標籤&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://ahrefs.com/blog/what-is-llms-txt/&quot;&gt;Ahrefs：什麼是 llms.txt、它有用嗎&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;免責：llms.txt 為社群演進中的提案，各 AI 平台支援度請以官方最新文件為準。&lt;/p&gt;
+&lt;/blockquote&gt;
+</content:encoded><category>SEO 策略</category><category>GEO</category><category>AEO</category><category>llms.txt</category><category>趨勢觀點</category></item><item><title>颱風天交通與通勤應變指南（2026）：航班改期、高鐵台鐵客運停駛退票、國道封閉與上班決策</title><link>https://twtools.cc/blog/typhoon-day-commute-transport-guide-2026/</link><guid isPermaLink="true">https://twtools.cc/blog/typhoon-day-commute-transport-guide-2026/</guid><description>颱風來襲，最讓人手忙腳亂的往往不是家裡會不會淹水，而是「我到底走不走得了」：機票要不要改、高鐵台鐵停不停、國道會不會封、公司宣布照常上班但捷運客運都停了怎麼辦。本文聚焦移動與交通，整理 2026 年最新的航班改退規則、各大眾運輸停駛與退票標準對照表、國道與機場接駁停擺時的替代路線，以及用在地風雨時間軸抓出門空檔的實際做法，搭配 5 組以上常見問題。</description><pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;颱風來的時候，真正讓人手忙腳亂的，常常不是「家裡會不會進水」，而是更現實的一句話：**我到底走不走得了？**後天的機票要不要改、明天的高鐵停不停、台鐵退票會不會被扣手續費、國道會不會封、公司還沒宣布停班但捷運客運都收班了怎麼辦。這些問題分散在十幾個官網與新聞快訊裡，偏偏又是要在很短的時間內做決定。&lt;/p&gt;
 &lt;p&gt;這篇把焦點放在&lt;strong&gt;移動與交通&lt;/strong&gt;——航班、高鐵、台鐵、客運、國道、機場接駁，以及「人要不要出門」的通勤決策。居家防災清單、颱風假薪資權益是另外兩個主題，這裡不重複；這裡只談：當你需要從 A 點到 B 點，颱風天該怎麼判斷、怎麼改票、怎麼找替代路線。&lt;/p&gt;
 &lt;p&gt;開始之前先記住兩個自家工具，後面會反覆用到：用 &lt;a href=&quot;https://twtools.cc/dingfengbo/&quot;&gt;風雨時間軸&lt;/a&gt; 看你出發地與目的地「風雨何時最強」，抓出可以移動的空檔；用 &lt;a href=&quot;https://twtools.cc/typhoon/&quot;&gt;颱風停班停課查詢&lt;/a&gt; 一次看全台 22 縣市今日／明日的官方狀態。&lt;/p&gt;
 &lt;h2&gt;一、颱風天交通的決策順序：先看時間軸，再決定改不改&lt;/h2&gt;
