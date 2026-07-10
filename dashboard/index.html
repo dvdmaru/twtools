@@ -896,7 +896,9 @@
           return '週' + ['日', '一', '二', '三', '四', '五', '六'][new Date(ymd + 'T00:00:00Z').getUTCDay()];
         }
 
-        // 逐日分組 + 每日尖峰時段(先比風級、平手比降雨機率;純官方資料、不臆測趨勢)
+        // 逐日分組 + 每日尖峰時段(規則跟隨 worker 的 canonical peakMode,與定風波同一套定義:
+        // wind=陣風達 8 級的風事件,比風級、平手比降雨機率;否則比降雨機率、取最早)
+        var peakMode = w.peakMode || 'wind';
         var days = [], byDay = {};
         tl.forEach(function (e) {
           var ymd = ymdOf(e.time); if (!ymd) return;
@@ -906,12 +908,15 @@
         days.forEach(function (d) {
           var pk = d.entries[0];
           d.entries.forEach(function (e) {
-            var eb = e.beaufortNum || 0, pb = pk.beaufortNum || 0;
-            if (eb > pb || (eb === pb && (e.pop == null ? -1 : e.pop) > (pk.pop == null ? -1 : pk.pop))) pk = e;
+            if (peakMode === 'wind') {
+              var eb = e.beaufortNum || 0, pb = pk.beaufortNum || 0;
+              if (eb > pb || (eb === pb && (e.pop == null ? -1 : e.pop) > (pk.pop == null ? -1 : pk.pop))) pk = e;
+            } else if ((e.pop == null ? -1 : e.pop) > (pk.pop == null ? -1 : pk.pop)) pk = e;
           });
           d.peak = pk;
         });
         var peakYmd = ymdOf(tl[peakIdx].time);
+        var peakWord = peakMode === 'rain' ? '雨最大' : '最強';
 
         // 逐日尖峰摘要:每天最強時段一行(最強那天標「← 最強」)
         var summary = days.slice(0, 5).map(function (d) {
@@ -924,7 +929,7 @@
             '<span style="display:inline-block;min-width:2.8em;color:var(--tw-text-secondary);">' + relLabel(d.ymd) + '</span>' +
             '<span style="display:inline-block;min-width:3em;color:var(--tw-text-muted);">' + mdShort(d.ymd) + '</span>' +
             '<strong>' + hhmm + '</strong> 風 ' + esc(bf) + ' 級・雨 ' + rain +
-            (isPeak ? ' <strong style="color:#b91c1c;">← 最強</strong>' : '') + '</span>';
+            (isPeak ? ' <strong style="color:#b91c1c;">← ' + peakWord + '</strong>' : '') + '</span>';
         }).join('');
 
         // 迷你時間軸:柱高=降雨機率,琥珀=風力≥6 級,紅=最強時段
@@ -940,11 +945,11 @@
         }).join('');
 
         c.body.innerHTML =
-          '<span class="block mb-1" style="color:var(--tw-text-secondary);">' + esc(w.town || town || county) + '・接下來風雨最強時段</span>' +
+          '<span class="block mb-1" style="color:var(--tw-text-secondary);">' + esc(w.town || town || county) + (peakMode === 'rain' ? '・接下來降雨最大時段' : '・接下來風雨最強時段') + '</span>' +
           summary +
-          '<span class="rt-spark mt-2" role="img" aria-label="未來逐 3 小時風雨長條圖,最強時段 ' + esc(peakTime) + '">' + bars + '</span>' +
+          '<span class="rt-spark mt-2" role="img" aria-label="未來逐 3 小時風雨長條圖,' + peakWord + '時段 ' + esc(peakTime) + '">' + bars + '</span>' +
           '<span class="rt-source" style="display:flex;gap:1px;margin-top:2px;">' + axis + '</span>' +
-          '<span class="rt-source block mt-1">柱高=降雨機率;<span style="color:#b45309;font-weight:700;">琥珀</span>=風力≥6 級;<span style="color:#b91c1c;font-weight:700;">紅</span>=最強時段。逐時段細節看定風波。</span>';
+          '<span class="rt-source block mt-1">柱高=降雨機率;<span style="color:#b45309;font-weight:700;">琥珀</span>=風力≥6 級;<span style="color:#b91c1c;font-weight:700;">紅</span>=' + peakWord + '時段。逐時段細節看定風波。</span>';
         c.meta.textContent = '來源:中央氣象署鄉鎮預報(每 6 小時更新)' + (w.cacheStale ? '(端點壅塞,顯示最近成功資料)' : '');
       }
 
