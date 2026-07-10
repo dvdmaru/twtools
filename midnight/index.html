@@ -151,6 +151,59 @@
   .toast{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:#000000aa;color:#fff;padding:9px 18px;border-radius:999px;font-size:.85rem;z-index:70;opacity:0;transition:opacity .25s;pointer-events:none}
   .toast.show{opacity:1}
 
+  /* ====== TRACKING（虛擬配送閉環） ====== */
+  .track-wrap{position:fixed;inset:0;z-index:60;background:#180f13e0;display:none;align-items:center;justify-content:center;padding:16px;overflow:auto}
+  .track-wrap.on{display:flex}
+  .track-panel{width:min(440px,100%);max-height:94dvh;overflow:auto;background:linear-gradient(180deg,#2a1715,#1d1113);border:1px solid #f0b26b33;border-radius:16px;padding:18px 18px 20px;color:#f8eadf;box-shadow:0 40px 120px -30px #000;scrollbar-width:thin}
+  .track-head{display:flex;justify-content:space-between;gap:10px;align-items:start;margin-bottom:12px}
+  .track-head h3{font-family:var(--serif);font-size:1.3rem;color:#fff;line-height:1.25;margin-top:2px}
+  .track-steps{display:flex;gap:4px;margin-bottom:12px}
+  .track-steps span{flex:1;text-align:center;font-size:.68rem;color:#f8eadf66;padding-top:8px;position:relative}
+  .track-steps span::before{content:"";position:absolute;top:0;left:8%;right:8%;height:3px;border-radius:2px;background:#ffffff1c}
+  .track-steps span.done::before{background:var(--warm)}
+  .track-steps span.done{color:var(--warm);font-weight:700}
+  .track-map{background:#140c10;border:1px solid #ffffff14;border-radius:12px;overflow:hidden;margin-bottom:10px}
+  .track-map svg{display:block;width:100%;height:auto}
+  .track-eta{display:flex;justify-content:space-between;align-items:baseline;font-size:.82rem;color:#f8eadfaa;margin-bottom:12px}
+  .track-eta b{font-family:var(--mono);color:var(--warm);font-size:1.05rem}
+  .bubbles{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
+  .bubble{max-width:88%;background:#ffffff14;border:1px solid #ffffff1a;border-radius:12px 12px 12px 4px;padding:8px 12px;font-size:.86rem;line-height:1.55}
+  .bubble b{color:var(--warm);font-weight:700;margin-right:6px}
+  .bubble.sys{align-self:center;background:transparent;border:none;color:#f8eadf77;font-size:.76rem;padding:2px}
+  .bubble.arrive{border-color:var(--warm);background:#f0b26b22}
+  .open-door{margin:10px auto 4px;display:block;border:none;border-radius:999px;background:linear-gradient(135deg,#f0b26b,#d68a45);color:#2a1715;font-weight:700;font-family:var(--serif);font-size:1.05rem;padding:13px 34px;cursor:pointer;box-shadow:0 10px 26px -8px #f0b26b55}
+  .open-door[hidden]{display:none} /* display:block 會蓋掉 hidden 屬性的 UA 樣式,必須補這條 */
+  .doorstep{display:none;text-align:center;padding:14px 0 4px}
+  .doorstep.on{display:block}
+  .doorstep .scene{font-size:2.6rem;letter-spacing:.1em}
+  .doorstep p{font-size:.82rem;color:#f8eadfaa;margin-top:6px}
+  .rate-zone{display:none;border-top:1px solid #ffffff1a;margin-top:12px;padding-top:14px}
+  .rate-zone.on{display:block}
+  .rate-zone h4{font-family:var(--serif);font-size:1.05rem;color:#fff;margin-bottom:8px}
+  .stars{display:flex;gap:6px;justify-content:center;margin-bottom:12px}
+  .stars button{font-size:1.9rem;background:none;border:none;cursor:pointer;color:#ffffff3a;transition:transform .15s,color .15s;line-height:1}
+  .stars button.on{color:var(--warm)}
+  .stars button:hover{transform:scale(1.15)}
+  .tips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}
+  .tips button{border:1px solid #ffffff2e;background:#ffffff10;color:#f8eadfcc;border-radius:999px;padding:8px 16px;font-size:.85rem;cursor:pointer}
+  .tips button.on{background:var(--warm);border-color:var(--warm);color:#2a1715;font-weight:700}
+  .finish{width:100%;border:none;border-radius:999px;background:linear-gradient(135deg,#a06a5f,#7c4241);color:#fff;padding:13px 16px;font-weight:700;cursor:pointer;font-size:.95rem}
+  .finish:disabled{opacity:.4;cursor:not-allowed}
+  .track-summary{display:none;text-align:center;padding-top:6px}
+  .track-summary.on{display:block}
+  .track-summary h4{font-family:var(--serif);font-size:1.5rem;color:var(--warm);line-height:1.3}
+  .sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+  .sum-card{background:#ffffff10;border:1px solid #ffffff1a;border-radius:10px;padding:10px 6px}
+  .sum-card span{display:block;font-size:.7rem;color:#f8eadf88}
+  .sum-card b{font-family:var(--mono);color:#9fd39a;font-size:.95rem}
+  .track-chip{position:fixed;left:50%;transform:translateX(-50%);bottom:64px;z-index:55;display:none;border:1px solid #f0b26b55;border-radius:999px;background:#2a1715f0;color:#f8eadf;padding:11px 20px;font-size:.88rem;font-weight:700;cursor:pointer;box-shadow:0 14px 34px -12px #000}
+  .track-chip.on{display:block}
+  .track-chip b{font-family:var(--mono);color:var(--warm)}
+  @media(max-width:520px){
+    .sum-grid{grid-template-columns:1fr 1fr}
+    .stars button{font-size:2.2rem}
+  }
+
   @media(max-width:880px){
     .menu-stage{grid-template-columns:1fr;padding-bottom:82px}
     .cart-panel{position:fixed;left:12px;right:12px;bottom:12px;max-height:72dvh;z-index:10;display:none}
@@ -273,26 +326,70 @@
   <button class="floating-cart" id="floatingCart">購物車 <b id="floatingCount">0</b></button>
 </section>
 
+<!-- ====================== TRACKING（虛擬配送閉環） ====================== -->
+<div class="track-wrap" id="trackWrap" role="dialog" aria-label="虛擬訂單配送狀態">
+  <div class="track-panel">
+    <div class="track-head">
+      <div>
+        <span class="eyebrow" style="color:#f0b26b">虛擬配送 · NOTHING IS REAL</span>
+        <h3 id="trackTitle">訂單處理中</h3>
+      </div>
+      <button class="exit" id="trackClose">先滑別的</button>
+    </div>
+    <div class="track-steps" id="trackSteps"></div>
+    <div class="track-map">
+      <svg viewBox="0 0 320 190" aria-hidden="true">
+        <g stroke="#ffffff12" stroke-width="1">
+          <line x1="0" y1="40" x2="320" y2="40"/><line x1="0" y1="96" x2="320" y2="96"/><line x1="0" y1="150" x2="320" y2="150"/>
+          <line x1="70" y1="0" x2="70" y2="190"/><line x1="160" y1="0" x2="160" y2="190"/><line x1="250" y1="0" x2="250" y2="190"/>
+        </g>
+        <path id="routePath" d="M30,152 L30,96 L122,96 L122,40 L234,40 L234,118 L288,118" fill="none" stroke="#f0b26b" stroke-width="3" stroke-dasharray="6 7" stroke-linecap="round" opacity=".8"/>
+        <text x="30" y="168" text-anchor="middle" font-size="17">🏪</text>
+        <text x="296" y="112" text-anchor="middle" font-size="17">🏠</text>
+        <text id="riderDot" x="30" y="158" text-anchor="middle" font-size="16">🛵</text>
+      </svg>
+    </div>
+    <div class="track-eta"><span id="trackShop">—</span><span>虛擬時間剩 <b id="trackLeft">—</b></span></div>
+    <div class="bubbles" id="bubbles"></div>
+    <button class="open-door" id="openDoorBtn" hidden>🚪 去開門</button>
+    <div class="doorstep" id="doorstep">
+      <div class="scene">🚪🛍️♨️</div>
+      <p>餐點掛在門把上，還冒著虛構的熱氣。外送員已拍照存證（假裝有照片）。</p>
+    </div>
+    <div class="rate-zone" id="rateZone">
+      <h4>幫這趟虛擬外送打個分數</h4>
+      <div class="stars" id="stars"></div>
+      <div class="tips" id="tips"></div>
+      <button class="finish" id="finishBtn" disabled>完成這一單</button>
+    </div>
+    <div class="track-summary" id="trackSummary"></div>
+  </div>
+</div>
+<button class="track-chip" id="trackChip">🛵 虛擬訂單配送中 · 剩 <b id="chipLeft">—</b></button>
+
 <div class="toast" id="toast"></div>
 
 <script>
 const MENU = [
-  { id:"fried", name:"鹹酥雞", items:[
-    ["popcorn-chicken","鹹酥雞","🍗",75,420,4.8],["chicken-cutlet","厚切雞排","🍖",95,590,4.7],["sweet-potato-fries","梅粉地瓜條","🍠",55,310,4.6],["tempura","甜不辣","🍢",45,260,4.5],["green-beans","炸四季豆","🫛",50,190,4.6],["rice-blood","米血糕","◼️",35,210,4.4],["squid","酥炸魷魚","🦑",90,360,4.8],["mushroom","椒鹽杏鮑菇","🍄",65,240,4.7]
+  { id:"fried", name:"鹹酥雞", shop:"阿桂鹹酥雞", items:[
+    ["popcorn-chicken","鹹酥雞","🍗",75,420,4.8],["chicken-cutlet","厚切雞排","🍖",95,590,4.7],["sweet-potato-fries","梅粉地瓜條","🍠",55,310,4.6],["tempura","甜不辣","🍢",45,260,4.5],["green-beans","炸四季豆","🫛",50,190,4.6],["rice-blood","米血糕","◼️",35,210,4.4],["squid","酥炸魷魚","🦑",90,360,4.8],["mushroom","椒鹽杏鮑菇","🍄",65,240,4.7],["chicken-skin","脆炸雞皮","🥓",45,320,4.7],["silk-roll","炸銀絲卷佐煉乳","🥖",55,380,4.6]
   ]},
-  { id:"drinks", name:"手搖", items:[
-    ["pearl-milk-tea","珍珠奶茶","🧋",60,520,4.8],["black-tea","古早味紅茶","🥤",30,160,4.5],["green-tea","茉香綠茶","🍵",35,120,4.4],["wintermelon","冬瓜檸檬","🍋",45,210,4.6],["taro-milk","芋頭鮮奶","🥛",75,430,4.7],["grass-jelly","仙草凍奶茶","🟤",65,390,4.6],["fruit-tea","水果茶","🍊",70,260,4.7]
+  { id:"bbq", name:"燒烤", shop:"炭火三更", items:[
+    ["sausage","碳烤香腸","🌭",40,310,4.8],["grilled-corn","醬烤玉米","🌽",60,250,4.6],["beef-cube","骰子牛串","🥩",85,330,4.7],["shrimp-skewer","鹽烤蝦串","🍤",70,180,4.7],["green-pepper","烤青椒","🫑",35,60,4.4],["chicken-wing","蜜汁烤雞翅","🪽",55,280,4.8],["toast-milk","碳烤饅頭煉乳","🍞",45,280,4.6]
   ]},
-  { id:"braised", name:"滷味", items:[
-    ["braised-tofu","滷豆干","🟫",30,160,4.5],["braised-egg","滷蛋","🥚",18,90,4.6],["noodles","王子麵","🍜",25,280,4.7],["cabbage","高麗菜","🥬",35,80,4.4],["fish-cake","魚板","🍥",35,140,4.5],["radish","白蘿蔔","⚪",25,60,4.3],["duck-blood","鴨血","🟥",45,170,4.6],["corn","玉米筍","🌽",35,75,4.4]
+  { id:"drinks", name:"手搖", shop:"月光手搖", items:[
+    ["pearl-milk-tea","珍珠奶茶","🧋",60,520,4.8],["black-tea","古早味紅茶","🥤",30,160,4.5],["green-tea","茉香綠茶","🍵",35,120,4.4],["wintermelon","冬瓜檸檬","🍋",45,210,4.6],["taro-milk","芋頭鮮奶","🥛",75,430,4.7],["grass-jelly","仙草凍奶茶","🟤",65,390,4.6],["fruit-tea","水果茶","🍊",70,260,4.7],["yakult-green","多多綠","🍹",55,230,4.6],["coffee-jelly","咖啡凍奶","☕",70,340,4.5]
   ]},
-  { id:"savory", name:"鹹食", items:[
-    ["rice-ball","炙燒飯糰","🍙",65,380,4.6],["scallion-pancake","蔥抓餅","🫓",55,360,4.7],["dumpling","煎餃","🥟",60,340,4.8],["noodle-soup","熱湯麵","🍜",85,510,4.5],["egg-cake","起司蛋餅","🧀",50,330,4.7],["sticky-rice","油飯小碗","🍚",55,420,4.4],["salty-chicken","鹽水雞","🥗",95,300,4.8]
+  { id:"braised", name:"滷味", shop:"巷口深夜滷味", items:[
+    ["braised-tofu","滷豆干","🟫",30,160,4.5],["braised-egg","滷蛋","🥚",18,90,4.6],["noodles","王子麵","🍜",25,280,4.7],["cabbage","高麗菜","🥬",35,80,4.4],["fish-cake","魚板","🍥",35,140,4.5],["radish","白蘿蔔","⚪",25,60,4.3],["duck-blood","鴨血","🟥",45,170,4.6],["corn","玉米筍","🌽",35,75,4.4],["intestine","滷大腸","🐷",60,290,4.7],["enoki","金針菇","🌾",30,60,4.4]
   ]},
-  { id:"dessert", name:"甜點", items:[
-    ["taro-ball","芋圓甜湯","🍡",60,330,4.7],["wheel-cake","奶油車輪餅","🥞",25,180,4.6],["sweet-potato-ball","地瓜球","🟠",45,260,4.8],["tofu-pudding","豆花","🍮",50,220,4.5],["peanut-ice","花生捲冰淇淋","🍨",65,350,4.8],["pudding","布丁","🍮",35,210,4.4],["red-bean","紅豆湯","🫘",45,250,4.5]
+  { id:"savory", name:"鹹食", shop:"夜半食堂", items:[
+    ["rice-ball","炙燒飯糰","🍙",65,380,4.6],["scallion-pancake","蔥抓餅","🫓",55,360,4.7],["dumpling","煎餃","🥟",60,340,4.8],["noodle-soup","熱湯麵","🍜",85,510,4.5],["egg-cake","起司蛋餅","🧀",50,330,4.7],["sticky-rice","油飯小碗","🍚",55,420,4.4],["salty-chicken","鹽水雞","🥗",95,300,4.8],["braised-pork-rice","滷肉飯","🍛",45,480,4.9],["oyster-noodle","蚵仔麵線","🥣",65,380,4.7]
+  ]},
+  { id:"dessert", name:"甜點", shop:"甜眠甜品鋪", items:[
+    ["taro-ball","芋圓甜湯","🍡",60,330,4.7],["wheel-cake","奶油車輪餅","🥞",25,180,4.6],["sweet-potato-ball","地瓜球","🟠",45,260,4.8],["tofu-pudding","豆花","🍮",50,220,4.5],["peanut-ice","花生捲冰淇淋","🍨",65,350,4.8],["pudding","布丁","🍮",35,210,4.4],["red-bean","紅豆湯","🫘",45,250,4.5],["grass-jelly-hot","燒仙草","🫖",50,240,4.6],["mochi","花生白玉麻糬","🥮",40,210,4.5]
   ]}
-].map(cat => ({...cat, items: cat.items.map(([id,name,emoji,price,kcal,rating]) => ({id,name,emoji,price,kcal,rating,cat:cat.id,catName:cat.name}))}));
+].map(cat => ({...cat, items: cat.items.map(([id,name,emoji,price,kcal,rating]) => ({id,name,emoji,price,kcal,rating,cat:cat.id,catName:cat.name,shop:cat.shop}))}));
 
 const $ = (id) => document.getElementById(id);
 const state = {
@@ -340,7 +437,7 @@ function ding(){
   }catch(e){}
 }
 function renderTabs(){
-  $("tabs").innerHTML = MENU.map(cat => `<button class="tab" role="tab" aria-selected="${cat.id===state.category}" data-cat="${cat.id}">${cat.name}</button>`).join("");
+  $("tabs").innerHTML = MENU.map(cat => `<button class="tab" role="tab" aria-selected="${cat.id===state.category}" data-cat="${cat.id}">${cat.shop}</button>`).join("");
   document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => {
     state.category = btn.dataset.cat;
     renderTabs(); renderMenu();
@@ -373,7 +470,7 @@ function renderCart(){
   }else{
     $("cartItems").innerHTML = entries.map(item => `
       <div class="cart-row">
-        <div><strong>${item.emoji} ${item.name}</strong><small>${money(item.price)} · ${item.kcal} kcal · ${item.catName}</small></div>
+        <div><strong>${item.emoji} ${item.name}</strong><small>${money(item.price)} · ${item.kcal} kcal · ${item.shop}</small></div>
         <div class="qty">
           <button data-dec="${item.id}" aria-label="減少 ${item.name}">−</button>
           <span>${item.qty}</span>
@@ -414,28 +511,167 @@ function checkout(){
   state.checkingOut = true;
   $("checkoutBtn").disabled = true;
   $("checkoutBtn").textContent = "模擬送出中…";
-  $("result").classList.remove("on");
   setTimeout(() => {
-    const line = randomLines[Math.floor(Math.random()*randomLines.length)];
-    $("result").innerHTML = `
-      <h3>今晚省下 ${money(t.amount)}</h3>
-      <p style="margin-top:8px;color:var(--tw-text-secondary);font-size:.88rem">這是模擬下單，不會真的送餐也不會扣款。${line}</p>
-      <div class="result-grid">
-        <div class="result-card"><span>省下金額</span><b>${money(t.amount)}</b></div>
-        <div class="result-card"><span>想像熱量</span><b>${t.kcal} → 0</b></div>
-        <div class="result-card"><span>罪惡感</span><b>0</b></div>
-      </div>
-      <div class="result-actions">
-        <button id="againBtn">再逛一輪</button>
-        <button id="resultClearBtn">清空購物車</button>
-      </div>`;
-    $("result").classList.add("on");
-    $("checkoutBtn").textContent = "送出虛擬訂單";
+    const entries = cartEntries();
+    const shops = [...new Set(entries.map(i => i.shop))];
+    order = {
+      amount: t.amount, kcal: t.kcal, count: t.count,
+      shopLabel: shops.length > 1 ? `${shops[0]} 等 ${shops.length} 家聯合出餐` : shops[0],
+      etaMin: 22 + Math.min(18, t.count * 2),
+      rider: RIDERS[Math.floor(Math.random() * RIDERS.length)],
+      start: Date.now(), stars: 0, tip: null, opened: false, finished: false
+    };
+    saveOrder();
+    state.cart = {}; saveCart();
     state.checkingOut = false;
+    $("checkoutBtn").textContent = "送出虛擬訂單";
     renderCart();
-    $("againBtn").addEventListener("click", () => { $("result").classList.remove("on"); showToast("可以繼續逛，但不用真的吃"); });
-    $("resultClearBtn").addEventListener("click", clearCart);
-  }, 1500);
+    $("cartPanel").classList.remove("open");
+    // 新訂單:把追單 chip 重置回倒數型態(上一單可能停在「放門口了」)
+    const chip = $("trackChip");
+    chip.dataset.arrived = ""; chip.innerHTML = '🛵 虛擬訂單配送中 · 剩 <b id="chipLeft">—</b>';
+    try{ gtag('event','virtual_checkout',{ value:t.amount }); }catch(e){}
+    openTrack();
+  }, 900);
+}
+
+/* ====== 虛擬配送引擎（全部假的；進度以時間戳計算，關頁重開、切分頁都能正確續播） ====== */
+const RIDERS = ["阿明","小P","雅婷","凱哥","黑輪伯"];
+const ORDER_KEY = "twtools_midnight_order_v1";
+// 1 虛擬分鐘 = 2.5 秒（深夜時區，時間走得比較快）;?minms= 可覆寫（QA 用）
+const MIN_MS = Math.max(60, +(new URLSearchParams(location.search).get("minms")) || 2500);
+const STEPS = ["接單","製作","取餐","配送","送達"];
+let order = JSON.parse(localStorage.getItem(ORDER_KEY) || "null");
+let trackTimer = null, titleTimer = null;
+const baseTitle = document.title;
+
+function saveOrder(){ order ? localStorage.setItem(ORDER_KEY, JSON.stringify(order)) : localStorage.removeItem(ORDER_KEY); }
+function orderProgress(){ return order ? Math.min(1, (Date.now() - order.start) / (order.etaMin * MIN_MS)) : 0; }
+function bubbleScript(){
+  const shop = order.shopLabel, r = order.rider;
+  return [
+    [.02, "sys", `訂單已傳給 ${shop}（假裝的）`],
+    [.10, shop, "接單！鍋已經熱了（虛構）。"],
+    [.30, "sys", `外送員 ${r} 已接單`],
+    [.36, r, "取到餐了，出發！"],
+    [.55, r, "經過月光巷，夜風不錯。"],
+    [.75, r, "前面就是你家巷口了。"],
+    [1,   r, "餐點放門口了，慢用 🙏"]
+  ];
+}
+function doorbell(){
+  if(!state.sound) return;
+  try{
+    const AC = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AC();
+    [[660,0],[524,.28]].forEach(([f,at]) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = "sine"; o.frequency.setValueAtTime(f, ctx.currentTime + at);
+      g.gain.setValueAtTime(.0001, ctx.currentTime + at);
+      g.gain.exponentialRampToValueAtTime(.09, ctx.currentTime + at + .02);
+      g.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + at + .5);
+      o.connect(g).connect(ctx.destination);
+      o.start(ctx.currentTime + at); o.stop(ctx.currentTime + at + .55);
+    });
+  }catch(e){}
+}
+function startOrderLoop(){
+  if(trackTimer) return;
+  tickTrack();
+  trackTimer = setInterval(tickTrack, 400);
+}
+function stopOrderLoop(){ clearInterval(trackTimer); trackTimer = null; }
+function openTrack(){
+  if(!order) return;
+  $("trackWrap").classList.add("on");
+  $("trackChip").classList.remove("on");
+  $("trackShop").textContent = order.shopLabel;
+  $("bubbles").innerHTML = "";
+  renderRateZone();
+  startOrderLoop();
+}
+function closeTrack(){
+  $("trackWrap").classList.remove("on");
+  // loop 不停:chip 倒數與「送達」事件在面板關閉時也要繼續發生
+  if(order && !order.finished) $("trackChip").classList.add("on");
+}
+function tickTrack(){
+  if(!order) return;
+  const p = orderProgress();
+  const stepIdx = p >= 1 ? 4 : p >= .36 ? 3 : p >= .30 ? 2 : p >= .10 ? 1 : 0;
+  $("trackSteps").innerHTML = STEPS.map((s,i) => `<span class="${i<=stepIdx?"done":""}">${s}</span>`).join("");
+  $("trackTitle").textContent = p >= 1 ? "外送員把餐點放在門口了" : ["店家確認中…","餐點製作中…","外送員取餐中…","外送員配送中…"][stepIdx];
+  const left = Math.max(0, Math.ceil(order.etaMin * (1 - p)));
+  $("trackLeft").textContent = left + " 分鐘";
+  const chip = $("trackChip");
+  if(p >= 1){ if(chip.dataset.arrived !== "1"){ chip.dataset.arrived = "1"; chip.innerHTML = "📦 餐點放門口了 · 點我看"; } }
+  else { const cl = $("chipLeft"); if(cl) cl.textContent = left + " 分"; }
+  // 騎士沿路線移動（配送階段 .36→1 對應路徑 0→100%；之前停在店門口）
+  const path = $("routePath"), rider = $("riderDot");
+  const len = path.getTotalLength();
+  if(len > 0){
+    const rp = p < .36 ? 0 : (p - .36) / .64;
+    const pt = path.getPointAtLength(len * Math.min(1, rp));
+    rider.setAttribute("x", pt.x); rider.setAttribute("y", pt.y + 5);
+  }
+  // 聊天氣泡（deterministic：照劇本時間點補齊，斷線重開也一致）
+  bubbleScript().forEach(([at, who, msg], i) => {
+    if(p >= at && !document.getElementById("bub" + i)){
+      const div = document.createElement("div");
+      div.id = "bub" + i;
+      div.className = "bubble" + (who === "sys" ? " sys" : "") + (at >= 1 ? " arrive" : "");
+      div.innerHTML = who === "sys" ? msg : `<b>${who}</b>${msg}`;
+      $("bubbles").appendChild(div);
+    }
+  });
+  if(p >= 1 && !order.delivered){
+    order.delivered = true; saveOrder();
+    doorbell();
+    try{ gtag('event','virtual_delivered'); }catch(e){}
+    if(document.hidden && !titleTimer){
+      titleTimer = setInterval(() => { document.title = document.title === baseTitle ? "📦 外送到了！" : baseTitle; }, 900);
+    }
+  }
+  if(p >= 1){
+    $("openDoorBtn").hidden = order.opened;
+    $("doorstep").classList.toggle("on", order.opened);
+    $("rateZone").classList.toggle("on", order.opened && !order.finished);
+    if(order.finished){ renderSummary(); clearInterval(trackTimer); trackTimer = null; }
+  }
+}
+function renderRateZone(){
+  $("stars").innerHTML = [1,2,3,4,5].map(n => `<button data-star="${n}" aria-label="${n} 星">${order.stars >= n ? "★" : "☆"}</button>`).join("");
+  document.querySelectorAll("#stars button").forEach(b => {
+    b.classList.toggle("on", +b.dataset.star <= order.stars);
+    b.addEventListener("click", () => { order.stars = +b.dataset.star; saveOrder(); renderRateZone(); });
+  });
+  const tips = [[0,"不給也沒關係"],[20,"NT$ 20"],[50,"NT$ 50"],[100,"NT$ 100"]];
+  $("tips").innerHTML = tips.map(([v,label]) => `<button data-tip="${v}" class="${order.tip === v ? "on" : ""}">${label}</button>`).join("");
+  document.querySelectorAll("#tips button").forEach(b => b.addEventListener("click", () => { order.tip = +b.dataset.tip; saveOrder(); renderRateZone(); }));
+  $("finishBtn").disabled = !(order.stars > 0 && order.tip !== null);
+}
+function renderSummary(){
+  $("bubbles").innerHTML = ""; $("doorstep").classList.remove("on");
+  $("rateZone").classList.remove("on"); $("openDoorBtn").hidden = true;
+  $("trackTitle").textContent = "這一單，圓滿結束";
+  $("trackSteps").innerHTML = "";
+  const line = randomLines[Math.floor(Math.random() * randomLines.length)];
+  $("trackSummary").innerHTML = `
+    <h4>今晚省下 ${money(order.amount + (order.tip || 0))}</h4>
+    <p style="margin-top:6px;font-size:.84rem;color:#f8eadfaa">餐費 ${money(order.amount)}＋虛擬小費 ${money(order.tip || 0)}，實際支出 NT$ 0。${line}</p>
+    <div class="sum-grid">
+      <div class="sum-card"><span>省下金額</span><b>${money(order.amount + (order.tip || 0))}</b></div>
+      <div class="sum-card"><span>想像熱量</span><b>${order.kcal} → 0</b></div>
+      <div class="sum-card"><span>給出的星星</span><b>${"★".repeat(order.stars)}</b></div>
+    </div>
+    <button class="finish" id="againBtn2">再逛一輪</button>`;
+  $("trackSummary").classList.add("on");
+  $("againBtn2").addEventListener("click", () => {
+    order = null; saveOrder(); stopOrderLoop();
+    $("trackSummary").classList.remove("on");
+    closeTrack(); $("trackChip").classList.remove("on");
+    showToast("歡迎再逛，一樣不用真的吃");
+  });
 }
 function renderPreview(){
   const picks = ["鹹酥雞","珍珠奶茶","蔥抓餅"];
@@ -457,9 +693,24 @@ $("randomBtn").addEventListener("click", () => addItem(allItems[Math.floor(Math.
 $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; $("soundBtn").classList.toggle("off", !state.sound); showToast(state.sound ? "叮聲已開啟" : "叮聲已關閉"); });
 $("checkoutBtn").addEventListener("click", checkout);
 $("clearBtn").addEventListener("click", clearCart);
+$("trackClose").addEventListener("click", closeTrack);
+$("trackChip").addEventListener("click", () => { $("midnight").classList.add("on"); renderMenu(); renderCart(); openTrack(); });
+$("openDoorBtn").addEventListener("click", () => { order.opened = true; saveOrder(); tickTrack(); });
+$("finishBtn").addEventListener("click", () => {
+  order.finished = true; saveOrder();
+  try{ gtag('event','virtual_rated',{ value:order.stars }); }catch(e){}
+  tickTrack();
+});
+document.addEventListener("visibilitychange", () => {
+  if(!document.hidden && titleTimer){ clearInterval(titleTimer); titleTimer = null; document.title = baseTitle; }
+  if(!document.hidden && order && !order.finished && $("trackWrap").classList.contains("on")) tickTrack();
+});
 
 renderPreview(); renderTabs(); renderMenu(); renderCart(); setupSteam(); setCounts();
 setInterval(setCounts, 60000);
+// 有進行中的虛擬訂單（含重開頁面）：顯示追單 chip 並繼續倒數，送達未評價也接得回來
+if(order && order.finished) { order = null; saveOrder(); }
+if(order){ $("trackChip").classList.add("on"); startOrderLoop(); }
 </script>
 </body>
 </html>
