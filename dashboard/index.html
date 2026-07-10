@@ -884,21 +884,66 @@
       function renderForecast(w, county, town) {
         var c = card('db-card-forecast');
         if (!w || !Array.isArray(w.timeline) || !w.timeline.length) { unavailable(c, '中央氣象署鄉鎮預報', 'https://www.cwa.gov.tw/'); return; }
-        var peakIdx = Math.min(w.peakIndex || 0, w.timeline.length - 1);
-        var peak = w.timeline[peakIdx];
-        var peakTime = fmtIso(peak.time) || '';
+        var tl = w.timeline;
+        var peakIdx = Math.min(w.peakIndex || 0, tl.length - 1);
+        var peakTime = fmtIso(tl[peakIdx].time) || '';
+        function ymdOf(t) { var m = String(t).match(/(\d{4})-(\d{2})-(\d{2})/); return m ? m[1] + '-' + m[2] + '-' + m[3] : ''; }
+        function mdShort(ymd) { var p = ymd.split('-'); return (+p[1]) + '/' + (+p[2]); }
+        var todayYmd = new Date(Date.now() + 8 * 3600000).toISOString().slice(0, 10);
+        function relLabel(ymd) {
+          var diff = Math.round((Date.parse(ymd + 'T00:00:00Z') - Date.parse(todayYmd + 'T00:00:00Z')) / 86400000);
+          if (diff === 0) return '今天'; if (diff === 1) return '明天'; if (diff === 2) return '後天';
+          return '週' + ['日', '一', '二', '三', '四', '五', '六'][new Date(ymd + 'T00:00:00Z').getUTCDay()];
+        }
+
+        // 逐日分組 + 每日尖峰時段(先比風級、平手比降雨機率;純官方資料、不臆測趨勢)
+        var days = [], byDay = {};
+        tl.forEach(function (e) {
+          var ymd = ymdOf(e.time); if (!ymd) return;
+          if (!byDay[ymd]) { byDay[ymd] = { ymd: ymd, entries: [] }; days.push(byDay[ymd]); }
+          byDay[ymd].entries.push(e);
+        });
+        days.forEach(function (d) {
+          var pk = d.entries[0];
+          d.entries.forEach(function (e) {
+            var eb = e.beaufortNum || 0, pb = pk.beaufortNum || 0;
+            if (eb > pb || (eb === pb && (e.pop == null ? -1 : e.pop) > (pk.pop == null ? -1 : pk.pop))) pk = e;
+          });
+          d.peak = pk;
+        });
+        var peakYmd = ymdOf(tl[peakIdx].time);
+
+        // 逐日尖峰摘要:每天最強時段一行(最強那天標「← 最強」)
+        var summary = days.slice(0, 5).map(function (d) {
+          var pk = d.peak;
+          var hhmm = (fmtIso(pk.time) || '').slice(-5);
+          var rain = pk.pop == null ? '—' : (esc(pk.pop) + '%');
+          var bf = String(pk.beaufort == null ? '—' : pk.beaufort).replace(/>=/g, '≥').replace(/<=/g, '≤');
+          var isPeak = d.ymd === peakYmd;
+          return '<span class="block" style="' + (isPeak ? 'font-weight:600;' : '') + 'line-height:1.9;">' +
+            '<span style="display:inline-block;min-width:2.8em;color:var(--tw-text-secondary);">' + relLabel(d.ymd) + '</span>' +
+            '<span style="display:inline-block;min-width:3em;color:var(--tw-text-muted);">' + mdShort(d.ymd) + '</span>' +
+            '<strong>' + hhmm + '</strong> 風 ' + esc(bf) + ' 級・雨 ' + rain +
+            (isPeak ? ' <strong style="color:#b91c1c;">← 最強</strong>' : '') + '</span>';
+        }).join('');
+
         // 迷你時間軸:柱高=降雨機率,琥珀=風力≥6 級,紅=最強時段
-        var bars = w.timeline.map(function (t, i) {
+        var bars = tl.map(function (t, i) {
           var h = Math.max(4, Math.min(100, Number(t.pop) || 0));
           var color = i === peakIdx ? '#b91c1c' : ((t.beaufortNum || 0) >= 6 ? '#b45309' : 'var(--tw-hero-color)');
           var op = i === peakIdx || (t.beaufortNum || 0) >= 6 ? '1' : '0.35';
           return '<span style="height:' + h + '%;background:' + color + ';opacity:' + op + ';" title="' + esc((fmtIso(t.time) || '') + ' 降雨 ' + t.pop + '%・風力 ' + t.beaufort + ' 級・' + t.weather) + '"></span>';
         }).join('');
-        var first = fmtIso(w.timeline[0].time) || '';
-        var last = fmtIso(w.timeline[w.timeline.length - 1].time) || '';
-        c.body.innerHTML = esc(w.town || town || county) + '風雨最強:<strong>' + esc(peakTime) + '</strong> 前後(風力 ' + esc(peak.beaufort) + ' 級、降雨機率 ' + esc(peak.pop) + '%、' + esc(peak.weather) + ')' +
-          '<span class="rt-spark" role="img" aria-label="未來逐 3 小時降雨機率長條圖,最強時段 ' + esc(peakTime) + '">' + bars + '</span>' +
-          '<span class="rt-source flex justify-between mt-0.5"><span>' + esc(first) + '</span><span>' + esc(last) + '</span></span>' +
+        // 日期分隔軸:每段寬度=當日柱數,自動與長條對齊
+        var axis = days.map(function (d, i) {
+          return '<span style="flex:' + d.entries.length + ' 1 0;min-width:0;border-left:' + (i ? '1px solid var(--tw-border)' : 'none') + ';padding-left:3px;overflow:hidden;white-space:nowrap;">' + mdShort(d.ymd) + '</span>';
+        }).join('');
+
+        c.body.innerHTML =
+          '<span class="block mb-1" style="color:var(--tw-text-secondary);">' + esc(w.town || town || county) + '・接下來風雨最強時段</span>' +
+          summary +
+          '<span class="rt-spark mt-2" role="img" aria-label="未來逐 3 小時風雨長條圖,最強時段 ' + esc(peakTime) + '">' + bars + '</span>' +
+          '<span class="rt-source" style="display:flex;gap:1px;margin-top:2px;">' + axis + '</span>' +
           '<span class="rt-source block mt-1">柱高=降雨機率;<span style="color:#b45309;font-weight:700;">琥珀</span>=風力≥6 級;<span style="color:#b91c1c;font-weight:700;">紅</span>=最強時段。逐時段細節看定風波。</span>';
         c.meta.textContent = '來源:中央氣象署鄉鎮預報(每 6 小時更新)' + (w.cacheStale ? '(端點壅塞,顯示最近成功資料)' : '');
       }
