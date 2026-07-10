@@ -380,7 +380,9 @@
       function esc(s) { var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; }
       function fmtIso(iso) {
         if (!iso) return null;
-        var m = String(iso).match(/(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+        // [T ]:NCDR/預報是 ISO 的 T,CWA 警特報(W-C0033)是空格分隔——兩種都要吃,
+        // 否則警特報結束時間顯示成空的「(至 )」
+        var m = String(iso).match(/(\d{2})-(\d{2})[T ](\d{2}):(\d{2})/);
         return m ? m[1] + '/' + m[2] + ' ' + m[3] + ':' + m[4] : null;
       }
       function card(id) {
