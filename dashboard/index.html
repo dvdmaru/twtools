@@ -544,7 +544,8 @@
           var st = entry ? ((entry.statuses || {})[cN] || 'normal') : fallbackSt;
           if (!st) return '<span class="block">' + label + ':<span class="rt-source">尚未公布(通常傍晚起陸續發布)</span></span>';
           var txt = TYPHOON_LABEL[st] || st;
-          return '<span class="block">' + label + ':<strong' + (st !== 'normal' && st !== 'tbd' ? ' style="color: #b45309;"' : '') + '>' + esc(txt) + '</strong>' +
+          var note = (entry && entry.notes && entry.notes[cN]) || ''; // 時段限定如「晚上06:00起」,忠實照 DGPA 顯示
+          return '<span class="block">' + label + ':<strong' + (st !== 'normal' && st !== 'tbd' ? ' style="color: #b45309;"' : '') + '>' + (note ? esc(note) : '') + esc(txt) + '</strong>' +
             (st === 'off_partial' ? '<span class="rt-source">(哪些鄉鎮區停,看停班停課頁明細)</span>' : '') + '</span>';
         }
         var todayEntry = dates[typhoonDateKey(0)];
