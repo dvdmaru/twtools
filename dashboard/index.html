@@ -693,6 +693,30 @@
         return el;
       }
 
+      // 海岸線描邊 overlay:NICT 同座標系靜態 tile(路徑 coastline/{顏色碼}_{x}_{y}.png,
+      // ffff00=原站的黃邊),z-index 蓋在所有雲圖幀之上,單 tile 5-42KB。抓不到就略過不影響雲圖。
+      function tyHimaCoastline(c) {
+        var half = 275;
+        var txMin = Math.max(0, Math.floor((c.x - half) / 550)), txMax = Math.min(7, Math.floor((c.x + half) / 550));
+        var tyMin = Math.max(0, Math.floor((c.y - half) / 550)), tyMax = Math.min(7, Math.floor((c.y + half) / 550));
+        var el = document.createElement('div');
+        el.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:2;';
+        for (var tx = txMin; tx <= txMax; tx++) {
+          for (var ty = tyMin; ty <= tyMax; ty++) {
+            var im = document.createElement('img');
+            im.alt = '';
+            im.decoding = 'async';
+            im.style.cssText = 'position:absolute;width:100%;height:100%;' +
+              'left:' + ((tx * 550 - (c.x - half)) / 550 * 100) + '%;' +
+              'top:' + ((ty * 550 - (c.y - half)) / 550 * 100) + '%;';
+            im.onerror = function () { this.remove(); };
+            im.src = HIMA_BASE + 'coastline/ffff00_' + tx + '_' + ty + '.png';
+            el.appendChild(im);
+          }
+        }
+        return el;
+      }
+
       // 靜態首圖:最新一幀,404 就往前退最多 3 格(NICT 上檔會比 latest.json 慢一點)
       function tyHimaStatic() {
         var d = cache.tyimages;
@@ -710,6 +734,7 @@
               tyHima.frames = [{ ms: ms, el: el }];
               tl.textContent = himaCaption(ms);
               document.getElementById('db-ty-hima-play').hidden = false;
+              vp.appendChild(tyHimaCoastline(tyHima.c)); // 海岸線描邊(台灣才看得到位置)
             } else {
               el.remove();
               if (++tries < 3) attempt(ms - 600000);
