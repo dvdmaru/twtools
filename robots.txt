@@ -6,3 +6,4 @@ Disallow: /japan/
 Disallow: /sticker/
 
 Sitemap: https://twtools.cc/sitemap.xml
+Sitemap: https://twtools.cc/sitemap.txt
