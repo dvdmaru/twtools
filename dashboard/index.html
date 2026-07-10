@@ -905,30 +905,32 @@
           if (!byDay[ymd]) { byDay[ymd] = { ymd: ymd, entries: [] }; days.push(byDay[ymd]); }
           byDay[ymd].entries.push(e);
         });
+        // 每天雨、風各算各的尖峰(共用一格會把另一指標的高峰藏掉:雨最大在半夜、風最強在白天)
         days.forEach(function (d) {
-          var pk = d.entries[0];
+          var wet = d.entries[0], wind = d.entries[0];
           d.entries.forEach(function (e) {
-            if (peakMode === 'wind') {
-              var eb = e.beaufortNum || 0, pb = pk.beaufortNum || 0;
-              if (eb > pb || (eb === pb && (e.pop == null ? -1 : e.pop) > (pk.pop == null ? -1 : pk.pop))) pk = e;
-            } else if ((e.pop == null ? -1 : e.pop) > (pk.pop == null ? -1 : pk.pop)) pk = e;
+            if ((e.pop == null ? -1 : e.pop) > (wet.pop == null ? -1 : wet.pop)) wet = e;
+            var eb = e.beaufortNum || 0, pb = wind.beaufortNum || 0;
+            if (eb > pb || (eb === pb && (e.pop == null ? -1 : e.pop) > (wind.pop == null ? -1 : wind.pop))) wind = e;
           });
-          d.peak = pk;
+          d.wet = wet; d.wind = wind;
         });
         var peakYmd = ymdOf(tl[peakIdx].time);
         var peakWord = peakMode === 'rain' ? '雨最大' : '最強';
 
-        // 逐日尖峰摘要:每天最強時段一行(最強那天標「← 最強」)
+        // 逐日尖峰摘要:每天一行、雨與風各標各的尖峰時刻(主導指標在前;canonical peak 那天標「← 最強/雨最大」)
         var summary = days.slice(0, 5).map(function (d) {
-          var pk = d.peak;
-          var hhmm = (fmtIso(pk.time) || '').slice(-5);
-          var rain = pk.pop == null ? '—' : (esc(pk.pop) + '%');
-          var bf = String(pk.beaufort == null ? '—' : pk.beaufort).replace(/>=/g, '≥').replace(/<=/g, '≤');
+          var rainT = (fmtIso(d.wet.time) || '').slice(-5);
+          var windT = (fmtIso(d.wind.time) || '').slice(-5);
+          var rain = d.wet.pop == null ? '—' : (esc(d.wet.pop) + '%');
+          var bf = String(d.wind.beaufort == null ? '—' : d.wind.beaufort).replace(/>=/g, '≥').replace(/<=/g, '≤');
+          var rainPart = '雨 <strong>' + rainT + '</strong> ' + rain;
+          var windPart = '風 <strong>' + windT + '</strong> ' + esc(bf) + ' 級';
           var isPeak = d.ymd === peakYmd;
           return '<span class="block" style="' + (isPeak ? 'font-weight:600;' : '') + 'line-height:1.9;">' +
             '<span style="display:inline-block;min-width:2.8em;color:var(--tw-text-secondary);">' + relLabel(d.ymd) + '</span>' +
             '<span style="display:inline-block;min-width:3em;color:var(--tw-text-muted);">' + mdShort(d.ymd) + '</span>' +
-            '<strong>' + hhmm + '</strong> 風 ' + esc(bf) + ' 級・雨 ' + rain +
+            (peakMode === 'wind' ? windPart + '・' + rainPart : rainPart + '・' + windPart) +
             (isPeak ? ' <strong style="color:#b91c1c;">← ' + peakWord + '</strong>' : '') + '</span>';
         }).join('');
 
