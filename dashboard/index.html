@@ -527,7 +527,7 @@
           rainGauge('3 小時', top.past3h, 250, [{ v: 100, name: '豪雨' }, { v: 200, name: '大豪雨' }]) +
           rainGauge('24 小時', top.past24h, 550, [{ v: 80, name: '大雨' }, { v: 200, name: '豪雨' }, { v: 350, name: '大豪雨' }, { v: 500, name: '超大豪雨' }]) +
           '<span class="rt-source block mt-1">直線=官方雨量分級門檻,碰線即達該等級(懸停看門檻值)。</span>';
-        c.meta.textContent = '觀測 ' + (fmtIso(top.obsTime) || '—') + '・資料來源:中央氣象署(每 10 分鐘)';
+        c.meta.textContent = '觀測 ' + (fmtIso(top.obsTime) || '—') + '・資料來源:中央氣象署(每 10 分鐘)' + (d.stale ? '(端點壅塞,顯示最近成功資料)' : '');
       }
 
       // ── 停班停課卡(今日+明日雙日;dates key 為台北時區 YYYY-MM-DD)──
@@ -900,7 +900,7 @@
           '<span class="rt-spark" role="img" aria-label="未來逐 3 小時降雨機率長條圖,最強時段 ' + esc(peakTime) + '">' + bars + '</span>' +
           '<span class="rt-source flex justify-between mt-0.5"><span>' + esc(first) + '</span><span>' + esc(last) + '</span></span>' +
           '<span class="rt-source block mt-1">柱高=降雨機率;<span style="color:#b45309;font-weight:700;">琥珀</span>=風力≥6 級;<span style="color:#b91c1c;font-weight:700;">紅</span>=最強時段。逐時段細節看定風波。</span>';
-        c.meta.textContent = '來源:中央氣象署鄉鎮預報(每 6 小時更新)';
+        c.meta.textContent = '來源:中央氣象署鄉鎮預報(每 6 小時更新)' + (w.cacheStale ? '(端點壅塞,顯示最近成功資料)' : '');
       }
 
       // ── 水庫卡 ──
