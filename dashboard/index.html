@@ -484,10 +484,20 @@
         hits.forEach(function (a) { if (a.areas && a.areas.length) byCat[a.category] = (byCat[a.category] || 0) + 1; });
         var catLine = Object.keys(byCat).map(function (k) { return k + ' ' + byCat[k]; }).join('、');
         var top = hits.filter(function (a) { return a.areas && a.areas.length; }).slice(0, 3);
+        // 條目取乾淨的第一句(去零寬字元、到第一個句號為止),分行呈現不擠成一團
+        function firstSentence(s) {
+          var t = String(s == null ? '' : s).replace(/[\u200b-\u200d\ufeff]/g, '').trim();
+          var i = t.indexOf('。');
+          if (i !== -1 && i < 60) t = t.slice(0, i + 1);
+          return t.length > 60 ? t.slice(0, 60) + '…' : t;
+        }
         c.body.innerHTML =
-          (real ? '<strong>' + real + ' 則與你的地區相關</strong>' + (catLine ? '(' + esc(catLine) + ')' : '') : '你的地區無已解析的相關告警') +
-          (unresolved ? '<span class="rt-source block" style="color: #b45309;">另有 ' + unresolved + ' 則影響範圍未解析,是否相關請看原文</span>' : '') +
-          (top.length ? '<ul class="m-0 mt-1 pl-4">' + top.map(function (a) { return '<li>' + esc(a.category) + ':' + esc(a.summary.slice(0, 42)) + '…</li>'; }).join('') + '</ul>' : '');
+          (real ? '<strong>' + real + ' 則與你的地區相關</strong>' : '你的地區無已解析的相關告警') +
+          (catLine ? '<span class="rt-source block" style="margin-top: 2px;">' + esc(catLine) + '</span>' : '') +
+          (unresolved ? '<span class="rt-source block" style="color: #b45309; margin-top: 2px;">另有 ' + unresolved + ' 則影響範圍未解析,是否相關請看原文</span>' : '') +
+          (top.length ? '<ul class="m-0 mt-2 pl-4" style="line-height: 1.7;">' + top.map(function (a) {
+            return '<li style="margin-top: 3px;"><strong>' + esc(a.category) + '</strong>:' + esc(firstSentence(a.summary)) + '</li>';
+          }).join('') + '</ul>' : '');
         c.meta.innerHTML = '來源:NCDR 災害示警,約 5 分鐘更新・地圖版看 <a href="https://watch.ncdr.nat.gov.tw/" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">NCDR Watch</a>';
       }
 
