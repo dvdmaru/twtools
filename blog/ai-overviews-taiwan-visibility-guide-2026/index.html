@@ -1,0 +1,610 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>AI 搜尋介面時代，你的內容怎麼進 AI 答案：Google AI Overviews／AI Mode、ChatGPT、Perplexity 怎麼挑來源（2026 台灣視角） | TWTools</title><meta name="description" content="搜尋的入口正在從「十個藍色連結」變成「一段 AI 直接給的答案」。Google AI Overviews 與 AI Mode、ChatGPT、Perplexity 各自用不同方式挑來源，而「被引用」和「被點擊」已經是兩件越拉越開的事。這篇用 Google 官方文件、Pew Research 的第一方研究與各家官方說明，聚焦在 AI 搜尋介面這一塊，告訴台灣站長：這些介面長什麼樣、怎麼決定要不要放你進答案、繁中內容的真實處境、可以實際動手的優化，以及怎麼觀測自己有沒有被 AI 引用。"><link rel="canonical" href="https://twtools.cc/blog/ai-overviews-taiwan-visibility-guide-2026/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:url" content="https://twtools.cc/blog/ai-overviews-taiwan-visibility-guide-2026/"><meta property="og:title" content="AI 搜尋介面時代，你的內容怎麼進 AI 答案：Google AI Overviews／AI Mode、ChatGPT、Perplexity 怎麼挑來源（2026 台灣視角） | TWTools"><meta property="og:description" content="搜尋的入口正在從「十個藍色連結」變成「一段 AI 直接給的答案」。Google AI Overviews 與 AI Mode、ChatGPT、Perplexity 各自用不同方式挑來源，而「被引用」和「被點擊」已經是兩件越拉越開的事。這篇用 Google 官方文件、Pew Research 的第一方研究與各家官方說明，聚焦在 AI 搜尋介面這一塊，告訴台灣站長：這些介面長什麼樣、怎麼決定要不要放你進答案、繁中內容的真實處境、可以實際動手的優化，以及怎麼觀測自己有沒有被 AI 引用。"><meta property="og:image" content="https://twtools.cc/blog-images/twtools-complete-guide-cover.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="AI 搜尋介面時代，你的內容怎麼進 AI 答案：Google AI Overviews／AI Mode、ChatGPT、Perplexity 怎麼挑來源（2026 台灣視角）"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AI 搜尋介面時代，你的內容怎麼進 AI 答案：Google AI Overviews／AI Mode、ChatGPT、Perplexity 怎麼挑來源（2026 台灣視角） | TWTools"><meta name="twitter:description" content="搜尋的入口正在從「十個藍色連結」變成「一段 AI 直接給的答案」。Google AI Overviews 與 AI Mode、ChatGPT、Perplexity 各自用不同方式挑來源，而「被引用」和「被點擊」已經是兩件越拉越開的事。這篇用 Google 官方文件、Pew Research 的第一方研究與各家官方說明，聚焦在 AI 搜尋介面這一塊，告訴台灣站長：這些介面長什麼樣、怎麼決定要不要放你進答案、繁中內容的真實處境、可以實際動手的優化，以及怎麼觀測自己有沒有被 AI 引用。"><meta name="twitter:image" content="https://twtools.cc/blog-images/twtools-complete-guide-cover.jpg"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0WTK2LJFTY');
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            /* Morandi Dusty Rose — TWTools 品牌色（OKLCH hue 22） */
+            brand: {
+              50:  '#fceeed',
+              100: '#f2dbda',
+              200: '#e0b9b7',
+              300: '#ca9592',
+              400: '#af7472',
+              500: '#935e5c',
+              600: '#764a49',
+              700: '#583937',
+              800: '#3e2726',
+              900: '#281818',
+              950: '#110c08'
+            },
+            /* 奶油暖灰中性色（OKLCH hue 60） */
+            warm: {
+              50:  '#fcf3ed',
+              100: '#f1e5dc',
+              200: '#e3d0c2',
+              300: '#c9b3a2',
+              400: '#a99483',
+              500: '#887769',
+              600: '#6e6055',
+              700: '#564b42',
+              800: '#3e3630',
+              900: '#2b2520',
+              950: '#15110d'
+            },
+            /* 暖琥珀強調色（OKLCH hue 75） */
+            accent: {
+              50:  '#fdf4e7',
+              100: '#f8e5cb',
+              200: '#eecb9a',
+              300: '#e1ad63',
+              400: '#d49838',
+              500: '#b68028',
+              600: '#906520',
+              700: '#6b4c1d',
+              800: '#4b3617',
+              900: '#32230e',
+              950: '#181005'
+            }
+          }
+        }
+      }
+    }
+  </script><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/BaseLayout.CQRn7zlE.css">
+<style>.db-callout[data-astro-cid-lqth5lif]{display:flex;align-items:center;gap:12px;border:1.5px solid var(--tw-hero-color);background:var(--tw-surface);padding:12px 16px;margin:0 0 20px;text-decoration:none;color:inherit;transition:transform .15s ease}.db-callout[data-astro-cid-lqth5lif]:hover{transform:translateY(-1px)}.db-callout-icon[data-astro-cid-lqth5lif]{font-size:22px;flex-shrink:0}.db-callout-text[data-astro-cid-lqth5lif]{display:flex;flex-direction:column;gap:1px;min-width:0}.db-callout-text[data-astro-cid-lqth5lif] strong[data-astro-cid-lqth5lif]{font-size:15px}.db-callout-text[data-astro-cid-lqth5lif] span[data-astro-cid-lqth5lif]{font-size:12.5px;color:var(--tw-text-secondary);line-height:1.5}.db-callout-go[data-astro-cid-lqth5lif]{margin-left:auto;flex-shrink:0;font-size:12px;color:var(--tw-hero-color);border:1px solid var(--tw-hero-color);padding:5px 10px;white-space:nowrap}
+</style></head> <body class="min-h-screen paper-noise">   <button id="sidebar-hamburger" class="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg" style="background:var(--tw-surface);color:var(--tw-text-primary)">☰</button>  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 md:hidden hidden"></div>  <aside id="sidebar-panel" class="fixed top-0 left-0 h-full w-56 z-40 flex flex-col border-r transition-transform -translate-x-full md:translate-x-0" style="background:var(--tw-page-bg);border-color:var(--tw-border)"> <!-- Logo --> <div class="p-4 border-b flex items-center justify-between" style="border-color:var(--tw-border)"> <a href="/" class="flex items-center no-underline"> <img src="data:image/png;base64,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" alt="TWTools" class="w-7 h-7 rounded-lg"> <span class="text-sm font-bold ml-1.5" style="color:var(--tw-brand-accent)">TWTools</span> </a> <button id="sidebar-close" class="md:hidden text-lg leading-none" style="color:var(--tw-text-muted)">✕</button> </div> <!-- Nav items grouped by category --> <nav class="flex-1 py-2 overflow-y-auto"> <div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">檔案處理</div> <a href="/image/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🖼️</span> 圖片工具 </a><a href="/pdf/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📄</span> PDF 工具 </a><a href="/resume/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📋</span> 履歷產生器 </a><a href="/proofread/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">✍️</span> 錯別字檢查 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">生活查詢</div> <a href="/dashboard/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛡️</span> 防災儀表板 </a><a href="/typhoon/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌀</span> 颱風停班停課 </a><a href="/dingfengbo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌧️</span> 定風波 風雨時間軸 </a><a href="/reservoir/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💧</span> 水庫即時水情 </a><a href="/alerts/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🚨</span> 災害即時告警 </a><a href="/rain/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☔</span> 即時雨量 </a><a href="/oil-recall/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛢️</span> 問題沙拉油查詢 </a><a href="/lottery/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎰</span> 台灣彩券 </a><a href="/currency/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💱</span> 匯率換算 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">計算換算</div> <a href="/datecalc/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📅</span> 日期計算器 </a><a href="/countdown/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⏳</span> 倒數計時器 </a><a href="/unit/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📏</span> 單位換算 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">查詢工具</div> <a href="/postal/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📮</span> 郵遞區號 </a><a href="/address/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌐</span> 地址中譯英 </a><a href="/lunar/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 農曆國曆 </a><a href="/solar-terms/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☀️</span> 二十四節氣 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">學習工具</div> <a href="/vocabulary/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎓</span> 英文單字片語 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">站長工具</div> <a href="/seo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📊</span> SEO/GEO/AEO </a><a href="/clock/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🕐</span> 翻頁時鐘 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">放鬆小站</div> <a href="/breathe/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">😮‍💨</span> 一起喘口氣 </a><a href="/midnight/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 深夜宵夜所 </a><a href="/woodenfish/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🪵</span> 電子木魚 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">更多</div> <a href="/blog/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-r-2" style="background:rgba(107,115,148,0.15);color:var(--tw-brand-accent);border-color:var(--tw-brand-accent)"> <span class="text-base">📝</span> 知識文章 </a> </div>   </nav> <div class="p-3 border-t text-xs text-center space-y-1" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <div class="flex justify-center gap-3"> <a href="/about/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">關於</a> <a href="/privacy/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">隱私權</a> <a href="/terms/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">條款</a> </div>
+打工牛馬的線上工具箱 © 2026
+</div> </aside>  <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8 min-h-screen" style="background:var(--tw-page-bg)">   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI 搜尋介面時代，你的內容怎麼進 AI 答案：Google AI Overviews／AI Mode、ChatGPT、Perplexity 怎麼挑來源（2026 台灣視角）","description":"搜尋的入口正在從「十個藍色連結」變成「一段 AI 直接給的答案」。Google AI Overviews 與 AI Mode、ChatGPT、Perplexity 各自用不同方式挑來源，而「被引用」和「被點擊」已經是兩件越拉越開的事。這篇用 Google 官方文件、Pew Research 的第一方研究與各家官方說明，聚焦在 AI 搜尋介面這一塊，告訴台灣站長：這些介面長什麼樣、怎麼決定要不要放你進答案、繁中內容的真實處境、可以實際動手的優化，以及怎麼觀測自己有沒有被 AI 引用。","image":"https://twtools.cc/blog-images/twtools-complete-guide-cover.jpg","datePublished":"2026-07-12T00:00:00+08:00","dateModified":"2026-07-12T00:00:00+08:00","author":{"@type":"Organization","name":"TWTools 編輯部","url":"https://twtools.cc"},"publisher":{"@type":"Organization","name":"TWTools","url":"https://twtools.cc","logo":{"@type":"ImageObject","url":"https://twtools.cc/favicon.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://twtools.cc/blog/ai-overviews-taiwan-visibility-guide-2026/"},"inLanguage":"zh-Hant-TW","keywords":"AI Overviews, AI Mode, AI 搜尋, ChatGPT search, Perplexity, 被引用 vs 被點擊, zero-click, GEO 優化, AEO 優化, 台灣 SEO 2026"}</script>  <nav class="max-w-5xl mx-auto px-2 md:px-6 pt-2 pb-4 no-print" aria-label="breadcrumb"> <ol class="flex items-center gap-2 text-sm flex-wrap m-0 p-0 list-none" style="color: var(--tw-text-muted);"> <li><a href="/" class="grow-underline">首頁</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><a href="/blog/" class="grow-underline">編輯室</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><span style="color: var(--tw-text-primary);">SEO 策略</span></li> </ol> </nav>  <section class="max-w-5xl mx-auto px-2 md:px-6 pb-6"> <div class="article-col"> <div class="flex items-center gap-3 mb-5 flex-wrap"> <span class="brand-dot"></span> <span class="eyebrow">SEO 策略</span> <span class="printrule hidden md:inline">|</span> <span class="eyebrow">18 分鐘</span> <span class="printrule hidden md:inline">|</span> <span class="updated-pill"><span class="pulse-dot"></span>UPDATED · 2026 / 07 / 12</span> </div> <h1 class="font-serif-tc font-black tracking-cn" style="font-size: clamp(30px, 4.6vw, 52px); line-height: 1.15; color: var(--tw-hero-color); letter-spacing: -0.015em; margin: 0;"> AI 搜尋介面時代，你的內容怎麼進 AI 答案：Google AI Overviews／AI Mode、ChatGPT、Perplexity 怎麼挑來源（2026 台灣視角） </h1> <p class="font-serif-tc" style="margin: 24px 0 0; font-size: clamp(16px, 1.8vw, 19px); line-height: 1.65; color: var(--tw-text-secondary); font-weight: 400;"> 搜尋的入口正在從「十個藍色連結」變成「一段 AI 直接給的答案」。Google AI Overviews 與 AI Mode、ChatGPT、Perplexity 各自用不同方式挑來源，而「被引用」和「被點擊」已經是兩件越拉越開的事。這篇用 Google 官方文件、Pew Research 的第一方研究與各家官方說明，聚焦在 AI 搜尋介面這一塊，告訴台灣站長：這些介面長什麼樣、怎麼決定要不要放你進答案、繁中內容的真實處境、可以實際動手的優化，以及怎麼觀測自己有沒有被 AI 引用。 </p> <div class="mt-8 pt-6 border-t flex items-center gap-x-6 gap-y-2 flex-wrap text-sm no-print" style="border-color: var(--tw-border); color: var(--tw-text-muted);"> <span class="inline-flex items-center gap-2"> <span class="w-7 h-7 rounded-full grid place-items-center" style="background: var(--tw-hero-color); color: #fffbfa; font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 12px;">編</span> <span style="color: var(--tw-text-secondary);">TWTools 編輯部</span> </span> <span class="printrule">|</span> <time datetime="2026-07-12">2026 / 07 / 12</time> <span class="ml-auto inline-flex items-center gap-3"> <a href="/blog/en/ai-overviews-taiwan-visibility-guide-2026/" class="grow-underline inline-flex items-center gap-1.5"> <svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="12" cy="12" r="10" />
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+  <path d="M2 12h20" />
+</svg>
+English
+</a> <button type="button" id="print-link" class="grow-underline inline-flex items-center gap-1.5" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0; font: inherit;"> <svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+  <rect x="6" y="14" width="12" height="8" rx="1" />
+</svg>
+列印
+</button> </span> </div> </div> </section>  <figure class="max-w-5xl mx-auto px-2 md:px-6 mb-8 figure"> <div class="article-col"> <img src="/blog-images/twtools-complete-guide-cover.jpg" alt="AI 搜尋介面時代，你的內容怎麼進 AI 答案：Google AI Overviews／AI Mode、ChatGPT、Perplexity 怎麼挑來源（2026 台灣視角）" class="hero-cover" style="width: 100%; object-fit: cover; background: var(--tw-surface);" loading="eager" fetchpriority="high"> <figcaption><em>AI 搜尋介面時代，你的內容怎麼進 AI 答案：Google AI Overviews／AI Mode、ChatGPT、Perplexity 怎麼挑來源（2026 台灣視角）</em> <span class="src">— ILLUSTRATION · TWTOOLS EDITORIAL</span></figcaption> </div> </figure> <article class="max-w-5xl mx-auto px-2 md:px-6 mb-12"> <div class="article-frame"> <aside class="article-margin no-print"> <div class="margin-label">SEO 策略 · 2026</div> </aside> <div class="prose-cn"> <!-- TOC --> <details class="toc-block no-print" open> <summary> <div class="toc-head"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 5h.01" />
+  <path d="M3 12h.01" />
+  <path d="M3 19h.01" />
+  <path d="M8 5h13" />
+  <path d="M8 12h13" />
+  <path d="M8 19h13" />
+</svg>
+ <span class="eyebrow">CONTENTS · 目次</span> <h3>本文 9 個段落</h3> </div> <svg aria-hidden="true"
+  class="w-4 h-4 toc-chev lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m6 9 6 6 6-6" />
+</svg>
+ </summary> <div class="toc-list"> <ol> <li> <a href="#一先看懂ai-搜尋介面正在取代十個藍色連結"> <span class="toc-num">§ 01</span> <span class="toc-title">一、先看懂：AI 搜尋介面正在取代「十個藍色連結」</span> </a> </li><li> <a href="#二被引用-vs-被點擊2026-年最該重新校準的觀念"> <span class="toc-num">§ 02</span> <span class="toc-title">二、被引用 vs 被點擊：2026 年最該重新校準的觀念</span> </a> </li><li> <a href="#三各家介面到底怎麼挑來源力氣該花在哪"> <span class="toc-num">§ 03</span> <span class="toc-title">三、各家介面到底怎麼挑來源？力氣該花在哪</span> </a> </li><li> <a href="#四台灣繁中內容的真實處境"> <span class="toc-num">§ 04</span> <span class="toc-title">四、台灣繁中內容的真實處境</span> </a> </li><li> <a href="#五可以實際動手的優化聚焦在進得了-ai-答案"> <span class="toc-num">§ 05</span> <span class="toc-title">五、可以實際動手的優化（聚焦在「進得了 AI 答案」）</span> </a> </li><li> <a href="#六怎麼觀測自己有沒有被-ai-引用"> <span class="toc-num">§ 06</span> <span class="toc-title">六、怎麼觀測自己有沒有被 AI 引用？</span> </a> </li><li> <a href="#七台灣站長的起手式照這個順序做"> <span class="toc-num">§ 07</span> <span class="toc-title">七、台灣站長的起手式：照這個順序做</span> </a> </li><li> <a href="#常見問題faq"> <span class="toc-num">§ 08</span> <span class="toc-title">常見問題（FAQ）</span> </a> </li><li> <a href="#結語入口在變但值得被引用這件事不變"> <span class="toc-num">§ 09</span> <span class="toc-title">結語：入口在變，但「值得被引用」這件事不變</span> </a> </li> </ol> </div> </details>  <p>先描述一個 2026 年越來越普遍的畫面。</p>
+<p>一位台灣讀者想找「中小企業要怎麼選進銷存系統」，他沒有像以前那樣捲動十個藍色連結，而是直接看到 Google 在搜尋結果最上方生成的一段摘要，或者乾脆切到 AI Mode 跟它對話、又或者打開 ChatGPT、Perplexity 問一句。他在那段答案裡看完了重點，<strong>很可能一個連結都沒點，就關掉視窗了。</strong></p>
+<p>這對站長的意義很直接：過去你努力的目標是「排到第一頁、被點進來」；現在多了一個更前面、也更難的目標——<strong>讓你的內容成為那段 AI 答案的來源之一</strong>。這兩件事不一樣，而且這篇文章會反覆強調：<strong>被 AI 引用，跟被使用者點擊，已經是兩條越拉越開的線。</strong></p>
+<p>我們之前寫過〈<a href="/blog/how-to-get-cited-by-ai-2026/">想被 AI 引用，你的內容要做對這些事</a>〉談可引用性、〈<a href="/blog/eeat-signals-taiwan-7-cases-2026/">E-E-A-T 訊號完全拆解</a>〉談可信度訊號。這篇刻意換一個切面：<strong>不談你的內容怎麼寫，而是談 AI 搜尋「介面」本身</strong>——AI Overviews、AI Mode、ChatGPT、Perplexity 這幾個畫面長什麼樣、它們各自怎麼決定要不要把你放進答案、台灣繁中內容在裡面的真實處境，以及最重要的——當點擊正在蒸發，你該改看什麼指標。</p>
+<h2 id="一先看懂ai-搜尋介面正在取代十個藍色連結">一、先看懂：AI 搜尋介面正在取代「十個藍色連結」</h2>
+<p>要談優化，得先弄清楚 2026 年讀者實際面對的是哪幾種介面。它們的行為不一樣，力氣該花的地方也不一樣。</p>
+<p><strong>Google AI Overviews（AI 概覽）</strong>：出現在傳統搜尋結果「上方」的一段 AI 生成摘要，下方會帶幾個支撐連結。它不是每次搜尋都出現——根據 Pew Research 對 2025 年 3 月、近 6.9 萬次 Google 搜尋的追蹤，約有五分之一（約 18%）的搜尋產生了 AI 摘要。</p>
+<p><strong>Google AI Mode（AI 模式）</strong>：這是一個更接近「對話」的獨立搜尋體驗，你可以連續追問。Google 在 2025 年前後開始擴大 AI Mode 作為獨立搜尋體驗，並在 2026 年 I/O 進一步公布使用規模與模型升級，表示 AI Mode 已超過 10 億月活躍使用者，同時把 AI Mode 的預設模型升級為 Gemini 3.5 Flash。它和 AI Overviews 共用底層的檢索與排名系統，但介面與互動更深。</p>
+<p><strong>ChatGPT 的搜尋功能</strong>：當你在 ChatGPT 裡問需要即時資訊的問題時，它會去網路檢索；使用搜尋的回應可能顯示行內引用（inline citations），或可從來源（Sources）面板查看引用來源。</p>
+<p><strong>Perplexity</strong>：本質就是一個「答案引擎」，每段回答幾乎都即時綁上來源連結，定位上把「引用」放在很核心的位置。</p>
+<p>這四個介面有一個共同的結構性後果：<strong>答案被搬到了使用者面前，連結被推到了後面或收進折疊清單裡。</strong> 這就是「zero-click（零點擊）」這個詞在 2026 年被反覆提起的原因——使用者拿到答案，但沒有產生對你網站的造訪。</p>
+<blockquote>
+<p>提醒：上述各產品的功能與名稱變動非常快，請以各平台官方最新說明與你自己的實測為準；本文引用的版本資訊以撰稿時可查證的官方來源為基準。</p>
+</blockquote>
+<h2 id="二被引用-vs-被點擊2026-年最該重新校準的觀念">二、被引用 vs 被點擊：2026 年最該重新校準的觀念</h2>
+<p>這是整篇文章的核心，值得單獨拉出來講。</p>
+<p>過去 SEO 的世界裡，「曝光」和「點擊」高度相關——排得越前面，點得越多。但在 AI 搜尋介面下，這個連動正在斷裂。</p>
+<p>Pew Research 的研究給了一組很冷靜的第一方數字：當搜尋結果出現 AI 摘要時，使用者點擊任一傳統搜尋連結的比例是 <strong>8%</strong>；沒有出現 AI 摘要時則接近 <strong>15%</strong>，幾乎是兩倍。更尖銳的是，<strong>只有約 1% 的造訪，會點進 AI 摘要裡所引用的那個來源連結。</strong> 換句話說，就算你成功被 AI 摘要引用了，使用者實際點進你網站的機率，仍然很低。</p>
+<p>許多第三方產業統計也指向同一個方向：在出現 AI Overviews 的查詢上，自然點擊率有明顯下滑（不同研究估出的幅度差距很大，從三成多到六成多都有，端看樣本與方法）。這些第三方數字之間落差很大，請當成「趨勢的指向」而不是「精確的定論」——但趨勢本身相當一致：<strong>AI 介面把點擊往下壓。</strong></p>
+<p>那是不是代表「被引用沒有意義」？不是。重點在於——<strong>價值的形式改變了</strong>：</p>
+<ul>
+<li><strong>被引用可能帶來品牌曝光與可信度聯想。</strong> 即使讀者不點，他在 AI 的答案裡看到你的名字、把你和「這題的權威來源」連在一起，這本身就是一種曝光。有產業觀察指出，被 AI 答案點名的品牌，後續在一般搜尋的點擊表現也較好——這比較像是「品牌被記住」的下游效應，而不是 AI 直接導流；請當成傾向看待，不是保證的因果。</li>
+<li><strong>沒被引用 = 在這個入口完全隱形。</strong> 你連被看到的機會都沒有，使用者甚至不知道你存在。</li>
+</ul>
+<p>所以 2026 年該重新校準的觀念是：<strong>在 AI 搜尋介面這一塊，先追求「被引用（被看見）」，再追求「被點擊」。</strong> 把成功只定義成「流量進站」，你會嚴重低估自己在 AI 答案裡累積的品牌資產——也會因為「看不到立即流量」而誤判優化沒用，提早放棄。</p>
+<h2 id="三各家介面到底怎麼挑來源力氣該花在哪">三、各家介面到底怎麼挑來源？力氣該花在哪</h2>
+<p>不同介面的挑選機制不一樣。搞清楚差異，才不會把力氣花錯地方。下面這張表先給你全貌，後面再逐一展開。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>介面</th><th>來源從哪來</th><th>觀察到的傾向</th><th>官方有無公開規則</th></tr></thead><tbody><tr><td>Google AI Overviews / AI Mode</td><td>Google 自家索引與排名系統</td><td>把問題拆成多個子查詢去廣泛檢索（query fan-out）</td><td>有立場、無「AI 專屬排名因子」</td></tr><tr><td>ChatGPT 搜尋</td><td>由 OAI-SearchBot 建立的搜尋索引</td><td>偏好結構清楚、直接回答、可驗證的內容</td><td>有爬蟲說明、無公開加權規則</td></tr><tr><td>Perplexity</td><td>即時檢索網路（RAG 流程）</td><td>重視權威來源／第三方媒體、結論先行、時效</td><td>無公開排名規則</td></tr></tbody></table>
+<p>⚠️ 提醒：除了 Google 與 OpenAI 對「機制與爬蟲」有官方說明外，下面凡是講到「哪種內容比較容易被選上」，多半是業界逆向工程的<strong>觀察與推論，不是官方確認的排名因子</strong>。請當成「傾向」來參考，不要當成保證。</p>
+<h3 id="google-ai-overviews--ai-mode本質仍是把-seo-做好">Google AI Overviews / AI Mode：本質仍是把 SEO 做好</h3>
+<p>Google 在官方文件〈AI Features and Your Website〉裡講得很直白：要出現在 AI Overviews 或 AI Mode，頁面「必須已被索引、且符合在 Google 搜尋中以摘要形式顯示的資格」，而且「沒有額外要求，也不需要其他特殊優化」。Google 甚至明說，你不需要為此建立新的機器可讀檔案，也沒有任何特殊的 schema.org 結構化資料是「必須」加的。</p>
+<p>機制上，AI Mode 用的是「查詢扇出」（query fan-out）：把一個問題拆成多個子查詢，跨子主題同時去檢索，再把結果綜合成一段帶引用的回答。對你的意義很單純——<strong>你的內容要能對應到「使用者真正會問的某個子問題」，並且把那個答案寫得清楚、可獨立抽取。</strong> 沒有 AI 專屬的技術捷徑；Google 的說法是這些功能「根植於核心搜尋排名與品質系統」。</p>
+<h3 id="chatgpt-搜尋先確認-oai-searchbot-進得來">ChatGPT 搜尋：先確認 OAI-SearchBot 進得來</h3>
+<p>這是最多人在技術設定上踩雷的地方。OpenAI 的官方說明區分了不同職能的爬蟲，其中負責「ChatGPT 搜尋索引」的是 <strong>OAI-SearchBot</strong>——封鎖它，你就會從 ChatGPT 的搜尋答案裡消失，就算你放行了其他所有 bot 也沒用。</p>
+<p>關鍵結論：<strong>想被 ChatGPT 搜尋引用，第一步是確認 robots.txt 沒有擋掉 OAI-SearchBot。</strong> 至於它「怎麼從候選裡挑」，OpenAI 並未公開加權規則；業界觀察到的傾向是偏好結構清楚、直接給答案、有可驗證事實的頁面——這個傾向跟我們一直在講的「可引用性」一致，但它是觀察，不是官方規則。</p>
+<p>另外一個實用細節：ChatGPT 在搜尋導流時，會在連結帶上 <code>utm_source=chatgpt.com</code> 這個 UTM 參數，這讓你之後在分析工具裡比較好辨識來自 ChatGPT 的造訪。</p>
+<h3 id="perplexity機制清楚但沒有官方規則">Perplexity：機制清楚，但沒有官方規則</h3>
+<p>Perplexity 沒有公開任何排名因子文件，以下都是業界逆向工程的觀察，請當「傾向」看。它本質是一套檢索增強生成（RAG）：即時抓網路 → 檢索並重排候選來源 → 在生成答案時逐句綁上引用。</p>
+<p>有一個觀察特別值得台灣站長記住：<strong>Perplexity 每次查詢可能檢索了約十個頁面，但最後只引用其中三四個。</strong> 這代表「被它讀到」和「被它放進最終引用」中間還有一道篩選，而被觀察到比較吃香的，往往是權威的第三方媒體與報導，而不只是你自己站上「自己介紹自己」的頁面。換句話說，在 Perplexity 這一塊，<strong>別人怎麼提你（earned media）可能比你自己頁面寫得多漂亮更有用。</strong> 業界也流傳一些更細的機制描述（例如多層重排、特定的品質門檻模型），但這些屬於未經官方證實的推測，知道有這回事即可，不必當成施工藍圖。</p>
+<h2 id="四台灣繁中內容的真實處境">四、台灣繁中內容的真實處境</h2>
+<p>把上面的機制套到台灣，有幾個本地特有的現實要面對。</p>
+<p><strong>第一，AI Overviews 已是大範圍服務，但你看到的版本因地因題而異。</strong> Google 自 2024 年起把 AI Overviews 擴張到上百個國家、數十種語言，2025 年 I/O 後涵蓋範圍更廣。實務上台灣使用者在不少查詢已經會看到 AI 摘要，但「哪些題目會觸發、觸發後呈現什麼」會隨地區、語言、查詢類型而不同，而且持續變動。最務實的做法是<strong>你自己用台灣 IP、用繁中查你在意的關鍵字，實際看看會不會跳出 AI 摘要、裡面引用了誰</strong>——這比看任何二手統計都準。</p>
+<p><strong>第二，簡繁混用會傷到你在 AI 答案裡的能見度。</strong> 這是台灣獨有的坑。很多站長從簡體教學文複製內容再改、或用簡體中文的 CMS 模板，結果站內混了簡體字而不自知。對 AI 引擎來說，這可能讓它把你的內容語言判斷得模糊；在回答繁中問題時，一個語言訊號乾淨、純繁中的同業，會比你更像「對的來源」。TWTools 三軸掃描器有內建簡繁混用偵測，專門抓這個。</p>
+<p><strong>第三，繁中是相對小的語言市場，權威來源池較淺——這對先動手的人反而是機會。</strong> 英文世界的每個題目都有一大票權威頁面在搶引用；繁中、尤其是台灣在地題目（在地法規、在地服務、在地價格），可被引用的優質來源相對少。這意味著<strong>你只要把一個在地題目寫得結論清楚、資料可溯源、繁中乾淨，被選中的競爭其實比英文世界小很多。</strong> 我們在〈<a href="/blog/why-seo-alone-not-enough-2026/">只做 SEO 已經不夠</a>〉裡也提過這個「路上車還很少」的視窗，在 AI 介面這一塊同樣成立。</p>
+<h2 id="五可以實際動手的優化聚焦在進得了-ai-答案">五、可以實際動手的優化（聚焦在「進得了 AI 答案」）</h2>
+<p>把前面的機制收斂成可執行的動作。為了不和我們其他文章重複，這裡只挑「特別針對 AI 搜尋介面」的角度切入；更完整的可引用性清單請看〈<a href="/blog/how-to-get-cited-by-ai-2026/">想被 AI 引用，你的內容要做對這些事</a>〉。</p>
+<h3 id="1-第一句就把答案講完假設它會被整段抽走">1. 第一句就把答案講完，假設它會被「整段抽走」</h3>
+<p>AI 介面在組答案時，是去你的頁面「抽」能獨立成立、直接回應子問題的段落。所以寫每一個小節時，<strong>先假設讀者只會看到你的第一句、其餘上下文都不在</strong>。第一句若能自己站得住、直接回答一個明確問題，被抽用的機率就高。</p>
+<h3 id="2-一段只回答一個問題並用問句標題對齊使用者會怎麼問">2. 一段只回答一個問題，並用問句標題對齊「使用者會怎麼問」</h3>
+<p>query fan-out 會把大問題拆成子問題。你把 H2／H3 寫成讀者真正會打的問句（「要準備什麼文件？」「大概多少錢？」「跟 OO 差在哪？」），等於主動把段落標成「這是某個子問題的答案」，讓檢索更容易對上。</p>
+<h3 id="3-用具體可溯源的數字而不是形容詞">3. 用具體、可溯源的數字，而不是形容詞</h3>
+<p>「很多人用 AI 搜尋」是形容詞；「Pew 研究追蹤近 6.9 萬次搜尋，發現約 18% 產生 AI 摘要」是可驗證的事實。AI 介面與讀者都偏好後者。⚠️ 但數字一定要附得出來源——一個查不到出處的百分比，傷的是整篇的可信度，AI 也可能因此不採用。</p>
+<h3 id="4-把-e-e-a-t-訊號做成機器讀得到的形式">4. 把 E-E-A-T 訊號做成「機器讀得到」的形式</h3>
+<p>具名作者、可查證的背景、明確的更新日期、清楚的來源標註——這些不只給人看，也是 AI 判斷「這來源可不可信」的依據。Google 官方一再鼓勵「第一手、由真人撰寫、具專業觀點」的內容。這部分的細節（含七個台灣案例）我們在〈<a href="/blog/eeat-signals-taiwan-7-cases-2026/">E-E-A-T 訊號完全拆解</a>〉講得很完整。</p>
+<h3 id="5-經營-earned-media尤其針對-perplexity-這類重視第三方權威的介面">5. 經營 earned media，尤其針對 Perplexity 這類重視第三方權威的介面</h3>
+<p>既然 Perplexity 觀察上偏好權威第三方媒體，那「在受信任的媒體、產業網站、社群上被提及」對被引用的幫助，往往比你在自己站上做任何技術微調都大。傳統公關與內容行銷在 AI 時代不但沒過時，反而更重要。</p>
+<h3 id="6-確認-ai-爬蟲進得來最容易被忽略卻最致命的一步">6. 確認 AI 爬蟲進得來（最容易被忽略、卻最致命的一步）</h3>
+<p>前面所有努力，前提是 AI 介面的爬蟲抓得到你。打開 <code>你的網站.com/robots.txt</code>，確認沒有封鎖 <code>OAI-SearchBot</code>、<code>PerplexityBot</code>、<code>Googlebot</code> 等。很多 WordPress 安全外掛預設把非 Googlebot 的爬蟲全擋掉——<strong>你以為網站對所有人開放，其實 AI 介面根本進不來。</strong> 這一步沒做，上面五項全是白費。</p>
+<p>把上面六項對照傳統 SEO，差異可以這樣理解：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>重點</th><th>傳統 SEO 在意</th><th>AI 搜尋介面（GEO／AEO）在意</th></tr></thead><tbody><tr><td>目標</td><td>排進前幾名、被點進來</td><td>先被放進 AI 答案（被引用／被看見）</td></tr><tr><td>內容單位</td><td>整個頁面的關鍵字覆蓋</td><td>可被「整段抽走」的自足段落</td></tr><tr><td>結構</td><td>title／H1／關鍵字密度</td><td>結論先行、問句標題、可驗證數字</td></tr><tr><td>權威來源</td><td>反向連結（backlinks）</td><td>具名作者、來源標註、第三方提及</td></tr><tr><td>爬蟲設定</td><td>通常只顧 Googlebot</td><td>還要顧 OAI-SearchBot／PerplexityBot 等</td></tr><tr><td>衡量成功</td><td>自然流量、排名</td><td>被引用次數、AI 曝光、品牌被記住</td></tr></tbody></table>
+<p>注意最後一行——這正是下一節的主題。</p>
+<h2 id="六怎麼觀測自己有沒有被-ai-引用">六、怎麼觀測自己有沒有被 AI 引用？</h2>
+<p>做了優化，總得能量測。這個領域的工具還不成熟，以下從「最直接」到「最間接」排列，並標清楚各自的限制。</p>
+<p><strong>Google Search Console 的「生成式 AI 成效報告」（2026 年新增，第一方但有限）</strong>：Google 在 2026 年 6 月推出了新的 Search Console 報告，首度把「網站在生成式 AI 介面（含 AI Overviews、AI Mode）裡的曝光」單獨拉出來呈現。這是目前<strong>少數由 Google 官方直接提供的第一方 AI 曝光資料</strong>，很值得開來看。但要清楚它的限制：<strong>目前主要顯示曝光（impressions）、頁面、國家、裝置等，沒有點擊、沒有 CTR、沒有 AI Overviews 與 AI Mode 的細分</strong>，而且是分批開放、不一定每個站都已經有。把它當成「有沒有被看見」的前導指標，不要期待它給你完整的點擊故事。</p>
+<p><strong>伺服器日誌（最直接的爬蟲前導指標）</strong>：去 access log 裡找這幾隻爬蟲。看到 <code>OAI-SearchBot</code> 代表 ChatGPT 搜尋正在索引；看到 <code>PerplexityBot</code> 代表 Perplexity 在抓。這不等於「已經被引用」，但代表「至少進得來、抓得到」——這是被引用的必要前提。</p>
+<p><strong>各平台的 UTM 與轉介來源（GA4）</strong>：ChatGPT 導流會帶 <code>utm_source=chatgpt.com</code>，在 GA4 裡可以看到來自 <code>chatgpt.com</code>、<code>perplexity.ai</code>、<code>gemini.google.com</code> 等的轉介。⚠️ 但要有心理準備：相當比例的 AI 轉介因為沒帶 referrer，會被歸進「直接流量」（Direct），所以 GA4 看到的 AI 流量通常是<strong>低估</strong>的。</p>
+<p><strong>手動實測（最樸素也最誠實）</strong>：用繁中、用台灣的環境，去 Google（含 AI Mode）、ChatGPT、Perplexity 實際問你在意的那幾個關鍵問題，看看答案裡引用了誰、有沒有你、有沒有同業。這雖然不能規模化，但它直接回答了你最想知道的事，而且最不會被工具的低估或誤差騙到。建議<strong>固定一組問題、固定週期重測</strong>，看趨勢而不是看單次。</p>
+<p><strong>一個常被誤會的限制</strong>：很多人以為傳統的 GSC 自然搜尋報告就能拆出「AI Overviews 帶來多少流量」。在新版生成式 AI 報告之外，這件事仍然很難——AI Mode 的流量會混進一般 Web 搜尋、AI Overviews 的點擊也歸在自然搜尋裡，沒有乾淨的獨立篩選器。所以<strong>別用舊報告的數字去回答「AI 到底帶了多少量」，那拆不乾淨。</strong></p>
+<h2 id="七台灣站長的起手式照這個順序做">七、台灣站長的起手式：照這個順序做</h2>
+<p>資源有限的話，按「成本效益」與「證據強度」這樣排：</p>
+<ol>
+<li><strong>確認 AI 爬蟲沒被擋（5 分鐘）</strong>：檢查 robots.txt 有沒有封鎖 <code>OAI-SearchBot</code>、<code>PerplexityBot</code>。這步沒過，後面全免談。</li>
+<li><strong>掃一遍簡繁混用（10 分鐘）</strong>：純繁中是台灣站在 AI 答案裡的基本盤，混了簡體會稀釋語言訊號。</li>
+<li><strong>重寫重要頁面的第一段（每頁 10 分鐘）</strong>：第一句就給結論，假設它會被整段抽走。</li>
+<li><strong>把長段落切短、補上可溯源的數字（每頁 20 分鐘）</strong>：讓每段都能獨立被引用。</li>
+<li><strong>打開 GSC 生成式 AI 報告 + 固定一組手動實測題（每月一次）</strong>：前者看曝光趨勢，後者看你到底有沒有出現在答案裡。</li>
+<li><strong>兩週後用掃描器回測</strong>：用 <a href="/seo/">TWTools 三軸掃描器</a> 重掃，特別看 GEO 軸的<a href="/seo/metric/geo/citability/">可引用性</a>與 <a href="/seo/metric/geo/eeat/">E-E-A-T 訊號</a>，改了就反映在分數上，不必等引擎重新索引。</li>
+</ol>
+<h2 id="常見問題faq">常見問題（FAQ）</h2>
+<h3 id="ai-overviewsai-modechatgpt-搜尋perplexity-有什麼差別">AI Overviews、AI Mode、ChatGPT 搜尋、Perplexity 有什麼差別？</h3>
+<p>AI Overviews 是出現在 Google 傳統搜尋結果上方的一段 AI 摘要；AI Mode 是 Google 一個更接近對話、可連續追問的獨立搜尋體驗，兩者共用 Google 底層的檢索與排名系統。ChatGPT 搜尋是你在 ChatGPT 裡問即時問題時，它會去網路檢索；使用搜尋的回應「可能」顯示行內引用（inline citations），或可從來源（Sources）面板查看引用來源——並非每則回應都必然附上行內引用。Perplexity 則是一個以「每段都附來源」為核心的答案引擎。四者的共同點是：答案被推到使用者面前，連結被推到後面，造成 zero-click。</p>
+<h3 id="被-ai-引用跟被點擊差在哪哪個重要">「被 AI 引用」跟「被點擊」差在哪？哪個重要？</h3>
+<p>被引用是你的內容成為 AI 答案的來源、名字出現在答案裡；被點擊是使用者真的進了你的網站。Pew Research 的資料顯示，就算出現 AI 摘要，使用者點進被引用來源的比例也很低（約 1% 的造訪）。所以在 AI 介面這一塊，<strong>先追求被引用（被看見、品牌曝光），再追求被點擊</strong>——只看流量會嚴重低估你在 AI 答案裡累積的品牌價值。</p>
+<h3 id="我繁中內容做得不錯為什麼-ai-答案常引用別人不引用我">我繁中內容做得不錯，為什麼 AI 答案常引用別人不引用我？</h3>
+<p>可能的原因有幾個：你的 robots.txt 擋掉了 AI 爬蟲、段落把重點埋太深不好抽取、站內有簡繁混用稀釋了語言訊號、或是同業在權威第三方媒體被提及得更多（這對 Perplexity 這類介面特別關鍵）。建議先用掃描器排除技術硬傷，再從內容結構與外部提及著手。</p>
+<h3 id="加-schema-結構化資料就會被-ai-overviews-選上嗎">加 Schema 結構化資料就會被 AI Overviews 選上嗎？</h3>
+<p>不要把它當成開關。Google 官方明說，要出現在 AI Overviews／AI Mode「沒有任何特殊的 schema.org 結構化資料是必須加的」。結構化資料對傳統 SEO 的部分功能仍有價值，把可信度做成機器讀得到的形式也有意義，但它<strong>不是</strong>「加了就會被 AI 選上」的因果開關。別為了它去硬改你的內容結構。</p>
+<h3 id="點擊一直掉做-ai-優化還有意義嗎">點擊一直掉，做 AI 優化還有意義嗎？</h3>
+<p>有，但你要換指標看。點擊下滑是 AI 介面的結構性結果，不是你做錯了什麼。AI 優化在這個階段累積的是「被引用、被看見、品牌被記住」這種資產，它的回報不一定是當天的流量，而是長期的品牌權威與下游行為。把成功重新定義成「在 AI 答案裡持續出現」，而不是「今天進站幾個人」。</p>
+<h3 id="我怎麼確定自己現在有沒有被-ai-引用">我怎麼確定自己現在有沒有被 AI 引用？</h3>
+<p>三條線一起看：①打開 2026 年新增的 Google Search Console 生成式 AI 成效報告，看 AI 介面的曝光；②看伺服器日誌有沒有 <code>OAI-SearchBot</code>、<code>PerplexityBot</code>，確認爬蟲進得來；③最誠實的是手動實測——用繁中、用台灣環境，固定一組問題去 Google／ChatGPT／Perplexity 問，看答案裡有沒有你。注意 GA4 會因為缺 referrer 而低估 AI 轉介。</p>
+<h3 id="各平台變這麼快我今天學的會不會明天就過時">各平台變這麼快，我今天學的會不會明天就過時？</h3>
+<p>機制細節（哪個模型、哪個功能名稱）確實變很快，但底層邏輯相對穩定：<strong>結論先行、可獨立抽取的段落、可溯源的數字、乾淨的繁中、扎實的 E-E-A-T、確認爬蟲進得來。</strong> 這些既對 AI 友善也對讀者友善，不會因為下一次改版就作廢。把力氣放在這些不易過時的基本功上，比追逐每一個新名詞划算。</p>
+<h2 id="結語入口在變但值得被引用這件事不變">結語：入口在變，但「值得被引用」這件事不變</h2>
+<p>2026 年找答案的入口正在從「十個藍色連結」變成「一段 AI 直接給的答案」。這個轉變最大的衝擊，是把「曝光」和「點擊」拆成了兩件事——你可能被很多人看見，卻沒幾個人點進來。</p>
+<p>面對這個變化，最該調整的不是你的技術棧，而是你衡量成功的尺。先確認 AI 爬蟲進得來、把簡繁掃乾淨、讓每段答案結論先行可被抽走、把 E-E-A-T 做成機器讀得到的訊號，然後用 GSC 生成式 AI 報告加上固定的手動實測，盯著「我有沒有出現在答案裡」這條線。</p>
+<p>入口會一直變，但 AI 之所以引用一個來源的理由始終樸素：<strong>它清楚、可信、可驗證、而且進得來。</strong> 把這幾件事做扎實，無論下一個介面長什麼樣，你都還在答案裡。</p>
+<p>👉 <a href="/seo/">立刻掃描你的網站，看看「可引用性」與 E-E-A-T 幾分 →</a></p>
+<p>延伸閱讀：</p>
+<ul>
+<li><a href="/blog/how-to-get-cited-by-ai-2026/">想被 AI 引用，你的內容要做對這些事</a></li>
+<li><a href="/blog/why-seo-alone-not-enough-2026/">只做 SEO 已經不夠了：2026 年你還需要 GEO 和 AEO</a></li>
+<li><a href="/blog/eeat-signals-taiwan-7-cases-2026/">E-E-A-T 訊號完全拆解：7 個台灣網站案例</a></li>
+</ul>
+<hr>
+<p>主要參考來源（以官方與第一方研究優先）：</p>
+<ul>
+<li>Google Search Central, “AI Features and Your Website”（developers.google.com/search/docs/appearance/ai-features）</li>
+<li>Google Search Central Blog, “Introducing Search Generative AI performance reports in Search Console”（2026 年 6 月）</li>
+<li>Pew Research Center, “Google users are less likely to click on links when an AI summary appears”（2025；近 6.9 萬次搜尋、約 18% 出現 AI 摘要、被引用來源點擊率約 1%）</li>
+<li>OpenAI Help Center, “ChatGPT Search” 與爬蟲（OAI-SearchBot）相關說明</li>
+<li>Google Blog, “Google Search’s I/O 2026 updates” 與 AI Mode 相關公告</li>
+</ul>
+<blockquote>
+<p>免責：AI 搜尋產品演進快速，各平台行為以官方最新說明與實測為準。</p>
+</blockquote>   <!-- Reactions --> <div class="reactions no-print"> <div class="ask">這篇對你有幫助嗎？</div> <div class="react-buttons"> <button type="button" class="react-btn" data-react="useful"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
+  <path d="M7 10v12" />
+</svg>
+ <span>覺得有用</span> <span class="count" data-react-count="useful">—</span> </button> <button type="button" class="react-btn" data-react="bookmark"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z" />
+</svg>
+ <span>收藏</span> <span class="count" data-react-count="bookmark">—</span> </button> </div> <span class="meta">PUBLISHED · 2026 / 07 / 12</span> </div> <!-- Full CTA --> <div class="cta-full no-print"> <div class="cta-head"> <h4>把這篇帶走</h4> <span class="eyebrow">SAVE · SHARE · FEED</span> </div> <div class="cta-grid"> <a href="#" class="cta-cell" data-action="copy-link"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+</svg>
+</div> <div> <div class="label">複製連結 <span class="kbd">⌘ C</span></div> <div class="desc">把這篇 URL 存到 Notion、Pocket，或直接傳給朋友。</div> </div> </a> <a href="/blog/ai-overviews-taiwan-visibility-guide-2026/index.md" class="cta-cell" data-action="copy-md"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+</div> <div> <div class="label">複製 Markdown</div> <div class="desc">原始 .md 內容，餵 NotebookLM、ChatGPT 當研究素材。</div> </div> </a> <a href="https://notebooklm.google.com/?import=https%3A%2F%2Ftwtools.cc%2Fblog%2Fai-overviews-taiwan-visibility-guide-2026%2F" target="_blank" rel="noopener" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
+  <path d="M9 13a4.5 4.5 0 0 0 3-4" />
+  <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" />
+  <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
+  <path d="M6 18a4 4 0 0 1-1.967-.516" />
+  <path d="M12 13h4" />
+  <path d="M12 18h6a2 2 0 0 1 2 2v1" />
+  <path d="M12 8h8" />
+  <path d="M16 8V5a2 2 0 0 1 2-2" />
+  <circle cx="16" cy="13" r=".5" />
+  <circle cx="18" cy="3" r=".5" />
+  <circle cx="20" cy="21" r=".5" />
+  <circle cx="20" cy="8" r=".5" />
+</svg>
+</div> <div> <div class="label">送進 NotebookLM</div> <div class="desc">一鍵把本文加入你的 NotebookLM 來源。</div> </div> </a> <a href="/blog/rss.xml" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 11a9 9 0 0 1 9 9" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <circle cx="5" cy="19" r="1" />
+</svg>
+</div> <div> <div class="label">訂閱 RSS</div> <div class="desc">每週一篇，更新就推到你的 Reader。</div> </div> </a> </div> </div> </div> <aside class="article-margin no-print"> <div class="margin-label">TWTOOLS / EDITORIAL</div> </aside> </div> </article>  <section class="no-print"> <div class="adjacent"> <a href="/blog/dopamine-websites-list-2026/"> <div class="arrow-row"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m12 19-7-7 7-7" />
+  <path d="M19 12H5" />
+</svg>
+ <span class="eyebrow">PREV · 上一篇</span> </div> <div class="post-title">「多巴胺網站」有哪些？12 個打開就能玩的線上放空站：台灣做的 3 個＋國際經典 9 個</div> </a> <div style="background: var(--tw-page-bg);"></div> </div> </section> <div class="max-w-6xl mx-auto pb-2"> <div class="pt-5 mt-6 border-t flex flex-col md:flex-row md:items-baseline gap-x-6 gap-y-2" style="border-color: var(--tw-border);"> <span class="eyebrow shrink-0">姊妹站 · FAMILY</span> <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm" style="color: var(--tw-text-muted);"> <a href="https://aire.twtools.cc/" title="aire — AI Tool Atlas·AI 工具圖鑑" class="grow-underline whitespace-nowrap">aire — AI Tool Atlas·AI 工具圖鑑</a><a href="https://tree.twtools.cc/" title="樹洞21號 — 匿名 AI 心事平台" class="grow-underline whitespace-nowrap">樹洞21號 — 匿名 AI 心事平台</a><a href="https://foootball.twtools.cc/" title="@foootball — 2026 世界盃賽程" class="grow-underline whitespace-nowrap">@foootball — 2026 世界盃賽程</a><a href="https://baseball.twtools.cc/" title="@baseball — 中職 CPBL＋MLB 深度戰報" class="grow-underline whitespace-nowrap">@baseball — 中職 CPBL＋MLB 深度戰報</a><a href="https://dvdmaru.com/" title="dvdmaru — 把事實和敘事分開來看" class="grow-underline whitespace-nowrap">dvdmaru — 把事實和敘事分開來看</a> </div> </div> </div> </main>  <script>
+    (function() {
+      var hamburger = document.getElementById('sidebar-hamburger');
+      var overlay = document.getElementById('sidebar-overlay');
+      var panel = document.getElementById('sidebar-panel');
+      var closeBtn = document.getElementById('sidebar-close');
+
+      function openSidebar() {
+        panel.classList.remove('-translate-x-full');
+        panel.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+      }
+      function closeSidebar() {
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+
+      if (hamburger) hamburger.addEventListener('click', openSidebar);
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    })();
+  </script>  <!-- Affiliates.One / Adotone Ad Link 網站驗證碼（須 is:inline 才會原樣輸出，勿移除 is:inline） --> <script>var ConverlyCustomData = {channelId: null};</script> <script async defer src="https://cdn.adotone.com/production/adlinks/676dd203e573377526b0bfa14fb812f5265fb0db262acf5759eaf3acb67f8e66.js"></script> </body> </html> <script>
+  (function () {
+    // Print
+    var printBtn = document.getElementById('print-link');
+    if (printBtn) {
+      printBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.print();
+      });
+    }
+
+    // TOC smooth scroll
+    document.querySelectorAll('details.toc-block .toc-list a').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var target = document.querySelector(a.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        var y = target.getBoundingClientRect().top + window.scrollY - 24;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        if (history.replaceState) history.replaceState(null, '', a.getAttribute('href'));
+      });
+    });
+
+    // Mobile TOC collapse by default
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      var toc = document.querySelector('details.toc-block');
+      if (toc) toc.removeAttribute('open');
+    }
+
+    // Reactions — localStorage-backed toggle (per-slug)
+    var slug = location.pathname.replace(/\/+$/, '').split('/').pop() || 'post';
+    var STORAGE_KEY = 'twtools.reactions.' + slug;
+    var BASE = { useful: 0, bookmark: 0 };
+    function readState() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (_) {}
+      return { useful: false, bookmark: false };
+    }
+    function writeState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+    }
+    function renderCount(key, state) {
+      var el = document.querySelector('[data-react-count="' + key + '"]');
+      if (!el) return;
+      el.textContent = String(BASE[key] + (state[key] ? 1 : 0));
+    }
+    function renderActive(key, state) {
+      var btn = document.querySelector('[data-react="' + key + '"]');
+      if (!btn) return;
+      btn.classList.toggle('is-active', !!state[key]);
+    }
+    var state = readState();
+    Object.keys(BASE).forEach(function (k) { renderCount(k, state); renderActive(k, state); });
+    document.querySelectorAll('[data-react]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.getAttribute('data-react');
+        state[key] = !state[key];
+        writeState(state);
+        renderCount(key, state);
+        renderActive(key, state);
+      });
+    });
+
+    // CTA: copy link
+    var copyLink = document.querySelector('[data-action="copy-link"]');
+    if (copyLink) {
+      copyLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(location.href).then(function () {
+            var label = copyLink.querySelector('.label');
+            if (!label) return;
+            var orig = label.innerHTML;
+            label.textContent = '已複製 ✓';
+            setTimeout(function () { label.innerHTML = orig; }, 1400);
+          });
+        }
+      });
+    }
+  })();
+</script>
