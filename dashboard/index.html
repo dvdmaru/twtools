@@ -443,9 +443,22 @@
           return 'active';
         }
         if (w.approaching) {
+          // trend 由 worker 依路徑資料判向:departing=所有預報點都比目前遠(常見於警報解除後);無法判向時用中性措辭
+          if (w.trend === 'departing') {
+            banner.style.borderColor = 'var(--tw-border)';
+            bannerTitle.textContent = '🌀 颱風遠離中' + (w.typhoonName ? ':' + w.typhoonName : '');
+            bannerDesc.innerHTML = '氣象署路徑資料顯示颱風正遠離臺灣,<strong>目前無生效中的颱風警報</strong>——外圍環流仍可能帶來局部風雨,後續變化以 <a href="https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">中央氣象署</a> 為準。';
+            bannerTime.textContent = '狀態確認於 ' + hh + '(氣象署熱帶氣旋路徑)';
+            return 'departing';
+          }
           banner.style.borderColor = '#b45309';
-          bannerTitle.textContent = '🌀 颱風接近中' + (w.typhoonName ? ':' + w.typhoonName : '');
-          bannerDesc.innerHTML = '氣象署路徑資料顯示有編號颱風接近臺灣,<strong>尚未發布警報</strong>——現在是準備期,防颱檢查與採買趁現在。是否發警報、何時發,以 <a href="https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">中央氣象署</a> 為準。';
+          if (w.trend === 'approaching') {
+            bannerTitle.textContent = '🌀 颱風接近中' + (w.typhoonName ? ':' + w.typhoonName : '');
+            bannerDesc.innerHTML = '氣象署路徑資料顯示有編號颱風接近臺灣,<strong>尚未發布警報</strong>——現在是準備期,防颱檢查與採買趁現在。是否發警報、何時發,以 <a href="https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">中央氣象署</a> 為準。';
+          } else {
+            bannerTitle.textContent = '🌀 颱風在臺灣周邊' + (w.typhoonName ? ':' + w.typhoonName : '');
+            bannerDesc.innerHTML = '氣象署路徑資料顯示有編號颱風位於臺灣周邊海域,<strong>目前無生效中的颱風警報</strong>——動向與是否發布警報,以 <a href="https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">中央氣象署</a> 為準。';
+          }
           bannerTime.textContent = '狀態確認於 ' + hh + '(氣象署熱帶氣旋路徑)';
           return 'approaching';
         }
