@@ -54,6 +54,9 @@
 - [深夜宵夜所](https://twtools.cc/midnight/)
 - [電子木魚](https://twtools.cc/woodenfish/)
 
+### 休閒遊戲
+- [小蜜蜂](https://twtools.cc/bee/)
+
 ## 最新文章
 - [文章列表](https://twtools.cc/blog/)
 - [AI 搜尋介面時代，你的內容怎麼進 AI 答案：Google AI Overviews／AI Mode、ChatGPT、Perplexity 怎麼挑來源（2026 台灣視角）](https://twtools.cc/blog/ai-overviews-taiwan-visibility-guide-2026/) — 搜尋的入口正在從「十個藍色連結」變成「一段 AI 直接給的答案」。Google AI Overviews 與 AI Mode、ChatGPT、Perplexity 各自用不同方式挑來源，而「被引用」和「被點擊」已經是兩件越拉越開的事。這篇用 Google 官方文件、Pew Research 的第一方研究與各家官方說明，聚焦在 AI 搜尋介面這一塊，告訴台灣站長：這些介面長什麼樣、怎麼決定要不要放你進答案、繁中內容的真實處境、可以實際動手的優化，以及怎麼觀測自己有沒有被 AI 引用。
