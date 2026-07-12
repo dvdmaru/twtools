@@ -1,375 +1,111 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>深夜宵夜所 — 虛擬外送｜TWTools</title>
-<meta name="description" content="半夜嘴饞先逛一輪再說。深夜宵夜所是一個虛擬外送體驗：逛菜單、加購物車、假結帳，最後看見今晚省下多少錢、吃下 0 卡。">
-<link rel="canonical" href="https://twtools.cc/midnight/">
-<meta name="theme-color" content="#2a1715">
-<link rel="icon" href="/favicon.png" type="image/png">
-<!-- Open Graph -->
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="TWTools">
-<meta property="og:locale" content="zh_TW">
-<meta property="og:url" content="https://twtools.cc/midnight/">
-<meta property="og:title" content="深夜宵夜所 — 虛擬外送｜TWTools">
-<meta property="og:description" content="半夜嘴饞先逛一輪再說。逛菜單、加購物車、假結帳，最後看見今晚省下 NT$ 多少。">
-<meta property="og:image" content="https://twtools.cc/midnight/og-midnight.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="深夜宵夜所 — 虛擬外送｜TWTools">
-<meta name="twitter:description" content="逛了不點，省了不胖。這是模擬下單，不會真的送餐也不會扣款。">
-<meta name="twitter:image" content="https://twtools.cc/midnight/og-midnight.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --tw-page-bg:#faefee; --tw-surface:#fffbfa; --tw-surface-hover:#f2e4e3;
-    --tw-text-primary:#201914; --tw-text-secondary:#5a4845; --tw-text-muted:#786866;
-    --tw-border:#e5d3d1;
-    --tw-brand-text:#935e5c; --tw-hero-color:#7c4241; --tw-brand-accent:#7e5400;
-    --serif:"Noto Serif TC",serif; --sans:"Noto Sans TC",sans-serif; --mono:"JetBrains Mono",monospace;
-    --night-1:#180f13; --night-2:#2a1715; --night-3:#4a2521; --warm:#f0b26b; --steam:#ffe4c4;
-    --good:#5a8d55; --warn:#b56b26;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{min-height:100%}
-  body{
-    font-family:var(--sans); color:var(--tw-text-primary); background:var(--tw-page-bg);
-    -webkit-font-smoothing:antialiased; line-height:1.7; overflow-x:hidden;
-  }
-  body::before{
-    content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.46;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
-  }
-  a{color:var(--tw-brand-accent);text-decoration:none}
-  a:hover{text-decoration:underline}
-  button,input{font-family:inherit}
-  .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 22px}
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>深夜宵夜所 — 虛擬外送｜TWTools</title><meta name="description" content="半夜嘴饞先逛一輪再說。深夜宵夜所是一個虛擬外送體驗：逛菜單、加購物車、假結帳，最後看見今晚省下多少錢、吃下 0 卡。"><link rel="canonical" href="https://twtools.cc/midnight/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://twtools.cc/midnight/"><meta property="og:title" content="深夜宵夜所 — 虛擬外送｜TWTools"><meta property="og:description" content="半夜嘴饞先逛一輪再說。深夜宵夜所是一個虛擬外送體驗：逛菜單、加購物車、假結帳，最後看見今晚省下多少錢、吃下 0 卡。"><meta property="og:image" content="https://twtools.cc/midnight/og-midnight.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="深夜宵夜所 — 虛擬外送"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="深夜宵夜所 — 虛擬外送｜TWTools"><meta name="twitter:description" content="半夜嘴饞先逛一輪再說。深夜宵夜所是一個虛擬外送體驗：逛菜單、加購物車、假結帳，最後看見今晚省下多少錢、吃下 0 卡。"><meta name="twitter:image" content="https://twtools.cc/midnight/og-midnight.png"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0WTK2LJFTY');
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            /* Morandi Dusty Rose — TWTools 品牌色（OKLCH hue 22） */
+            brand: {
+              50:  '#fceeed',
+              100: '#f2dbda',
+              200: '#e0b9b7',
+              300: '#ca9592',
+              400: '#af7472',
+              500: '#935e5c',
+              600: '#764a49',
+              700: '#583937',
+              800: '#3e2726',
+              900: '#281818',
+              950: '#110c08'
+            },
+            /* 奶油暖灰中性色（OKLCH hue 60） */
+            warm: {
+              50:  '#fcf3ed',
+              100: '#f1e5dc',
+              200: '#e3d0c2',
+              300: '#c9b3a2',
+              400: '#a99483',
+              500: '#887769',
+              600: '#6e6055',
+              700: '#564b42',
+              800: '#3e3630',
+              900: '#2b2520',
+              950: '#15110d'
+            },
+            /* 暖琥珀強調色（OKLCH hue 75） */
+            accent: {
+              50:  '#fdf4e7',
+              100: '#f8e5cb',
+              200: '#eecb9a',
+              300: '#e1ad63',
+              400: '#d49838',
+              500: '#b68028',
+              600: '#906520',
+              700: '#6b4c1d',
+              800: '#4b3617',
+              900: '#32230e',
+              950: '#181005'
+            }
+          }
+        }
+      }
+    }
+  </script><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
 
-  /* ====== ENTRY（入口頁，品牌淺色） ====== */
-  #entry{min-height:100dvh;display:flex;flex-direction:column}
-  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--tw-brand-text);font-weight:500}
-  header.site{padding:20px 0 8px;display:flex;align-items:center;justify-content:space-between}
-  .brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-weight:700;color:var(--tw-hero-color)}
-  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--tw-brand-accent);box-shadow:0 0 0 4px #7e540022}
-  header.site nav a{font-size:.84rem;color:var(--tw-text-secondary);margin-left:16px}
-  .hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 0 10px}
-  .hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.25rem,8vw,3.55rem);color:var(--tw-hero-color);letter-spacing:.02em;line-height:1.18}
-  .hero .sub{margin-top:14px;color:var(--tw-text-secondary);font-size:clamp(.98rem,2.6vw,1.12rem);max-width:34ch;font-weight:300}
-  .livecount{margin:26px 0 6px;display:inline-flex;align-items:center;gap:9px;font-size:.95rem;color:var(--tw-text-secondary);background:var(--tw-surface);border:1px solid var(--tw-border);padding:8px 16px;border-radius:999px}
-  .pulse{width:9px;height:9px;border-radius:50%;background:#d68a45;box-shadow:0 0 0 0 #d68a4588;animation:pulse 2.4s infinite}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 #d68a4566}70%{box-shadow:0 0 0 9px #d68a4500}100%{box-shadow:0 0 0 0 #d68a4500}}
-  .livecount b{color:var(--tw-hero-color);font-weight:700;font-variant-numeric:tabular-nums}
-  .start{margin-top:26px;font-family:var(--serif);font-size:1.22rem;font-weight:600;color:#fff;background:linear-gradient(135deg,#a06a5f,#7c4241);border:none;padding:18px 52px;border-radius:999px;cursor:pointer;box-shadow:0 10px 30px -8px #7c424166;transition:transform .2s,box-shadow .2s}
-  .start:hover{transform:translateY(-2px);box-shadow:0 16px 38px -8px #7c424180}
-  .start:active{transform:translateY(0)}
-  .start-hint{margin-top:12px;font-size:.82rem;color:var(--tw-text-muted)}
-  .menu-preview{margin:42px 0 30px;width:100%}
-  .menu-preview .label{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-  .menu-preview .label .eyebrow{flex:none}
-  .menu-preview .label .rule{flex:1;height:1px;background:var(--tw-border)}
-  .preview-list{display:grid;gap:8px}
-  .preview-item{background:var(--tw-surface);border:1px solid var(--tw-border);border-left:3px solid var(--tw-brand-text);border-radius:10px;padding:10px 14px;font-size:.92rem;color:var(--tw-text-secondary);display:flex;justify-content:space-between;gap:12px;align-items:baseline}
-  .preview-item b{font-family:var(--serif);color:var(--tw-text-primary);font-weight:700}
-  .preview-item span:last-child{font-family:var(--mono);font-size:.78rem;color:var(--tw-text-muted);flex:none}
-  footer.site{padding:24px 0 34px;border-top:1px solid var(--tw-border);margin-top:10px;font-size:.8rem;color:var(--tw-text-muted);text-align:center}
-  footer.site .care{margin-top:10px;font-size:.78rem;color:var(--tw-text-secondary);background:var(--tw-surface);border:1px solid var(--tw-border);border-radius:10px;padding:10px 14px;display:inline-block}
-  footer.site .privacy{margin-top:12px;max-width:50ch;margin-left:auto;margin-right:auto;line-height:1.6}
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
 
-  /* ====== MIDNIGHT（虛擬外送模式，全螢幕夜市） ====== */
-  #midnight{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;background:radial-gradient(ellipse at 50% 20%,var(--night-3),var(--night-2) 42%,var(--night-1));color:#f8eadf;overflow:hidden}
-  #midnight.on{display:flex}
-  .steam{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-  .steam i{position:absolute;bottom:-80px;width:12px;height:120px;border-radius:999px;background:linear-gradient(to top,#ffffff00,#ffe4c444,#ffffff00);filter:blur(6px);animation:steamUp linear infinite}
-  @keyframes steamUp{from{transform:translateY(0) translateX(0) scale(.8);opacity:0}20%{opacity:.75}to{transform:translateY(-115vh) translateX(28px) scale(1.25);opacity:0}}
-  .m-top{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;padding:18px 22px;font-size:.85rem;color:#f8eadfcc}
-  .m-top .together{display:inline-flex;align-items:center;gap:8px}
-  .m-top .together b{color:#fff;font-variant-numeric:tabular-nums}
-  .exit{background:transparent;border:1px solid #f8eadf44;color:#f8eadf;border-radius:999px;padding:7px 16px;font-size:.82rem;cursor:pointer}
-  .exit:hover{background:#f8eadf11}
-  .menu-stage{position:relative;z-index:2;flex:1;display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:22px;width:min(1180px,100%);margin:0 auto;padding:8px 22px 22px;min-height:0}
-  .menu-panel{min-height:0;display:flex;flex-direction:column}
-  .stage-head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:16px}
-  .stage-head h2{font-family:var(--serif);font-size:clamp(1.6rem,3.5vw,2.45rem);line-height:1.18;color:#fff}
-  .stage-head p{max-width:36ch;font-size:.9rem;color:#f8eadfaa}
-  .tabs{display:flex;gap:8px;overflow:auto;padding-bottom:10px;margin-bottom:12px;scrollbar-width:none}
-  .tabs::-webkit-scrollbar{display:none}
-  .tab{flex:none;border:1px solid #f8eadf2e;background:#ffffff12;color:#f8eadfcc;border-radius:999px;padding:9px 14px;font-size:.85rem;cursor:pointer}
-  .tab[aria-selected="true"]{background:var(--warm);color:#2a1715;border-color:var(--warm);font-weight:700}
-  .menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;overflow:auto;padding:2px 2px 120px;scrollbar-color:#ffffff30 transparent}
-  .food-card{position:relative;display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;align-items:center;border:1px solid #ffffff1e;background:#fff8f012;color:#f8eadf;border-radius:12px;padding:12px;min-height:104px;box-shadow:0 20px 50px -36px #000;transition:transform .18s,background .18s,border-color .18s}
-  .food-card:hover{transform:translateY(-2px);background:#fff8f01c;border-color:#f0b26b66}
-  .food-card.pop{animation:pop .28s ease-out}
-  @keyframes pop{50%{transform:scale(1.035)}}
-  .food-emoji{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;background:radial-gradient(circle at 35% 28%,#fff3,#ffffff0c 68%);box-shadow:inset 0 0 0 1px #ffffff20}
-  .food-info{min-width:0}
-  .food-name{font-family:var(--serif);font-size:1.05rem;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .food-meta{display:flex;gap:10px;align-items:center;margin-top:2px;font-size:.78rem;color:#f8eadfaa}
-  .food-price{font-family:var(--mono);font-weight:700;color:#ffd79a}
-  .add{margin-top:9px;border:none;background:#f8eadf;color:#2a1715;border-radius:999px;padding:7px 13px;font-size:.82rem;font-weight:700;cursor:pointer}
-  .add:hover{background:#ffd79a}
-  .mcontrols{position:absolute;left:22px;bottom:24px;display:flex;gap:10px;z-index:5}
-  .ctrl{position:relative;display:flex;align-items:center;gap:7px;background:#ffffff26;border:1px solid #ffffff4d;color:#fff;border-radius:999px;padding:10px 14px;cursor:pointer;transition:all .2s;font-size:.82rem}
-  .ctrl:hover{background:#ffffff3a}
-  .ctrl.off{opacity:.68}
-  .cart-panel{position:relative;background:#fffbfa;color:var(--tw-text-primary);border:1px solid #fff4;border-radius:14px;box-shadow:0 30px 90px -42px #000;min-height:0;display:flex;flex-direction:column;overflow:hidden}
-  .cart-head{padding:18px 18px 12px;border-bottom:1px solid var(--tw-border);display:flex;justify-content:space-between;gap:12px;align-items:start}
-  .cart-head h2{font-family:var(--serif);font-size:1.25rem;color:var(--tw-hero-color)}
-  .cart-head p{font-size:.78rem;color:var(--tw-text-muted);margin-top:2px}
-  .cart-count{font-family:var(--mono);background:#f2e4e3;border:1px solid var(--tw-border);border-radius:999px;padding:5px 10px;font-size:.78rem}
-  .cart-items{flex:1;overflow:auto;padding:12px 18px;display:flex;flex-direction:column;gap:9px}
-  .empty{margin:auto;text-align:center;color:var(--tw-text-muted);font-size:.9rem;max-width:22ch}
-  .cart-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border-bottom:1px solid #e5d3d177;padding-bottom:9px}
-  .cart-row strong{font-size:.92rem;color:var(--tw-text-primary)}
-  .cart-row small{display:block;color:var(--tw-text-muted);font-family:var(--mono);font-size:.72rem}
-  .qty{display:flex;align-items:center;gap:6px}
-  .qty button{width:26px;height:26px;border-radius:50%;border:1px solid var(--tw-border);background:#fff;color:var(--tw-hero-color);cursor:pointer;font-weight:700}
-  .cart-foot{border-top:1px solid var(--tw-border);padding:14px 18px 18px;background:#fff8f5}
-  .estimate{display:flex;justify-content:space-between;font-size:.82rem;color:var(--tw-text-secondary);margin-bottom:10px}
-  .total{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
-  .total span{font-size:.85rem;color:var(--tw-text-muted)}
-  .total b{font-family:var(--mono);font-size:1.45rem;color:var(--tw-hero-color)}
-  .checkout{width:100%;border:none;border-radius:999px;background:linear-gradient(135deg,#a06a5f,#7c4241);color:#fff;padding:13px 16px;font-weight:700;cursor:pointer}
-  .checkout:disabled{opacity:.45;cursor:not-allowed}
-  .clear{width:100%;margin-top:8px;background:transparent;border:none;color:var(--tw-text-muted);font-size:.8rem;cursor:pointer}
-  .result{display:none;padding:18px;background:#fff8f5;border-top:1px solid var(--tw-border)}
-  .result.on{display:block}
-  .result h3{font-family:var(--serif);font-size:1.35rem;color:var(--tw-hero-color);line-height:1.25}
-  .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
-  .result-card{background:#fff;border:1px solid var(--tw-border);border-radius:10px;padding:10px;text-align:center}
-  .result-card span{display:block;font-size:.72rem;color:var(--tw-text-muted)}
-  .result-card b{font-family:var(--mono);color:var(--good)}
-  .result-actions{display:flex;gap:8px}
-  .result-actions button{flex:1;border:1px solid var(--tw-border);border-radius:999px;background:#fff;padding:9px 10px;color:var(--tw-hero-color);font-weight:700;cursor:pointer}
-  .floating-cart{display:none;position:fixed;right:18px;bottom:18px;z-index:8;border:none;border-radius:999px;background:#f8eadf;color:#2a1715;padding:13px 16px;font-weight:700;box-shadow:0 14px 34px -14px #000;cursor:pointer}
-  .floating-cart b{font-family:var(--mono);background:#7c4241;color:#fff;border-radius:999px;padding:2px 7px;margin-left:6px}
-  .toast{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:#000000aa;color:#fff;padding:9px 18px;border-radius:999px;font-size:.85rem;z-index:70;opacity:0;transition:opacity .25s;pointer-events:none}
-  .toast.show{opacity:1}
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
 
-  /* ====== TRACKING（虛擬配送閉環） ====== */
-  .track-wrap{position:fixed;inset:0;z-index:60;background:#180f13e0;display:none;align-items:center;justify-content:center;padding:16px;overflow:auto}
-  .track-wrap.on{display:flex}
-  .track-panel{width:min(440px,100%);max-height:94dvh;overflow:auto;background:linear-gradient(180deg,#2a1715,#1d1113);border:1px solid #f0b26b33;border-radius:16px;padding:18px 18px 20px;color:#f8eadf;box-shadow:0 40px 120px -30px #000;scrollbar-width:thin}
-  .track-head{display:flex;justify-content:space-between;gap:10px;align-items:start;margin-bottom:12px}
-  .track-head h3{font-family:var(--serif);font-size:1.3rem;color:#fff;line-height:1.25;margin-top:2px}
-  .track-steps{display:flex;gap:4px;margin-bottom:12px}
-  .track-steps span{flex:1;text-align:center;font-size:.68rem;color:#f8eadf66;padding-top:8px;position:relative}
-  .track-steps span::before{content:"";position:absolute;top:0;left:8%;right:8%;height:3px;border-radius:2px;background:#ffffff1c}
-  .track-steps span.done::before{background:var(--warm)}
-  .track-steps span.done{color:var(--warm);font-weight:700}
-  .track-map{background:#140c10;border:1px solid #ffffff14;border-radius:12px;overflow:hidden;margin-bottom:10px}
-  .track-map svg{display:block;width:100%;height:auto}
-  .track-eta{display:flex;justify-content:space-between;align-items:baseline;font-size:.82rem;color:#f8eadfaa;margin-bottom:12px}
-  .track-eta b{font-family:var(--mono);color:var(--warm);font-size:1.05rem}
-  .bubbles{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
-  .bubble{max-width:88%;background:#ffffff14;border:1px solid #ffffff1a;border-radius:12px 12px 12px 4px;padding:8px 12px;font-size:.86rem;line-height:1.55}
-  .bubble b{color:var(--warm);font-weight:700;margin-right:6px}
-  .bubble.sys{align-self:center;background:transparent;border:none;color:#f8eadf77;font-size:.76rem;padding:2px}
-  .bubble.arrive{border-color:var(--warm);background:#f0b26b22}
-  .open-door{margin:10px auto 4px;display:block;border:none;border-radius:999px;background:linear-gradient(135deg,#f0b26b,#d68a45);color:#2a1715;font-weight:700;font-family:var(--serif);font-size:1.05rem;padding:13px 34px;cursor:pointer;box-shadow:0 10px 26px -8px #f0b26b55}
-  .open-door[hidden]{display:none} /* display:block 會蓋掉 hidden 屬性的 UA 樣式,必須補這條 */
-  .doorstep{display:none;text-align:center;padding:14px 0 4px}
-  .doorstep.on{display:block}
-  .doorstep .scene{font-size:2.6rem;letter-spacing:.1em}
-  .doorstep p{font-size:.82rem;color:#f8eadfaa;margin-top:6px}
-  .rate-zone{display:none;border-top:1px solid #ffffff1a;margin-top:12px;padding-top:14px}
-  .rate-zone.on{display:block}
-  .rate-zone h4{font-family:var(--serif);font-size:1.05rem;color:#fff;margin-bottom:8px}
-  .stars{display:flex;gap:6px;justify-content:center;margin-bottom:12px}
-  .stars button{font-size:1.9rem;background:none;border:none;cursor:pointer;color:#ffffff3a;transition:transform .15s,color .15s;line-height:1}
-  .stars button.on{color:var(--warm)}
-  .stars button:hover{transform:scale(1.15)}
-  .tips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}
-  .tips button{border:1px solid #ffffff2e;background:#ffffff10;color:#f8eadfcc;border-radius:999px;padding:8px 16px;font-size:.85rem;cursor:pointer}
-  .tips button.on{background:var(--warm);border-color:var(--warm);color:#2a1715;font-weight:700}
-  .finish{width:100%;border:none;border-radius:999px;background:linear-gradient(135deg,#a06a5f,#7c4241);color:#fff;padding:13px 16px;font-weight:700;cursor:pointer;font-size:.95rem}
-  .finish:disabled{opacity:.4;cursor:not-allowed}
-  .track-summary{display:none;text-align:center;padding-top:6px}
-  .track-summary.on{display:block}
-  .track-summary h4{font-family:var(--serif);font-size:1.5rem;color:var(--warm);line-height:1.3}
-  .sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
-  .sum-card{background:#ffffff10;border:1px solid #ffffff1a;border-radius:10px;padding:10px 6px}
-  .sum-card span{display:block;font-size:.7rem;color:#f8eadf88}
-  .sum-card b{font-family:var(--mono);color:#9fd39a;font-size:.95rem}
-  .track-chip{position:fixed;left:50%;transform:translateX(-50%);bottom:64px;z-index:55;display:none;border:1px solid #f0b26b55;border-radius:999px;background:#2a1715f0;color:#f8eadf;padding:11px 20px;font-size:.88rem;font-weight:700;cursor:pointer;box-shadow:0 14px 34px -12px #000}
-  .track-chip.on{display:block}
-  .track-chip b{font-family:var(--mono);color:var(--warm)}
-  @media(max-width:520px){
-    .sum-grid{grid-template-columns:1fr 1fr}
-    .stars button{font-size:2.2rem}
-  }
-
-  @media(max-width:880px){
-    .menu-stage{grid-template-columns:1fr;padding-bottom:82px}
-    .cart-panel{position:fixed;left:12px;right:12px;bottom:12px;max-height:72dvh;z-index:10;display:none}
-    .cart-panel.open{display:flex}
-    #midnight:has(.cart-panel.open) .floating-cart,
-    #midnight:has(.cart-panel.open) .mcontrols{display:none}
-    .toast{bottom:auto;top:62px;z-index:90}
-    .floating-cart{display:block}
-    .mcontrols{bottom:82px}
-    .menu-grid{grid-template-columns:1fr;padding-bottom:170px}
-  }
-  @media(max-width:520px){
-    header.site nav a{margin-left:10px}
-    .hero h1{font-size:2.25rem}
-    .stage-head{display:block}
-    .stage-head p{margin-top:8px}
-    .food-card{grid-template-columns:54px minmax(0,1fr)}
-    .food-emoji{width:54px;height:54px;font-size:1.75rem}
-    .m-top{padding:14px 16px}
-    .m-top .together{max-width:56vw;line-height:1.35}
-    .result-grid{grid-template-columns:1fr}
-  }
-  @media(prefers-reduced-motion:reduce){
-    .pulse,.steam i{animation:none}.food-card,.start{transition:none}
-  }
-</style>
-<!-- Google Analytics (async, non-blocking) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-0WTK2LJFTY');
-</script>
-</head>
-<body>
-
-<!-- ====================== ENTRY ====================== -->
-<section id="entry">
-  <div class="wrap" style="width:100%">
-    <header class="site">
-      <span class="brand"><span class="dot"></span>TWTools</span>
-      <nav><a href="/breathe/">喘口氣</a><a href="/clock/">翻頁時鐘</a></nav>
-    </header>
-  </div>
-
-  <div class="wrap hero">
-    <span class="eyebrow">深夜宵夜所 · 虛擬外送</span>
-    <h1>半夜嘴饞？<br>先逛一輪再說</h1>
-    <p class="sub">把想吃的都加進購物車，最後送出一張不會扣款、不會送餐的虛擬訂單。</p>
-
-    <div class="livecount">
-      <span class="pulse"></span>今晚已有 <b id="entryCount">—</b> 人逛了宵夜、零下單
-    </div>
-
-    <button class="start" id="startBtn">開始逛宵夜</button>
-    <div class="start-hint">虛擬體驗 · 不會真的下單 · 熱量 0</div>
-
-    <div class="menu-preview">
-      <div class="label"><span class="eyebrow">今晚熱門</span><span class="rule"></span></div>
-      <div class="preview-list" id="entryPreview"></div>
-    </div>
-  </div>
-
-  <div class="wrap">
-    <footer class="site">
-      <div class="care">這是模擬下單，不會真的送餐、扣款或連到任何外送平台。</div>
-      <div class="privacy">購物車只存在你的瀏覽器 localStorage。本站不蒐集個資、不上傳訂單，也不使用真實品牌、店名或商品照片。</div>
-      <div style="margin-top:14px">© TWTools · 逛了不點，省了不胖</div>
-    </footer>
-  </div>
-</section>
-
-<!-- ====================== MIDNIGHT ====================== -->
-<section id="midnight">
-  <div class="steam" id="steam"></div>
-
-  <div class="m-top">
-    <span class="together"><span class="pulse"></span>今晚 <b id="liveCount">—</b> 人正在虛擬逛宵夜</span>
-    <button class="exit" id="exitBtn">回入口</button>
-  </div>
-
-  <div class="menu-stage">
-    <main class="menu-panel">
-      <div class="stage-head">
-        <div>
-          <span class="eyebrow">MENU · 0 CAL CHECKOUT</span>
-          <h2>想吃什麼，都先放進來</h2>
-        </div>
-        <p>價格、星等、送達時間皆為虛構展示。這裡只負責滿足想像，不負責宵夜熱量。</p>
-      </div>
-      <div class="tabs" id="tabs" role="tablist" aria-label="宵夜分類"></div>
-      <div class="menu-grid" id="menuGrid"></div>
-    </main>
-
-    <aside class="cart-panel" id="cartPanel" aria-label="虛擬購物車">
-      <div class="cart-head">
-        <div>
-          <h2>虛擬購物車</h2>
-          <p>不會真的送餐，也不會扣款。</p>
-        </div>
-        <span class="cart-count"><b id="cartCount">0</b> 件</span>
-      </div>
-      <div class="cart-items" id="cartItems"></div>
-      <div class="cart-foot">
-        <div class="estimate"><span>預估送達</span><b id="eta">28 分鐘 ★4.9</b></div>
-        <div class="total"><span>今晚可以省下</span><b id="total">NT$ 0</b></div>
-        <button class="checkout" id="checkoutBtn" disabled>送出虛擬訂單</button>
-        <button class="clear" id="clearBtn">清空購物車</button>
-      </div>
-      <div class="result" id="result"></div>
-    </aside>
-  </div>
-
-  <div class="mcontrols">
-    <button class="ctrl" id="randomBtn"><span>🎲</span><span>隨機抽一份</span></button>
-    <button class="ctrl" id="soundBtn" title="音效開關"><span>♪</span><span>叮聲</span></button>
-  </div>
-
-  <button class="floating-cart" id="floatingCart">購物車 <b id="floatingCount">0</b></button>
-</section>
-
-<!-- ====================== TRACKING（虛擬配送閉環） ====================== -->
-<div class="track-wrap" id="trackWrap" role="dialog" aria-label="虛擬訂單配送狀態">
-  <div class="track-panel">
-    <div class="track-head">
-      <div>
-        <span class="eyebrow" style="color:#f0b26b">虛擬配送 · NOTHING IS REAL</span>
-        <h3 id="trackTitle">訂單處理中</h3>
-      </div>
-      <button class="exit" id="trackClose">先滑別的</button>
-    </div>
-    <div class="track-steps" id="trackSteps"></div>
-    <div class="track-map">
-      <svg viewBox="0 0 320 190" aria-hidden="true">
-        <g stroke="#ffffff12" stroke-width="1">
-          <line x1="0" y1="40" x2="320" y2="40"/><line x1="0" y1="96" x2="320" y2="96"/><line x1="0" y1="150" x2="320" y2="150"/>
-          <line x1="70" y1="0" x2="70" y2="190"/><line x1="160" y1="0" x2="160" y2="190"/><line x1="250" y1="0" x2="250" y2="190"/>
-        </g>
-        <path id="routePath" d="M30,152 L30,96 L122,96 L122,40 L234,40 L234,118 L288,118" fill="none" stroke="#f0b26b" stroke-width="3" stroke-dasharray="6 7" stroke-linecap="round" opacity=".8"/>
-        <text x="30" y="168" text-anchor="middle" font-size="17">🏪</text>
-        <text x="296" y="112" text-anchor="middle" font-size="17">🏠</text>
-        <text id="riderDot" x="30" y="158" text-anchor="middle" font-size="16">🛵</text>
-      </svg>
-    </div>
-    <div class="track-eta"><span id="trackShop">—</span><span>虛擬時間剩 <b id="trackLeft">—</b></span></div>
-    <div class="bubbles" id="bubbles"></div>
-    <button class="open-door" id="openDoorBtn" hidden>🚪 去開門</button>
-    <div class="doorstep" id="doorstep">
-      <div class="scene">🚪🛍️♨️</div>
-      <p>餐點掛在門把上，還冒著虛構的熱氣。外送員已拍照存證（假裝有照片）。</p>
-    </div>
-    <div class="rate-zone" id="rateZone">
-      <h4>幫這趟虛擬外送打個分數</h4>
-      <div class="stars" id="stars"></div>
-      <div class="tips" id="tips"></div>
-      <button class="finish" id="finishBtn" disabled>完成這一單</button>
-    </div>
-    <div class="track-summary" id="trackSummary"></div>
-  </div>
-</div>
-<button class="track-chip" id="trackChip">🛵 虛擬訂單配送中 · 剩 <b id="chipLeft">—</b></button>
-
-<div class="toast" id="toast"></div>
-
-<script>
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/midnight@_@astro.BT2K3AaF.css">
+<link rel="stylesheet" href="/_assets/BaseLayout.CQRn7zlE.css"></head> <body class="min-h-screen paper-noise">   <button id="sidebar-hamburger" class="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg" style="background:var(--tw-surface);color:var(--tw-text-primary)">☰</button>  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 md:hidden hidden"></div>  <aside id="sidebar-panel" class="fixed top-0 left-0 h-full w-56 z-40 flex flex-col border-r transition-transform -translate-x-full md:translate-x-0" style="background:var(--tw-page-bg);border-color:var(--tw-border)"> <!-- Logo --> <div class="p-4 border-b flex items-center justify-between" style="border-color:var(--tw-border)"> <a href="/" class="flex items-center no-underline"> <img src="data:image/png;base64,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" alt="TWTools" class="w-7 h-7 rounded-lg"> <span class="text-sm font-bold ml-1.5" style="color:var(--tw-brand-accent)">TWTools</span> </a> <button id="sidebar-close" class="md:hidden text-lg leading-none" style="color:var(--tw-text-muted)">✕</button> </div> <!-- Nav items grouped by category --> <nav class="flex-1 py-2 overflow-y-auto"> <div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">檔案處理</div> <a href="/image/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🖼️</span> 圖片工具 </a><a href="/pdf/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📄</span> PDF 工具 </a><a href="/resume/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📋</span> 履歷產生器 </a><a href="/proofread/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">✍️</span> 錯別字檢查 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">生活查詢</div> <a href="/dashboard/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛡️</span> 防災儀表板 </a><a href="/typhoon/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌀</span> 颱風停班停課 </a><a href="/dingfengbo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌧️</span> 定風波 風雨時間軸 </a><a href="/reservoir/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💧</span> 水庫即時水情 </a><a href="/alerts/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🚨</span> 災害即時告警 </a><a href="/rain/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☔</span> 即時雨量 </a><a href="/oil-recall/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛢️</span> 問題沙拉油查詢 </a><a href="/lottery/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎰</span> 台灣彩券 </a><a href="/currency/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💱</span> 匯率換算 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">計算換算</div> <a href="/datecalc/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📅</span> 日期計算器 </a><a href="/countdown/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⏳</span> 倒數計時器 </a><a href="/unit/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📏</span> 單位換算 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">查詢工具</div> <a href="/postal/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📮</span> 郵遞區號 </a><a href="/address/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌐</span> 地址中譯英 </a><a href="/lunar/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 農曆國曆 </a><a href="/solar-terms/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☀️</span> 二十四節氣 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">學習工具</div> <a href="/vocabulary/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎓</span> 英文單字片語 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">站長工具</div> <a href="/seo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📊</span> SEO/GEO/AEO </a><a href="/clock/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🕐</span> 翻頁時鐘 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">放鬆小站</div> <a href="/breathe/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">😮‍💨</span> 一起喘口氣 </a><a href="/midnight/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-r-2" style="background:rgba(107,115,148,0.15);color:var(--tw-brand-accent);border-color:var(--tw-brand-accent)"> <span class="text-base">🌙</span> 深夜宵夜所 </a><a href="/woodenfish/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🪵</span> 電子木魚 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">休閒遊戲</div> <a href="/bee/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🐝</span> 小蜜蜂 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">更多</div> <a href="/blog/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📝</span> 知識文章 </a> </div>   </nav> <div class="p-3 border-t text-xs text-center space-y-1" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <div class="flex justify-center gap-3"> <a href="/about/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">關於</a> <a href="/privacy/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">隱私權</a> <a href="/terms/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">條款</a> </div>
+打工牛馬的線上工具箱 © 2026
+</div> </aside>  <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8 min-h-screen" style="background:var(--tw-page-bg)">   <section id="entry" class="max-w-3xl mx-auto"> <div class="hero"> <span class="eyebrow">深夜宵夜所 · 虛擬外送</span> <h1>半夜嘴饞？<br>先逛一輪再說</h1> <p class="sub">把想吃的都加進購物車，最後送出一張不會扣款、不會送餐的虛擬訂單。</p> <div class="livecount"> <span class="pulse"></span>今晚已有 <b id="entryCount">—</b> 人逛了宵夜、零下單
+</div> <button class="start" id="startBtn">開始逛宵夜</button> <div class="start-hint">虛擬體驗 · 不會真的下單 · 熱量 0 · 進入後按 ESC 或「回入口」離開</div> <div class="menu-preview"> <div class="label"><span class="eyebrow">今晚熱門</span><span class="rule"></span></div> <div class="preview-list" id="entryPreview"></div> </div> </div> <footer class="mn-note"> <div class="care">這是模擬下單，不會真的送餐、扣款或連到任何外送平台。</div> <div class="privacy">購物車只存在你的瀏覽器 localStorage。本站不蒐集個資、不上傳訂單，也不使用真實品牌、店名或商品照片。</div> </footer> </section>  <section id="midnight"> <div class="steam" id="steam"></div> <div class="m-top"> <span class="together"><span class="pulse"></span>今晚 <b id="liveCount">—</b> 人正在虛擬逛宵夜</span> <button class="exit" id="exitBtn">回入口</button> </div> <div class="menu-stage"> <main class="menu-panel"> <div class="stage-head"> <div> <span class="eyebrow">MENU · 0 CAL CHECKOUT</span> <h2>想吃什麼，都先放進來</h2> </div> <p>價格、星等、送達時間皆為虛構展示。這裡只負責滿足想像，不負責宵夜熱量。</p> </div> <div class="tabs" id="tabs" role="tablist" aria-label="宵夜分類"></div> <div class="menu-grid" id="menuGrid"></div> </main> <aside class="cart-panel" id="cartPanel" aria-label="虛擬購物車"> <div class="cart-head"> <div> <h2>虛擬購物車</h2> <p>不會真的送餐，也不會扣款。</p> </div> <span class="cart-count"><b id="cartCount">0</b> 件</span> </div> <div class="cart-items" id="cartItems"></div> <div class="cart-foot"> <div class="estimate"><span>預估送達</span><b id="eta">28 分鐘 ★4.9</b></div> <div class="total"><span>今晚可以省下</span><b id="total">NT$ 0</b></div> <button class="checkout" id="checkoutBtn" disabled>送出虛擬訂單</button> <button class="clear" id="clearBtn">清空購物車</button> </div> <div class="result" id="result"></div> </aside> </div> <div class="mcontrols"> <button class="ctrl" id="randomBtn"><span>🎲</span><span>隨機抽一份</span></button> <button class="ctrl" id="soundBtn" title="音效開關"><span>♪</span><span>叮聲</span></button> </div> <button class="floating-cart" id="floatingCart">購物車 <b id="floatingCount">0</b></button> </section>  <div id="trackWrap" role="dialog" aria-label="虛擬訂單配送狀態"> <div class="track-panel"> <div class="track-head"> <div> <span class="eyebrow" style="color:#f0b26b">虛擬配送 · NOTHING IS REAL</span> <h3 id="trackTitle">訂單處理中</h3> </div> <button class="exit" id="trackClose">先滑別的</button> </div> <div class="track-steps" id="trackSteps"></div> <div class="track-map"> <svg viewBox="0 0 320 190" aria-hidden="true"> <g stroke="#ffffff12" stroke-width="1"> <line x1="0" y1="40" x2="320" y2="40"></line><line x1="0" y1="96" x2="320" y2="96"></line><line x1="0" y1="150" x2="320" y2="150"></line> <line x1="70" y1="0" x2="70" y2="190"></line><line x1="160" y1="0" x2="160" y2="190"></line><line x1="250" y1="0" x2="250" y2="190"></line> </g> <path id="routePath" d="M30,152 L30,96 L122,96 L122,40 L234,40 L234,118 L288,118" fill="none" stroke="#f0b26b" stroke-width="3" stroke-dasharray="6 7" stroke-linecap="round" opacity=".8"></path> <text x="30" y="168" text-anchor="middle" font-size="17">🏪</text> <text x="296" y="112" text-anchor="middle" font-size="17">🏠</text> <text id="riderDot" x="30" y="158" text-anchor="middle" font-size="16">🛵</text> </svg> </div> <div class="track-eta"><span id="trackShop">—</span><span>虛擬時間剩 <b id="trackLeft">—</b></span></div> <div class="bubbles" id="bubbles"></div> <button class="open-door" id="openDoorBtn" hidden>🚪 去開門</button> <div class="doorstep" id="doorstep"> <div class="scene">🚪🛍️♨️</div> <p>餐點掛在門把上，還冒著虛構的熱氣。外送員已拍照存證（假裝有照片）。</p> </div> <div class="rate-zone" id="rateZone"> <h4>幫這趟虛擬外送打個分數</h4> <div class="stars" id="stars"></div> <div class="tips" id="tips"></div> <button class="finish" id="finishBtn" disabled>完成這一單</button> </div> <div class="track-summary" id="trackSummary"></div> </div> </div> <button id="trackChip">🛵 虛擬訂單配送中 · 剩 <b id="chipLeft">—</b></button> <div id="toast"></div>  <script>
 const MENU = [
   { id:"fried", name:"鹹酥雞", shop:"阿桂鹹酥雞", items:[
     ["popcorn-chicken","鹹酥雞","🍗",75,420,4.8],["chicken-cutlet","厚切雞排","🍖",95,590,4.7],["sweet-potato-fries","梅粉地瓜條","🍠",55,310,4.6],["tempura","甜不辣","🍢",45,260,4.5],["green-beans","炸四季豆","🫛",50,190,4.6],["rice-blood","米血糕","◼️",35,210,4.4],["squid","酥炸魷魚","🦑",90,360,4.8],["mushroom","椒鹽杏鮑菇","🍄",65,240,4.7],["chicken-skin","脆炸雞皮","🥓",45,320,4.7],["silk-roll","炸銀絲卷佐煉乳","🥖",55,380,4.6]
@@ -402,7 +138,7 @@ const allItems = MENU.flatMap(c => c.items);
 const randomLines = ["錢包鬆一口氣。","胃也謝謝你。","明天的你會感謝現在的你。","這份自制力，值得加一顆星。"];
 
 function money(n){ return "NT$ " + n.toLocaleString("zh-TW"); }
-function saveCart(){ localStorage.setItem("twtools_midnight_cart_v1", JSON.stringify(state.cart)); }
+function saveCart(){ try{ localStorage.setItem("twtools_midnight_cart_v1", JSON.stringify(state.cart)); }catch(e){} }
 function cartEntries(){ return Object.entries(state.cart).map(([id,qty]) => ({...allItems.find(i => i.id === id), qty})).filter(i => i.id); }
 function totals(){
   const entries = cartEntries();
@@ -685,21 +421,35 @@ function setCounts(){
   $("entryCount").textContent = base.toLocaleString("zh-TW");
   $("liveCount").textContent = base.toLocaleString("zh-TW");
 }
+function enterMidnight(){
+  $("midnight").classList.add("on");
+  document.documentElement.classList.add("mn-lock");
+  renderMenu(); renderCart();
+}
+function exitMidnight(){
+  $("midnight").classList.remove("on");
+  document.documentElement.classList.remove("mn-lock");
+}
 
-$("startBtn").addEventListener("click", () => { $("midnight").classList.add("on"); renderMenu(); renderCart(); });
-$("exitBtn").addEventListener("click", () => $("midnight").classList.remove("on"));
+$("startBtn").addEventListener("click", enterMidnight);
+$("exitBtn").addEventListener("click", exitMidnight);
 $("floatingCart").addEventListener("click", () => $("cartPanel").classList.toggle("open"));
 $("randomBtn").addEventListener("click", () => addItem(allItems[Math.floor(Math.random()*allItems.length)].id));
 $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; $("soundBtn").classList.toggle("off", !state.sound); showToast(state.sound ? "叮聲已開啟" : "叮聲已關閉"); });
 $("checkoutBtn").addEventListener("click", checkout);
 $("clearBtn").addEventListener("click", clearCart);
 $("trackClose").addEventListener("click", closeTrack);
-$("trackChip").addEventListener("click", () => { $("midnight").classList.add("on"); renderMenu(); renderCart(); openTrack(); });
+$("trackChip").addEventListener("click", () => { enterMidnight(); openTrack(); });
 $("openDoorBtn").addEventListener("click", () => { order.opened = true; saveOrder(); tickTrack(); });
 $("finishBtn").addEventListener("click", () => {
   order.finished = true; saveOrder();
   try{ gtag('event','virtual_rated',{ value:order.stars }); }catch(e){}
   tickTrack();
+});
+document.addEventListener("keydown", (e) => {
+  if(e.code !== "Escape") return;
+  if($("trackWrap").classList.contains("on")){ closeTrack(); return; }
+  if($("midnight").classList.contains("on")) exitMidnight();
 });
 document.addEventListener("visibilitychange", () => {
   if(!document.hidden && titleTimer){ clearInterval(titleTimer); titleTimer = null; document.title = baseTitle; }
@@ -711,6 +461,26 @@ setInterval(setCounts, 60000);
 // 有進行中的虛擬訂單（含重開頁面）：顯示追單 chip 並繼續倒數，送達未評價也接得回來
 if(order && order.finished) { order = null; saveOrder(); }
 if(order){ $("trackChip").classList.add("on"); startOrderLoop(); }
-</script>
-</body>
-</html>
+  </script>  <div class="max-w-6xl mx-auto pb-2"> <div class="pt-5 mt-6 border-t flex flex-col md:flex-row md:items-baseline gap-x-6 gap-y-2" style="border-color: var(--tw-border);"> <span class="eyebrow shrink-0">姊妹站 · FAMILY</span> <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm" style="color: var(--tw-text-muted);"> <a href="https://aire.twtools.cc/" title="aire — AI Tool Atlas·AI 工具圖鑑" class="grow-underline whitespace-nowrap">aire — AI Tool Atlas·AI 工具圖鑑</a><a href="https://tree.twtools.cc/" title="樹洞21號 — 匿名 AI 心事平台" class="grow-underline whitespace-nowrap">樹洞21號 — 匿名 AI 心事平台</a><a href="https://foootball.twtools.cc/" title="@foootball — 2026 世界盃賽程" class="grow-underline whitespace-nowrap">@foootball — 2026 世界盃賽程</a><a href="https://baseball.twtools.cc/" title="@baseball — 中職 CPBL＋MLB 深度戰報" class="grow-underline whitespace-nowrap">@baseball — 中職 CPBL＋MLB 深度戰報</a><a href="https://dvdmaru.com/" title="dvdmaru — 把事實和敘事分開來看" class="grow-underline whitespace-nowrap">dvdmaru — 把事實和敘事分開來看</a> </div> </div> </div> </main>  <script>
+    (function() {
+      var hamburger = document.getElementById('sidebar-hamburger');
+      var overlay = document.getElementById('sidebar-overlay');
+      var panel = document.getElementById('sidebar-panel');
+      var closeBtn = document.getElementById('sidebar-close');
+
+      function openSidebar() {
+        panel.classList.remove('-translate-x-full');
+        panel.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+      }
+      function closeSidebar() {
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+
+      if (hamburger) hamburger.addEventListener('click', openSidebar);
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    })();
+  </script>  <!-- Affiliates.One / Adotone Ad Link 網站驗證碼（須 is:inline 才會原樣輸出，勿移除 is:inline） --> <script>var ConverlyCustomData = {channelId: null};</script> <script async defer src="https://cdn.adotone.com/production/adlinks/676dd203e573377526b0bfa14fb812f5265fb0db262acf5759eaf3acb67f8e66.js"></script> </body> </html>
