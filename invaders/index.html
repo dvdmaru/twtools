@@ -1,0 +1,795 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>太空侵略者・復古街機射擊 — 免費線上小遊戲｜TWTools</title><meta name="description" content="免費線上玩經典「太空侵略者」復古街機射擊遊戲：侵略者列隊步進行軍、越打越快，躲在可破壞掩體後反擊，擊落頂部 UFO 拿獎勵分。支援電腦鍵盤與手機觸控，免下載免安裝。"><link rel="canonical" href="https://twtools.cc/invaders/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://twtools.cc/invaders/"><meta property="og:title" content="太空侵略者・復古街機射擊 — 免費線上小遊戲｜TWTools"><meta property="og:description" content="免費線上玩經典「太空侵略者」復古街機射擊遊戲：侵略者列隊步進行軍、越打越快，躲在可破壞掩體後反擊，擊落頂部 UFO 拿獎勵分。支援電腦鍵盤與手機觸控，免下載免安裝。"><meta property="og:image" content="https://twtools.cc/invaders/og-invaders.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="太空侵略者・復古街機射擊"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="太空侵略者・復古街機射擊 — 免費線上小遊戲｜TWTools"><meta name="twitter:description" content="免費線上玩經典「太空侵略者」復古街機射擊遊戲：侵略者列隊步進行軍、越打越快，躲在可破壞掩體後反擊，擊落頂部 UFO 拿獎勵分。支援電腦鍵盤與手機觸控，免下載免安裝。"><meta name="twitter:image" content="https://twtools.cc/invaders/og-invaders.png"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0WTK2LJFTY');
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            /* Morandi Dusty Rose — TWTools 品牌色（OKLCH hue 22） */
+            brand: {
+              50:  '#fceeed',
+              100: '#f2dbda',
+              200: '#e0b9b7',
+              300: '#ca9592',
+              400: '#af7472',
+              500: '#935e5c',
+              600: '#764a49',
+              700: '#583937',
+              800: '#3e2726',
+              900: '#281818',
+              950: '#110c08'
+            },
+            /* 奶油暖灰中性色（OKLCH hue 60） */
+            warm: {
+              50:  '#fcf3ed',
+              100: '#f1e5dc',
+              200: '#e3d0c2',
+              300: '#c9b3a2',
+              400: '#a99483',
+              500: '#887769',
+              600: '#6e6055',
+              700: '#564b42',
+              800: '#3e3630',
+              900: '#2b2520',
+              950: '#15110d'
+            },
+            /* 暖琥珀強調色（OKLCH hue 75） */
+            accent: {
+              50:  '#fdf4e7',
+              100: '#f8e5cb',
+              200: '#eecb9a',
+              300: '#e1ad63',
+              400: '#d49838',
+              500: '#b68028',
+              600: '#906520',
+              700: '#6b4c1d',
+              800: '#4b3617',
+              900: '#32230e',
+              950: '#181005'
+            }
+          }
+        }
+      }
+    }
+  </script><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/invaders@_@astro.5Z7YsdSz.css">
+<link rel="stylesheet" href="/_assets/BaseLayout.CQRn7zlE.css"></head> <body class="min-h-screen paper-noise">   <button id="sidebar-hamburger" class="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg" style="background:var(--tw-surface);color:var(--tw-text-primary)">☰</button>  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 md:hidden hidden"></div>  <aside id="sidebar-panel" class="fixed top-0 left-0 h-full w-56 z-40 flex flex-col border-r transition-transform -translate-x-full md:translate-x-0" style="background:var(--tw-page-bg);border-color:var(--tw-border)"> <!-- Logo --> <div class="p-4 border-b flex items-center justify-between" style="border-color:var(--tw-border)"> <a href="/" class="flex items-center no-underline"> <img src="data:image/png;base64,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" alt="TWTools" class="w-7 h-7 rounded-lg"> <span class="text-sm font-bold ml-1.5" style="color:var(--tw-brand-accent)">TWTools</span> </a> <button id="sidebar-close" class="md:hidden text-lg leading-none" style="color:var(--tw-text-muted)">✕</button> </div> <!-- Nav items grouped by category --> <nav class="flex-1 py-2 overflow-y-auto"> <div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">檔案處理</div> <a href="/image/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🖼️</span> 圖片工具 </a><a href="/pdf/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📄</span> PDF 工具 </a><a href="/resume/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📋</span> 履歷產生器 </a><a href="/proofread/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">✍️</span> 錯別字檢查 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">生活查詢</div> <a href="/dashboard/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛡️</span> 防災儀表板 </a><a href="/typhoon/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌀</span> 颱風停班停課 </a><a href="/dingfengbo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌧️</span> 定風波 風雨時間軸 </a><a href="/reservoir/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💧</span> 水庫即時水情 </a><a href="/alerts/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🚨</span> 災害即時告警 </a><a href="/rain/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☔</span> 即時雨量 </a><a href="/oil-recall/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛢️</span> 問題沙拉油查詢 </a><a href="/lottery/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎰</span> 台灣彩券 </a><a href="/currency/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💱</span> 匯率換算 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">計算換算</div> <a href="/datecalc/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📅</span> 日期計算器 </a><a href="/countdown/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⏳</span> 倒數計時器 </a><a href="/unit/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📏</span> 單位換算 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">查詢工具</div> <a href="/postal/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📮</span> 郵遞區號 </a><a href="/address/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌐</span> 地址中譯英 </a><a href="/lunar/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 農曆國曆 </a><a href="/solar-terms/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☀️</span> 二十四節氣 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">學習工具</div> <a href="/vocabulary/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎓</span> 英文單字片語 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">站長工具</div> <a href="/seo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📊</span> SEO/GEO/AEO </a><a href="/clock/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🕐</span> 翻頁時鐘 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">放鬆小站</div> <a href="/breathe/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">😮‍💨</span> 一起喘口氣 </a><a href="/midnight/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 深夜宵夜所 </a><a href="/woodenfish/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🪵</span> 電子木魚 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">休閒遊戲</div> <a href="/bee/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🐝</span> 小蜜蜂 </a><a href="/invaders/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-r-2" style="background:rgba(107,115,148,0.15);color:var(--tw-brand-accent);border-color:var(--tw-brand-accent)"> <span class="text-base">👾</span> 太空侵略者 </a><a href="/crab/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🦀</span> 打螃蟹 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">更多</div> <a href="/blog/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📝</span> 知識文章 </a> </div>   </nav> <div class="p-3 border-t text-xs text-center space-y-1" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <div class="flex justify-center gap-3"> <a href="/about/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">關於</a> <a href="/privacy/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">隱私權</a> <a href="/terms/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">條款</a> </div>
+打工牛馬的線上工具箱 © 2026
+</div> </aside>  <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8 min-h-screen" style="background:var(--tw-page-bg)">  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"太空侵略者・復古街機射擊","url":"https://twtools.cc/invaders/","description":"經典太空侵略者玩法的原創致敬版：侵略者步進行軍越打越快、四座可破壞掩體、頂部 UFO 獎勵分，支援鍵盤與觸控。","inLanguage":"zh-Hant","gamePlatform":"Web Browser","applicationCategory":"Game","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"TWTools","url":"https://twtools.cc/"}}</script> <div class="max-w-3xl mx-auto"> <header class="mb-6"> <p class="eyebrow mb-2">PLAY · INVADERS · №28</p> <h1 class="font-serif-tc text-2xl md:text-3xl font-bold tracking-cn mb-3">太空侵略者・復古街機射擊</h1> <p class="text-sm leading-relaxed" style="color:var(--tw-text-secondary)">
+致敬 1978 年開啟射擊時代的街機經典：侵略者列隊步進行軍、剩越少走越快，
+        你要躲在四座會被打爛的掩體後面反擊，還有頂部神出鬼沒的 UFO 獎勵分。免下載免安裝，電腦手機都能玩。
+</p> </header> <div id="invWrap"> <div class="inv-frame"> <div class="inv-topbar"> <span class="inv-logo">太空侵略者<small>ARCADE</small></span> <span> <button id="invMuteBtn" aria-label="切換音效">♪ ON</button> <button id="invExit" aria-label="離開全螢幕">✕ 離開</button> </span> </div> <div class="inv-screen"> <canvas id="invGame" width="480" height="640"></canvas> <div class="inv-scanlines"></div> </div> <div class="inv-touch"> <button id="invBtnL" aria-label="左移">◀</button> <button id="invBtnFire" aria-label="發射">發射</button> <button id="invBtnR" aria-label="右移">▶</button> </div> <div class="inv-hint">← → 移動 ｜ SPACE 發射 ｜ P 暫停 ｜ M 靜音 ｜ ENTER 開始 ｜ ESC 離開全螢幕</div> <div class="inv-submit" id="invSubmit" hidden> <span class="lbl">上榜</span> <input id="invName" maxlength="8" placeholder="暱稱（8 字內）" autocomplete="off"> <button id="invSubmitBtn">送出成績</button> <span class="msg" id="invSubmitMsg"></span> </div> </div> </div> <section class="mt-10 mb-16"> <h2 class="font-serif-tc text-lg font-bold tracking-cn mb-3">玩法與計分</h2> <ul class="text-sm leading-loose list-disc pl-5" style="color:var(--tw-text-secondary)"> <li>開始遊戲後會進入全螢幕，按 <strong>ESC</strong> 或右上角「✕ 離開」隨時回到本頁。</li> <li>最上排「魷魚」30 分，中間兩排「螃蟹兵」20 分，下面兩排「章魚兵」10 分。</li> <li>侵略者<strong>剩得越少、行軍越快</strong>，最後一隻幾乎是用衝的——這就是它的醍醐味。</li> <li>四座掩體會被雙方火力打爛，侵略者行軍壓過也會直接輾碎。</li> <li>頂部不定時飛過 <strong>UFO</strong>，擊落隨機獎勵 50～300 分；累計 1500 分加送 1 條命（一次）。</li> <li>你有 3 條命；侵略者降到底線或命用完即結束，最高分會記在你的瀏覽器裡。</li> <li>手機直接用畫面下方的 ◀ 發射 ▶ 觸控鈕。</li> </ul> <p class="text-xs mt-4" style="color:var(--tw-text-muted)">
+本遊戲為 TWTools 原創作品，致敬 1970 年代街機經典玩法，程式與像素圖皆為自製，與任何原廠無關。
+</p> </section> <section class="mb-16" id="lbSection" hidden> <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap"> <h2 class="font-serif-tc text-lg font-bold tracking-cn">排行榜</h2> <div class="lb-tabs" style="display:flex;gap:8px"> <button id="lbTabDaily" aria-selected="true">今日榜</button> <button id="lbTabWeekly" aria-selected="false">本週榜</button> </div> </div> <ol id="lbList"></ol> <p class="text-xs" style="color:var(--tw-text-muted)">趣味榜單：成績由遊戲端送出、僅供娛樂參考；今日榜每天台北時間 00:00 換榜，本週榜滾動保留 7 天。</p> </section> </div>  <script>
+(function(){
+  'use strict';
+  var cv = document.getElementById('invGame');
+  var cx = cv.getContext('2d');
+  var W = 480, H = 640, S = 2;
+  var wrap = document.getElementById('invWrap');
+
+  // ---------- sprites (bitmap arrays, 0=empty 1=body 2=dark 3=light) ----------
+  var SQUID_A = [
+    [0,0,0,1,1,0,0,0],
+    [0,0,1,1,1,1,0,0],
+    [0,1,1,1,1,1,1,0],
+    [1,1,2,1,1,2,1,1],
+    [1,1,1,1,1,1,1,1],
+    [0,0,1,0,0,1,0,0],
+    [0,1,0,1,1,0,1,0],
+    [1,0,1,0,0,1,0,1]
+  ];
+  var SQUID_B = [
+    [0,0,0,1,1,0,0,0],
+    [0,0,1,1,1,1,0,0],
+    [0,1,1,1,1,1,1,0],
+    [1,1,2,1,1,2,1,1],
+    [1,1,1,1,1,1,1,1],
+    [0,1,0,1,1,0,1,0],
+    [1,0,0,0,0,0,0,1],
+    [0,1,0,0,0,0,1,0]
+  ];
+  var CRABA_A = [
+    [0,0,1,0,0,0,0,0,1,0,0],
+    [0,0,0,1,0,0,0,1,0,0,0],
+    [0,0,1,1,1,1,1,1,1,0,0],
+    [0,1,1,2,1,1,1,2,1,1,0],
+    [1,1,1,1,1,1,1,1,1,1,1],
+    [1,0,1,1,1,1,1,1,1,0,1],
+    [1,0,1,0,0,0,0,0,1,0,1],
+    [0,0,0,1,1,0,1,1,0,0,0]
+  ];
+  var CRABA_B = [
+    [0,0,1,0,0,0,0,0,1,0,0],
+    [1,0,0,1,0,0,0,1,0,0,1],
+    [1,0,1,1,1,1,1,1,1,0,1],
+    [1,1,1,2,1,1,1,2,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1,1],
+    [0,1,1,1,1,1,1,1,1,1,0],
+    [0,0,1,0,0,0,0,0,1,0,0],
+    [0,1,0,0,0,0,0,0,0,1,0]
+  ];
+  var OCTO_A = [
+    [0,0,0,0,1,1,1,1,0,0,0,0],
+    [0,1,1,1,1,1,1,1,1,1,1,0],
+    [1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,1,1,2,2,1,1,2,2,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1],
+    [0,0,0,1,1,0,0,1,1,0,0,0],
+    [0,0,1,1,0,1,1,0,1,1,0,0],
+    [1,1,0,0,0,0,0,0,0,0,1,1]
+  ];
+  var OCTO_B = [
+    [0,0,0,0,1,1,1,1,0,0,0,0],
+    [0,1,1,1,1,1,1,1,1,1,1,0],
+    [1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,1,1,2,2,1,1,2,2,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1],
+    [0,0,1,1,1,0,0,1,1,1,0,0],
+    [0,1,1,0,0,1,1,0,0,1,1,0],
+    [0,0,1,1,0,0,0,0,1,1,0,0]
+  ];
+  var CANNON = [
+    [0,0,0,0,0,0,3,0,0,0,0,0,0],
+    [0,0,0,0,0,1,1,1,0,0,0,0,0],
+    [0,0,0,0,0,1,1,1,0,0,0,0,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,0],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1]
+  ];
+  var UFO = [
+    [0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0],
+    [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0],
+    [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+    [0,1,1,2,1,1,2,1,1,2,1,1,2,1,1,0],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    [0,0,1,1,1,0,0,1,1,0,0,1,1,1,0,0],
+    [0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0]
+  ];
+  var PAL_ALIEN  = {1:'#35ff6d', 2:'#04240f'};
+  var PAL_SQUID  = {1:'#b8ffcf', 2:'#04240f'};
+  var PAL_CANNON = {1:'#35ff6d', 3:'#eafff0'};
+  var PAL_UFO    = {1:'#ff5f5f', 2:'#2a0808'};
+
+  function drawSprite(bm, pal, x, y){
+    for(var r=0; r<bm.length; r++){
+      var row = bm[r];
+      for(var c=0; c<row.length; c++){
+        var v = row[c];
+        if(v && pal[v]){ cx.fillStyle = pal[v]; cx.fillRect(x + c*S, y + r*S, S, S); }
+      }
+    }
+  }
+
+  // ---------- audio ----------
+  var actx = null, muted = false;
+  function beep(f, dur, type, vol, slide){
+    if(muted) return;
+    try{
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      if(actx.state === 'suspended') actx.resume();
+      var o = actx.createOscillator(), g = actx.createGain(), t0 = actx.currentTime;
+      o.type = type || 'square';
+      o.frequency.setValueAtTime(f, t0);
+      if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, f + slide), t0 + dur);
+      g.gain.setValueAtTime(vol || 0.06, t0);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      o.connect(g); g.connect(actx.destination);
+      o.start(t0); o.stop(t0 + dur + 0.02);
+    }catch(e){}
+  }
+  var marchNotes = [98, 92, 87, 82], marchIdx = 0;
+  var sfx = {
+    march:  function(){ beep(marchNotes[marchIdx], 0.08, 'square', 0.05); marchIdx = (marchIdx + 1) % 4; },
+    shoot:  function(){ beep(880, 0.08, 'square',   0.045, -600); },
+    kill:   function(){ beep(200, 0.14, 'sawtooth', 0.065, -140); },
+    ufo:    function(){ beep(520, 0.10, 'triangle', 0.04, 120); },
+    bonus:  function(){ beep(659, 0.1, 'square', 0.05); setTimeout(function(){ beep(880, 0.16, 'square', 0.05); }, 110); },
+    die:    function(){ beep(150, 0.7,  'sawtooth', 0.09, -110); },
+    wave:   function(){ beep(523, 0.12, 'square', 0.05); setTimeout(function(){ beep(659, 0.12, 'square', 0.05); }, 130); setTimeout(function(){ beep(784, 0.2, 'square', 0.05); }, 260); }
+  };
+
+  // ---------- game constants ----------
+  var ROWS = 5, COLS = 11, SPX = 34, SPY = 28, AW = 24, AH = 16;
+  var ROW_VALUE = [30, 20, 20, 10, 10];
+  var ROW_SPRITE = [0, 1, 1, 2, 2]; // 0=squid 1=crab 2=octopus
+  var PW = 26, PH = 14, PY = 584;
+  var SH_Y = 506, SH_CELL = 2, SH_COLS = 22, SH_ROWS = 16;
+
+  // ---------- state ----------
+  var state = 'title';       // title | playing | paused | over
+  var frame = 0, score = 0, hi = 0, wave = 1, lives = 3, bonusGiven = false;
+  var freeze = 0, invinc = 0, banner = 0;
+  var player, aliens, pBullet, eBullets, parts, shields, ufo;
+  var fx, fy, dir, stepTimer, stepInterval, stepDown, fireTimer, ufoTimer, shootCd;
+  var keys = { left:false, right:false, fire:false };
+  var gaStarted = false;
+
+  try{ hi = parseInt(localStorage.getItem('inv_hi') || '0', 10) || 0; }catch(e){}
+
+  // ---------- fullscreen play mode ----------
+  function enterFs(){
+    wrap.classList.add('inv-fs');
+    document.documentElement.classList.add('inv-lock');
+  }
+  function exitFs(){
+    wrap.classList.remove('inv-fs');
+    document.documentElement.classList.remove('inv-lock');
+    if(state === 'playing') state = 'paused';
+  }
+
+  function makeShields(){
+    shields = [];
+    for(var s=0; s<4; s++){
+      var grid = [];
+      for(var r=0; r<SH_ROWS; r++){
+        var row = [];
+        for(var c=0; c<SH_COLS; c++){
+          var on = 1;
+          // 頂部削圓角
+          if(r < 4 && (c < 4 - r || c >= SH_COLS - (4 - r))) on = 0;
+          // 底部中央挖門
+          if(r >= SH_ROWS - 5 && c >= 7 && c < SH_COLS - 7) on = 0;
+          row.push(on);
+        }
+        grid.push(row);
+      }
+      shields.push({ x: 38 + s * 112, y: SH_Y, grid: grid });
+    }
+  }
+
+  function initWave(){
+    fx = (W - ((COLS-1)*SPX + AW)) / 2;
+    fy = 84 + Math.min(60, (wave-1) * 12); // 每波開場更低（經典規則）
+    dir = 1;
+    aliens = [];
+    for(var r=0; r<ROWS; r++)
+      for(var c=0; c<COLS; c++)
+        aliens.push({ row:r, col:c, alive:true, x: fx + c*SPX, y: fy + r*SPY });
+    pBullet = null; eBullets = [];
+    stepTimer = 0; stepDown = 0;
+    fireTimer = 70;
+    ufo = null; ufoTimer = 500 + Math.random()*400;
+  }
+
+  function startGame(){
+    score = 0; wave = 1; lives = 3; bonusGiven = false;
+    player = { x: W/2 - PW/2 };
+    parts = []; freeze = 0; invinc = 0; shootCd = 0;
+    makeShields();
+    initWave();
+    banner = 70;
+    state = 'playing';
+    lastRun = null;
+    invSubmit.hidden = true;
+    enterFs();
+    sfx.wave();
+    if(!gaStarted && typeof gtag === 'function'){ gaStarted = true; gtag('event', 'game_start'); }
+  }
+
+  function explode(x, y, color, n){
+    for(var i=0; i<n; i++){
+      var a = Math.random()*Math.PI*2, v = 1 + Math.random()*3;
+      parts.push({ x:x, y:y, vx:Math.cos(a)*v, vy:Math.sin(a)*v, life: 20 + Math.random()*18, color: color });
+    }
+  }
+
+  function addScore(val){
+    score += val;
+    if(score > hi) hi = score;
+    if(!bonusGiven && score >= 1500){
+      bonusGiven = true;
+      lives++;
+      sfx.bonus();
+    }
+  }
+
+  function playerHit(){
+    lives--;
+    explode(player.x + PW/2, PY + PH/2, '#35ff6d', 26);
+    sfx.die();
+    eBullets = [];
+    freeze = 55;
+    invinc = 150;
+    player.x = W/2 - PW/2;
+  }
+
+  function gameOver(){
+    state = 'over';
+    try{ localStorage.setItem('inv_hi', String(hi)); }catch(e){}
+    if(lbAvailable && score >= 10){
+      lastRun = { score: score, wave: wave };
+      invSubmitMsg.textContent = '';
+      invSubmitBtn.disabled = false;
+      invSubmit.hidden = false;
+    }
+  }
+
+  // ---------- shields ----------
+  function shieldHit(x, y, radius){
+    // 子彈/炸彈命中座標 → 對應掩體格子挖洞；回傳是否有命中
+    for(var s=0; s<shields.length; s++){
+      var sh = shields[s];
+      var gw = SH_COLS * SH_CELL, gh = SH_ROWS * SH_CELL;
+      if(x < sh.x || x >= sh.x + gw || y < sh.y || y >= sh.y + gh) continue;
+      var gc = Math.floor((x - sh.x) / SH_CELL), gr = Math.floor((y - sh.y) / SH_CELL);
+      if(!sh.grid[gr] || !sh.grid[gr][gc]) continue;
+      for(var r=gr-radius; r<=gr+radius; r++){
+        for(var c=gc-radius; c<=gc+radius; c++){
+          if(r>=0 && r<SH_ROWS && c>=0 && c<SH_COLS && sh.grid[r][c] && Math.random() < 0.82) sh.grid[r][c] = 0;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+  function crushShields(ax, ay){
+    // 侵略者行軍壓過掩體 → 該範圍直接輾碎
+    for(var s=0; s<shields.length; s++){
+      var sh = shields[s];
+      var gw = SH_COLS * SH_CELL;
+      if(ax + AW < sh.x || ax >= sh.x + gw || ay + AH < sh.y) continue;
+      for(var r=0; r<SH_ROWS; r++){
+        for(var c=0; c<SH_COLS; c++){
+          var cxp = sh.x + c*SH_CELL, cyp = sh.y + r*SH_CELL;
+          if(cxp >= ax - 2 && cxp <= ax + AW + 2 && cyp >= ay - 2 && cyp <= ay + AH + 2) sh.grid[r][c] = 0;
+        }
+      }
+    }
+  }
+
+  // ---------- update ----------
+  function update(){
+    frame++;
+    if(state !== 'playing') return;
+
+    for(var i=parts.length-1; i>=0; i--){
+      var p = parts[i];
+      p.x += p.vx; p.y += p.vy; p.vy += 0.04; p.life--;
+      if(p.life <= 0) parts.splice(i, 1);
+    }
+
+    if(freeze > 0){
+      freeze--;
+      if(freeze === 0 && lives <= 0) gameOver();
+      return;
+    }
+    if(invinc > 0) invinc--;
+    if(banner > 0) banner--;
+
+    // --- player ---
+    if(keys.left)  player.x -= 4;
+    if(keys.right) player.x += 4;
+    if(player.x < 6) player.x = 6;
+    if(player.x > W - PW - 6) player.x = W - PW - 6;
+    if(shootCd > 0) shootCd--;
+    if(keys.fire && shootCd <= 0 && !pBullet){
+      pBullet = { x: player.x + PW/2 - 1, y: PY - 8 };
+      shootCd = 10;
+      sfx.shoot();
+    }
+
+    var enemiesActive = banner <= 0;
+    var aliveList = aliens.filter(function(a){ return a.alive; });
+    var aliveN = aliveList.length;
+
+    if(enemiesActive && aliveN > 0){
+      // --- 步進行軍：剩越少步越密（經典加速） ---
+      stepInterval = Math.max(3, Math.round(aliveN * 0.72) - (wave-1)*2);
+      stepTimer++;
+      if(stepTimer >= stepInterval){
+        stepTimer = 0;
+        if(stepDown > 0){
+          fy += 14; stepDown = 0;
+        }else{
+          var nx = fx + dir * 8;
+          var minC = 99, maxC = -1;
+          for(i=0; i<aliens.length; i++){
+            if(aliens[i].alive){
+              if(aliens[i].col < minC) minC = aliens[i].col;
+              if(aliens[i].col > maxC) maxC = aliens[i].col;
+            }
+          }
+          var left = nx + minC*SPX, right = nx + maxC*SPX + AW;
+          if(left < 10 || right > W - 10){ dir = -dir; stepDown = 1; }
+          else fx = nx;
+        }
+        for(i=0; i<aliens.length; i++){
+          var a = aliens[i];
+          if(!a.alive) continue;
+          a.x = fx + a.col*SPX;
+          a.y = fy + a.row*SPY;
+          crushShields(a.x, a.y);
+          if(a.y + AH >= PY - 4){ lives = 0; gameOver(); return; }
+        }
+        sfx.march();
+      }
+
+      // --- 侵略者投彈：各列最下面那隻會丟 ---
+      fireTimer--;
+      if(fireTimer <= 0){
+        var cols = {};
+        for(i=0; i<aliens.length; i++){
+          a = aliens[i];
+          if(a.alive && (!cols[a.col] || a.row > cols[a.col].row)) cols[a.col] = a;
+        }
+        var shooters = Object.keys(cols);
+        var maxBombs = Math.min(4, 2 + Math.floor(wave/2));
+        if(shooters.length && eBullets.length < maxBombs){
+          a = cols[shooters[Math.floor(Math.random()*shooters.length)]];
+          eBullets.push({ x: a.x + AW/2, y: a.y + AH, vy: 2.6 + wave*0.25 });
+        }
+        fireTimer = Math.max(22, 62 - wave*6);
+      }
+
+      // --- UFO ---
+      if(!ufo){
+        ufoTimer--;
+        if(ufoTimer <= 0 && aliveN > 4){
+          var fromLeft = Math.random() < 0.5;
+          ufo = { x: fromLeft ? -34 : W + 2, vx: fromLeft ? 1.6 : -1.6, val: [50,100,150,300][Math.floor(Math.random()*4)] };
+          ufoTimer = 700 + Math.random()*500;
+        }
+      }else{
+        ufo.x += ufo.vx;
+        if((frame & 7) === 0) sfx.ufo();
+        if(ufo.x < -36 || ufo.x > W + 4) ufo = null;
+      }
+    }
+
+    // --- player bullet ---
+    if(pBullet){
+      pBullet.y -= 10;
+      if(pBullet.y < -12) pBullet = null;
+      else if(shieldHit(pBullet.x + 1, pBullet.y, 2)) pBullet = null;
+      else{
+        if(ufo && pBullet.x < ufo.x + 32 && pBullet.x + 2 > ufo.x && pBullet.y < 44 && pBullet.y + 8 > 30){
+          addScore(ufo.val);
+          explode(ufo.x + 16, 38, '#ff5f5f', 20);
+          parts.push({ x: ufo.x + 4, y: 30, vx: 0, vy: -0.4, life: 50, color: '#ffd23f', txt: '+' + ufo.val });
+          ufo = null; pBullet = null;
+          sfx.bonus();
+        }
+      }
+      if(pBullet){
+        for(var j=0; j<aliens.length; j++){
+          a = aliens[j];
+          if(!a.alive) continue;
+          if(pBullet.x < a.x + AW && pBullet.x + 2 > a.x && pBullet.y < a.y + AH && pBullet.y + 8 > a.y){
+            a.alive = false;
+            addScore(ROW_VALUE[a.row]);
+            explode(a.x + AW/2, a.y + AH/2, a.row === 0 ? '#b8ffcf' : '#35ff6d', 14);
+            sfx.kill();
+            pBullet = null;
+            break;
+          }
+        }
+      }
+    }
+
+    // --- enemy bombs ---
+    for(i=eBullets.length-1; i>=0; i--){
+      var eb = eBullets[i];
+      eb.y += eb.vy;
+      if(eb.y > H + 12){ eBullets.splice(i, 1); continue; }
+      if(shieldHit(eb.x + 1, eb.y + 8, 1)){ eBullets.splice(i, 1); continue; }
+      if(invinc <= 0 && eb.x < player.x + PW && eb.x + 3 > player.x && eb.y < PY + PH && eb.y + 8 > PY){
+        eBullets.splice(i, 1);
+        playerHit();
+        return;
+      }
+    }
+
+    var aliveNow = 0;
+    for(i=0; i<aliens.length; i++) if(aliens[i].alive) aliveNow++;
+    if(aliveNow === 0 && !pBullet){
+      wave++;
+      initWave();
+      banner = 80;
+      sfx.wave();
+    }
+  }
+
+  // ---------- draw ----------
+  function text(str, x, y, size, color, align){
+    cx.fillStyle = color;
+    cx.font = '700 ' + size + 'px "SF Mono",Menlo,Consolas,monospace';
+    cx.textAlign = align || 'center';
+    cx.fillText(str, x, y);
+  }
+
+  function draw(){
+    cx.fillStyle = '#010603';
+    cx.fillRect(0, 0, W, H);
+
+    if(state === 'title'){
+      var bob = Math.sin(frame/22) * 5;
+      cx.save();
+      cx.translate(W/2 - 12, 128 + bob);
+      cx.scale(2, 2);
+      drawSprite((frame>>4) & 1 ? OCTO_A : OCTO_B, PAL_ALIEN, -6, 0);
+      cx.restore();
+      text('太空侵略者', W/2, 236, 40, '#35ff6d');
+      text('復 古 街 機 射 擊', W/2, 268, 13, '#3f8f5c');
+      text('魷魚 30   螃蟹兵 20   章魚兵 10', W/2, 340, 13, '#d8ffe4');
+      text('UFO 神秘獎勵 50~300', W/2, 366, 13, '#ff5f5f');
+      text('← → 移動   SPACE 發射', W/2, 420, 14, '#d8ffe4');
+      text('剩得越少走得越快，小心最後一隻', W/2, 448, 13, '#3f8f5c');
+      if((frame>>4) & 1) text('按 ENTER 或點擊畫面開始', W/2, 508, 16, '#35ff6d');
+      if(hi > 0) text('最高分  ' + hi, W/2, 556, 14, '#ffd23f');
+      return;
+    }
+
+    text('分數 ' + score, 12, 24, 14, '#d8ffe4', 'left');
+    text('最高 ' + hi, W/2, 24, 14, '#ffd23f');
+    text('第 ' + wave + ' 波', W - 12, 24, 14, '#3f8f5c', 'right');
+
+    cx.fillStyle = '#0c2a16';
+    cx.fillRect(0, PY + PH + 8, W, 1);
+
+    for(var i=0; i<lives - 1; i++){
+      cx.save(); cx.translate(12 + i*34, 612);
+      drawSprite(CANNON, PAL_CANNON, 0, 0);
+      cx.restore();
+    }
+
+    if(ufo) drawSprite(UFO, PAL_UFO, Math.round(ufo.x), 28);
+
+    var f = (frameParity()) ? 1 : 0;
+    for(i=0; i<aliens.length; i++){
+      var a = aliens[i];
+      if(!a.alive) continue;
+      var t = ROW_SPRITE[a.row];
+      var bm = t === 0 ? (f ? SQUID_A : SQUID_B) : t === 1 ? (f ? CRABA_A : CRABA_B) : (f ? OCTO_A : OCTO_B);
+      var pal = t === 0 ? PAL_SQUID : PAL_ALIEN;
+      var ox = t === 0 ? 4 : t === 1 ? 1 : 0; // 窄 sprite 置中
+      drawSprite(bm, pal, Math.round(a.x) + ox, Math.round(a.y));
+    }
+
+    // shields
+    cx.fillStyle = '#35ff6d';
+    for(var s=0; s<shields.length; s++){
+      var sh = shields[s];
+      for(var r=0; r<SH_ROWS; r++){
+        var row = sh.grid[r];
+        for(var c=0; c<SH_COLS; c++){
+          if(row[c]) cx.fillRect(sh.x + c*SH_CELL, sh.y + r*SH_CELL, SH_CELL, SH_CELL);
+        }
+      }
+    }
+
+    var showShip = true;
+    if(freeze > 0) showShip = false;
+    else if(invinc > 0 && ((frame>>2) & 1)) showShip = false;
+    if(showShip && state !== 'over') drawSprite(CANNON, PAL_CANNON, Math.round(player.x), PY);
+
+    cx.fillStyle = '#eafff0';
+    if(pBullet) cx.fillRect(pBullet.x, pBullet.y, 2, 8);
+    cx.fillStyle = '#ff5f5f';
+    for(i=0; i<eBullets.length; i++){
+      var eb = eBullets[i];
+      // 鋸齒狀炸彈（經典造型）
+      cx.fillRect(eb.x + ((Math.floor(eb.y/4) & 1) ? 1 : -1), eb.y, 3, 8);
+    }
+
+    for(i=0; i<parts.length; i++){
+      var p = parts[i];
+      cx.globalAlpha = Math.max(0, p.life / 30);
+      if(p.txt){ text(p.txt, p.x, p.y, 14, p.color); }
+      else{ cx.fillStyle = p.color; cx.fillRect(p.x, p.y, 3, 3); }
+    }
+    cx.globalAlpha = 1;
+
+    if(banner > 0 && state === 'playing'){
+      text('第 ' + wave + ' 波', W/2, H/2 - 10, 32, '#35ff6d');
+      text('READY', W/2, H/2 + 24, 16, '#3f8f5c');
+    }
+    if(state === 'paused'){
+      cx.fillStyle = 'rgba(1,6,3,0.7)';
+      cx.fillRect(0, 0, W, H);
+      text('暫停', W/2, H/2, 32, '#35ff6d');
+      text('按 P 繼續或 ENTER 重新進入', W/2, H/2 + 34, 14, '#3f8f5c');
+    }
+    if(state === 'over'){
+      cx.fillStyle = 'rgba(1,6,3,0.75)';
+      cx.fillRect(0, 0, W, H);
+      text('GAME OVER', W/2, H/2 - 40, 36, '#ff5f5f');
+      text('分數 ' + score, W/2, H/2 + 8, 20, '#d8ffe4');
+      text('最高分 ' + hi, W/2, H/2 + 38, 14, '#ffd23f');
+      if((frame>>4) & 1) text('按 ENTER 或點擊畫面再玩一次', W/2, H/2 + 90, 15, '#35ff6d');
+    }
+  }
+  function frameParity(){
+    // 行軍動畫幀跟著步進節奏走，不綁 frame：這裡用 stepTimer 相位近似
+    return ((frame / Math.max(6, stepInterval || 20)) | 0) & 1;
+  }
+
+  function loop(){
+    if(state !== 'paused') update();
+    else frame++;
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  // ---------- input ----------
+  function pressStart(){
+    if(state === 'title' || state === 'over'){ startGame(); }
+    else if(state === 'paused' && !wrap.classList.contains('inv-fs')){
+      enterFs();
+      state = 'playing';
+    }
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.code === 'ArrowLeft'  || e.code === 'KeyA'){ keys.left = true;  e.preventDefault(); }
+    if(e.code === 'ArrowRight' || e.code === 'KeyD'){ keys.right = true; e.preventDefault(); }
+    if(e.code === 'Space'){ keys.fire = true; e.preventDefault(); if(state === 'title' || state === 'over') pressStart(); }
+    if(e.code === 'Enter'){ pressStart(); }
+    if(e.code === 'Escape' && wrap.classList.contains('inv-fs')){ exitFs(); }
+    if(e.code === 'KeyP' && (state === 'playing' || state === 'paused')){ state = state === 'paused' ? 'playing' : 'paused'; }
+    if(e.code === 'KeyM'){ toggleMute(); }
+  });
+  document.addEventListener('keyup', function(e){
+    if(e.code === 'ArrowLeft'  || e.code === 'KeyA') keys.left = false;
+    if(e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = false;
+    if(e.code === 'Space') keys.fire = false;
+  });
+  cv.addEventListener('pointerdown', function(){ pressStart(); });
+  document.getElementById('invExit').addEventListener('click', exitFs);
+
+  function bindHold(id, key){
+    var el = document.getElementById(id);
+    var on  = function(e){ e.preventDefault(); keys[key] = true; if(key === 'fire') pressStart(); };
+    var off = function(e){ e.preventDefault(); keys[key] = false; };
+    el.addEventListener('touchstart', on, {passive:false});
+    el.addEventListener('touchend', off);
+    el.addEventListener('touchcancel', off);
+    el.addEventListener('mousedown', on);
+    el.addEventListener('mouseup', off);
+    el.addEventListener('mouseleave', off);
+  }
+  bindHold('invBtnL', 'left');
+  bindHold('invBtnR', 'right');
+  bindHold('invBtnFire', 'fire');
+
+  var muteBtn = document.getElementById('invMuteBtn');
+  function toggleMute(){
+    muted = !muted;
+    muteBtn.textContent = muted ? '♪ OFF' : '♪ ON';
+  }
+  muteBtn.addEventListener('click', toggleMute);
+
+  // ---------- 排行榜（趣味日/週榜；worker 代寫、client 唯讀） ----------
+  var LB_API = 'https://twtools-dl.charlie-chien.workers.dev';
+  var lbAvailable = false, lbData = null, lbTab = 'daily', lastRun = null;
+  var lbSection = document.getElementById('lbSection');
+  var invSubmit = document.getElementById('invSubmit');
+  var invName = document.getElementById('invName');
+  var invSubmitBtn = document.getElementById('invSubmitBtn');
+  var invSubmitMsg = document.getElementById('invSubmitMsg');
+  try{ invName.value = localStorage.getItem('inv_name') || localStorage.getItem('xmf_name') || ''; }catch(e){}
+  function escText(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function renderLb(){
+    if(!lbData) return;
+    var rows = (lbTab === 'daily' ? lbData.daily : lbData.weekly) || [];
+    var list = document.getElementById('lbList');
+    if(!rows.length){
+      list.innerHTML = '<li class="lb-empty">還沒有人上榜，等你開張！</li>';
+    }else{
+      list.innerHTML = rows.map(function(e, i){
+        return '<li><span class="lb-rank">' + (i+1) + '</span><span class="lb-name">' + escText(e.n) + '</span><span class="lb-wave">第 ' + (e.w|0) + ' 波</span><span class="lb-score">' + (e.s|0) + '</span></li>';
+      }).join('');
+    }
+    document.getElementById('lbTabDaily').setAttribute('aria-selected', String(lbTab === 'daily'));
+    document.getElementById('lbTabWeekly').setAttribute('aria-selected', String(lbTab === 'weekly'));
+  }
+  function fetchLb(){
+    fetch(LB_API + '/invaders/leaderboard').then(function(r){ if(!r.ok) throw new Error('bad'); return r.json(); })
+      .then(function(d){
+        if(!d || !d.daily) throw new Error('bad');
+        lbData = d; lbAvailable = true;
+        lbSection.hidden = false;
+        renderLb();
+      })
+      .catch(function(){ /* endpoint 未就緒：榜單與上榜 UI 保持隱藏（fail-honest） */ });
+  }
+  document.getElementById('lbTabDaily').addEventListener('click', function(){ lbTab = 'daily'; renderLb(); });
+  document.getElementById('lbTabWeekly').addEventListener('click', function(){ lbTab = 'weekly'; renderLb(); });
+  invSubmitBtn.addEventListener('click', function(){
+    if(!lastRun) return;
+    var name = invName.value.trim().slice(0, 8);
+    if(!name){ invSubmitMsg.textContent = '先取個暱稱'; return; }
+    invSubmitBtn.disabled = true; invSubmitMsg.textContent = '送出中…';
+    fetch(LB_API + '/invaders/score', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, score: lastRun.score, wave: lastRun.wave })
+    }).then(function(r){ return r.json().then(function(d){ return { ok: r.ok, status: r.status, d: d }; }); })
+      .then(function(res){
+        invSubmitBtn.disabled = false;
+        if(res.ok){
+          try{ localStorage.setItem('inv_name', name); }catch(e){}
+          invSubmit.hidden = true;
+          if(typeof gtag === 'function') gtag('event', 'score_submit', { value: lastRun.score });
+          lastRun = null;
+          fetchLb();
+        }else if(res.status === 429){ invSubmitMsg.textContent = '太快了，30 秒後再試'; }
+        else{ invSubmitMsg.textContent = '沒送出去，稍後再試'; }
+      })
+      .catch(function(){ invSubmitBtn.disabled = false; invSubmitMsg.textContent = '沒送出去，稍後再試'; });
+  });
+  fetchLb();
+
+  loop();
+})();
+  </script>  <div class="max-w-6xl mx-auto pb-2"> <div class="pt-5 mt-6 border-t flex flex-col md:flex-row md:items-baseline gap-x-6 gap-y-2" style="border-color: var(--tw-border);"> <span class="eyebrow shrink-0">姊妹站 · FAMILY</span> <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm" style="color: var(--tw-text-muted);"> <a href="https://aire.twtools.cc/" title="aire — AI Tool Atlas·AI 工具圖鑑" class="grow-underline whitespace-nowrap">aire — AI Tool Atlas·AI 工具圖鑑</a><a href="https://tree.twtools.cc/" title="樹洞21號 — 匿名 AI 心事平台" class="grow-underline whitespace-nowrap">樹洞21號 — 匿名 AI 心事平台</a><a href="https://foootball.twtools.cc/" title="@foootball — 2026 世界盃賽程" class="grow-underline whitespace-nowrap">@foootball — 2026 世界盃賽程</a><a href="https://baseball.twtools.cc/" title="@baseball — 中職 CPBL＋MLB 深度戰報" class="grow-underline whitespace-nowrap">@baseball — 中職 CPBL＋MLB 深度戰報</a><a href="https://dvdmaru.com/" title="dvdmaru — 把事實和敘事分開來看" class="grow-underline whitespace-nowrap">dvdmaru — 把事實和敘事分開來看</a> </div> </div> </div> </main>  <script>
+    (function() {
+      var hamburger = document.getElementById('sidebar-hamburger');
+      var overlay = document.getElementById('sidebar-overlay');
+      var panel = document.getElementById('sidebar-panel');
+      var closeBtn = document.getElementById('sidebar-close');
+
+      function openSidebar() {
+        panel.classList.remove('-translate-x-full');
+        panel.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+      }
+      function closeSidebar() {
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+
+      if (hamburger) hamburger.addEventListener('click', openSidebar);
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    })();
+  </script>  <!-- Affiliates.One / Adotone Ad Link 網站驗證碼（須 is:inline 才會原樣輸出，勿移除 is:inline） --> <script>var ConverlyCustomData = {channelId: null};</script> <script async defer src="https://cdn.adotone.com/production/adlinks/676dd203e573377526b0bfa14fb812f5265fb0db262acf5759eaf3acb67f8e66.js"></script> </body> </html>

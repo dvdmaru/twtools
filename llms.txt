@@ -56,6 +56,8 @@
 
 ### 休閒遊戲
 - [小蜜蜂](https://twtools.cc/bee/)
+- [太空侵略者](https://twtools.cc/invaders/)
+- [打螃蟹](https://twtools.cc/crab/)
 
 ## 最新文章
 - [文章列表](https://twtools.cc/blog/)
