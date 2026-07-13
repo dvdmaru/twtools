@@ -1,0 +1,305 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>指尖流沙 — 數位倒沙瓶｜TWTools</title><meta name="description" content="按住，彩色的沙從指尖流下來，一層一層堆出只屬於你的沙畫。極慢、極安靜的數位倒沙瓶，可翻轉沙瓶重來、把沙畫存成圖片。零負擔的線上靜心小站。"><link rel="canonical" href="https://twtools.cc/sand/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://twtools.cc/sand/"><meta property="og:title" content="指尖流沙 — 數位倒沙瓶｜TWTools"><meta property="og:description" content="按住，彩色的沙從指尖流下來，一層一層堆出只屬於你的沙畫。極慢、極安靜的數位倒沙瓶，可翻轉沙瓶重來、把沙畫存成圖片。零負擔的線上靜心小站。"><meta property="og:image" content="https://twtools.cc/sand/og-sand.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="指尖流沙 — 數位倒沙瓶"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="指尖流沙 — 數位倒沙瓶｜TWTools"><meta name="twitter:description" content="按住，彩色的沙從指尖流下來，一層一層堆出只屬於你的沙畫。極慢、極安靜的數位倒沙瓶，可翻轉沙瓶重來、把沙畫存成圖片。零負擔的線上靜心小站。"><meta name="twitter:image" content="https://twtools.cc/sand/og-sand.png"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0WTK2LJFTY');
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            /* Morandi Dusty Rose — TWTools 品牌色（OKLCH hue 22） */
+            brand: {
+              50:  '#fceeed',
+              100: '#f2dbda',
+              200: '#e0b9b7',
+              300: '#ca9592',
+              400: '#af7472',
+              500: '#935e5c',
+              600: '#764a49',
+              700: '#583937',
+              800: '#3e2726',
+              900: '#281818',
+              950: '#110c08'
+            },
+            /* 奶油暖灰中性色（OKLCH hue 60） */
+            warm: {
+              50:  '#fcf3ed',
+              100: '#f1e5dc',
+              200: '#e3d0c2',
+              300: '#c9b3a2',
+              400: '#a99483',
+              500: '#887769',
+              600: '#6e6055',
+              700: '#564b42',
+              800: '#3e3630',
+              900: '#2b2520',
+              950: '#15110d'
+            },
+            /* 暖琥珀強調色（OKLCH hue 75） */
+            accent: {
+              50:  '#fdf4e7',
+              100: '#f8e5cb',
+              200: '#eecb9a',
+              300: '#e1ad63',
+              400: '#d49838',
+              500: '#b68028',
+              600: '#906520',
+              700: '#6b4c1d',
+              800: '#4b3617',
+              900: '#32230e',
+              950: '#181005'
+            }
+          }
+        }
+      }
+    }
+  </script><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/sand@_@astro.Daatw4gk.css">
+<link rel="stylesheet" href="/_assets/BaseLayout.CQRn7zlE.css"></head> <body class="min-h-screen paper-noise">   <button id="sidebar-hamburger" class="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg" style="background:var(--tw-surface);color:var(--tw-text-primary)">☰</button>  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 md:hidden hidden"></div>  <aside id="sidebar-panel" class="fixed top-0 left-0 h-full w-56 z-40 flex flex-col border-r transition-transform -translate-x-full md:translate-x-0" style="background:var(--tw-page-bg);border-color:var(--tw-border)"> <!-- Logo --> <div class="p-4 border-b flex items-center justify-between" style="border-color:var(--tw-border)"> <a href="/" class="flex items-center no-underline"> <img src="data:image/png;base64,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" alt="TWTools" class="w-7 h-7 rounded-lg"> <span class="text-sm font-bold ml-1.5" style="color:var(--tw-brand-accent)">TWTools</span> </a> <button id="sidebar-close" class="md:hidden text-lg leading-none" style="color:var(--tw-text-muted)">✕</button> </div> <!-- Nav items grouped by category --> <nav class="flex-1 py-2 overflow-y-auto"> <div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">檔案處理</div> <a href="/image/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🖼️</span> 圖片工具 </a><a href="/pdf/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📄</span> PDF 工具 </a><a href="/resume/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📋</span> 履歷產生器 </a><a href="/proofread/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">✍️</span> 錯別字檢查 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">生活查詢</div> <a href="/dashboard/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛡️</span> 防災儀表板 </a><a href="/typhoon/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌀</span> 颱風停班停課 </a><a href="/dingfengbo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌧️</span> 定風波 風雨時間軸 </a><a href="/reservoir/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💧</span> 水庫即時水情 </a><a href="/alerts/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🚨</span> 災害即時告警 </a><a href="/rain/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☔</span> 即時雨量 </a><a href="/oil-recall/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛢️</span> 問題沙拉油查詢 </a><a href="/lottery/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎰</span> 台灣彩券 </a><a href="/currency/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💱</span> 匯率換算 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">計算換算</div> <a href="/datecalc/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📅</span> 日期計算器 </a><a href="/countdown/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⏳</span> 倒數計時器 </a><a href="/unit/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📏</span> 單位換算 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">查詢工具</div> <a href="/postal/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📮</span> 郵遞區號 </a><a href="/address/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌐</span> 地址中譯英 </a><a href="/lunar/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 農曆國曆 </a><a href="/solar-terms/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☀️</span> 二十四節氣 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">學習工具</div> <a href="/vocabulary/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎓</span> 英文單字片語 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">站長工具</div> <a href="/seo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📊</span> SEO/GEO/AEO </a><a href="/clock/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🕐</span> 翻頁時鐘 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">放鬆小站</div> <a href="/breathe/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">😮‍💨</span> 一起喘口氣 </a><a href="/midnight/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 深夜宵夜所 </a><a href="/woodenfish/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🪵</span> 電子木魚 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">休閒遊戲</div> <a href="/bee/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🐝</span> 小蜜蜂 </a><a href="/invaders/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">👾</span> 太空侵略者 </a><a href="/crab/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🦀</span> 打螃蟹 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">更多</div> <a href="/blog/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📝</span> 知識文章 </a> </div>   </nav> <div class="p-3 border-t text-xs text-center space-y-1" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <div class="flex justify-center gap-3"> <a href="/about/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">關於</a> <a href="/privacy/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">隱私權</a> <a href="/terms/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">條款</a> </div>
+打工牛馬的線上工具箱 © 2026
+</div> </aside>  <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8 min-h-screen" style="background:var(--tw-page-bg)">   <section id="entry" class="max-w-3xl mx-auto"> <div class="hero"> <span class="eyebrow">數位倒沙瓶 · 指尖流沙</span> <h1>按住，看沙<br>慢慢堆成畫</h1> <p class="sub">極慢、極安靜。彩色的沙從指尖流下來，一層一層，堆出只屬於你的沙畫。</p> <div class="strata" aria-hidden="true"><span></span></div> <button class="start" id="startBtn">開始倒沙</button> <div class="start-hint">免註冊 · 免費 · 隨時可離開（ESC 或「收起沙瓶」）</div> <div class="how"> <div class="item"><b>按住</b><span>沙從指尖流下，移動畫出地層</span></div> <div class="item"><b>翻轉</b><span>像倒沙瓶一樣，整片沙塌下來重新堆</span></div> <div class="item"><b>存圖</b><span>把這一刻的沙畫存到你的裝置</span></div> </div> </div> <footer class="sd-note"> <div class="reads">延伸閱讀：<a href="/blog/dopamine-website-korea-trend-2026/">韓國 Z 世代為什麼迷上「多巴胺網站」？</a> · 放鬆小站系列：<a href="/breathe/">一起喘口氣</a></div> <div class="privacy">沙畫全部在你的瀏覽器裡完成，不上傳任何資料；「存圖」也只存到你自己的裝置。本站不需登入、不蒐集你的身分。</div> </footer> </section>  <section id="sand"> <canvas id="sandCv"></canvas> <div class="s-top"> <span class="count">沙粒 <b id="grainCount">0</b></span> <button class="exit" id="exitBtn">收起沙瓶</button> </div> <div class="s-hint" id="sandHint">按住畫面，讓沙流下來</div> <div class="scontrols"> <button class="ctrl" id="hueBtn" title="換一種沙色"><span class="ic dot" id="hueDot"></span><span class="lb">換色</span></button> <button class="ctrl" id="flipBtn" title="翻轉沙瓶"><span class="ic">⏳</span><span class="lb">翻轉</span></button> <button class="ctrl" id="soundBtn" title="沙沙聲"><span class="ic">♪</span><span class="lb">沙聲</span></button> <button class="ctrl" id="saveBtn" title="存成圖片"><span class="ic">🖼</span><span class="lb">存圖</span></button> <button class="ctrl" id="clearBtn" title="倒掉重來"><span class="ic">↺</span><span class="lb">倒掉</span></button> </div> </section> <div id="toast"></div>  <script>
+/* ============================================================
+   指尖流沙 — 落沙 cellular automaton
+   - grid：Uint32Array，0=空、其餘=打包好的 ABGR 顏色（直寫 ImageData）
+   - 每 frame 由下往上掃：下方空→落下，否則試左下/右下（隨機優先）
+   - 一格/frame 的落速（CELL=3px ≈ 180px/s），刻意慢，才有「倒沙」感
+   - 色相隨倒沙時間慢慢漂移 → 自然堆出一層層地層
+   全部在本機運算與顯示，無任何網路傳輸。
+   ============================================================ */
+const $=s=>document.querySelector(s);
+const CELL=3;
+const BG=0xFF1F1317; // #17131f 的 ABGR 打包
+let cv,ctx,off,offCtx,img,buf32;
+let gw=0,gh=0,grid=null;
+let raf=null,scanFlip=false;
+let pouring=false,px=0,py=0;
+let hue=Math.floor(Math.random()*360),grains=0,frameN=0;
+
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),1900); }
+
+/* HSL → 打包 ABGR（ImageData 是 RGBA byte 序，little-endian Uint32 = 0xAABBGGRR） */
+function packHSL(h,s,l){
+  h=((h%360)+360)%360; s/=100; l/=100;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m=l-c/2;
+  let r=0,g=0,b=0;
+  if(h<60){r=c;g=x}else if(h<120){r=x;g=c}else if(h<180){g=c;b=x}
+  else if(h<240){g=x;b=c}else if(h<300){r=x;b=c}else{r=c;b=x}
+  return 0xFF000000 | ((Math.round((b+m)*255))<<16) | ((Math.round((g+m)*255))<<8) | Math.round((r+m)*255);
+}
+
+/* ---------- grid 建立 / resize（沙堆貼底保留） ---------- */
+function resize(){
+  const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,2);
+  cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+  const nw=Math.ceil(w/CELL), nh=Math.ceil(h/CELL);
+  const ng=new Uint32Array(nw*nh);
+  if(grid){
+    const cw=Math.min(gw,nw), ch=Math.min(gh,nh);
+    for(let y=0;y<ch;y++){
+      const sy=(gh-1-y)*gw, dy=(nh-1-y)*nw;
+      for(let x=0;x<cw;x++) ng[dy+x]=grid[sy+x];
+    }
+  }
+  gw=nw; gh=nh; grid=ng;
+  off=document.createElement("canvas"); off.width=gw; off.height=gh;
+  offCtx=off.getContext("2d");
+  img=offCtx.createImageData(gw,gh); buf32=new Uint32Array(img.data.buffer);
+  ctx=cv.getContext("2d"); ctx.imageSmoothingEnabled=false;
+}
+
+/* ---------- 物理：由下往上掃，行內方向逐 frame 交替避免偏向 ---------- */
+function step(){
+  scanFlip=!scanFlip;
+  for(let y=gh-2;y>=0;y--){
+    const row=y*gw, below=row+gw;
+    if(scanFlip){ for(let x=0;x<gw;x++) moveGrain(x,row,below); }
+    else{ for(let x=gw-1;x>=0;x--) moveGrain(x,row,below); }
+  }
+}
+function moveGrain(x,row,below){
+  const c=grid[row+x]; if(!c) return;
+  if(!grid[below+x]){ grid[below+x]=c; grid[row+x]=0; return; }
+  const dir=Math.random()<.5?-1:1;
+  let nx=x+dir;
+  if(nx>=0&&nx<gw&&!grid[below+nx]){ grid[below+nx]=c; grid[row+x]=0; return; }
+  nx=x-dir;
+  if(nx>=0&&nx<gw&&!grid[below+nx]){ grid[below+nx]=c; grid[row+x]=0; }
+}
+
+/* ---------- 倒沙：按住時每 frame 撒 8 粒，色相慢漂成地層 ---------- */
+function pour(){
+  if(!pouring) return;
+  hue=(hue+0.14)%360;
+  const cx=Math.floor(px/CELL), cy=Math.floor(py/CELL);
+  for(let i=0;i<8;i++){
+    const x=cx+Math.round((Math.random()-.5)*4);
+    const y=cy+Math.round((Math.random()-.5)*2);
+    if(x<0||x>=gw||y<0||y>=gh) continue;
+    const idx=y*gw+x;
+    if(!grid[idx]){
+      grid[idx]=packHSL(hue+(Math.random()*8-4), 58+Math.random()*14, 52+Math.random()*14);
+      grains++;
+    }
+  }
+}
+
+/* ---------- 繪製 ---------- */
+function render(){
+  for(let i=0;i<grid.length;i++) buf32[i]=grid[i]||BG;
+  offCtx.putImageData(img,0,0);
+  ctx.drawImage(off,0,0,cv.width,cv.height);
+}
+
+/* ---------- 主迴圈 ---------- */
+function frame(){
+  pour(); step(); render(); tickSound();
+  if(++frameN%15===0){ $("#grainCount").textContent=grains.toLocaleString(); paintHueDot(); }
+  raf=requestAnimationFrame(frame);
+}
+
+/* ---------- 沙聲（WebAudio 合成噪音，零音檔；預設關） ---------- */
+let actx=null,noiseGain=null,soundOn=false;
+function ensureNoise(){
+  if(actx) { if(actx.state==="suspended")actx.resume(); return; }
+  const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return;
+  actx=new AC();
+  const len=actx.sampleRate*1.5, buf=actx.createBuffer(1,len,actx.sampleRate), d=buf.getChannelData(0);
+  for(let i=0;i<len;i++) d[i]=Math.random()*2-1;
+  const src=actx.createBufferSource(); src.buffer=buf; src.loop=true;
+  const bp=actx.createBiquadFilter(); bp.type="bandpass"; bp.frequency.value=1400; bp.Q.value=.8;
+  noiseGain=actx.createGain(); noiseGain.gain.value=0;
+  src.connect(bp); bp.connect(noiseGain); noiseGain.connect(actx.destination); src.start();
+}
+function tickSound(){
+  if(!noiseGain) return;
+  const target=(soundOn&&pouring)?0.055:0;
+  noiseGain.gain.setTargetAtTime(target,actx.currentTime,0.12);
+}
+
+/* ---------- 控制 ---------- */
+function paintHueDot(){ const d=$("#hueDot"); if(d)d.style.background=`hsl(${Math.round(hue)} 62% 58%)`; }
+$("#hueBtn").addEventListener("click",()=>{ hue=(hue+47)%360; paintHueDot(); toast("換一種沙色"); });
+$("#flipBtn").addEventListener("click",()=>{
+  if(!grid) return;
+  const ng=new Uint32Array(gw*gh);
+  for(let y=0;y<gh;y++){ const sy=(gh-1-y)*gw, dy=y*gw; for(let x=0;x<gw;x++) ng[dy+x]=grid[sy+x]; }
+  grid=ng; toast("沙瓶翻過來了 ⏳");
+});
+$("#clearBtn").addEventListener("click",()=>{ if(grid)grid.fill(0); grains=0; $("#grainCount").textContent="0"; $("#sandHint").classList.remove("gone"); toast("倒掉了，重新開始"); });
+$("#saveBtn").addEventListener("click",()=>{
+  if(!off) return;
+  const t=document.createElement("canvas"); t.width=cv.width; t.height=cv.height;
+  const tc=t.getContext("2d"); tc.imageSmoothingEnabled=false;
+  tc.drawImage(off,0,0,t.width,t.height);
+  const a=document.createElement("a");
+  const d=new Date(), p=n=>String(n).padStart(2,"0");
+  a.download=`指尖流沙-${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}.png`;
+  a.href=t.toDataURL("image/png"); a.click(); toast("沙畫已存到你的裝置 🤍");
+});
+$("#soundBtn").classList.add("off"); // 沙聲預設關
+$("#soundBtn").addEventListener("click",()=>{
+  soundOn=!soundOn; $("#soundBtn").classList.toggle("off",!soundOn);
+  if(soundOn){ ensureNoise(); toast("按住倒沙就有沙沙聲"); }
+});
+
+/* ---------- 指標事件 ---------- */
+const sand=$("#sand"), sandCv=$("#sandCv");
+sandCv.addEventListener("pointerdown",e=>{
+  pouring=true; px=e.clientX; py=e.clientY;
+  sandCv.setPointerCapture(e.pointerId);
+  $("#sandHint").classList.add("gone");
+});
+sandCv.addEventListener("pointermove",e=>{ px=e.clientX; py=e.clientY; });
+["pointerup","pointercancel"].forEach(ev=>sandCv.addEventListener(ev,()=>pouring=false));
+sandCv.addEventListener("contextmenu",e=>e.preventDefault());
+
+/* ---------- 進出全螢幕模式 ---------- */
+function startSand(){
+  sand.classList.add("on");
+  document.documentElement.classList.add("sd-lock");
+  document.body.style.overflow="hidden";
+  resize(); paintHueDot();
+  if(!raf) frame();
+}
+function stopSand(){
+  sand.classList.remove("on");
+  document.documentElement.classList.remove("sd-lock");
+  document.body.style.overflow="";
+  pouring=false;
+  if(raf){ cancelAnimationFrame(raf); raf=null; }
+  if(noiseGain&&actx) noiseGain.gain.setTargetAtTime(0,actx.currentTime,0.05);
+}
+addEventListener("resize",()=>{ if(sand.classList.contains("on")) resize(); });
+$("#startBtn").addEventListener("click",()=>{ if(typeof gtag==="function")gtag("event","sand_start"); startSand(); });
+$("#exitBtn").addEventListener("click",stopSand);
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&sand.classList.contains("on"))stopSand(); });
+  </script>  <div class="max-w-6xl mx-auto pb-2"> <div class="pt-5 mt-6 border-t flex flex-col md:flex-row md:items-baseline gap-x-6 gap-y-2" style="border-color: var(--tw-border);"> <span class="eyebrow shrink-0">姊妹站 · FAMILY</span> <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm" style="color: var(--tw-text-muted);"> <a href="https://aire.twtools.cc/" title="aire — AI Tool Atlas·AI 工具圖鑑" class="grow-underline whitespace-nowrap">aire — AI Tool Atlas·AI 工具圖鑑</a><a href="https://tree.twtools.cc/" title="樹洞21號 — 匿名 AI 心事平台" class="grow-underline whitespace-nowrap">樹洞21號 — 匿名 AI 心事平台</a><a href="https://foootball.twtools.cc/" title="@foootball — 2026 世界盃賽程" class="grow-underline whitespace-nowrap">@foootball — 2026 世界盃賽程</a><a href="https://baseball.twtools.cc/" title="@baseball — 中職 CPBL＋MLB 深度戰報" class="grow-underline whitespace-nowrap">@baseball — 中職 CPBL＋MLB 深度戰報</a><a href="https://dvdmaru.com/" title="dvdmaru — 把事實和敘事分開來看" class="grow-underline whitespace-nowrap">dvdmaru — 把事實和敘事分開來看</a> </div> </div> </div> </main>  <script>
+    (function() {
+      var hamburger = document.getElementById('sidebar-hamburger');
+      var overlay = document.getElementById('sidebar-overlay');
+      var panel = document.getElementById('sidebar-panel');
+      var closeBtn = document.getElementById('sidebar-close');
+
+      function openSidebar() {
+        panel.classList.remove('-translate-x-full');
+        panel.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+      }
+      function closeSidebar() {
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+
+      if (hamburger) hamburger.addEventListener('click', openSidebar);
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    })();
+  </script>  <!-- Affiliates.One / Adotone Ad Link 網站驗證碼（須 is:inline 才會原樣輸出，勿移除 is:inline） --> <script>var ConverlyCustomData = {channelId: null};</script> <script async defer src="https://cdn.adotone.com/production/adlinks/676dd203e573377526b0bfa14fb812f5265fb0db262acf5759eaf3acb67f8e66.js"></script> </body> </html>
