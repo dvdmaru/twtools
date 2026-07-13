@@ -114,7 +114,7 @@
    全部在本機運算與顯示，無任何網路傳輸。
    ============================================================ */
 const $=s=>document.querySelector(s);
-const CELL=3;
+const CELL=2; // 2026-07-13 由 3 降 2:顆粒更細;配套=出沙 8→14、物理 1.5 步/frame 維持落速
 const BG=0xFF1F1317; // #17131f 的 ABGR 打包
 let cv,ctx,off,offCtx,img,buf32;
 let gw=0,gh=0,grid=null;
@@ -173,14 +173,14 @@ function moveGrain(x,row,below){
   if(nx>=0&&nx<gw&&!grid[below+nx]){ grid[below+nx]=c; grid[row+x]=0; }
 }
 
-/* ---------- 倒沙：按住時每 frame 撒 8 粒，色相慢漂成地層 ---------- */
+/* ---------- 倒沙：按住時每 frame 撒 14 粒，色相慢漂成地層 ---------- */
 function pour(){
   if(!pouring) return;
   hue=(hue+0.14)%360;
   const cx=Math.floor(px/CELL), cy=Math.floor(py/CELL);
-  for(let i=0;i<8;i++){
-    const x=cx+Math.round((Math.random()-.5)*4);
-    const y=cy+Math.round((Math.random()-.5)*2);
+  for(let i=0;i<14;i++){
+    const x=cx+Math.round((Math.random()-.5)*6);
+    const y=cy+Math.round((Math.random()-.5)*3);
     if(x<0||x>=gw||y<0||y>=gh) continue;
     const idx=y*gw+x;
     if(!grid[idx]){
@@ -199,7 +199,8 @@ function render(){
 
 /* ---------- 主迴圈 ---------- */
 function frame(){
-  pour(); step(); render(); tickSound();
+  pour(); step(); if(frameN%2)step(); // 平均 1.5 步/frame:CELL=2 下維持原 180px/s 落速
+  render(); tickSound();
   if(++frameN%15===0){ $("#grainCount").textContent=grains.toLocaleString(); paintHueDot(); }
   raf=requestAnimationFrame(frame);
 }
