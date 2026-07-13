@@ -251,6 +251,7 @@ $("#soundBtn").addEventListener("click",()=>{
 
 /* ---------- 指標事件 ---------- */
 const sand=$("#sand"), sandCv=$("#sandCv");
+cv=sandCv; // resize()/render() 用的主 canvas
 sandCv.addEventListener("pointerdown",e=>{
   pouring=true; px=e.clientX; py=e.clientY;
   sandCv.setPointerCapture(e.pointerId);
