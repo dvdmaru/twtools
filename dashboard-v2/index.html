@@ -209,7 +209,7 @@
   <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
   <path d="M8 16H3v5" />
 </svg>
-立即更新</button> <button type="button" class="btn-icon" id="btn-bigfont" title="放大字級(長輩/遠看)">大字</button> <button type="button" class="btn-icon" id="btn-fullscreen" title="全螢幕常駐模式(電腦/電視)"><span id="fs-label">全螢幕</span></button> </div> </div> <!-- 燈號圖例(色覺友善:燈號另附文字標籤) --> <div class="legend mb-4"> <span><span class="sig-dot ok"></span>綠:一切如常</span> <span><span class="sig-dot warn"></span>黃:準備期</span> <span><span class="sig-dot alert"></span>紅:應變期</span> </div> <!-- Hero 狀態卡:大字官方狀態(平時/接近/遠離/警報生效) --> <div class="hero-card mb-4" id="hero-card" data-sig="ok"> <div class="hero-mark" id="hero-mark">常</div> <div style="position: relative;"> <div class="flex items-center gap-3 mb-3 flex-wrap"> <span class="eyebrow">現在的狀態 · STATUS</span> <span class="eyebrow" style="opacity: .7;">依中央氣象署官方訊號判定</span> </div> <div class="flex items-center gap-4 flex-wrap"> <div class="hero-status" id="hero-status">確認中…</div> <span class="sig-dot ok" id="hero-dot" style="width: 22px; height: 22px;"></span> </div> <p class="hero-plain mt-3" id="hero-plain">正在確認官方警報狀態…</p> </div> <div style="position: relative;"> <p class="hero-basis" id="hero-basis"></p> <p class="rt-source mt-2 mb-0" id="hero-time"></p> </div> </div> <!-- 全台警特報著色格(氣象署 W-C0033) --> <div class="rt-card mb-4" id="db-warnmap-wrap"> <div class="flex items-baseline justify-between gap-2 mb-2 flex-wrap"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">全台警特報</h3> <span class="rt-source" id="db-warnmap-meta">載入中…</span> </div> <div class="flex flex-wrap gap-4 items-start"> <div class="tw-map" id="db-warnmap" aria-label="各縣市生效中天氣警特報"></div> <div class="text-sm flex-1 min-w-[180px]" id="db-warnmap-side" style="line-height: 1.9;"></div> </div> </div> <!-- 現況卡片 --> <div class="rt-grid" id="db-cards"> <article class="dash-card" id="db-card-alerts" data-sig="ok"> <div class="dash-card-head"><svg aria-hidden="true"
+立即更新</button> <button type="button" class="btn-icon" id="btn-bigfont" title="放大字級(長輩/遠看)">大字</button> <button type="button" class="btn-icon" id="btn-fullscreen" title="全螢幕常駐模式(電腦/電視)"><span id="fs-label">全螢幕</span></button> </div> </div> <!-- 燈號圖例(色覺友善:燈號另附文字標籤) --> <div class="legend mb-4"> <span><span class="sig-dot ok"></span>綠:無官方警特報</span> <span><span class="sig-dot warn"></span>黃:特報生效/颱風接近</span> <span><span class="sig-dot alert"></span>紅:颱風警報生效</span> </div> <!-- Hero 狀態卡:大字官方狀態(平時/接近/遠離/警報生效) --> <div class="hero-card mb-4" id="hero-card" data-sig="ok"> <div class="hero-mark" id="hero-mark">常</div> <div style="position: relative;"> <div class="flex items-center gap-3 mb-3 flex-wrap"> <span class="eyebrow">現在的狀態 · STATUS</span> <span class="eyebrow" style="opacity: .7;">依中央氣象署官方訊號判定</span> </div> <div class="flex items-center gap-4 flex-wrap"> <div class="hero-status" id="hero-status">確認中…</div> <span class="sig-dot ok" id="hero-dot" style="width: 22px; height: 22px;"></span> </div> <p class="hero-plain mt-3" id="hero-plain">正在確認官方警報狀態…</p> </div> <div style="position: relative;"> <p class="hero-basis" id="hero-basis"></p> <p class="rt-source mt-2 mb-0" id="hero-time"></p> </div> </div> <!-- 全台警特報著色格(氣象署 W-C0033) --> <div class="rt-card mb-4" id="db-warnmap-wrap"> <div class="flex items-baseline justify-between gap-2 mb-2 flex-wrap"> <h3 class="font-serif-tc text-sm font-bold tracking-cn">全台警特報</h3> <span class="rt-source" id="db-warnmap-meta">載入中…</span> </div> <div class="flex flex-wrap gap-4 items-start"> <div class="tw-map" id="db-warnmap" aria-label="各縣市生效中天氣警特報"></div> <div class="text-sm flex-1 min-w-[180px]" id="db-warnmap-side" style="line-height: 1.9;"></div> </div> </div> <!-- 現況卡片 --> <div class="rt-grid" id="db-cards"> <article class="dash-card" id="db-card-alerts" data-sig="ok"> <div class="dash-card-head"><svg aria-hidden="true"
   class="dch-i lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -542,9 +542,9 @@
       var topPill = document.getElementById('top-pill');
       var refreshBtn = document.getElementById('db-refresh');
       var curState = 'calm';
-      var SIG_OF = { calm: 'ok', departing: 'ok', approaching: 'warn', active: 'alert', unknown: 'warn' };
-      var PILL_OF = { calm: '平時', departing: '颱風遠離', approaching: '颱風接近', active: '警報生效', unknown: '狀態未確認' };
-      var MARK_OF = { calm: '常', departing: '離', approaching: '備', active: '警', unknown: '?' };
+      var SIG_OF = { calm: 'ok', departing: 'ok', advisory: 'warn', approaching: 'warn', active: 'alert', unknown: 'warn' };
+      var PILL_OF = { calm: '平時', departing: '颱風遠離', advisory: '特報生效', approaching: '颱風接近', active: '警報生效', unknown: '狀態未確認' };
+      var MARK_OF = { calm: '常', departing: '離', advisory: '特', approaching: '備', active: '警', unknown: '?' };
       var TAG_TXT = { ok: '如常', warn: '注意', alert: '警戒' };
       function setPill(sig, txt) { if (!topPill) return; topPill.className = 'sig-pill ' + sig; topPill.innerHTML = '<span class="sig-dot ' + sig + '"></span>' + txt; }
       // 每張卡:設燈號(data-sig)、燈號文字標籤(data-tag)、燈點(data-dot)與白話結論(data-plain)
@@ -610,9 +610,20 @@
       };
 
       // ── 狀態橫幅(依 /weather 的 CWA 警報訊號)──
-      function renderBanner(w) {
+      // 你那縣市生效中的官方天氣特報(W-C0033)。
+      // ⚠️ 回傳三態,不可混為一談:null=「查不到」(來源掛了) / []=「查到,沒有特報」 / [..]=有特報。
+      // 把 null 當成 [] 會讓 Hero 用查詢失敗去宣稱「你的地區沒有特報」——那是拿失敗當沒事,同 fail-honest 紅線。
+      function advisoryOf(county) {
+        var d = cache.warnings;
+        if (!d || !d.ok || !d.counties || !county) return null;
+        var list = d.counties[normTai(county)];
+        return Array.isArray(list) ? list : [];
+      }
+
+      function renderBanner(w, county) {
         // 把官方訊號翻成 Hero 狀態卡:大字狀態詞 + 白話一句 + 事實依據 + 頂部 pill。
-        // 只翻譯官方訊號,不自創安危判定;決策邏輯與原版一致(unknown/active/approaching+trend/departing/calm)。
+        // 只翻譯官方訊號,不自創安危判定(active/approaching+trend/departing 全依氣象署;
+        // advisory 依氣象署警特報 W-C0033;calm=兩者皆無)。
         function apply(state, statusWord, plain, basisHtml, timeText) {
           curState = state;
           var sig = SIG_OF[state] || 'ok';
@@ -659,10 +670,27 @@
             '氣象署路徑資料顯示有編號颱風位於臺灣周邊海域,<strong>目前無生效中的颱風警報</strong>——動向與是否發布警報,以 <a href="https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">中央氣象署</a> 為準。',
             '狀態確認於 ' + hh + '(氣象署熱帶氣旋路徑)');
         }
+        // ⚠️「沒有颱風警報」≠「沒事」:無颱風訊號時,再看你那縣市有沒有官方特報生效。
+        // 2026-07-16 實例——全台 21 縣市掛豪雨特報時,這裡原本會用滿版綠字說「現在沒事,趁天氣好」,
+        // 那既是安危背書、當天也是事實錯誤。特報是官方訊號,照翻不加工。
+        var hz = advisoryOf(county);
+        if (hz && hz.length) {
+          var names = hz.slice(0, 3).map(function (h) { return h.phenomena + h.significance; }).join('、');
+          var until = fmtIso(hz[0].endTime);
+          return apply('advisory', '特報生效',
+            county + '有' + names + '生效中。目前沒有颱風警報。',
+            '中央氣象署<strong>目前沒有生效中的颱風警報</strong>,但' + esc(county) + '有 <strong>' + esc(names) + '</strong> 生效中' + (until ? '(至 ' + esc(until) + ')' : '') + '——詳情看下方「全台警特報」與各張卡片,特報全文以 <a href="https://www.cwa.gov.tw/V8/C/P/Warning/W25.html" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">中央氣象署</a> 為準。',
+            '狀態確認於 ' + hh + '(氣象署警報單/路徑資料＋警特報 W-C0033)');
+        }
+        // hz === null 代表特報查詢掛了 → 只能陳述颱風那一半,不可宣稱「也沒有特報」
+        var advKnown = !!hz;
         return apply('calm', '平時',
-          '現在沒事。趁天氣好,把該準備的準備一下。',
-          '中央氣象署目前沒有生效中的颱風警報,路徑資料也沒有編號颱風接近。安靜就是好消息——下方卡片幫你確認所在地區一切如常。',
-          '狀態確認於 ' + hh + '(氣象署警報單/路徑資料)');
+          advKnown ? '目前沒有颱風警報,你的地區也沒有生效中的官方特報。' : '目前沒有颱風警報。特報狀態暫時無法確認。',
+          '中央氣象署目前沒有生效中的颱風警報,路徑資料也沒有編號颱風接近。' +
+          (advKnown
+            ? '你選的地區也沒有生效中的天氣警特報。安靜就是好消息——下方卡片幫你確認所在地區一切如常。'
+            : '<strong>警特報查詢暫時沒有回應,這不代表沒有特報</strong>——請看下方「全台警特報」或 <a href="https://www.cwa.gov.tw/V8/C/P/Warning/W25.html" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">中央氣象署</a>。'),
+          '狀態確認於 ' + hh + (advKnown ? '(氣象署警報單/路徑資料＋警特報 W-C0033)' : '(氣象署警報單/路徑資料;警特報未確認)'));
       }
 
       // ── 告警卡 ──
@@ -1243,7 +1271,7 @@
             townSel.innerHTML = '<option value="">全縣市</option>' + w.towns.map(function (tn) { return '<option value="' + esc(tn) + '"' + (tn === cur ? ' selected' : '') + '>' + esc(tn) + '</option>'; }).join('');
             townSel.disabled = false;
           }
-          var state = renderBanner(w.warning || null);
+          var state = renderBanner(w.warning || null, county);
           renderForecast(w, county, town);
           (function () {
             var tl = w.timeline || [];
@@ -1266,7 +1294,7 @@
           updateShare();
           return state;
         }).catch(function () {
-          renderBanner(null);
+          renderBanner(null, county);
           unavailable(card('db-card-forecast'), '中央氣象署', 'https://www.cwa.gov.tw/');
           setSig('db-card-forecast', 'warn', '目前無法確認預報。');
           renderActions('calm');
@@ -1333,8 +1361,19 @@
         if (curState === 'active') { line1 = '陸上/海上颱風警報生效中 ' + emoji; line2 = '留意官方通知,今晚別出門。'; }
         else if (curState === 'approaching') { line1 = '颱風接近中 ' + emoji + ',尚未發警報'; line2 = '現在是準備期,採買防颱趁現在。'; }
         else if (curState === 'departing') { line1 = '颱風遠離中 ' + emoji; line2 = '目前無警報,仍可能有局部風雨。'; }
+        else if (curState === 'advisory') {
+          // 有官方特報就照講,不要因為「沒颱風」就報平安
+          var hzs = advisoryOf(county) || [];
+          var nm = hzs.slice(0, 2).map(function (h) { return h.phenomena + h.significance; }).join('、') || '官方特報';
+          line1 = '目前無颱風警報,但有' + nm + '生效中 ' + emoji;
+          line2 = '出門前先看一下你那區的特報。';
+        }
         else if (curState === 'unknown') { line1 = '官方狀態暫時查不到 ⚪'; line2 = '請以中央氣象署為準。'; }
-        else { line1 = '目前平時 ' + emoji + ',沒有警報'; line2 = '這頁會自動更新,天氣變壞會變黃變紅。'; }
+        else {
+          // 特報查不到時別替家人背書「沒有特報」
+          line1 = advisoryOf(county) ? ('目前平時 ' + emoji + ',沒有颱風警報也沒有特報') : ('目前沒有颱風警報 ' + emoji + '(特報狀態未確認)');
+          line2 = '這頁會自動更新,天氣變壞會變黃變紅。';
+        }
         return '【' + area + ' 防災狀況】\n' + line1 + '。\n' + line2 + '\n即時狀況看這頁:https://twtools.cc/dashboard/';
       }
       function updateShare() {
