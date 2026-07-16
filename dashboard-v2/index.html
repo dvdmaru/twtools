@@ -1192,7 +1192,13 @@
         sumEl.textContent = agg.activeCounty > 0
           ? '全台 ' + agg.activeCounty + ' 縣市有警特報生效中' + (mine.length ? ',包含' + county + '。' : ';' + county + '不在列。')
           : '全台 22 縣市皆無生效警特報 — 安靜就是好消息。';
-        var msig = mine.length ? (mine.some(function (h) { return /颱風/.test(h.phenomena); }) ? 'alert' : 'warn') : 'ok';
+        // 燈號 scope 跟地區模式一致:局部=你的縣市;全台=22 縣市任何特報(否則「如常」tag 會跟「全台 N 縣市生效中」自相矛盾)
+        var msig;
+        if (curArea === 'all') {
+          msig = Object.keys(agg.counts).some(function (t) { return /颱風/.test(t); }) ? 'alert' : (agg.activeCounty > 0 ? 'warn' : 'ok');
+        } else {
+          msig = mine.length ? (mine.some(function (h) { return /颱風/.test(h.phenomena); }) ? 'alert' : 'warn') : 'ok';
+        }
         dotEl.className = 'sig-dot ' + msig;
         if (cardEl) cardEl.dataset.sig = msig;
         if (tagEl) { tagEl.className = 'sig-tag ' + msig; tagEl.textContent = TAG_TXT[msig]; }
