@@ -565,9 +565,9 @@
       var topPill = document.getElementById('top-pill');
       var refreshBtn = document.getElementById('db-refresh');
       var curState = 'calm';
-      var SIG_OF = { calm: 'ok', departing: 'ok', advisory: 'warn', approaching: 'warn', active: 'alert', unknown: 'warn' };
-      var PILL_OF = { calm: '平時', departing: '颱風遠離', advisory: '特報生效', approaching: '颱風接近', active: '警報生效', unknown: '狀態未確認' };
-      var MARK_OF = { calm: '常', departing: '離', advisory: '特', approaching: '備', active: '警', unknown: '?' };
+      var SIG_OF = { calm: 'ok', departing: 'ok', advisory: 'warn', approaching: 'warn', seawarn: 'warn', active: 'alert', unknown: 'warn' };
+      var PILL_OF = { calm: '平時', departing: '颱風遠離', advisory: '特報生效', approaching: '颱風接近', seawarn: '海上警報', active: '警報生效', unknown: '狀態未確認' };
+      var MARK_OF = { calm: '常', departing: '離', advisory: '特', approaching: '備', seawarn: '海', active: '警', unknown: '?' };
       var TAG_TXT = { ok: '如常', warn: '注意', alert: '警戒' };
       function setPill(sig, txt) { if (!topPill) return; topPill.className = 'sig-pill ' + sig; topPill.innerHTML = '<span class="sig-dot ' + sig + '"></span>' + txt; }
       // 每張卡:設燈號(data-sig)、燈號文字標籤(data-tag)、燈點(data-dot)與白話結論(data-plain)
@@ -694,6 +694,20 @@
         }
         var now = new Date();
         var hh = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+        // ⚠️ 海上颱風警報(sea && !land):官方只對海面/海邊示警、尚未發陸上警報——
+        // 不可自行升級成陸上「應變期・今晚別出門」的紅燈(那是把官方訊號加工)。
+        // 2026-07-24 實例:紅霞海警生效、路徑在台灣南方海面往華南,對台北陸上影響≈0,
+        // 舊碼卻對內湖噴紅色別出門。降為「海上警報」注意級,陸上狀況導回在地特報/雨量。
+        if (w.active && w.sea && !w.land) {
+          var seaHz = advisoryOf(county); // 三值:null=查不到 / []=無 / [..]=有
+          var seaExtra = (curArea !== 'all' && seaHz && seaHz.length)
+            ? '你所在的' + esc(county) + '另有 <strong>' + esc(seaHz.slice(0, 3).map(function (h) { return h.phenomena + h.significance; }).join('、')) + '</strong> 天氣特報生效。'
+            : '';
+          return apply('seawarn', '海上颱風警報' + (w.typhoonName ? '・' + w.typhoonName : ''),
+            '海上颱風警報生效中,主要影響海上及海邊活動;氣象署尚未發布陸上颱風警報。' + (curArea === 'all' ? '陸上狀況看下方全台警特報。' : '你的地區看下方特報與雨量。'),
+            '中央氣象署發布<strong>海上颱風警報</strong>(針對海面、海邊及海上作業),<strong>目前尚未發布陸上颱風警報</strong>——官方還沒對陸地示警,但不代表一定沒事。' + seaExtra + '陸上是否受影響、是否升級陸上警報,以下方各卡片與 <a href="https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">中央氣象署</a> 後續發布為準。',
+            '狀態確認於 ' + hh + '(氣象署海上颱風警報單)');
+        }
         if (w.active) {
           return apply('active', '警報生效' + (w.typhoonName ? '・' + w.typhoonName : ''),
             '颱風警報生效中,進入應變期。留意官方通知,今晚別出門。',
@@ -1161,12 +1175,14 @@
         if (!plainEl || !infoEl) return;
         var w = cache.weather;
         var warn = w && w.warning;
-        // 白話與燈號:照 hero 同一套官方狀態(警報生效=警戒,其餘=注意)
-        var sig = (warn && warn.active) ? 'alert' : 'warn';
+        // 白話與燈號:照 hero 同一套官方狀態(陸上警報=警戒紅;海上警報/其餘=注意黃)
+        var landWarn = !!(warn && warn.active && warn.land);
+        var sig = landWarn ? 'alert' : 'warn';
         var dot = document.getElementById('ty-dot'); if (dot) dot.className = 'sig-dot ' + sig;
         var tag = document.getElementById('ty-tag'); if (tag) { tag.className = 'sig-tag ' + sig; tag.textContent = TAG_TXT[sig]; }
         var cardEl0 = document.getElementById('db-card-tyvisual'); if (cardEl0) cardEl0.dataset.sig = sig;
-        if (warn && warn.active) plainEl.textContent = '颱風警報生效中,應變依官方指示。';
+        if (landWarn) plainEl.textContent = '颱風警報生效中,應變依官方指示。';
+        else if (warn && warn.active) plainEl.textContent = '海上颱風警報生效中,主要影響海上及海邊活動;尚未發陸上警報。';
         else if (warn && warn.approaching && warn.trend === 'departing') plainEl.textContent = '颱風正遠離臺灣,目前沒有警報。';
         else if (warn && warn.approaching && warn.trend === 'approaching') plainEl.textContent = '颱風正朝臺灣方向接近,現在是準備期。';
         else if (warn && warn.approaching) plainEl.textContent = '臺灣周邊海域有編號颱風,動向以氣象署為準。';
@@ -1588,7 +1604,13 @@
         var area = curArea === 'all' ? '全台' : (town ? (county + ' ' + town) : county);
         var emoji = { ok: '🟢', warn: '🟡', alert: '🔴' }[SIG_OF[curState] || 'ok'];
         var line1, line2;
-        if (curState === 'active') { line1 = '陸上/海上颱風警報生效中 ' + emoji; line2 = '留意官方通知,今晚別出門。'; }
+        if (curState === 'active') { line1 = '陸上颱風警報生效中 ' + emoji; line2 = '留意官方通知,今晚別出門。'; }
+        else if (curState === 'seawarn') {
+          var seaMore = '';
+          if (curArea !== 'all') { var shz = advisoryOf(county) || []; if (shz.length) seaMore = ',另有' + shz.slice(0, 2).map(function (h) { return h.phenomena + h.significance; }).join('、'); }
+          line1 = '海上颱風警報生效中 ' + emoji + '(尚未發陸上警報)' + seaMore;
+          line2 = '主要影響海邊與海上活動,陸上狀況看特報與雨量。';
+        }
         else if (curState === 'approaching') { line1 = '颱風接近中 ' + emoji + ',尚未發警報'; line2 = '現在是準備期,採買防颱趁現在。'; }
         else if (curState === 'departing') { line1 = '颱風遠離中 ' + emoji; line2 = '目前無警報,仍可能有局部風雨。'; }
         else if (curState === 'advisory') {
