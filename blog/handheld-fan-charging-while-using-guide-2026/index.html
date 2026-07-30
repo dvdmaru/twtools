@@ -1,0 +1,548 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>隨身小風扇邊吹邊充，為什麼電量不會增加？先看懂電力怎麼分配，再看官方怎麼說 | TWTools</title><meta name="description" content="夏天帶手持小風扇出門，沒電了接行動電源邊吹邊充，卻發現電量幾乎不動。原因是接上電源以後，進來的電力要同時應付兩件事：驅動馬達與替電池充電。馬達分走一部分之後，能進電池的就只剩下分配後的那些；風速開得越大，馬達分走的越多。實際怎麼分配會依該機型的電源路徑設計而不同。要提醒的是，這個分配結果沒辦法從風扇與行動電源的標示直接算出來。標示是額定輸入規格與供電能力，不是實際取用量，實際充電電流還受裝置輸入限流、充電控制、溫度與電池狀態影響。這篇因此不教你算，而是教你查說明書；若說明書明確支援充電時使用，再用你手上那一台實際觀察一次當參考。官方說法的出處也一併釐清：臺北市政府消防局〈防範鋰電池電動車火災〉頁面建議「避免邊充電邊使用產品」，而經濟部標準檢驗局〈炎炎夏日，如何安全使用充電式小風扇？〉的使用時注意事項只列四點、並沒有這一句，兩者不要混為一談。"><link rel="canonical" href="https://twtools.cc/blog/handheld-fan-charging-while-using-guide-2026/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.tailwindcss.com"><link rel="preconnect" href="https://www.googletagmanager.com"><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:url" content="https://twtools.cc/blog/handheld-fan-charging-while-using-guide-2026/"><meta property="og:title" content="隨身小風扇邊吹邊充，為什麼電量不會增加？先看懂電力怎麼分配，再看官方怎麼說 | TWTools"><meta property="og:description" content="夏天帶手持小風扇出門，沒電了接行動電源邊吹邊充，卻發現電量幾乎不動。原因是接上電源以後，進來的電力要同時應付兩件事：驅動馬達與替電池充電。馬達分走一部分之後，能進電池的就只剩下分配後的那些；風速開得越大，馬達分走的越多。實際怎麼分配會依該機型的電源路徑設計而不同。要提醒的是，這個分配結果沒辦法從風扇與行動電源的標示直接算出來。標示是額定輸入規格與供電能力，不是實際取用量，實際充電電流還受裝置輸入限流、充電控制、溫度與電池狀態影響。這篇因此不教你算，而是教你查說明書；若說明書明確支援充電時使用，再用你手上那一台實際觀察一次當參考。官方說法的出處也一併釐清：臺北市政府消防局〈防範鋰電池電動車火災〉頁面建議「避免邊充電邊使用產品」，而經濟部標準檢驗局〈炎炎夏日，如何安全使用充電式小風扇？〉的使用時注意事項只列四點、並沒有這一句，兩者不要混為一談。"><meta property="og:image" content="https://twtools.cc/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="隨身小風扇邊吹邊充，為什麼電量不會增加？先看懂電力怎麼分配，再看官方怎麼說"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="隨身小風扇邊吹邊充，為什麼電量不會增加？先看懂電力怎麼分配，再看官方怎麼說 | TWTools"><meta name="twitter:description" content="夏天帶手持小風扇出門，沒電了接行動電源邊吹邊充，卻發現電量幾乎不動。原因是接上電源以後，進來的電力要同時應付兩件事：驅動馬達與替電池充電。馬達分走一部分之後，能進電池的就只剩下分配後的那些；風速開得越大，馬達分走的越多。實際怎麼分配會依該機型的電源路徑設計而不同。要提醒的是，這個分配結果沒辦法從風扇與行動電源的標示直接算出來。標示是額定輸入規格與供電能力，不是實際取用量，實際充電電流還受裝置輸入限流、充電控制、溫度與電池狀態影響。這篇因此不教你算，而是教你查說明書；若說明書明確支援充電時使用，再用你手上那一台實際觀察一次當參考。官方說法的出處也一併釐清：臺北市政府消防局〈防範鋰電池電動車火災〉頁面建議「避免邊充電邊使用產品」，而經濟部標準檢驗局〈炎炎夏日，如何安全使用充電式小風扇？〉的使用時注意事項只列四點、並沒有這一句，兩者不要混為一談。"><meta name="twitter:image" content="https://twtools.cc/og-image.png"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0WTK2LJFTY');
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            /* Morandi Dusty Rose — TWTools 品牌色（OKLCH hue 22） */
+            brand: {
+              50:  '#fceeed',
+              100: '#f2dbda',
+              200: '#e0b9b7',
+              300: '#ca9592',
+              400: '#af7472',
+              500: '#935e5c',
+              600: '#764a49',
+              700: '#583937',
+              800: '#3e2726',
+              900: '#281818',
+              950: '#110c08'
+            },
+            /* 奶油暖灰中性色（OKLCH hue 60） */
+            warm: {
+              50:  '#fcf3ed',
+              100: '#f1e5dc',
+              200: '#e3d0c2',
+              300: '#c9b3a2',
+              400: '#a99483',
+              500: '#887769',
+              600: '#6e6055',
+              700: '#564b42',
+              800: '#3e3630',
+              900: '#2b2520',
+              950: '#15110d'
+            },
+            /* 暖琥珀強調色（OKLCH hue 75） */
+            accent: {
+              50:  '#fdf4e7',
+              100: '#f8e5cb',
+              200: '#eecb9a',
+              300: '#e1ad63',
+              400: '#d49838',
+              500: '#b68028',
+              600: '#906520',
+              700: '#6b4c1d',
+              800: '#4b3617',
+              900: '#32230e',
+              950: '#181005'
+            }
+          }
+        }
+      }
+    }
+  </script><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/BaseLayout.B9W9NNDc.css">
+<style>.db-callout[data-astro-cid-lqth5lif]{display:flex;align-items:center;gap:12px;border:1.5px solid var(--tw-hero-color);background:var(--tw-surface);padding:12px 16px;margin:0 0 20px;text-decoration:none;color:inherit;transition:transform .15s ease}.db-callout[data-astro-cid-lqth5lif]:hover{transform:translateY(-1px)}.db-callout-icon[data-astro-cid-lqth5lif]{font-size:22px;flex-shrink:0}.db-callout-text[data-astro-cid-lqth5lif]{display:flex;flex-direction:column;gap:1px;min-width:0}.db-callout-text[data-astro-cid-lqth5lif] strong[data-astro-cid-lqth5lif]{font-size:15px}.db-callout-text[data-astro-cid-lqth5lif] span[data-astro-cid-lqth5lif]{font-size:12.5px;color:var(--tw-text-secondary);line-height:1.5}.db-callout-go[data-astro-cid-lqth5lif]{margin-left:auto;flex-shrink:0;font-size:12px;color:var(--tw-hero-color);border:1px solid var(--tw-hero-color);padding:5px 10px;white-space:nowrap}
+</style></head> <body class="min-h-screen paper-noise">   <button id="sidebar-hamburger" class="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg" style="background:var(--tw-surface);color:var(--tw-text-primary)">☰</button>  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 md:hidden hidden"></div>  <aside id="sidebar-panel" class="fixed top-0 left-0 h-full w-56 z-40 flex flex-col border-r transition-transform -translate-x-full md:translate-x-0" style="background:var(--tw-page-bg);border-color:var(--tw-border)"> <!-- Logo --> <div class="p-4 border-b flex items-center justify-between" style="border-color:var(--tw-border)"> <a href="/" class="flex items-center no-underline"> <img src="data:image/png;base64,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" alt="TWTools" class="w-7 h-7 rounded-lg"> <span class="text-sm font-bold ml-1.5" style="color:var(--tw-brand-accent)">TWTools</span> </a> <button id="sidebar-close" class="md:hidden text-lg leading-none" style="color:var(--tw-text-muted)">✕</button> </div> <!-- Nav items grouped by category --> <nav class="flex-1 py-2 overflow-y-auto"> <div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">檔案處理</div> <a href="/image/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🖼️</span> 圖片工具 </a><a href="/pdf/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📄</span> PDF 工具 </a><a href="/resume/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📋</span> 履歷產生器 </a><a href="/proofread/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">✍️</span> 錯別字檢查 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">生活查詢</div> <a href="/dashboard/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛡️</span> 防災儀表板 </a><a href="/typhoon/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌀</span> 颱風停班停課 </a><a href="/dingfengbo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌧️</span> 定風波 風雨時間軸 </a><a href="/reservoir/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💧</span> 水庫即時水情 </a><a href="/drone/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛸</span> 無人機管制區查詢 </a><a href="/alerts/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🚨</span> 災害即時告警 </a><a href="/rain/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☔</span> 即時雨量 </a><a href="/oil-recall/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛢️</span> 問題沙拉油查詢 </a><a href="/lottery/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎰</span> 台灣彩券 </a><a href="/currency/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💱</span> 匯率換算 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">計算換算</div> <a href="/datecalc/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📅</span> 日期計算器 </a><a href="/countdown/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⏳</span> 倒數計時器 </a><a href="/unit/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📏</span> 單位換算 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">查詢工具</div> <a href="/postal/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📮</span> 郵遞區號 </a><a href="/address/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌐</span> 地址中譯英 </a><a href="/lunar/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 農曆國曆 </a><a href="/solar-terms/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☀️</span> 二十四節氣 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">學習工具</div> <a href="/vocabulary/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎓</span> 英文單字片語 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">站長工具</div> <a href="/seo/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📊</span> SEO/GEO/AEO </a><a href="/clock/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🕐</span> 翻頁時鐘 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">放鬆小站</div> <a href="/breathe/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">😮‍💨</span> 一起喘口氣 </a><a href="/midnight/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> 深夜宵夜所 </a><a href="/woodenfish/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🪵</span> 電子木魚 </a><a href="/sand/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⌛</span> 指尖流沙 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">休閒遊戲</div> <a href="/bee/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🐝</span> 小蜜蜂 </a><a href="/invaders/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">👾</span> 太空侵略者 </a><a href="/crab/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🦀</span> 打螃蟹 </a> </div><div> <div class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">更多</div> <a href="/blog/" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-r-2" style="background:rgba(107,115,148,0.15);color:var(--tw-brand-accent);border-color:var(--tw-brand-accent)"> <span class="text-base">📝</span> 知識文章 </a> </div>   </nav> <div class="p-3 border-t text-xs text-center space-y-1" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <div class="flex justify-center gap-3"> <a href="/about/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">關於</a> <a href="/privacy/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">隱私權</a> <a href="/terms/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">條款</a> </div>
+打工牛馬的線上工具箱 © 2026
+</div> </aside>  <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8 min-h-screen" style="background:var(--tw-page-bg)">   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"隨身小風扇邊吹邊充，為什麼電量不會增加？先看懂電力怎麼分配，再看官方怎麼說","description":"夏天帶手持小風扇出門，沒電了接行動電源邊吹邊充，卻發現電量幾乎不動。原因是接上電源以後，進來的電力要同時應付兩件事：驅動馬達與替電池充電。馬達分走一部分之後，能進電池的就只剩下分配後的那些；風速開得越大，馬達分走的越多。實際怎麼分配會依該機型的電源路徑設計而不同。要提醒的是，這個分配結果沒辦法從風扇與行動電源的標示直接算出來。標示是額定輸入規格與供電能力，不是實際取用量，實際充電電流還受裝置輸入限流、充電控制、溫度與電池狀態影響。這篇因此不教你算，而是教你查說明書；若說明書明確支援充電時使用，再用你手上那一台實際觀察一次當參考。官方說法的出處也一併釐清：臺北市政府消防局〈防範鋰電池電動車火災〉頁面建議「避免邊充電邊使用產品」，而經濟部標準檢驗局〈炎炎夏日，如何安全使用充電式小風扇？〉的使用時注意事項只列四點、並沒有這一句，兩者不要混為一談。","image":"https://twtools.cc/og-image.png","datePublished":"2026-07-31T00:00:00+08:00","dateModified":"2026-07-31T00:00:00+08:00","author":{"@type":"Organization","name":"TWTools 編輯部","url":"https://twtools.cc"},"publisher":{"@type":"Organization","name":"TWTools","url":"https://twtools.cc","logo":{"@type":"ImageObject","url":"https://twtools.cc/favicon.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://twtools.cc/blog/handheld-fan-charging-while-using-guide-2026/"},"inLanguage":"zh-Hant-TW","keywords":"隨身風扇, 手持風扇, 邊充邊用, 邊充電邊使用, 行動電源, 鋰電池安全, 商品檢驗標識, 小風扇充電, 風扇沒電, BSMI"}</script>  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"邊充電邊使用手持風扇，電量為什麼不會增加？","acceptedAnswer":{"@type":"Answer","text":"因為接上電源以後，進來的電力要同時應付驅動馬達與替電池充電。馬達分走一部分之後，能進電池的就只剩分配後的那些。當馬達分走的份量接近該孔位能提供的電力時，電量看起來就凍在原地。風速開得越大，馬達分走的越多。這不一定是故障，但仍應依說明書排除不相容或異常的可能。"}},{"@type":"Question","name":"邊充邊用會讓電量繼續往下掉嗎？","acceptedAnswer":{"@type":"Answer","text":"會，這是其中一種可能的結果。如果分給充電的部分不足以抵銷馬達的消耗，電池仍然在放電，只是掉得比完全不接電源時慢。此時你實際上是在延長續航，而不是在充電。"}},{"@type":"Question","name":"可以用風扇和行動電源上的標示算出會充進去多少嗎？","acceptedAnswer":{"@type":"Answer","text":"不行。風扇標示的是額定輸入規格；它在某個風速下實際取用多少電流，標示上看不出來。行動電源孔位標示的是那個孔能供應多少，不代表風扇會照上限取電。實際充電電流還受裝置輸入限流、充電控制、溫度保護與電池狀態影響。標示只能用來做相容性檢查，要知道結果請看說明書；說明書明確支援充電時使用的話，才自己觀察一次當參考。"}},{"@type":"Question","name":"官方有禁止邊充電邊使用嗎？","acceptedAnswer":{"@type":"Answer","text":"臺北市政府消防局〈防範鋰電池電動車火災〉頁面寫有「避免邊充電邊使用產品！」，用的是建議避免的語氣。要注意的是，這一句被列在充電使用的注意事項裡，並沒有被列進該頁整理的三類常見起火原因。本文沒有窮盡檢索所有機關的宣導資料，因此只就這一頁的內容陳述。"}},{"@type":"Question","name":"經濟部標準檢驗局有說過不要邊充邊用小風扇嗎？","acceptedAnswer":{"@type":"Answer","text":"標準檢驗局〈炎炎夏日，如何安全使用充電式小風扇？〉（2024 年 8 月 1 日）的「使用時注意事項」列四點：選購貼有商品檢驗標識的商品、避免撞擊或摔落、不要在潮濕環境下使用、充電完畢後立即拔離插頭。這四點裡並沒有「避免邊充電邊使用」。網路上把這句話掛在這篇文章上的說法，是誤傳。"}},{"@type":"Question","name":"怎麼知道我的風扇能不能邊吹邊充？","acceptedAnswer":{"@type":"Answer","text":"兩件事。第一是查說明書，看有沒有明確寫支援「充電時使用」，沒有寫就不要假設它支援。第二，只有在說明書明確支援充電時使用的前提下，才自己觀察一次：接上電源後記下電量，用平常的風速吹 10 到 15 分鐘看走向，再把風速轉到最低看同樣長度的時間，比較兩次結果。這只能當粗略參考。電量百分比是估算值，若只有少數格燈號，顯示粒度會更粗，短時間沒變也可能只是顯示延遲。過程中若機身燙手或出現異常，請立即停止。"}},{"@type":"Question","name":"手持風扇和行動電源需要看商品檢驗標識嗎？","acceptedAnswer":{"@type":"Answer","text":"需要，兩樣都有公告依據。可充電式電風扇等 7 項可充電式電器商品自民國 112 年（2023 年）1 月 1 日起實施列檢；行動電源自民國 103 年（2014 年）5 月 1 日起就列為應施檢驗商品。另有一批自民國 115 年（2026 年）7 月 1 日起納檢的商品，那批是電捕昆蟲器、電毯、磨咖啡豆機等另外七項不同品類，充電式電風扇不在其中。"}},{"@type":"Question","name":"什麼情況下應該立刻停用？","acceptedAnswer":{"@type":"Answer","text":"臺北市政府消防局列出的異常情形是變形、膨脹、漏液、生鏽、異常氣味或異常高溫，出現時應立即停止使用。本文另採保守原則，建議把轉速忽快忽慢與反覆斷電也當成停手訊號。若已經冒煙或起火，請離開現場並撥 119。"}}]}</script> <nav class="max-w-5xl mx-auto px-2 md:px-6 pt-2 pb-4 no-print" aria-label="breadcrumb"> <ol class="flex items-center gap-2 text-sm flex-wrap m-0 p-0 list-none" style="color: var(--tw-text-muted);"> <li><a href="/" class="grow-underline">首頁</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><a href="/blog/" class="grow-underline">編輯室</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><span style="color: var(--tw-text-primary);">防災生活</span></li> </ol> </nav>  <section class="max-w-5xl mx-auto px-2 md:px-6 pb-6"> <div class="article-col"> <div class="flex items-center gap-3 mb-5 flex-wrap"> <span class="brand-dot"></span> <span class="eyebrow">防災生活</span> <span class="printrule hidden md:inline">|</span> <span class="eyebrow">13 分鐘</span> <span class="printrule hidden md:inline">|</span> <span class="updated-pill"><span class="pulse-dot"></span>UPDATED · 2026 / 07 / 31</span> </div> <h1 class="font-serif-tc font-black tracking-cn" style="font-size: clamp(30px, 4.6vw, 52px); line-height: 1.15; color: var(--tw-hero-color); letter-spacing: -0.015em; margin: 0;"> 隨身小風扇邊吹邊充，為什麼電量不會增加？先看懂電力怎麼分配，再看官方怎麼說 </h1> <p class="font-serif-tc" style="margin: 24px 0 0; font-size: clamp(16px, 1.8vw, 19px); line-height: 1.65; color: var(--tw-text-secondary); font-weight: 400;"> 夏天帶手持小風扇出門，沒電了接行動電源邊吹邊充，卻發現電量幾乎不動。原因是接上電源以後，進來的電力要同時應付兩件事：驅動馬達與替電池充電。馬達分走一部分之後，能進電池的就只剩下分配後的那些；風速開得越大，馬達分走的越多。實際怎麼分配會依該機型的電源路徑設計而不同。要提醒的是，這個分配結果沒辦法從風扇與行動電源的標示直接算出來。標示是額定輸入規格與供電能力，不是實際取用量，實際充電電流還受裝置輸入限流、充電控制、溫度與電池狀態影響。這篇因此不教你算，而是教你查說明書；若說明書明確支援充電時使用，再用你手上那一台實際觀察一次當參考。官方說法的出處也一併釐清：臺北市政府消防局〈防範鋰電池電動車火災〉頁面建議「避免邊充電邊使用產品」，而經濟部標準檢驗局〈炎炎夏日，如何安全使用充電式小風扇？〉的使用時注意事項只列四點、並沒有這一句，兩者不要混為一談。 </p> <div class="mt-8 pt-6 border-t flex items-center gap-x-6 gap-y-2 flex-wrap text-sm no-print" style="border-color: var(--tw-border); color: var(--tw-text-muted);"> <span class="inline-flex items-center gap-2"> <span class="w-7 h-7 rounded-full grid place-items-center" style="background: var(--tw-hero-color); color: #fffbfa; font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 12px;">編</span> <span style="color: var(--tw-text-secondary);">TWTools 編輯部</span> </span> <span class="printrule">|</span> <time datetime="2026-07-31">2026 / 07 / 31</time> <span class="ml-auto inline-flex items-center gap-3"> <a href="/blog/en/handheld-fan-charging-while-using-guide-2026/" class="grow-underline inline-flex items-center gap-1.5"> <svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="12" cy="12" r="10" />
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+  <path d="M2 12h20" />
+</svg>
+English
+</a> <button type="button" id="print-link" class="grow-underline inline-flex items-center gap-1.5" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0; font: inherit;"> <svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+  <rect x="6" y="14" width="12" height="8" rx="1" />
+</svg>
+列印
+</button> </span> </div> </div> </section>   <article class="max-w-5xl mx-auto px-2 md:px-6 mb-12"> <div class="article-frame"> <aside class="article-margin no-print"> <div class="margin-label">防災生活 · 2026</div> </aside> <div class="prose-cn"> <!-- TOC --> <details class="toc-block no-print" open> <summary> <div class="toc-head"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 5h.01" />
+  <path d="M3 12h.01" />
+  <path d="M3 19h.01" />
+  <path d="M8 5h13" />
+  <path d="M8 12h13" />
+  <path d="M8 19h13" />
+</svg>
+ <span class="eyebrow">CONTENTS · 目次</span> <h3>本文 8 個段落</h3> </div> <svg aria-hidden="true"
+  class="w-4 h-4 toc-chev lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m6 9 6 6 6-6" />
+</svg>
+ </summary> <div class="toc-list"> <ol> <li> <a href="#一先說結論"> <span class="toc-num">§ 01</span> <span class="toc-title">一、先說結論</span> </a> </li><li> <a href="#二為什麼邊吹邊充看起來沒有用"> <span class="toc-num">§ 02</span> <span class="toc-title">二、為什麼「邊吹邊充」看起來沒有用</span> </a> </li><li> <a href="#三你能查的與能試的"> <span class="toc-num">§ 03</span> <span class="toc-title">三、你能查的與能試的</span> </a> </li><li> <a href="#四官方到底怎麼說"> <span class="toc-num">§ 04</span> <span class="toc-title">四、官方到底怎麼說</span> </a> </li><li> <a href="#五真的必須邊吹邊充時把風險壓到最低"> <span class="toc-num">§ 05</span> <span class="toc-title">五、真的必須邊吹邊充時，把風險壓到最低</span> </a> </li><li> <a href="#六可以避開這個情境的四個做法"> <span class="toc-num">§ 06</span> <span class="toc-title">六、可以避開這個情境的四個做法</span> </a> </li><li> <a href="#七一條實用的判斷原則以及它的界線"> <span class="toc-num">§ 07</span> <span class="toc-title">七、一條實用的判斷原則，以及它的界線</span> </a> </li><li> <a href="#常見問題faq"> <span class="toc-num">§ 08</span> <span class="toc-title">常見問題（FAQ）</span> </a> </li> </ol> </div> </details>  <p>夏天出門帶一支手持小風扇，是不少人的隨身配備。於是也就有了這個不少人可能遇到的場景：風扇快沒電了，包包裡剛好有行動電源，接上去繼續吹。結果吹了一個小時，電量幾乎沒動，甚至還在往下掉。</p>
+<p>第一個念頭通常是「風扇壞了」或「行動電源壞了」。但這不一定是故障。這件事的答案分成兩層，兩層都值得知道：一層是電力怎麼分配，一層是安全。前者說明為什麼看起來沒有用，後者說明這件事該不該做。</p>
+<h2 id="一先說結論">一、先說結論</h2>
+<p>這件事其實是兩個問題。先各給一句答案。</p>
+<p><strong>問題一：邊吹邊充，電量為什麼不會增加？</strong></p>
+<p>因為接上電源以後，進來的電力要同時應付兩件事：驅動馬達和替電池充電。馬達分走一部分之後，能進電池的就只剩分配後的那些。風速開得越大，馬達分走的越多。把風速轉到最低，可以降低負載、提高真的充進去的機會。</p>
+<p><strong>問題二：那到底能不能邊吹邊充？</strong></p>
+<p><strong>臺北市政府消防局在〈防範鋰電池電動車火災〉的宣導頁面上，建議「避免邊充電邊使用產品」。</strong> 做得到的話，找機會關掉風扇專心充一段，就可以避開這個情境。</p>
+<p>這兩句就是全文重點，看到這裡就夠用了。後面談三件事：你能查什麼、能試什麼（<strong>這個結果沒辦法用標示算出來</strong>）、官方到底講了什麼（出處常被搞錯），還有真的非邊吹邊充不可時該怎麼做。</p>
+<h2 id="二為什麼邊吹邊充看起來沒有用">二、為什麼「邊吹邊充」看起來沒有用</h2>
+<p>先講可以確定的部分：接上電源以後，進來的電力要同時應付驅動馬達與替電池充電。風扇在轉，就有一部分電力被馬達用掉，能進電池的是分配之後的那一部分。</p>
+<p>至於實際怎麼分配，會依該機型的電源路徑設計而不同。有些機型在接電時仍會由電池補足負載，有些則主要由外部供電承擔。這是電路設計的差異，各家風扇並不一致。</p>
+<p>於是會出現幾種不同的結果：</p>
+<ol>
+<li><strong>分給充電的部分足夠</strong>：電量會上升，只是比關機充電慢。</li>
+<li><strong>兩邊接近打平</strong>：電量幾乎凍在原地。這種情況容易被誤讀成「壞了」。</li>
+<li><strong>分給充電的部分不足</strong>：電量還是在往下掉，只是掉得比不接電源時慢。這時候你以為在充電，其實是在延長續航。</li>
+</ol>
+<p>風速是其中一個變動項：開得越大，馬達分走的越多。所以「先把風速轉到最低」值得一試。</p>
+<h2 id="三你能查的與能試的">三、你能查的與能試的</h2>
+<p>看到這裡，很自然會想：那我把風扇和行動電源上的標示拿來比一比，不就知道答案了嗎？</p>
+<p>很可惜，不行。原因是這樣的。</p>
+<p>風扇機身上那個「5V ⎓ 1A」是它的<strong>額定輸入規格</strong>，<strong>不是它在某個風速下實際取用的電流</strong>。行動電源孔位旁的數字則是那個孔能供應多少，並不代表風扇會照著上限取電。實際的充電電流還會受到裝置本身的輸入限流、充電控制方式、溫度保護，以及電池當下狀態影響。</p>
+<p>所以標示能做的是<strong>相容性檢查</strong>（這條線、這個孔適不適合這台機器），<strong>不能用來推算會充進去多少</strong>。真要知道結果，得看說明書；說明書明確支援時，才能自己觀察。</p>
+<p>那能做什麼？兩件事，都比算術可靠。</p>
+<h3 id="第一件查說明書">第一件：查說明書</h3>
+<p>看它有沒有明確寫支援「充電時使用」或「邊充邊用」，以及原廠建議搭配的輸入規格與線材。這是唯一能告訴你這台機器是為什麼情境設計的地方。<strong>沒有明確寫的話，就不要假設它支援。</strong></p>
+<h3 id="第二件如果說明書允許可以實際觀察一次">第二件：如果說明書允許，可以實際觀察一次</h3>
+<p>⚠️ <strong>先講清楚前提：只有在說明書明確支援「充電時使用」的情況下，才做下面的觀察。說明書沒有寫、或明白表示不支援時，請不要測。</strong> 這一點不能省。前一段的原則在這裡同樣適用，而且消防局的建議本來就是避免邊充電邊使用。</p>
+<p>前提成立的話，可以這樣看：</p>
+<ol>
+<li>接上電源，記下當下的電量顯示（有百分比最好，只有燈號也能看格數）。</li>
+<li>用你平常的風速吹 10 到 15 分鐘，看電量是往上、不動，還是往下。</li>
+<li>把風速轉到最低，再看同樣長度的時間，比較兩次的走向。</li>
+</ol>
+<p>這樣的觀察可以給你一個粗略的方向感，知道自己那一組大概落在上面哪種情況。</p>
+<p>但也要知道它的限制：電量百分比是裝置估算出來的值，若只有少數格燈號，顯示粒度會更粗；短時間看起來沒變，也可能只是顯示解析度或更新延遲造成的，不能就此斷定淨充入剛好是零。兩次觀察的起始電量與機身溫度也可能不同。<strong>所以請把它當參考就好，別當成一次定案的量測。</strong></p>
+<p>⚠️ 觀察過程中如果機身變得燙手，或出現第五節列的任何異常，請直接停下來，不要為了看完而繼續。</p>
+<h2 id="四官方到底怎麼說">四、官方到底怎麼說</h2>
+<p><strong>先給答案：臺北市政府消防局的宣導頁面建議避免；而該頁並沒有把「避免邊充電邊使用」這一句列進它自己整理的三類常見起火原因。</strong></p>
+<p>這題在網路上流傳的版本經常把兩份不同機關的資料混成一份，有些說法還會掛上「標準檢驗局」再配一個看起來很精確的年份。下面把兩份分開列，各自照實呈現。</p>
+<h3 id="臺北市政府消防局防範鋰電池電動車火災">臺北市政府消防局〈防範鋰電池電動車火災〉</h3>
+<p>這個官方頁面直接談到這件事（頁面更新日期 2026 年 3 月 25 日）。頁名雖然點出電動車，內容涵蓋鋰電池產品的一般使用。與手持風扇情境有關的包括：</p>
+<ul>
+<li><strong>「避免邊充電邊使用產品！」</strong></li>
+<li>在安全通風的處所進行充電。</li>
+<li>充電或存放時遠離火源、高熱設備、易燃物。</li>
+<li>避免在高溫潮濕環境下充電。</li>
+<li>避免過度充電，並建議電量維持在 20% 至 80% 之間。</li>
+<li>使用時若出現變形、膨脹、漏液、生鏽、異常氣味、異常高溫等情形，應立即停止使用。</li>
+</ul>
+<p>該頁把常見起火原因整理為三類：產品瑕疵或結構受損、電器異常（過度充電、使用非專用充電器、過度放電）、以及暴露於極端環境（高熱、太陽直射）。</p>
+<p><strong>這裡有一條要說清楚的界線：這一頁建議「避免」，但它沒有把「邊充電邊使用」列進上面那三類起火原因。</strong></p>
+<p>所以本文的立場是「這個做法官方建議避開，能避開就避開」，而不是「這樣做就會出事」。也要一併說明：這是<strong>臺北市政府消防局這一個頁面</strong>的建議，本文沒有窮盡檢索所有機關的所有宣導資料，不代表其他單位對此有相同或不同的說法。</p>
+<h3 id="經濟部標準檢驗局炎炎夏日如何安全使用充電式小風扇">經濟部標準檢驗局〈炎炎夏日，如何安全使用充電式小風扇？〉</h3>
+<p><strong>這篇沒有提到邊充邊用。</strong> 它的發布日期是 <strong>2024 年 8 月 1 日</strong>，其中「使用時注意事項」列四點：</p>
+<ol>
+<li>請選購貼有「商品檢驗標識」商品，才有保障。</li>
+<li>因內含鋰電池應避免遭受撞擊或摔落。</li>
+<li>不要在潮濕的環境下使用。</li>
+<li>產品充電完畢後應立即將插頭拔離，避免過度充電。</li>
+</ol>
+<p><strong>這四點裡沒有「邊充電邊使用」，也沒有提到通風、陽光直射、易燃物或電池老化。</strong> 如果你看到有文章寫「標準檢驗局在某年的隨身風扇提醒中明確建議避免邊充邊用」，那句話並不出自這篇。</p>
+<h3 id="有法規基礎的部分這兩樣東西都要認標識">有法規基礎的部分：這兩樣東西都要認標識</h3>
+<p>「認明商品檢驗標識」不只是建議，背後是有公告的：</p>
+<ul>
+<li><strong>可充電式電風扇</strong>等 7 項可充電式電器商品，自<strong>民國 112 年（2023 年）1 月 1 日</strong>起實施列檢。</li>
+<li><strong>行動電源</strong>更早，自<strong>民國 103 年（2014 年）5 月 1 日</strong>起就列為應施檢驗商品。</li>
+<li>另外還有新的一批：自<strong>民國 115 年（2026 年）7 月 1 日</strong>起，電捕昆蟲器（含捕蚊拍）、電毯、個人用電保暖器具、電熱褥、磨咖啡豆機、電動刮鬍刀、電剪髮器等 7 項可充電式商品也納入檢驗。<strong>這一批是另外七項不同品類，充電式電風扇不在其中。風扇早在 2023 年那批就已經列檢。</strong></li>
+</ul>
+<p>也就是說，風扇和行動電源<strong>兩樣都在應施檢驗的範圍內</strong>，選購時兩樣都該看標識。標準檢驗局針對行動電源另外提醒：要認明本體標示的額定電容量，並避免購買體積小、價格便宜、電容量標示卻特別大的產品；鋰電池充電完成後請儘速移除電源，避免過充。</p>
+<h2 id="五真的必須邊吹邊充時把風險壓到最低">五、真的必須邊吹邊充時，把風險壓到最低</h2>
+<p>有時候就是走在路上、車站月台上，非吹不可。這時候可以做的是把條件調到最保守：</p>
+<ol>
+<li><strong>先確認說明書有沒有寫可以。</strong> 有些機型明確標示支援充電時使用，有些完全沒提。沒有明確允許時，就當作它不是為這個情境設計的。</li>
+<li><strong>把風速轉到最低。</strong> 這可以降低馬達分走的電力，也減少運轉發熱。</li>
+<li><strong>依說明書選擇相容的孔位與線材。</strong> 不要憑孔的外型或標示數字大小來猜，原廠怎麼寫就怎麼接。</li>
+<li><strong>不要用來源不明的快充設備硬接。</strong> 消防局把「使用非專用充電器」列在起火原因裡，這條要當真。</li>
+<li><strong>放在通風處，別讓它悶著。</strong> 不要放進口袋壓著、不要蓋在毛巾或衣物下、不要留在曬到太陽的車內。同時運轉又同時充電，在部分機型與條件下可能比只做一件事更熱。</li>
+<li><strong>充飽就拔，不要整晚掛著。</strong> 標準檢驗局的小風扇頁寫的是「充電完畢後應立即將插頭拔離」；消防局頁則是建議避免過度充電、電量維持在 20% 至 80% 之間。兩者的說法不完全相同，但方向一致：不要一直掛在電源上。</li>
+<li><strong>一有異常立刻停手。</strong> 消防局列出的異常是變形、膨脹、漏液、生鏽、異常氣味、異常高溫。本文另採保守原則，把轉速忽快忽慢、反覆斷電也一起當成停手訊號。出現任一項就關機並拔除電源，不要「再撐一下看看」。若已經出現冒煙或起火的狀況，離開現場並撥 119。</li>
+</ol>
+<h2 id="六可以避開這個情境的四個做法">六、可以避開這個情境的四個做法</h2>
+<p>與其優化「邊充邊用」，不如想辦法不要進入這個情境：</p>
+<ol>
+<li><strong>進到室內、上車、坐下休息時，關掉風扇專心充電。</strong> 沒有馬達分走電力，通常可以留下更多輸入功率供充電；仍會有其他系統耗電與轉換損失。</li>
+<li><strong>選可以自己更換電池的機型。</strong> 換一顆電池是幾秒鐘的事，也完全避開「一邊充一邊放」這件事。</li>
+<li><strong>看說明書挑明確支援充電時使用的機型。</strong> 至於接上電源後內部實際怎麼供電、電池會不會同時充放，仍要以該產品說明書的說明為準，不能從「支援」兩個字推論。</li>
+<li><strong>把行動電源的容量算進行程。</strong> 與其全程掛著慢慢補，不如在幾個休息點各充一段。</li>
+</ol>
+<h2 id="七一條實用的判斷原則以及它的界線">七、一條實用的判斷原則，以及它的界線</h2>
+<p>網路上流傳一句判斷原則：「說明書沒有明確允許，就視為不支援。」</p>
+<p>這條原則很實用，本文也建議照著做。 但要誠實標定它的性質：<strong>它是使用上的保守經驗法則，不是法規要求。</strong> 它的價值在於，當你手上那支風扇的說明書什麼都沒寫時，它給了你一個安全的預設值。</p>
+<p>由官方講出來的，則是這幾件事：認明商品檢驗標識、避免撞擊摔落、不在潮濕環境使用、充電完畢立即拔離插頭、在通風處充電、遠離易燃物與高溫、避免邊充電邊使用、出現變形膨脹異味高溫就停用。</p>
+<p>夏天還很長。搞懂電力是怎麼分配的，再照說明書確認自己那一台是為什麼情境設計的，你不但知道了為什麼電量不動，也知道了下一支風扇該怎麼挑。</p>
+<p>順帶一提，如果你正在留意夏天的其他風險，可以一起看<a href="/blog/heatstroke-prevention-guide-2026/">什麼是中暑、和熱衰竭差在哪</a>，以及<a href="/blog/heat-index-apparent-temperature-explained-2026/">體感溫度為什麼會比氣溫高那麼多</a>。</p>
+<h2 id="常見問題faq">常見問題（FAQ）</h2>
+<h3 id="邊充電邊使用手持風扇電量為什麼不會增加">邊充電邊使用手持風扇，電量為什麼不會增加？</h3>
+<p>因為接上電源以後，進來的電力要同時應付驅動馬達與替電池充電。馬達分走一部分之後，能進電池的就只剩分配後的那些。當馬達分走的份量接近該孔位能提供的電力時，電量看起來就凍在原地。風速開得越大，馬達分走的越多。這不一定是故障，但仍應依說明書排除不相容或異常的可能。</p>
+<h3 id="邊充邊用會讓電量繼續往下掉嗎">邊充邊用會讓電量繼續往下掉嗎？</h3>
+<p>會，這是其中一種可能的結果。如果分給充電的部分不足以抵銷馬達的消耗，電池仍然在放電，只是掉得比完全不接電源時慢。此時你實際上是在延長續航，而不是在充電。</p>
+<h3 id="可以用風扇和行動電源上的標示算出會充進去多少嗎">可以用風扇和行動電源上的標示算出會充進去多少嗎？</h3>
+<p>不行。風扇標示的是額定輸入規格；它在某個風速下實際取用多少電流，標示上看不出來。行動電源孔位標示的是那個孔能供應多少，不代表風扇會照上限取電。實際充電電流還受裝置輸入限流、充電控制、溫度保護與電池狀態影響。標示只能用來做相容性檢查，要知道結果請看說明書；說明書明確支援充電時使用的話，才自己觀察一次當參考。</p>
+<h3 id="官方有禁止邊充電邊使用嗎">官方有禁止邊充電邊使用嗎？</h3>
+<p>臺北市政府消防局〈防範鋰電池電動車火災〉頁面寫有「避免邊充電邊使用產品！」，用的是建議避免的語氣。要注意的是，這一句被列在充電使用的注意事項裡，並沒有被列進該頁整理的三類常見起火原因。本文沒有窮盡檢索所有機關的宣導資料，因此只就這一頁的內容陳述。</p>
+<h3 id="經濟部標準檢驗局有說過不要邊充邊用小風扇嗎">經濟部標準檢驗局有說過不要邊充邊用小風扇嗎？</h3>
+<p>標準檢驗局〈炎炎夏日，如何安全使用充電式小風扇？〉（2024 年 8 月 1 日）的「使用時注意事項」列四點：選購貼有商品檢驗標識的商品、避免撞擊或摔落、不要在潮濕環境下使用、充電完畢後立即拔離插頭。這四點裡並沒有「避免邊充電邊使用」。網路上把這句話掛在這篇文章上的說法，是誤傳。</p>
+<h3 id="怎麼知道我的風扇能不能邊吹邊充">怎麼知道我的風扇能不能邊吹邊充？</h3>
+<p>兩件事。第一是查說明書，看有沒有明確寫支援「充電時使用」，沒有寫就不要假設它支援。第二，<strong>只有在說明書明確支援充電時使用的前提下</strong>，才自己觀察一次：接上電源後記下電量，用平常的風速吹 10 到 15 分鐘看走向，再把風速轉到最低看同樣長度的時間，比較兩次結果。這只能當粗略參考。電量百分比是估算值，若只有少數格燈號，顯示粒度會更粗，短時間沒變也可能只是顯示延遲。過程中若機身燙手或出現異常，請立即停止。</p>
+<h3 id="手持風扇和行動電源需要看商品檢驗標識嗎">手持風扇和行動電源需要看商品檢驗標識嗎？</h3>
+<p>需要，兩樣都有公告依據。可充電式電風扇等 7 項可充電式電器商品自民國 112 年（2023 年）1 月 1 日起實施列檢；行動電源自民國 103 年（2014 年）5 月 1 日起就列為應施檢驗商品。另有一批自民國 115 年（2026 年）7 月 1 日起納檢的商品，那批是電捕昆蟲器、電毯、磨咖啡豆機等另外七項不同品類，充電式電風扇不在其中。</p>
+<h3 id="什麼情況下應該立刻停用">什麼情況下應該立刻停用？</h3>
+<p>臺北市政府消防局列出的異常情形是變形、膨脹、漏液、生鏽、異常氣味或異常高溫，出現時應立即停止使用。本文另採保守原則，建議把轉速忽快忽慢與反覆斷電也當成停手訊號。若已經冒煙或起火，請離開現場並撥 119。</p>
+<hr>
+<p><strong>資料來源</strong></p>
+<ul>
+<li>臺北市政府消防局，〈防範鋰電池電動車火災〉（頁面更新日期 2026 年 3 月 25 日）</li>
+<li>經濟部標準檢驗局，〈炎炎夏日，如何安全使用充電式小風扇？〉（2024 年 8 月 1 日）</li>
+<li>經濟部標準檢驗局，〈行動電源列屬應施檢驗商品〉</li>
+<li>經濟部標準檢驗局，〈7 項可充電式電器商品已於 112 年 1 月 1 日起實施列檢〉</li>
+<li>經濟部標準檢驗局，〈修正家用電器檢驗規定：電捕昆蟲器等 7 項商品將可充電式納入檢驗〉（2025 年 5 月 22 日發布，2026 年 7 月 1 日生效）</li>
+</ul>
+<p>本文整理公開的官方資料，供一般生活情境參考，不能取代個別產品說明書的指示。產品是否支援充電時使用、接上電源後如何供電，請以該產品說明書為準。</p>   <!-- Reactions --> <div class="reactions no-print"> <div class="ask">這篇對你有幫助嗎？</div> <div class="react-buttons"> <button type="button" class="react-btn" data-react="useful"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
+  <path d="M7 10v12" />
+</svg>
+ <span>覺得有用</span> <span class="count" data-react-count="useful">—</span> </button> <button type="button" class="react-btn" data-react="bookmark"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z" />
+</svg>
+ <span>收藏</span> <span class="count" data-react-count="bookmark">—</span> </button> </div> <span class="meta">PUBLISHED · 2026 / 07 / 31</span> </div> <!-- Full CTA --> <div class="cta-full no-print"> <div class="cta-head"> <h4>把這篇帶走</h4> <span class="eyebrow">SAVE · SHARE · FEED</span> </div> <div class="cta-grid"> <a href="#" class="cta-cell" data-action="copy-link"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+</svg>
+</div> <div> <div class="label">複製連結 <span class="kbd">⌘ C</span></div> <div class="desc">把這篇 URL 存到 Notion、Pocket，或直接傳給朋友。</div> </div> </a> <a href="/blog/handheld-fan-charging-while-using-guide-2026/index.md" class="cta-cell" data-action="copy-md"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+</div> <div> <div class="label">複製 Markdown</div> <div class="desc">原始 .md 內容，餵 NotebookLM、ChatGPT 當研究素材。</div> </div> </a> <a href="https://notebooklm.google.com/?import=https%3A%2F%2Ftwtools.cc%2Fblog%2Fhandheld-fan-charging-while-using-guide-2026%2F" target="_blank" rel="noopener" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
+  <path d="M9 13a4.5 4.5 0 0 0 3-4" />
+  <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" />
+  <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
+  <path d="M6 18a4 4 0 0 1-1.967-.516" />
+  <path d="M12 13h4" />
+  <path d="M12 18h6a2 2 0 0 1 2 2v1" />
+  <path d="M12 8h8" />
+  <path d="M16 8V5a2 2 0 0 1 2-2" />
+  <circle cx="16" cy="13" r=".5" />
+  <circle cx="18" cy="3" r=".5" />
+  <circle cx="20" cy="21" r=".5" />
+  <circle cx="20" cy="8" r=".5" />
+</svg>
+</div> <div> <div class="label">送進 NotebookLM</div> <div class="desc">一鍵把本文加入你的 NotebookLM 來源。</div> </div> </a> <a href="/blog/rss.xml" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 11a9 9 0 0 1 9 9" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <circle cx="5" cy="19" r="1" />
+</svg>
+</div> <div> <div class="label">訂閱 RSS</div> <div class="desc">每週一篇，更新就推到你的 Reader。</div> </div> </a> </div> </div> </div> <aside class="article-margin no-print"> <div class="margin-label">TWTOOLS / EDITORIAL</div> </aside> </div> </article>  <section class="no-print"> <div class="adjacent"> <a href="/blog/earthquake-emergency-response-guide-2026/"> <div class="arrow-row"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m12 19-7-7 7-7" />
+  <path d="M19 12H5" />
+</svg>
+ <span class="eyebrow">PREV · 上一篇</span> </div> <div class="post-title">警報響起之後：從搖晃那幾秒到災後幾個月的地震時間軸手冊</div> </a> <div style="background: var(--tw-page-bg);"></div> </div> </section> <div class="max-w-6xl mx-auto pb-2"> <div class="pt-5 mt-6 border-t flex flex-col md:flex-row md:items-baseline gap-x-6 gap-y-2" style="border-color: var(--tw-border);"> <span class="eyebrow shrink-0">姊妹站 · FAMILY</span> <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm" style="color: var(--tw-text-muted);"> <a href="https://aire.twtools.cc/" title="aire — AI Tool Atlas·AI 工具圖鑑" class="grow-underline whitespace-nowrap">aire — AI Tool Atlas·AI 工具圖鑑</a><a href="https://tree.twtools.cc/" title="樹洞21號 — 匿名 AI 心事平台" class="grow-underline whitespace-nowrap">樹洞21號 — 匿名 AI 心事平台</a><a href="https://foootball.twtools.cc/" title="@foootball — 2026 世界盃賽程" class="grow-underline whitespace-nowrap">@foootball — 2026 世界盃賽程</a><a href="https://baseball.twtools.cc/" title="@baseball — 中職 CPBL＋MLB 深度戰報" class="grow-underline whitespace-nowrap">@baseball — 中職 CPBL＋MLB 深度戰報</a><a href="https://shhhh.cc/" title="Shhhh — 專業短網址管理平台" class="grow-underline whitespace-nowrap">Shhhh — 專業短網址管理平台</a><a href="https://dvdmaru.com/" title="dvdmaru — 把事實和敘事分開來看" class="grow-underline whitespace-nowrap">dvdmaru — 把事實和敘事分開來看</a> </div> </div> </div> </main>  <script>
+    (function() {
+      var hamburger = document.getElementById('sidebar-hamburger');
+      var overlay = document.getElementById('sidebar-overlay');
+      var panel = document.getElementById('sidebar-panel');
+      var closeBtn = document.getElementById('sidebar-close');
+
+      function openSidebar() {
+        panel.classList.remove('-translate-x-full');
+        panel.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+      }
+      function closeSidebar() {
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+
+      if (hamburger) hamburger.addEventListener('click', openSidebar);
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    })();
+  </script>  <!-- Affiliates.One / Adotone Ad Link 網站驗證碼（須 is:inline 才會原樣輸出，勿移除 is:inline） --> <script>var ConverlyCustomData = {channelId: null};</script> <script async defer src="https://cdn.adotone.com/production/adlinks/676dd203e573377526b0bfa14fb812f5265fb0db262acf5759eaf3acb67f8e66.js"></script> </body> </html> <script>
+  (function () {
+    // Print
+    var printBtn = document.getElementById('print-link');
+    if (printBtn) {
+      printBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.print();
+      });
+    }
+
+    // TOC smooth scroll
+    document.querySelectorAll('details.toc-block .toc-list a').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var target = document.querySelector(a.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        var y = target.getBoundingClientRect().top + window.scrollY - 24;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        if (history.replaceState) history.replaceState(null, '', a.getAttribute('href'));
+      });
+    });
+
+    // Mobile TOC collapse by default
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      var toc = document.querySelector('details.toc-block');
+      if (toc) toc.removeAttribute('open');
+    }
+
+    // Reactions — localStorage-backed toggle (per-slug)
+    var slug = location.pathname.replace(/\/+$/, '').split('/').pop() || 'post';
+    var STORAGE_KEY = 'twtools.reactions.' + slug;
+    var BASE = { useful: 0, bookmark: 0 };
+    function readState() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (_) {}
+      return { useful: false, bookmark: false };
+    }
+    function writeState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+    }
+    function renderCount(key, state) {
+      var el = document.querySelector('[data-react-count="' + key + '"]');
+      if (!el) return;
+      el.textContent = String(BASE[key] + (state[key] ? 1 : 0));
+    }
+    function renderActive(key, state) {
+      var btn = document.querySelector('[data-react="' + key + '"]');
+      if (!btn) return;
+      btn.classList.toggle('is-active', !!state[key]);
+    }
+    var state = readState();
+    Object.keys(BASE).forEach(function (k) { renderCount(k, state); renderActive(k, state); });
+    document.querySelectorAll('[data-react]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.getAttribute('data-react');
+        state[key] = !state[key];
+        writeState(state);
+        renderCount(key, state);
+        renderActive(key, state);
+      });
+    });
+
+    // CTA: copy link
+    var copyLink = document.querySelector('[data-action="copy-link"]');
+    if (copyLink) {
+      copyLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(location.href).then(function () {
+            var label = copyLink.querySelector('.label');
+            if (!label) return;
+            var orig = label.innerHTML;
+            label.textContent = '已複製 ✓';
+            setTimeout(function () { label.innerHTML = orig; }, 1400);
+          });
+        }
+      });
+    }
+  })();
+</script>
