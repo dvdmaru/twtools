@@ -636,20 +636,33 @@ English
       var panel = document.getElementById('sidebar-panel');
       var closeBtn = document.getElementById('sidebar-close');
 
+      // 手機開合。與 Sidebar.jsx（React 版）行為必須一致——2026-07-31 前兩者已漂移：
+      // React 版有 Escape 關閉與背景捲動鎖，本檔沒有，同一顆漢堡鈕兩種手感。
+      // 改任一邊時請同步另一邊（或更好：把行為再往下沉到共用層）。
+      function isOpen() {
+        return overlay && !overlay.classList.contains('hidden');
+      }
       function openSidebar() {
         panel.classList.remove('-translate-x-full');
         panel.classList.add('translate-x-0');
         overlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';   // 選單開著時鎖住背景捲動
       }
       function closeSidebar() {
         panel.classList.remove('translate-x-0');
         panel.classList.add('-translate-x-full');
         overlay.classList.add('hidden');
+        document.body.style.overflow = '';
       }
 
       if (hamburger) hamburger.addEventListener('click', openSidebar);
       if (overlay) overlay.addEventListener('click', closeSidebar);
       if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+
+      // Escape 關閉。只在開啟時作用,避免無謂地重設 body.overflow 干擾其他元件。
+      document.addEventListener('keydown', function (e) {
+        if ((e.key === 'Escape' || e.key === 'Esc') && isOpen()) closeSidebar();
+      });
 
       // ── 桌機收合 ──────────────────────────────────────────────
       // 狀態的唯一真相是 <html> 的 class(BaseLayout boot script 已於繪製前套好),
