@@ -323,7 +323,10 @@
     if(player.x < 6) player.x = 6;
     if(player.x > W - PW - 6) player.x = W - PW - 6;
     if(shootCd > 0) shootCd--;
-    if((keys.fire || isTouch) && shootCd <= 0 && pBullets.length < 2){
+    // 自動發射在敵人全滅後停手，否則過關條件 pBullets.length === 0 永不成立
+    var anyAlive = false;
+    for(var ai=0; ai<bees.length; ai++){ if(bees[ai].alive){ anyAlive = true; break; } }
+    if((keys.fire || (isTouch && anyAlive)) && shootCd <= 0 && pBullets.length < 2){
       pBullets.push({ x: player.x + PW/2 - 1, y: PY - 8 });
       shootCd = 14;
       sfx.shoot();

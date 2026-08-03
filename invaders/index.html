@@ -421,7 +421,10 @@
     if(player.x < 6) player.x = 6;
     if(player.x > W - PW - 6) player.x = W - PW - 6;
     if(shootCd > 0) shootCd--;
-    if((keys.fire || isTouch) && shootCd <= 0 && !pBullet){
+    // 自動發射在敵人全滅後停手，否則過關條件 !pBullet 永不成立
+    var anyAlive = false;
+    for(var ai=0; ai<aliens.length; ai++){ if(aliens[ai].alive){ anyAlive = true; break; } }
+    if((keys.fire || (isTouch && anyAlive)) && shootCd <= 0 && !pBullet){
       pBullet = { x: player.x + PW/2 - 1, y: PY - 8 };
       shootCd = 10;
       sfx.shoot();
