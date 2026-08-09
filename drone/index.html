@@ -351,7 +351,9 @@
     })();
   </script> <script>
     (function(){
-      if(new URLSearchParams(location.search).get('fieldtest')!=='1')return;
+      // Private field QA ended on 2026-07-31. Keep the historical implementation
+      // inert until the archived block is removed in a later source cleanup.
+      return;
       var API='https://field.twtools.cc';
       var panel=document.getElementById('dr-field'),loading=document.getElementById('dr-field-loading'),denied=document.getElementById('dr-field-denied'),controls=document.getElementById('dr-field-controls');
       var codeInput=document.getElementById('dr-field-code'),enrollBtn=document.getElementById('dr-field-enroll'),enrollStatus=document.getElementById('dr-field-enroll-status'),checkinBtn=document.getElementById('dr-field-checkin'),stateBox=document.querySelector('.dr-field-state'),title=document.getElementById('dr-field-title'),detail=document.getElementById('dr-field-detail'),countEl=document.getElementById('dr-field-count'),expiryEl=document.getElementById('dr-field-expiry'),syncEl=document.getElementById('dr-field-sync'),contextButtons=Array.prototype.slice.call(document.querySelectorAll('[data-field-context]'));
