@@ -1,0 +1,38 @@
+# 外部連結死鏈週檢（借 public-apis scripts/validate/links.py 的形狀，2026-09-08）
+# 每週一 09:00（台北）掃全站 <a href> 的外部絕對連結；有死鏈就開或更新一張 issue。
+# 擋 bot（Cloudflare 挑戰頁、403／429）只列不判死；notebook.google.com 等需登入的主機不掃。
+name: link-check
+on:
+  schedule:
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 掃描外部連結
+        id: scan
+        run: |
+          set +e
+          python3 .github/scripts/link-check.py . --out report.md --json report.json > /dev/null
+          rc=$?
+          set -e
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+          if [ "$rc" = "2" ]; then echo "掃描本身失敗"; exit 2; fi
+      - name: 有死鏈就開或更新 issue
+        if: steps.scan.outputs.rc == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title='外部連結死鏈週報'
+          n=$(gh issue list --state open --search "\"$title\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$n" ]; then
+            gh issue comment "$n" --body-file report.md
+          else
+            gh issue create --title "$title" --body-file report.md
+          fi

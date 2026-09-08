@@ -1642,7 +1642,9 @@
           line1 = advOk ? ('目前平時 ' + emoji + ',沒有颱風警報也沒有特報') : ('目前沒有颱風警報 ' + emoji + '(特報狀態未確認)');
           line2 = '這頁會自動更新,天氣變壞會變黃變紅。';
         }
-        return '【' + area + ' 防災狀況】\n' + line1 + '。\n' + line2 + '\n即時狀況看這頁:https://twtools.cc/dashboard/';
+        // 連結把目前選的縣市/區編進去(?r=縣市|區),對方點開就是同一個地區;全台模式維持乾淨連結
+        var link = 'https://twtools.cc/dashboard/' + (curArea !== 'all' && county ? '?r=' + encodeURIComponent(county + (town ? '|' + town : '')) : '');
+        return '【' + area + ' 防災狀況】\n' + line1 + '。\n' + line2 + '\n即時狀況看這頁:' + link;
       }
       function updateShare() {
         var el = document.getElementById('share-preview'); if (el) el.textContent = buildShareText();
@@ -1692,6 +1694,21 @@
       // init
       countySel.innerHTML = COUNTIES.map(function (co) { return '<option value="' + co + '">' + co + '</option>'; }).join('');
       var saved = loadRegion();
+      // 分享連結帶地區(?r=縣市|區):家人點開就是同一個畫面,這次開頁直接套用並記住。
+      // 縣市不在清單就當沒帶,退回本機記憶或臺北市;GA4 事件 dashboard_open_shared 用來量「有沒有人真的靠設定連結進來」。
+      var shared = null;
+      try {
+        var qr = new URLSearchParams(location.search).get('r');
+        if (qr) {
+          var qp = qr.split('|');
+          var qc = normTai(qp[0] || '').trim();
+          if (COUNTIES.indexOf(qc) !== -1) shared = { county: qc, town: (qp[1] || '').trim() };
+        }
+      } catch (e) {}
+      if (shared) {
+        saved = { county: shared.county, town: shared.town, area: 'local' };
+        report('dashboard_open_shared', { county: shared.county, town: shared.town || 'all' });
+      }
       countySel.value = COUNTIES.indexOf(saved.county) !== -1 ? saved.county : '臺北市';
       var savedTown = saved.town || '';
       curArea = saved.area === 'all' ? 'all' : 'local';
