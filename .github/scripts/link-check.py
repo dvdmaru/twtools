@@ -78,7 +78,11 @@ def classify(url):
         time.sleep(2)
         code, server, body = probe(url, timeout=30)
     if code == 0:
-        return 'dead', code, body
+        # DNS 解析不到才算死；逾時／連線被拒／TLS 失敗多半是「runner 在美國、台灣政府站擋境外」
+        # （2026-09-08 首跑：hiosha.osha.gov.tw、laws.mol.gov.tw 本機 200、runner 逾時），列「連不到」人工抽查
+        if 'Could not resolve host' in body:
+            return 'dead', code, body
+        return 'blocked', code, '境外連不到（' + body[:60] + '），本機再確認'
     if code >= 400:
         if code in (403, 503) and 'cloudflare' in server.lower() and any(k in body for k in CF_MARKERS):
             return 'blocked', code, 'cloudflare challenge'

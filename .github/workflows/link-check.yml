@@ -1,6 +1,6 @@
 # 外部連結死鏈週檢（借 public-apis scripts/validate/links.py 的形狀，2026-09-08）
 # 每週一 09:00（台北）掃全站 <a href> 的外部絕對連結；有死鏈就開或更新一張 issue。
-# 擋 bot（Cloudflare 挑戰頁、403／429）只列不判死；notebook.google.com 等需登入的主機不掃。
+# 擋 bot（Cloudflare 挑戰頁、403／429）與逾時／連線失敗（runner 在美國，台灣政府站常擋境外）只列不判死；notebook.google.com 等需登入的主機不掃。
 name: link-check
 on:
   schedule:
