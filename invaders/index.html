@@ -3,6 +3,18 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-0WTK2LJFTY');
+    // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
+    // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
+    // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
+    window.twTrack = function (tool, action, label, extra) {
+      try {
+        if (typeof gtag !== 'function') return;
+        var t = tool || (location.pathname.split('/').filter(Boolean)[0] || 'home');
+        var p = { tool: t, action: String(action || ''), label: label == null ? '' : String(label).slice(0, 100) };
+        if (extra && typeof extra === 'object') for (var k in extra) if (p[k] === undefined) p[k] = extra[k];
+        gtag('event', 'tool_action', p);
+      } catch (e) {}
+    };
   </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
     document.documentElement.classList.remove('dark');
   </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
@@ -317,6 +329,7 @@
     enterFs();
     sfx.wave();
     if(!gaStarted && typeof gtag === 'function'){ gaStarted = true; gtag('event', 'game_start'); }
+    window.twTrack('invaders', 'start');
   }
 
   function explode(x, y, color, n){
@@ -733,6 +746,7 @@
   function toggleMute(){
     muted = !muted;
     muteBtn.textContent = muted ? '♪ OFF' : '♪ ON';
+    window.twTrack('invaders', 'mode', muted ? 'mute' : 'unmute');
   }
   muteBtn.addEventListener('click', toggleMute);
 
@@ -787,6 +801,7 @@
           try{ localStorage.setItem('inv_name', name); }catch(e){}
           invSubmit.hidden = true;
           if(typeof gtag === 'function') gtag('event', 'score_submit', { value: lastRun.score });
+          window.twTrack('invaders', 'submit', 'score');
           lastRun = null;
           fetchLb();
         }else if(res.status === 429){ invSubmitMsg.textContent = '太快了，30 秒後再試'; }

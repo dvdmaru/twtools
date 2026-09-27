@@ -3,6 +3,18 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-0WTK2LJFTY');
+    // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
+    // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
+    // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
+    window.twTrack = function (tool, action, label, extra) {
+      try {
+        if (typeof gtag !== 'function') return;
+        var t = tool || (location.pathname.split('/').filter(Boolean)[0] || 'home');
+        var p = { tool: t, action: String(action || ''), label: label == null ? '' : String(label).slice(0, 100) };
+        if (extra && typeof extra === 'object') for (var k in extra) if (p[k] === undefined) p[k] = extra[k];
+        gtag('event', 'tool_action', p);
+      } catch (e) {}
+    };
   </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
     document.documentElement.classList.remove('dark');
   </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
@@ -332,5 +344,6 @@
       function error(msg){result.hidden=true;fail.hidden=false;failText.textContent=msg;status.textContent='查詢未完成'}
       function run(){if(!navigator.geolocation){error('這個瀏覽器不支援定位，請改用最新版 Safari、Chrome 或 Edge。');return}locate.disabled=true;if(refresh)refresh.disabled=true;fail.hidden=true;status.textContent='正在取得手機位置…';navigator.geolocation.getCurrentPosition(function(pos){status.textContent='位置已取得，正在比對民航局固定圖資…';callApi(pos.coords.latitude,pos.coords.longitude).then(function(d){render(d,pos.coords.accuracy)}).catch(function(){error('目前無法連線到管制區資料服務，請稍後再試，並直接查詢民航局官方系統。')}).finally(function(){locate.disabled=false;if(refresh)refresh.disabled=false})},function(e){locate.disabled=false;if(refresh)refresh.disabled=false;error(e.code===1?'你尚未允許定位。請在瀏覽器網站設定開啟位置權限後再試。':'暫時無法取得位置。請移到較開闊處，確認 GPS 與網路已開啟後再試。')},{enableHighAccuracy:true,timeout:12000,maximumAge:0})}
       locate.addEventListener('click',run);refresh.addEventListener('click',run);
+      locate.addEventListener('click',function(){window.twTrack('drone','run','locate')});refresh.addEventListener('click',function(){window.twTrack('drone','refresh')});
     })();
   </script>  <!-- Affiliates.One / Adotone Ad Link 網站驗證碼（須 is:inline 才會原樣輸出，勿移除 is:inline） --> <script>var ConverlyCustomData = {channelId: null};</script> <script async defer src="https://cdn.adotone.com/production/adlinks/676dd203e573377526b0bfa14fb812f5265fb0db262acf5759eaf3acb67f8e66.js"></script> </body> </html>

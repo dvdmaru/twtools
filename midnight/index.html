@@ -3,6 +3,18 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-0WTK2LJFTY');
+    // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
+    // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
+    // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
+    window.twTrack = function (tool, action, label, extra) {
+      try {
+        if (typeof gtag !== 'function') return;
+        var t = tool || (location.pathname.split('/').filter(Boolean)[0] || 'home');
+        var p = { tool: t, action: String(action || ''), label: label == null ? '' : String(label).slice(0, 100) };
+        if (extra && typeof extra === 'object') for (var k in extra) if (p[k] === undefined) p[k] = extra[k];
+        gtag('event', 'tool_action', p);
+      } catch (e) {}
+    };
   </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
     document.documentElement.classList.remove('dark');
   </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
@@ -176,6 +188,7 @@ function renderTabs(){
   $("tabs").innerHTML = MENU.map(cat => `<button class="tab" role="tab" aria-selected="${cat.id===state.category}" data-cat="${cat.id}">${cat.shop}</button>`).join("");
   document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => {
     state.category = btn.dataset.cat;
+    window.twTrack("midnight","mode",state.category);
     renderTabs(); renderMenu();
   }));
 }
@@ -245,6 +258,7 @@ function checkout(){
   const t = totals();
   if(!t.count || state.checkingOut) return;
   state.checkingOut = true;
+  window.twTrack("midnight","submit","checkout");
   $("checkoutBtn").disabled = true;
   $("checkoutBtn").textContent = "模擬送出中…";
   setTimeout(() => {
@@ -434,7 +448,7 @@ function exitMidnight(){
 $("startBtn").addEventListener("click", enterMidnight);
 $("exitBtn").addEventListener("click", exitMidnight);
 $("floatingCart").addEventListener("click", () => $("cartPanel").classList.toggle("open"));
-$("randomBtn").addEventListener("click", () => addItem(allItems[Math.floor(Math.random()*allItems.length)].id));
+$("randomBtn").addEventListener("click", () => { window.twTrack("midnight","run","random"); addItem(allItems[Math.floor(Math.random()*allItems.length)].id); });
 $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; $("soundBtn").classList.toggle("off", !state.sound); showToast(state.sound ? "叮聲已開啟" : "叮聲已關閉"); });
 $("checkoutBtn").addEventListener("click", checkout);
 $("clearBtn").addEventListener("click", clearCart);
@@ -444,6 +458,7 @@ $("openDoorBtn").addEventListener("click", () => { order.opened = true; saveOrde
 $("finishBtn").addEventListener("click", () => {
   order.finished = true; saveOrder();
   try{ gtag('event','virtual_rated',{ value:order.stars }); }catch(e){}
+  window.twTrack("midnight","run","finish");
   tickTrack();
 });
 document.addEventListener("keydown", (e) => {

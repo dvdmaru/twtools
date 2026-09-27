@@ -3,6 +3,18 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-0WTK2LJFTY');
+    // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
+    // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
+    // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
+    window.twTrack = function (tool, action, label, extra) {
+      try {
+        if (typeof gtag !== 'function') return;
+        var t = tool || (location.pathname.split('/').filter(Boolean)[0] || 'home');
+        var p = { tool: t, action: String(action || ''), label: label == null ? '' : String(label).slice(0, 100) };
+        if (extra && typeof extra === 'object') for (var k in extra) if (p[k] === undefined) p[k] = extra[k];
+        gtag('event', 'tool_action', p);
+      } catch (e) {}
+    };
   </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
     document.documentElement.classList.remove('dark');
   </script><!-- Tailwind CDN --><script src="https://cdn.tailwindcss.com?plugins=typography"></script><script>
@@ -232,6 +244,7 @@ $("#flipBtn").addEventListener("click",()=>{
   const ng=new Uint32Array(gw*gh);
   for(let y=0;y<gh;y++){ const sy=(gh-1-y)*gw, dy=y*gw; for(let x=0;x<gw;x++) ng[dy+x]=grid[sy+x]; }
   grid=ng; toast("沙瓶翻過來了 ⏳");
+  window.twTrack("sand","run","flip");
 });
 $("#clearBtn").addEventListener("click",()=>{ if(grid)grid.fill(0); grains=0; $("#grainCount").textContent="0"; $("#sandHint").classList.remove("gone"); toast("倒掉了，重新開始"); });
 $("#saveBtn").addEventListener("click",()=>{
@@ -243,6 +256,7 @@ $("#saveBtn").addEventListener("click",()=>{
   const d=new Date(), p=n=>String(n).padStart(2,"0");
   a.download=`指尖流沙-${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}.png`;
   a.href=t.toDataURL("image/png"); a.click(); toast("沙畫已存到你的裝置 🤍");
+  window.twTrack("sand","download","png");
 });
 $("#soundBtn").classList.add("off"); // 沙聲預設關
 $("#soundBtn").addEventListener("click",()=>{
@@ -279,7 +293,7 @@ function stopSand(){
   if(noiseGain&&actx) noiseGain.gain.setTargetAtTime(0,actx.currentTime,0.05);
 }
 addEventListener("resize",()=>{ if(sand.classList.contains("on")) resize(); });
-$("#startBtn").addEventListener("click",()=>{ if(typeof gtag==="function")gtag("event","sand_start"); startSand(); });
+$("#startBtn").addEventListener("click",()=>{ if(typeof gtag==="function")gtag("event","sand_start"); window.twTrack("sand","start"); startSand(); });
 $("#exitBtn").addEventListener("click",stopSand);
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&sand.classList.contains("on"))stopSand(); });
   </script>  <div class="max-w-6xl mx-auto pb-2"> <div class="pt-5 mt-6 border-t flex flex-col md:flex-row md:items-baseline gap-x-6 gap-y-2" style="border-color: var(--tw-border);"> <span class="eyebrow shrink-0">姊妹站 · FAMILY</span> <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm" style="color: var(--tw-text-muted);"> <a href="https://aire.twtools.cc/" title="aire — AI Tool Atlas·AI 工具圖鑑" class="grow-underline whitespace-nowrap">aire — AI Tool Atlas·AI 工具圖鑑</a><a href="https://tree.twtools.cc/" title="樹洞21號 — 匿名 AI 心事平台" class="grow-underline whitespace-nowrap">樹洞21號 — 匿名 AI 心事平台</a><a href="https://foootball.twtools.cc/" title="@foootball — 2026 世界盃賽程" class="grow-underline whitespace-nowrap">@foootball — 2026 世界盃賽程</a><a href="https://baseball.twtools.cc/" title="@baseball — 中職 CPBL＋MLB 深度戰報" class="grow-underline whitespace-nowrap">@baseball — 中職 CPBL＋MLB 深度戰報</a><a href="https://basketball.twtools.cc/" title="籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據" class="grow-underline whitespace-nowrap">籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據</a><a href="https://racing.twtools.cc/" title="賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果" class="grow-underline whitespace-nowrap">賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果</a><a href="https://health.twtools.cc/" title="健檢數據誌 — 健檢報告上的數字，各機構判準並列" class="grow-underline whitespace-nowrap">健檢數據誌 — 健檢報告上的數字，各機構判準並列</a><a href="https://tender.twtools.cc/" title="標案雷達 — 網通設備標案查詢、押標金試算與規格預檢" class="grow-underline whitespace-nowrap">標案雷達 — 網通設備標案查詢、押標金試算與規格預檢</a><a href="https://shhhh.cc/" title="Shhhh — 專業短網址管理平台" class="grow-underline whitespace-nowrap">Shhhh — 專業短網址管理平台</a><a href="https://dvdmaru.com/" title="dvdmaru — 把事實和敘事分開來看" class="grow-underline whitespace-nowrap">dvdmaru — 把事實和敘事分開來看</a> </div> </div> </div> </main>  <script>
