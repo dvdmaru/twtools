@@ -2,7 +2,17 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-0WTK2LJFTY');
+    // 內部流量標記（2026-10-10）：開任何頁加 ?internal=1 會把本瀏覽器記成內部（?internal=0 取消），
+    // 之後所有事件帶 traffic_type=internal；GA4 後台「內部流量」資料篩選器啟用後就會排除。
+    // 用途＝Charlie 自己的裝置 + 我們用真瀏覽器驗頁面時的流量，不再灌進使用數據。
+    var twInternal = false;
+    try {
+      var twQ = new URLSearchParams(location.search).get('internal');
+      if (twQ === '1') localStorage.setItem('tw_internal', '1');
+      else if (twQ === '0') localStorage.removeItem('tw_internal');
+      twInternal = localStorage.getItem('tw_internal') === '1';
+    } catch (e) {}
+    gtag('config', 'G-0WTK2LJFTY', twInternal ? { traffic_type: 'internal' } : {});
     // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
     // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
     // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
@@ -366,7 +376,7 @@
   <path d="m12 19-7-7 7-7" />
   <path d="M19 12H5" />
 </svg>
- <span class="eyebrow">PREV · 上一篇</span> </div> <div class="post-title">多益 TOEIC 高頻單字攻略與背單字方法（2026）：題型分數、情境字庫、字根記憶法與間隔重複完整指南</div> </a> <a href="/blog/summer-electricity-bill-saving-2026/" class="right"> <div class="arrow-row"> <span class="eyebrow">NEXT · 下一篇</span> <svg aria-hidden="true"
+ <span class="eyebrow">PREV · 上一篇</span> </div> <div class="post-title">多益 TOEIC 高頻單字攻略與背單字方法（2026）：題型分數、情境字庫、字根記憶法與間隔重複完整指南</div> </a> <a href="/blog/gept-vocabulary-guide-2026/" class="right"> <div class="arrow-row"> <span class="eyebrow">NEXT · 下一篇</span> <svg aria-hidden="true"
   class="w-4 h-4 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -381,7 +391,7 @@
   <path d="M5 12h14" />
   <path d="m12 5 7 7-7 7" />
 </svg>
- </div> <div class="post-title">夏月電價撐到 9/30！每月多繳 446 元怎麼省？級距試算與實戰技巧</div> </a> </div> </section> <div class="max-w-6xl mx-auto pb-2"> <div class="pt-5 mt-6 border-t flex flex-col md:flex-row md:items-baseline gap-x-6 gap-y-2" style="border-color: var(--tw-border);"> <span class="eyebrow shrink-0">姊妹站 · FAMILY</span> <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm" style="color: var(--tw-text-muted);"> <a href="https://aire.twtools.cc/" title="aire — AI Tool Atlas·AI 工具圖鑑" class="grow-underline whitespace-nowrap">aire — AI Tool Atlas·AI 工具圖鑑</a><a href="https://tree.twtools.cc/" title="樹洞21號 — 匿名 AI 心事平台" class="grow-underline whitespace-nowrap">樹洞21號 — 匿名 AI 心事平台</a><a href="https://foootball.twtools.cc/" title="@foootball — 2026 世界盃賽程" class="grow-underline whitespace-nowrap">@foootball — 2026 世界盃賽程</a><a href="https://baseball.twtools.cc/" title="@baseball — 中職 CPBL＋MLB 深度戰報" class="grow-underline whitespace-nowrap">@baseball — 中職 CPBL＋MLB 深度戰報</a><a href="https://basketball.twtools.cc/" title="籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據" class="grow-underline whitespace-nowrap">籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據</a><a href="https://racing.twtools.cc/" title="賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果" class="grow-underline whitespace-nowrap">賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果</a><a href="https://health.twtools.cc/" title="健檢數據誌 — 健檢報告上的數字，各機構判準並列" class="grow-underline whitespace-nowrap">健檢數據誌 — 健檢報告上的數字，各機構判準並列</a><a href="https://tender.twtools.cc/" title="標案雷達 — 網通設備標案查詢、押標金試算與規格預檢" class="grow-underline whitespace-nowrap">標案雷達 — 網通設備標案查詢、押標金試算與規格預檢</a><a href="https://shhhh.cc/" title="Shhhh — 專業短網址管理平台" class="grow-underline whitespace-nowrap">Shhhh — 專業短網址管理平台</a><a href="https://dvdmaru.com/" title="dvdmaru — 把事實和敘事分開來看" class="grow-underline whitespace-nowrap">dvdmaru — 把事實和敘事分開來看</a> </div> </div> </div> </main>  <script>
+ </div> <div class="post-title">全民英檢 GEPT 中級／中高級單字與準備攻略（2026）：分級、題型、字彙量與聽讀寫說策略</div> </a> </div> </section> <div class="max-w-6xl mx-auto pb-2"> <div class="pt-5 mt-6 border-t flex flex-col md:flex-row md:items-baseline gap-x-6 gap-y-2" style="border-color: var(--tw-border);"> <span class="eyebrow shrink-0">姊妹站 · FAMILY</span> <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm" style="color: var(--tw-text-muted);"> <a href="https://aire.twtools.cc/" title="aire — AI Tool Atlas·AI 工具圖鑑" class="grow-underline whitespace-nowrap">aire — AI Tool Atlas·AI 工具圖鑑</a><a href="https://tree.twtools.cc/" title="樹洞21號 — 匿名 AI 心事平台" class="grow-underline whitespace-nowrap">樹洞21號 — 匿名 AI 心事平台</a><a href="https://foootball.twtools.cc/" title="@foootball — 2026 世界盃賽程" class="grow-underline whitespace-nowrap">@foootball — 2026 世界盃賽程</a><a href="https://baseball.twtools.cc/" title="@baseball — 中職 CPBL＋MLB 深度戰報" class="grow-underline whitespace-nowrap">@baseball — 中職 CPBL＋MLB 深度戰報</a><a href="https://basketball.twtools.cc/" title="籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據" class="grow-underline whitespace-nowrap">籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據</a><a href="https://racing.twtools.cc/" title="賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果" class="grow-underline whitespace-nowrap">賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果</a><a href="https://health.twtools.cc/" title="健檢數據誌 — 健檢報告上的數字，各機構判準並列" class="grow-underline whitespace-nowrap">健檢數據誌 — 健檢報告上的數字，各機構判準並列</a><a href="https://tender.twtools.cc/" title="標案雷達 — 網通設備標案查詢、押標金試算與規格預檢" class="grow-underline whitespace-nowrap">標案雷達 — 網通設備標案查詢、押標金試算與規格預檢</a><a href="https://shhhh.cc/" title="Shhhh — 專業短網址管理平台" class="grow-underline whitespace-nowrap">Shhhh — 專業短網址管理平台</a><a href="https://dvdmaru.com/" title="dvdmaru — 把事實和敘事分開來看" class="grow-underline whitespace-nowrap">dvdmaru — 把事實和敘事分開來看</a> </div> </div> </div> </main>  <script>
     (function() {
       var hamburger = document.getElementById('sidebar-hamburger');
       var overlay = document.getElementById('sidebar-overlay');

@@ -2,7 +2,17 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-0WTK2LJFTY');
+    // 內部流量標記（2026-10-10）：開任何頁加 ?internal=1 會把本瀏覽器記成內部（?internal=0 取消），
+    // 之後所有事件帶 traffic_type=internal；GA4 後台「內部流量」資料篩選器啟用後就會排除。
+    // 用途＝Charlie 自己的裝置 + 我們用真瀏覽器驗頁面時的流量，不再灌進使用數據。
+    var twInternal = false;
+    try {
+      var twQ = new URLSearchParams(location.search).get('internal');
+      if (twQ === '1') localStorage.setItem('tw_internal', '1');
+      else if (twQ === '0') localStorage.removeItem('tw_internal');
+      twInternal = localStorage.getItem('tw_internal') === '1';
+    } catch (e) {}
+    gtag('config', 'G-0WTK2LJFTY', twInternal ? { traffic_type: 'internal' } : {});
     // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
     // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
     // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
@@ -220,6 +230,7 @@
 <h2 id="加班費可以換補休嗎補休期限與換算比例">加班費可以換補休嗎？補休期限與換算比例</h2>
 <p>可以，但有兩個前提：<strong>第一，要勞工自己同意</strong>，公司不能單方面規定「國定假日一律補休」；第二，補休是「1 小時換 1 小時」，不是依加班費倍率換算。也就是說，9/25 上班 8 小時如果選補休，只能換到 8 小時的假，你等於自願放棄了那 1,200 元的加倍工資，這對月薪族來說通常不划算。</p>
 <p>依第 32 條之 1，補休期限由勞雇雙方約定，最長不得超過<strong>次一年度的 3 月底</strong>（多數公司採用），期限到了沒休完，公司必須依原本的加班費標準折算現金給你。如果你想追蹤補休何時到期、還剩幾小時，可以用 日期計算器 算一下距離到期日還有多少天，避免白白過期。</p>
+<p>補休另一個常被問到的是年底：如果你打算用補休或特休湊連假，特休的遞延與折現規則請看<a href="/blog/annual-leave-rights-guide-2026/">2026 特休天數與年底沒休完怎麼辦</a>。</p>
 <h2 id="國定假日與休息日調移是什麼公司可以這樣做嗎">國定假日與休息日「調移」是什麼？公司可以這樣做嗎？</h2>
 <p>有些公司會在連假前公告「9/28 教師節與 10/2 週五調移」，意思是 9/28 照常上班、10/2 放假。這在法律上是允許的，但必須<strong>經勞工同意</strong>，並且調移後的那一天，性質完全等同國定假日。所以如果你 9/28 被調移成上班日，當天不會有雙倍薪，但 10/2 如果又被叫回來上班，那天就要算雙倍。人資最常漏算的就是這種「調移後的假日」。</p>
 <p>還有一種情況：公司說「連假我們照常上班，年底一起發獎金」，這不叫加班費，加班費必須<strong>隨當月工資一起發給</strong>（第 23 條），不能拖到年底，更不能用獎金名義取代。</p>
@@ -240,7 +251,7 @@
 <p>時薪制（部分工時）勞工同樣適用第 39 條，國定假日出勤每小時工資加倍。以 2026 年基本時薪 196 元計算，中秋節上班 5 小時應領 196 × 2 × 5 = 1,960 元。</p>
 <h3 id="q4公司規定連假出勤一律換補休不能領加班費合法嗎">Q4：公司規定連假出勤一律換補休，不能領加班費，合法嗎？</h3>
 <p>不合法。第 32 條之 1 明定補休須「依勞工意願」選擇，公司不能事先在工作規則或契約中概括約定一律補休。你可以拒絕補休、要求發給加班費。</p>
-<p>**現在就可以做的兩件事：**第一，打開公司行事曆，確認 9/25、9/28、10/9 這三天你是否要出勤，如果要，先跟人資確認日薪計算基準；第二，把去年到今年所有國定假日的出勤紀錄翻出來對一次薪資單，5 年內少算的都還能追。這篇文章資料更新至 2026 年 9 月，法規若有修訂以勞動部公告為準。</p>   <!-- Reactions --> <div class="reactions no-print"> <div class="ask">這篇對你有幫助嗎？</div> <div class="react-buttons"> <button type="button" class="react-btn" data-react="useful"> <svg aria-hidden="true"
+<p><strong>現在就可以做的兩件事</strong>：第一，打開公司行事曆，確認 9/25、9/28、10/9 這三天你是否要出勤，如果要，先跟人資確認日薪計算基準；第二，把去年到今年所有國定假日的出勤紀錄翻出來對一次薪資單，5 年內少算的都還能追。這篇文章資料更新至 2026 年 9 月，法規若有修訂以勞動部公告為準。</p>   <!-- Reactions --> <div class="reactions no-print"> <div class="ask">這篇對你有幫助嗎？</div> <div class="react-buttons"> <button type="button" class="react-btn" data-react="useful"> <svg aria-hidden="true"
   class="w-4 h-4 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"

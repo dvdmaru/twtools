@@ -2,7 +2,17 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-0WTK2LJFTY');
+    // 內部流量標記（2026-10-10）：開任何頁加 ?internal=1 會把本瀏覽器記成內部（?internal=0 取消），
+    // 之後所有事件帶 traffic_type=internal；GA4 後台「內部流量」資料篩選器啟用後就會排除。
+    // 用途＝Charlie 自己的裝置 + 我們用真瀏覽器驗頁面時的流量，不再灌進使用數據。
+    var twInternal = false;
+    try {
+      var twQ = new URLSearchParams(location.search).get('internal');
+      if (twQ === '1') localStorage.setItem('tw_internal', '1');
+      else if (twQ === '0') localStorage.removeItem('tw_internal');
+      twInternal = localStorage.getItem('tw_internal') === '1';
+    } catch (e) {}
+    gtag('config', 'G-0WTK2LJFTY', twInternal ? { traffic_type: 'internal' } : {});
     // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
     // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
     // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
@@ -295,7 +305,7 @@
   <path d="m21 21-4.34-4.34" />
   <circle cx="11" cy="11" r="8" />
 </svg>
- </span> <label for="tool-search" class="sr-only">搜尋工具</label> <input id="tool-search" type="text" placeholder="壓縮、PDF、匯率、停班停課……" class="search-input w-full pl-12 pr-4 py-4 text-base bg-transparent border rounded-md tracking-cn" style="border-color: var(--tw-border); color: var(--tw-text-primary);" autocomplete="off"> <div id="search-meta" class="absolute right-4 top-1/2 -translate-y-1/2 eyebrow hidden md:block"></div> </div> </div> </div> </section>  <section class="section-block"> <div class="max-w-7xl mx-auto px-5 md:px-12"> <div class="flex items-baseline justify-between mb-10"> <div> <div class="eyebrow mb-2">特輯·FEATURED</div> <h2 class="font-serif-tc text-3xl md:text-4xl font-bold tracking-cn" style="color: var(--tw-text-primary);">本月最常被打開的兩件事</h2> </div> <div class="hidden md:block stamp">PICK · 10/02</div> </div> <div class="grid md:grid-cols-12 gap-6">  <a href="/image/" class="featured-card md:col-span-7 rounded-md p-6 md:p-8 flex flex-col group" data-tool-name="圖片工具 壓縮 縮圖 image jpg png webp" data-tool-card> <div class="flex items-start justify-between mb-6"> <div class="flex items-center gap-3"> <span class="tool-index-num">№ 01</span> <span class="eyebrow">FILE · IMAGE</span> </div> <span class="stamp">熱門</span> </div> <div class="diag-stripe relative rounded h-56 md:h-72 mb-6 grid place-items-center overflow-hidden"> <div class="absolute inset-4 border" style="border-color: var(--tw-border);"></div> <div class="relative px-5 py-4 rounded flex items-center gap-3 border" style="background: var(--tw-surface); border-color: var(--tw-border);"> <span style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+ </span> <label for="tool-search" class="sr-only">搜尋工具</label> <input id="tool-search" type="text" placeholder="壓縮、PDF、匯率、停班停課……" class="search-input w-full pl-12 pr-4 py-4 text-base bg-transparent border rounded-md tracking-cn" style="border-color: var(--tw-border); color: var(--tw-text-primary);" autocomplete="off"> <div id="search-meta" class="absolute right-4 top-1/2 -translate-y-1/2 eyebrow hidden md:block"></div> </div> </div> </div> </section>  <section class="section-block"> <div class="max-w-7xl mx-auto px-5 md:px-12"> <div class="flex items-baseline justify-between mb-10"> <div> <div class="eyebrow mb-2">特輯·FEATURED</div> <h2 class="font-serif-tc text-3xl md:text-4xl font-bold tracking-cn" style="color: var(--tw-text-primary);">本月最常被打開的兩件事</h2> </div> <div class="hidden md:block stamp">PICK · 10/10</div> </div> <div class="grid md:grid-cols-12 gap-6">  <a href="/image/" class="featured-card md:col-span-7 rounded-md p-6 md:p-8 flex flex-col group" data-tool-name="圖片工具 壓縮 縮圖 image jpg png webp" data-tool-card> <div class="flex items-start justify-between mb-6"> <div class="flex items-center gap-3"> <span class="tool-index-num">№ 01</span> <span class="eyebrow">FILE · IMAGE</span> </div> <span class="stamp">熱門</span> </div> <div class="diag-stripe relative rounded h-56 md:h-72 mb-6 grid place-items-center overflow-hidden"> <div class="absolute inset-4 border" style="border-color: var(--tw-border);"></div> <div class="relative px-5 py-4 rounded flex items-center gap-3 border" style="background: var(--tw-surface); border-color: var(--tw-border);"> <span style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-6 h-6 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -365,7 +375,7 @@
 其餘二十四項,<br>按類型排好。
 </h2> </div> <div class="md:col-span-7 md:col-start-6 self-end"> <p class="leading-relaxed max-w-xl" style="color: var(--tw-text-secondary);">
 點清單任何一列即進入工具。每件工具都標有預估完成時間,公車、會議空檔都用得完。
-</p> </div> </div> <div id="index-list" class="grid md:grid-cols-12 gap-x-12 gap-y-14"> <div class="md:col-span-12" data-group="files"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">檔案處理</h3> <span class="eyebrow ml-2">02 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · A</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/resume/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="履歷 產生器 resume cv" data-tool-card> <span class="tool-index-num w-10 shrink-0">03</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</p> </div> </div> <div id="index-list" class="grid md:grid-cols-12 gap-x-12 gap-y-14"> <div class="md:col-span-12 min-w-0" data-group="files"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">檔案處理</h3> <span class="eyebrow ml-2">02 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · A</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/resume/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="履歷 產生器 resume cv" data-tool-card> <span class="tool-index-num w-10 shrink-0">03</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -397,7 +407,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/proofread/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="錯別字 檢查 proofread spell" data-tool-card> <span class="tool-index-num w-10 shrink-0">04</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/proofread/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="錯別字 檢查 proofread spell" data-tool-card> <span class="tool-index-num w-10 shrink-0">04</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -428,7 +438,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a> </div> </div><div class="md:col-span-12" data-group="life"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">生活查詢</h3> <span class="eyebrow ml-2">10 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · B</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/dashboard/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="防災 儀表板 颱風 警報 特報 豪雨 高溫 雨量 告警 停班停課 我家 全台 dashboard 內湖 縣市" data-tool-card> <span class="tool-index-num w-10 shrink-0">05</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a> </div> </div><div class="md:col-span-12 min-w-0" data-group="life"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">生活查詢</h3> <span class="eyebrow ml-2">10 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · B</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/dashboard/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="防災 儀表板 颱風 警報 特報 豪雨 高溫 雨量 告警 停班停課 我家 全台 dashboard 內湖 縣市" data-tool-card> <span class="tool-index-num w-10 shrink-0">05</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -457,7 +467,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/typhoon/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="颱風 停班 停課 typhoon dgpa" data-tool-card> <span class="tool-index-num w-10 shrink-0">06</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/typhoon/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="颱風 停班 停課 typhoon dgpa" data-tool-card> <span class="tool-index-num w-10 shrink-0">06</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -489,7 +499,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/dingfengbo/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="定風波 風雨 時間軸 颱風 降雨 風級 鄉鎮 預報 氣象署 dingfengbo storm timeline" data-tool-card> <span class="tool-index-num w-10 shrink-0">07</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/dingfengbo/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="定風波 風雨 時間軸 颱風 降雨 風級 鄉鎮 預報 氣象署 dingfengbo storm timeline" data-tool-card> <span class="tool-index-num w-10 shrink-0">07</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -519,7 +529,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/reservoir/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="水庫 水情 蓄水量 蓄水率 翡翠 曾文 阿公店 牡丹 缺水 限水 reservoir 水利署" data-tool-card> <span class="tool-index-num w-10 shrink-0">08</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/reservoir/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="水庫 水情 蓄水量 蓄水率 翡翠 曾文 阿公店 牡丹 缺水 限水 reservoir 水利署" data-tool-card> <span class="tool-index-num w-10 shrink-0">08</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -550,7 +560,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/alerts/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="告警 警報 停水 豪雨 淹水 颱風 水庫放流 道路封閉 NCDR 災害 alerts" data-tool-card> <span class="tool-index-num w-10 shrink-0">09</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/alerts/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="告警 警報 停水 豪雨 淹水 颱風 水庫放流 道路封閉 NCDR 災害 alerts" data-tool-card> <span class="tool-index-num w-10 shrink-0">09</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -580,7 +590,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/rain/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="雨量 即時雨量 降雨 累積雨量 時雨量 大雨 豪雨 rain 氣象署 測站" data-tool-card> <span class="tool-index-num w-10 shrink-0">10</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/rain/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="雨量 即時雨量 降雨 累積雨量 時雨量 大雨 豪雨 rain 氣象署 測站" data-tool-card> <span class="tool-index-num w-10 shrink-0">10</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -611,7 +621,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/oil-recall/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="沙拉油 油品 中聯油脂 食安 回收 下架 名單 流向 食藥署 oil recall" data-tool-card> <span class="tool-index-num w-10 shrink-0">11</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/oil-recall/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="沙拉油 油品 中聯油脂 食安 回收 下架 名單 流向 食藥署 oil recall" data-tool-card> <span class="tool-index-num w-10 shrink-0">11</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -642,7 +652,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/lottery/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="彩券 大樂透 威力彩 lottery" data-tool-card> <span class="tool-index-num w-10 shrink-0">12</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/lottery/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="彩券 大樂透 威力彩 lottery" data-tool-card> <span class="tool-index-num w-10 shrink-0">12</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -674,7 +684,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/currency/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="匯率 換算 currency exchange" data-tool-card> <span class="tool-index-num w-10 shrink-0">13</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/currency/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="匯率 換算 currency exchange" data-tool-card> <span class="tool-index-num w-10 shrink-0">13</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -708,7 +718,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/drone/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="無人機 空拍 禁飛 限航 管制區 GPS drone UAV 民航局" data-tool-card> <span class="tool-index-num w-10 shrink-0">22</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/drone/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="無人機 空拍 禁飛 限航 管制區 GPS drone UAV 民航局" data-tool-card> <span class="tool-index-num w-10 shrink-0">22</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -738,7 +748,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a> </div> </div><div class="md:col-span-12" data-group="calc"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">計算換算</h3> <span class="eyebrow ml-2">03 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · C</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/datecalc/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="日期 計算 datecalc" data-tool-card> <span class="tool-index-num w-10 shrink-0">14</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a> </div> </div><div class="md:col-span-12 min-w-0" data-group="calc"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">計算換算</h3> <span class="eyebrow ml-2">03 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · C</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/datecalc/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="日期 計算 datecalc" data-tool-card> <span class="tool-index-num w-10 shrink-0">14</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -772,7 +782,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/countdown/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="倒數 計時器 countdown" data-tool-card> <span class="tool-index-num w-10 shrink-0">15</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/countdown/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="倒數 計時器 countdown" data-tool-card> <span class="tool-index-num w-10 shrink-0">15</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -803,7 +813,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/unit/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="單位 換算 unit" data-tool-card> <span class="tool-index-num w-10 shrink-0">16</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/unit/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="單位 換算 unit" data-tool-card> <span class="tool-index-num w-10 shrink-0">16</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -836,7 +846,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a> </div> </div><div class="md:col-span-12" data-group="query"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">查詢工具</h3> <span class="eyebrow ml-2">04 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · D</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/postal/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="郵遞區號 zip postal 中華郵政" data-tool-card> <span class="tool-index-num w-10 shrink-0">17</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a> </div> </div><div class="md:col-span-12 min-w-0" data-group="query"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">查詢工具</h3> <span class="eyebrow ml-2">04 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · D</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/postal/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="郵遞區號 zip postal 中華郵政" data-tool-card> <span class="tool-index-num w-10 shrink-0">17</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -866,7 +876,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/address/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="地址 中譯英 english address pinyin" data-tool-card> <span class="tool-index-num w-10 shrink-0">18</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/address/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="地址 中譯英 english address pinyin" data-tool-card> <span class="tool-index-num w-10 shrink-0">18</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -897,7 +907,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/lunar/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="農曆 國曆 生肖 lunar calendar" data-tool-card> <span class="tool-index-num w-10 shrink-0">19</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/lunar/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="農曆 國曆 生肖 lunar calendar" data-tool-card> <span class="tool-index-num w-10 shrink-0">19</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -926,7 +936,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/solar-terms/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="節氣 二十四節氣 立春 夏至 solar terms" data-tool-card> <span class="tool-index-num w-10 shrink-0">20</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/solar-terms/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="節氣 二十四節氣 立春 夏至 solar terms" data-tool-card> <span class="tool-index-num w-10 shrink-0">20</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -963,7 +973,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a> </div> </div><div class="md:col-span-12" data-group="learn"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">學習工具</h3> <span class="eyebrow ml-2">01 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · E</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/vocabulary/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="英文 單字 片語 背誦 TOEFL 托福 研究所 學測 分科 會考 統測 四技二專 統一入學測驗 vocabulary phrase tvet" data-tool-card> <span class="tool-index-num w-10 shrink-0">21</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a> </div> </div><div class="md:col-span-12 min-w-0" data-group="learn"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">學習工具</h3> <span class="eyebrow ml-2">01 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · E</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/vocabulary/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="英文 單字 片語 背誦 TOEFL 托福 研究所 學測 分科 會考 統測 四技二專 統一入學測驗 vocabulary phrase tvet" data-tool-card> <span class="tool-index-num w-10 shrink-0">21</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -1004,7 +1014,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a> </div> </div><div class="md:col-span-12" data-group="audit"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">站長工具</h3> <span class="eyebrow ml-2">02 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · F</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/seo/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="SEO GEO AEO 三軸 測評 audit 健診 generative engine answer" data-tool-card> <span class="tool-index-num w-10 shrink-0">22</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a> </div> </div><div class="md:col-span-12 min-w-0" data-group="audit"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">站長工具</h3> <span class="eyebrow ml-2">02 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · F</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/seo/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="SEO GEO AEO 三軸 測評 audit 健診 generative engine answer" data-tool-card> <span class="tool-index-num w-10 shrink-0">22</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -1034,7 +1044,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/clock/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="翻頁時鐘 flip clock fliqlo flitik 時鐘 倒數 碼錶 螢幕保護 全螢幕 桌面時鐘" data-tool-card> <span class="tool-index-num w-10 shrink-0">23</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/clock/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="翻頁時鐘 flip clock fliqlo flitik 時鐘 倒數 碼錶 螢幕保護 全螢幕 桌面時鐘" data-tool-card> <span class="tool-index-num w-10 shrink-0">23</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -1064,7 +1074,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a> </div> </div><div class="md:col-span-12" data-group="relax"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">放鬆小站</h3> <span class="eyebrow ml-2">04 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · G</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/breathe/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="放空 紓壓 解壓 喘口氣 多巴胺 冥想 呼吸 放鬆 療癒 一起 breathe chill 安心 發呆" data-tool-card> <span class="tool-index-num w-10 shrink-0">24</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a> </div> </div><div class="md:col-span-12 min-w-0" data-group="relax"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">放鬆小站</h3> <span class="eyebrow ml-2">04 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · G</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/breathe/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="放空 紓壓 解壓 喘口氣 多巴胺 冥想 呼吸 放鬆 療癒 一起 breathe chill 安心 發呆" data-tool-card> <span class="tool-index-num w-10 shrink-0">24</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -1096,7 +1106,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/midnight/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="宵夜 虛擬外送 多巴胺 半夜 嘴饞 購物車 解壓 放鬆 midnight snack" data-tool-card> <span class="tool-index-num w-10 shrink-0">25</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/midnight/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="宵夜 虛擬外送 多巴胺 半夜 嘴饞 購物車 解壓 放鬆 midnight snack" data-tool-card> <span class="tool-index-num w-10 shrink-0">25</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -1128,7 +1138,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/woodenfish/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="電子木魚 木魚 功德 敲木魚 賽博功德 解壓 紓壓 多巴胺 放鬆 woodenfish merit" data-tool-card> <span class="tool-index-num w-10 shrink-0">26</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/woodenfish/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="電子木魚 木魚 功德 敲木魚 賽博功德 解壓 紓壓 多巴胺 放鬆 woodenfish merit" data-tool-card> <span class="tool-index-num w-10 shrink-0">26</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -1160,7 +1170,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/sand/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="流沙 沙畫 倒沙 沙瓶 沙漏 靜心 多巴胺 解壓 紓壓 放空 放鬆 療癒 thisissand sand" data-tool-card> <span class="tool-index-num w-10 shrink-0">30</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/sand/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="流沙 沙畫 倒沙 沙瓶 沙漏 靜心 多巴胺 解壓 紓壓 放空 放鬆 療癒 thisissand sand" data-tool-card> <span class="tool-index-num w-10 shrink-0">30</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -1192,7 +1202,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a> </div> </div><div class="md:col-span-12" data-group="games"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">休閒遊戲</h3> <span class="eyebrow ml-2">03 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · H</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/bee/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="小蜜蜂 射擊 遊戲 復古 街機 太空 打蜜蜂 解壓 多巴胺 休閒遊戲 bee arcade shooter game" data-tool-card> <span class="tool-index-num w-10 shrink-0">27</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a> </div> </div><div class="md:col-span-12 min-w-0" data-group="games"> <div class="flex items-baseline justify-between mb-4 pb-3 border-b" style="border-color: var(--tw-border);"> <div class="flex items-center gap-3"> <span class="brand-dot"></span> <h3 class="font-serif-tc text-xl font-bold tracking-cn" style="color: var(--tw-text-primary);">休閒遊戲</h3> <span class="eyebrow ml-2">03 ITEMS</span> </div> <span class="eyebrow hidden md:inline">SECTION · H</span> </div> <div class="grid md:grid-cols-2 md:gap-x-12"> <a href="/bee/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="小蜜蜂 射擊 遊戲 復古 街機 太空 打蜜蜂 解壓 多巴胺 休閒遊戲 bee arcade shooter game" data-tool-card> <span class="tool-index-num w-10 shrink-0">27</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -1224,7 +1234,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/invaders/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="太空侵略者 侵略者 射擊 遊戲 復古 街機 外星人 UFO 解壓 休閒遊戲 space invaders arcade shooter game" data-tool-card> <span class="tool-index-num w-10 shrink-0">28</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/invaders/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="太空侵略者 侵略者 射擊 遊戲 復古 街機 外星人 UFO 解壓 休閒遊戲 space invaders arcade shooter game" data-tool-card> <span class="tool-index-num w-10 shrink-0">28</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -1256,7 +1266,7 @@
   <path d="M7 7h10v10" />
   <path d="M7 17 17 7" />
 </svg>
-</span> </a><a href="/crab/" class="index-row flex items-center gap-5 py-5 px-1" data-tool-name="打螃蟹 大螃蟹 螃蟹 挖洞 遊藝場 街機 遊戲 復古 懷舊 解壓 休閒遊戲 crab panic arcade game" data-tool-card> <span class="tool-index-num w-10 shrink-0">29</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
+</span> </a><a href="/crab/" class="index-row flex items-center gap-5 py-5 px-1 min-w-0" data-tool-name="打螃蟹 大螃蟹 螃蟹 挖洞 遊藝場 街機 遊戲 復古 懷舊 解壓 休閒遊戲 crab panic arcade game" data-tool-card> <span class="tool-index-num w-10 shrink-0">29</span> <span class="shrink-0 inline-flex" style="color: var(--tw-hero-color);"><svg aria-hidden="true"
   class="w-5 h-5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"

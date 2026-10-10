@@ -2,7 +2,17 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-0WTK2LJFTY');
+    // 內部流量標記（2026-10-10）：開任何頁加 ?internal=1 會把本瀏覽器記成內部（?internal=0 取消），
+    // 之後所有事件帶 traffic_type=internal；GA4 後台「內部流量」資料篩選器啟用後就會排除。
+    // 用途＝Charlie 自己的裝置 + 我們用真瀏覽器驗頁面時的流量，不再灌進使用數據。
+    var twInternal = false;
+    try {
+      var twQ = new URLSearchParams(location.search).get('internal');
+      if (twQ === '1') localStorage.setItem('tw_internal', '1');
+      else if (twQ === '0') localStorage.removeItem('tw_internal');
+      twInternal = localStorage.getItem('tw_internal') === '1';
+    } catch (e) {}
+    gtag('config', 'G-0WTK2LJFTY', twInternal ? { traffic_type: 'internal' } : {});
     // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
     // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
     // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
@@ -142,7 +152,7 @@
 >
   <path d="m9 18 6-6-6-6" />
 </svg>
-<span style="color: var(--tw-text-primary);">錯別字檢查</span> </div> </nav> <section class="max-w-6xl mx-auto mb-10"> <div class="flex items-center gap-3 mb-4 flex-wrap"> <span class="brand-dot"></span> <span class="eyebrow">№ 04 · FILE · PROOFREAD</span> <span class="printrule hidden md:inline">|</span> <span class="eyebrow hidden md:inline">TOOL · 04 / 22</span> </div> <h1 class="font-serif-tc font-black tracking-cn mb-5" style="font-size: clamp(36px, 5.4vw, 60px); line-height: 1.06; color: var(--tw-hero-color); letter-spacing: -0.015em;"> 錯別字檢查 </h1> <p class="text-base md:text-lg leading-relaxed mb-6 max-w-2xl" style="color: var(--tw-text-secondary);"> 貼上中文文章,AI 自動找出錯字、標點誤用、文法問題。每筆建議獨立顯示讓你逐條確認,也可以一鍵套用全部。GPT-4o-mini 模型透過 Cloudflare Worker 代理,你的文章不會被留存。 </p> <div class="flex items-center gap-2 flex-wrap"> <span class="stamp"> <svg aria-hidden="true"
+<span style="color: var(--tw-text-primary);">錯別字檢查</span> </div> </nav> <section class="max-w-6xl mx-auto mb-10"> <div class="flex items-center gap-3 mb-4 flex-wrap"> <span class="brand-dot"></span> <span class="eyebrow">№ 04 · FILE · PROOFREAD</span> <span class="printrule hidden md:inline">|</span> <span class="eyebrow hidden md:inline">TOOL · 04 / 22</span> </div> <h1 class="font-serif-tc font-black tracking-cn mb-5" style="font-size: clamp(36px, 5.4vw, 60px); line-height: 1.06; color: var(--tw-hero-color); letter-spacing: -0.015em;"> 錯別字檢查 </h1> <p class="text-base md:text-lg leading-relaxed mb-6 max-w-2xl" style="color: var(--tw-text-secondary);"> 貼上中文文章,AI 自動找出錯字、標點誤用、文法問題。每筆建議獨立顯示讓你逐條確認,也可以一鍵套用全部。GPT-4o-mini 模型透過 Cloudflare Worker 代理,你的文章不會被留存。 </p> <div class="items-center gap-2 flex-wrap flex"> <span class="stamp"> <svg aria-hidden="true"
   class="w-3 h-3 inline-block mr-1 -mt-0.5 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
