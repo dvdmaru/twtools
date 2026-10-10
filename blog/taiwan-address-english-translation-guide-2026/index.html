@@ -518,7 +518,19 @@
   <path d="M4 4a16 16 0 0 1 16 16" />
   <circle cx="5" cy="19" r="1" />
 </svg>
-</div> <div> <div class="label">訂閱 RSS</div> <div class="desc">每週一篇，更新就推到你的 Reader。</div> </div> </a> </div> </div> </div> <aside class="article-margin no-print"> <div class="margin-label">TWTOOLS / EDITORIAL</div> </aside> </div> </article>  <section class="no-print"> <div class="adjacent"> <a href="/blog/dragon-boat-holiday-overtime-pay-2026/"> <div class="arrow-row"> <svg aria-hidden="true"
+</div> <div> <div class="label">訂閱 RSS</div> <div class="desc">每週一篇，更新就推到你的 Reader。</div> </div> </a> </div> </div> </div> <aside class="article-margin no-print"> <div class="margin-label">TWTOOLS / EDITORIAL</div> </aside> </div> </article>  <script data-blog-tool-click>
+    document.addEventListener('click', function (e) {
+      try {
+        var a = e.target && e.target.closest ? e.target.closest('article a[href]') : null;
+        if (!a) return;
+        var u = new URL(a.getAttribute('href'), location.href);
+        if (u.origin !== location.origin) return;
+        var seg = u.pathname.split('/').filter(Boolean)[0] || '';
+        if (!seg || seg === 'blog') return;
+        if (typeof window.twTrack === 'function') window.twTrack('blog', 'click', seg);
+      } catch (err) {}
+    }, { passive: true });
+  </script>  <section class="no-print"> <div class="adjacent"> <a href="/blog/dragon-boat-holiday-overtime-pay-2026/"> <div class="arrow-row"> <svg aria-hidden="true"
   class="w-4 h-4 lucide"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
