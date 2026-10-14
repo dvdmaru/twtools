@@ -1,0 +1,339 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><script>(function(){try{var s=localStorage.getItem('tw-sidebar-collapsed');var c=s===null?false:s==='1';if(c){document.documentElement.classList.add('sidebar-collapsed');}}catch(e){}})();</script><title>臺北即時降雨與下水道水位：水利處水位站、雨量站與官方告警 | TWTools</title><meta name="description" content="臺北市水利處雨水下水道水位站與雨量站的即時觀測值，附影響臺北市的官方告警原文。每筆標示官方資料時間；停更、時間異常與儀器電壓偏低的站直接標出，抓不到資料就明講無法確認。"><link rel="canonical" href="https://twtools.cc/taipei/flood/"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"臺北即時降雨與下水道水位：水利處水位站、雨量站與官方告警","url":"https://twtools.cc/taipei/flood/","description":"臺北市水利處雨水下水道水位站與雨量站的即時觀測值，附影響臺北市的官方告警原文。每筆標示官方資料時間；停更、時間異常與儀器電壓偏低的站直接標出，抓不到資料就明講無法確認。","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","inLanguage":"zh-TW","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"TWTools","url":"https://twtools.cc"}}</script><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://www.googletagmanager.com"><!-- 2026-10-10 字重減重 10→8：去 Serif 500（0 用）、Mono 500（1 用→400）；Sans 300 保留（首頁 hero .accent 與放鬆頁副標是刻意的細體，拿掉會變常規字重）。每個 Noto 字重的 CSS 約 127KB raw。 --><!-- 2026-10-11 評估過字型自架（@fontsource 可變字重放 public/fonts，commit 7ced834）後回退：這頁本來就要抓 44 片／2.7MB 切片，
+       自架沒少 bytes，卻把它搬到 twtools.cc 同一條連線，把 island 的 JS chunk 餓到 55 秒才載完（DCL 3.3s→51.9s）。
+       GitHub Pages 自架不划算；要再減只能減字重或改設計。紀錄見 CoWork/Charlie/2026-10-10/twtools-review/README.md。 --><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://twtools.cc/taipei/flood/"><meta property="og:title" content="臺北即時降雨與下水道水位：水利處水位站、雨量站與官方告警 | TWTools"><meta property="og:description" content="臺北市水利處雨水下水道水位站與雨量站的即時觀測值，附影響臺北市的官方告警原文。每筆標示官方資料時間；停更、時間異常與儀器電壓偏低的站直接標出，抓不到資料就明講無法確認。"><meta property="og:image" content="https://twtools.cc/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="TWTools — 打工牛馬的線上工具箱"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="臺北即時降雨與下水道水位：水利處水位站、雨量站與官方告警 | TWTools"><meta name="twitter:description" content="臺北市水利處雨水下水道水位站與雨量站的即時觀測值，附影響臺北市的官方告警原文。每筆標示官方資料時間；停更、時間異常與儀器電壓偏低的站直接標出，抓不到資料就明講無法確認。"><meta name="twitter:image" content="https://twtools.cc/og-image.png"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    // 內部流量標記（2026-10-10）：開任何頁加 ?internal=1 會把本瀏覽器記成內部（?internal=0 取消），
+    // 之後所有事件帶 traffic_type=internal；GA4 後台「內部流量」資料篩選器啟用後就會排除。
+    // 用途＝Charlie 自己的裝置 + 我們用真瀏覽器驗頁面時的流量，不再灌進使用數據。
+    var twInternal = false;
+    try {
+      var twQ = new URLSearchParams(location.search).get('internal');
+      if (twQ === '1') localStorage.setItem('tw_internal', '1');
+      else if (twQ === '0') localStorage.removeItem('tw_internal');
+      twInternal = localStorage.getItem('tw_internal') === '1';
+    } catch (e) {}
+    gtag('config', 'G-0WTK2LJFTY', twInternal ? { traffic_type: 'internal' } : {});
+    // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
+    // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
+    // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
+    window.twTrack = function (tool, action, label, extra) {
+      try {
+        if (typeof gtag !== 'function') return;
+        var t = tool || (location.pathname.split('/').filter(Boolean)[0] || 'home');
+        var p = { tool: t, action: String(action || ''), label: label == null ? '' : String(label).slice(0, 100) };
+        if (extra && typeof extra === 'object') for (var k in extra) if (p[k] === undefined) p[k] = extra[k];
+        gtag('event', 'tool_action', p);
+      } catch (e) {}
+    };
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind：2026-10-10 起改 build-time（tailwind.config.cjs＋src/styles/tailwind.css），不再載 cdn.tailwindcss.com；
+       theme（brand／warm／accent 色票、darkMode class、typography plugin）原樣搬到 tailwind.config.cjs。 --><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/BaseLayout.DYRo6BKo.css"></head> <body class="min-h-screen paper-noise">  <div class="flex min-h-screen" style="background: var(--tw-page-bg);"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="ZNxNJf" prefix="r1" component-url="/_assets/SidebarIsland.BMy5AtT8.js" component-export="default" renderer-url="/_assets/client.DKYTfpNv.js" props="{&quot;currentPage&quot;:[0,&quot;taipeiflood&quot;]}" ssr client="load" opts="{&quot;name&quot;:&quot;SidebarIsland&quot;,&quot;value&quot;:true}" await-children><link rel="preload" as="image" href="/logo-icon-128.png"/><button class="fixed top-3 left-3 z-50 md:hidden bg-warm-100 p-3 rounded-lg text-warm-900 text-lg">☰</button><div class="fixed inset-0 bg-black/60 z-30 md:hidden transition-opacity duration-300 opacity-0 pointer-events-none"></div><aside data-sidebar-panel="true" class="fixed top-0 left-0 h-full w-56 bg-warm-50 border-r border-warm-200 z-40 flex flex-col transition-transform duration-300 ease-in-out
+          -translate-x-full md:translate-x-0"><div data-sidebar-logo="true" class="p-4 border-b border-warm-200 flex items-center justify-between"><a href="/" class="flex items-center no-underline"><img src="/logo-icon-128.png" width="128" height="128" alt="TWTools" class="w-7 h-7 rounded-lg"/><span data-sidebar-brand="true" class="text-sm font-bold text-brand-600 ml-1.5">TWTools</span></a><div data-sidebar-collapse-hide="true" class="flex items-center gap-1"><button class="text-xs px-1.5 py-0.5 rounded border border-warm-300 text-warm-600 hover:text-warm-900 hover:border-warm-400 transition-colors" title="Switch to English">EN</button><button class="text-warm-600 hover:text-warm-900 md:hidden text-lg leading-none">✕</button></div></div><button type="button" data-sidebar-toggle="true" aria-expanded="true" aria-label="收合側欄" class="w-full items-center justify-center py-2 border-b border-warm-200 text-xs text-warm-600 hover:text-warm-900 transition-colors"><span class="chev inline-block leading-none">«</span><span data-sidebar-label="true" class="ml-1.5">收合側欄</span></button><nav class="flex-1 py-2 overflow-y-auto"><div><div data-sidebar-group="true" class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">檔案處理</div><a href="/image/" data-sidebar-item="true" title="圖片工具" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🖼️</span><span data-sidebar-label="true">圖片工具</span></a><a href="/pdf/" data-sidebar-item="true" title="PDF 工具" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">📄</span><span data-sidebar-label="true">PDF 工具</span></a><a href="/resume/" data-sidebar-item="true" title="履歷產生器" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">📋</span><span data-sidebar-label="true">履歷產生器</span></a><a href="/proofread/" data-sidebar-item="true" title="錯別字檢查" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">✍️</span><span data-sidebar-label="true">錯別字檢查</span></a></div><div><div data-sidebar-group="true" class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">生活查詢</div><a href="/dashboard/" data-sidebar-item="true" title="防災儀表板" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🛡️</span><span data-sidebar-label="true">防災儀表板</span></a><a href="/typhoon/" data-sidebar-item="true" title="颱風停班停課" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🌀</span><span data-sidebar-label="true">颱風停班停課</span></a><a href="/dingfengbo/" data-sidebar-item="true" title="定風波 風雨時間軸" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🌧️</span><span data-sidebar-label="true">定風波 風雨時間軸</span></a><a href="/reservoir/" data-sidebar-item="true" title="水庫即時水情" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">💧</span><span data-sidebar-label="true">水庫即時水情</span></a><a href="/drone/" data-sidebar-item="true" title="無人機管制區查詢" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🛸</span><span data-sidebar-label="true">無人機管制區查詢</span></a><a href="/alerts/" data-sidebar-item="true" title="災害即時告警" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🚨</span><span data-sidebar-label="true">災害即時告警</span></a><a href="/rain/" data-sidebar-item="true" title="即時雨量" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">☔</span><span data-sidebar-label="true">即時雨量</span></a><a href="/taipei/flood/" data-sidebar-item="true" title="臺北即時降雨與下水道水位" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline bg-brand-100 text-brand-700 border-r-2 border-brand-500"><span class="text-base">🌧️</span><span data-sidebar-label="true">臺北即時降雨與下水道水位</span></a><a href="/oil-recall/" data-sidebar-item="true" title="問題沙拉油查詢" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🛢️</span><span data-sidebar-label="true">問題沙拉油查詢</span></a><a href="/lottery/" data-sidebar-item="true" title="台灣彩券" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🎰</span><span data-sidebar-label="true">台灣彩券</span></a><a href="/currency/" data-sidebar-item="true" title="匯率換算" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">💱</span><span data-sidebar-label="true">匯率換算</span></a></div><div><div data-sidebar-group="true" class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">計算換算</div><a href="/datecalc/" data-sidebar-item="true" title="日期計算器" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">📅</span><span data-sidebar-label="true">日期計算器</span></a><a href="/countdown/" data-sidebar-item="true" title="倒數計時器" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">⏳</span><span data-sidebar-label="true">倒數計時器</span></a><a href="/unit/" data-sidebar-item="true" title="單位換算" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">📏</span><span data-sidebar-label="true">單位換算</span></a></div><div><div data-sidebar-group="true" class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">查詢工具</div><a href="/postal/" data-sidebar-item="true" title="郵遞區號" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">📮</span><span data-sidebar-label="true">郵遞區號</span></a><a href="/address/" data-sidebar-item="true" title="地址中譯英" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🌐</span><span data-sidebar-label="true">地址中譯英</span></a><a href="/lunar/" data-sidebar-item="true" title="農曆國曆" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🌙</span><span data-sidebar-label="true">農曆國曆</span></a><a href="/solar-terms/" data-sidebar-item="true" title="二十四節氣" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">☀️</span><span data-sidebar-label="true">二十四節氣</span></a></div><div><div data-sidebar-group="true" class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">學習工具</div><a href="/vocabulary/" data-sidebar-item="true" title="英文單字片語" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🎓</span><span data-sidebar-label="true">英文單字片語</span></a></div><div><div data-sidebar-group="true" class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">站長工具</div><a href="/seo/" data-sidebar-item="true" title="SEO/GEO/AEO" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">📊</span><span data-sidebar-label="true">SEO/GEO/AEO</span></a><a href="/clock/" data-sidebar-item="true" title="翻頁時鐘" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🕐</span><span data-sidebar-label="true">翻頁時鐘</span></a></div><div><div data-sidebar-group="true" class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">放鬆小站</div><a href="/breathe/" data-sidebar-item="true" title="一起喘口氣" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">😮‍💨</span><span data-sidebar-label="true">一起喘口氣</span></a><a href="/midnight/" data-sidebar-item="true" title="深夜宵夜所" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🌙</span><span data-sidebar-label="true">深夜宵夜所</span></a><a href="/woodenfish/" data-sidebar-item="true" title="電子木魚" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🪵</span><span data-sidebar-label="true">電子木魚</span></a><a href="/sand/" data-sidebar-item="true" title="指尖流沙" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">⌛</span><span data-sidebar-label="true">指尖流沙</span></a></div><div><div data-sidebar-group="true" class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">休閒遊戲</div><a href="/bee/" data-sidebar-item="true" title="小蜜蜂" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🐝</span><span data-sidebar-label="true">小蜜蜂</span></a><a href="/invaders/" data-sidebar-item="true" title="太空侵略者" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">👾</span><span data-sidebar-label="true">太空侵略者</span></a><a href="/crab/" data-sidebar-item="true" title="打螃蟹" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">🦀</span><span data-sidebar-label="true">打螃蟹</span></a></div><div><div data-sidebar-group="true" class="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-warm-400">更多</div><a href="/blog/" data-sidebar-item="true" title="知識文章" class="w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 transition-colors no-underline text-warm-600 hover:bg-warm-100 hover:text-warm-900"><span class="text-base">📝</span><span data-sidebar-label="true">知識文章</span></a></div></nav><div data-sidebar-footer="true" class="p-3 border-t border-warm-200 text-xs text-warm-600 text-center space-y-1"><div class="flex justify-center gap-3"><a href="/about/" class="hover:text-warm-900 transition-colors no-underline" style="color:var(--tw-brand-accent)">關於</a><a href="/privacy/" class="hover:text-warm-900 transition-colors no-underline" style="color:var(--tw-brand-accent)">隱私權</a></div>打工牛馬的線上工具箱 © 2026</div></aside><!--astro:end--></astro-island> <main class="flex-1 min-w-0 md:ml-56 p-4 sm:p-6 lg:p-8"> <nav class="max-w-6xl mx-auto mb-6" aria-label="breadcrumb"> <div class="flex items-center gap-2 text-sm flex-wrap" style="color: var(--tw-text-muted);"> <a href="/" class="grow-underline">首頁</a><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+<a href="/taipei/" class="grow-underline">臺北七題</a><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+<span style="color: var(--tw-text-primary);">臺北即時降雨與下水道水位</span> </div> </nav> <section class="max-w-6xl mx-auto mb-10"> <div class="flex items-center gap-3 mb-4 flex-wrap"> <span class="brand-dot"></span> <span class="eyebrow">№ 23 · LIFE · TAIPEI</span> <span class="printrule hidden md:inline">|</span> <span class="eyebrow hidden md:inline">TOOL · 23 / 23</span> </div> <h1 class="font-serif-tc font-black tracking-cn mb-5" style="font-size: clamp(36px, 5.4vw, 60px); line-height: 1.06; color: var(--tw-hero-color); letter-spacing: -0.015em;"> 臺北即時降雨與下水道水位 </h1> <p class="text-base md:text-lg leading-relaxed mb-6 max-w-2xl" style="color: var(--tw-text-secondary);"> 把臺北市水利處公開的下水道水位與雨量即時資料整理成可以按行政區篩選的表格，旁邊附上官方告警原文。這一頁只呈現官方觀測值與資料品質，不判斷會不會淹水；水位或雨量數字的大小，也不能拿來推斷某個地方有沒有積水。 </p> <div class="items-center gap-2 flex-wrap flex"> <span class="stamp"> <svg aria-hidden="true"
+  class="w-3 h-3 inline-block mr-1 -mt-0.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M2 12q2.5 2 5 0t5 0 5 0 5 0" />
+  <path d="M2 19q2.5 2 5 0t5 0 5 0 5 0" />
+  <path d="M2 5q2.5 2 5 0t5 0 5 0 5 0" />
+</svg>
+ 水利處水位站・雨量站 </span><span class="stamp muted"> <svg aria-hidden="true"
+  class="w-3 h-3 inline-block mr-1 -mt-0.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+  <path d="m9 12 2 2 4-4" />
+</svg>
+ 臺北市資料大平臺開放資料 </span><span class="stamp muted"> <svg aria-hidden="true"
+  class="w-3 h-3 inline-block mr-1 -mt-0.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+  <path d="M21 3v5h-5" />
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+  <path d="M8 16H3v5" />
+</svg>
+ 標示官方資料時間 </span> </div> </section> <div class="max-w-6xl mx-auto"><p class="taipei-disclaimer">題目取自市政 debug 松公開題庫，未參賽、不投票、與競選無關。 <a href="/taipei/" class="grow-underline">關於這一區</a></p></div> <section class="max-w-6xl mx-auto mb-8"><div class="tool-shell p-5 md:p-7"> <div class="flex items-baseline justify-between gap-3 flex-wrap mb-4"><div class="flex items-center gap-3"><span class="brand-dot"></span><h2 class="font-serif-tc text-lg font-bold tracking-cn">資料狀況</h2></div><span class="eyebrow">TAIPEI · OBS · LIVE</span></div> <p id="tf-overview" class="rt-time m-0" role="status"></p> </div></section> <section class="max-w-6xl mx-auto mb-8"><div class="tool-shell p-5 md:p-7"> <div class="flex items-baseline justify-between gap-3 flex-wrap mb-4"><h2 class="font-serif-tc text-lg font-bold tracking-cn">影響臺北市的官方告警</h2><span class="rt-source">國家災害防救科技中心彙整</span></div> <div id="tf-alert-fail" class="rt-fail" hidden><div class="rt-fail-title"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+  <path d="M12 9v4" />
+  <path d="M12 17h.01" />
+</svg>
+目前無法確認。</div><p class="mt-1 mb-0">這次沒有拿到告警資料，這一區先不列任何告警。官方告警請直接看<a href="https://alerts.ncdr.nat.gov.tw/" target="_blank" rel="noopener noreferrer">國家災害防救科技中心災害示警公開資料平臺</a>。</p></div> <div id="tf-alert-list" class="taipei-alert-list"></div><p id="tf-alert-note" class="rt-source mt-4 mb-0" hidden>每則告警的發布機關與內容以告警原文為準。</p> </div></section> <section class="max-w-6xl mx-auto mb-8"><div class="tool-shell p-5 md:p-7"> <div class="flex items-baseline justify-between gap-3 flex-wrap mb-4"><h2 class="font-serif-tc text-lg font-bold tracking-cn">雨量站目前日累積雨量</h2><span id="tf-rain-source" class="rt-source"></span></div> <div class="taipei-filter" id="tf-district" aria-label="行政區篩選"></div> <div id="tf-rain-fail" class="rt-fail" hidden><div class="rt-fail-title"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+  <path d="M12 9v4" />
+  <path d="M12 17h.01" />
+</svg>
+目前無法確認</div><p class="mt-1 mb-0">這次沒有拿到官方資料，這一區先不顯示任何數字。即時水情請改看<a href="https://taipeiheo.aws-gov.org/public/realtime" target="_blank" rel="noopener noreferrer">臺北市民眾水情資訊網</a>。</p></div> <div class="taipei-table-wrap mt-4"><table id="tf-rain-table" class="taipei-table" hidden><thead><tr><th>站名</th><th>行政區</th><th>目前日累積雨量（官方未標單位）</th><th>官方資料時間</th><th>資料品質</th></tr></thead><tbody id="tf-rain-body"></tbody></table></div> </div></section> <section class="max-w-6xl mx-auto mb-16"><div class="tool-shell p-5 md:p-7"> <div class="flex items-baseline justify-between gap-3 flex-wrap mb-4"><h2 class="font-serif-tc text-lg font-bold tracking-cn">雨水下水道水位</h2><span id="tf-sewer-source" class="rt-source"></span></div> <div id="tf-sewer-fail" class="rt-fail mt-4" hidden><div class="rt-fail-title"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+  <path d="M12 9v4" />
+  <path d="M12 17h.01" />
+</svg>
+目前無法確認</div><p class="mt-1 mb-0">這次沒有拿到官方資料，這一區先不顯示任何數字。即時水情請改看<a href="https://taipeiheo.aws-gov.org/public/realtime" target="_blank" rel="noopener noreferrer">臺北市民眾水情資訊網</a>。</p></div> <div class="taipei-table-wrap mt-4"><table id="tf-sewer-table" class="taipei-table" hidden><thead><tr><th>站名</th><th>行政區</th><th>水位值（官方未標單位）</th><th>儀器電壓值（官方未標單位）</th><th>官方資料時間</th><th>資料品質</th></tr></thead><tbody id="tf-sewer-body"></tbody></table></div> </div></section> <section class="reading-col mb-16"><div class="prose-cn"> <h2>這一頁是什麼、不是什麼</h2><p>這一頁是官方觀測值的整理：每個站的水位值、雨量與官方資料時間，加上資料品質的公開標記，以及經國家災害防救科技中心彙整、影響範圍含臺北市的告警原文。適合想直接看官方原始觀測值，以及確認各站資料有沒有在更新的人。</p><p>這一頁不是淹水判斷工具。臺北市水利處的開放資料沒有提供各站的警戒值，所以本頁不自訂門檻，也不替任何站上色或分級。想知道某個地點現在有沒有積水，請看<a href="https://taipeiheo.aws-gov.org/public/realtime" target="_blank" rel="noopener noreferrer">臺北市民眾水情資訊網</a>，並以臺北市政府的公告與指示為準。</p> <h2>資料品質怎麼標</h2><p>我們每次抓取都檢查三件事，有問題的站照列，但在「資料品質」欄寫明。三條線都是本頁自己訂的提示線，不是官方標準：</p><ul><li><strong>停更</strong>：這個站最新一筆的官方時間，比我們抓取的時間早超過 60 分鐘。官方標示的更新頻率是「即時(10分鐘/1分鐘)」。</li><li><strong>時間異常</strong>：官方給的時間格式不對、無法解析，或比我們抓取的時間晚 10 分鐘以上、早 30 天以上。實際出現過的例子是一筆標成 2061 年的雨量資料。這類資料的數值照列，但不拿它的時間當作「最新資料時間」。</li><li><strong>儀器電壓偏低</strong>：水位站儀器回報的電壓值低於 5。這是水位站本身的讀值，不是抽水站或閘門的狀態。官方沒有標電壓值的單位，也沒有公開正常範圍。</li></ul><p>臺北市水利處在水位資料集的備註欄寫：「惟下水道水位計受限下水道環境影響，偶有故障及不穩定狀況，水位資料僅供研究發展使用。」（<a href="https://data.taipei/dataset/detail?id=cd444840-bbfb-4b0a-bdfa-2a36d49b3794" target="_blank" rel="noopener noreferrer">臺北市資料大平臺：雨水下水道水位站即時資料</a>）</p> <h2>水位數字怎麼讀</h2><p>官方欄位說明只寫這一欄是「水位值」，沒有寫單位，也沒有寫是相對哪一個基準量的。所以本頁照原值列出，不換算，也不比較站與站之間的高低。部分站的水位值是負的，官方沒有說明負值的意義，我們同樣原樣顯示，不改成零、也不隱藏。</p> <div class="mt-6"><details class="faq-item" open><summary><div><span class="tool-index-num mr-3">01</span><span class="font-serif-tc text-base md:text-lg font-bold tracking-cn">水位到多少會淹水？</span></div><div class="faq-icon"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 12h14" />
+  <path d="M12 5v14" />
+</svg>
+</div></summary><div class="faq-body pl-9">臺北市水利處的開放資料沒有提供這個答案：資料欄位裡沒有警戒值，官方欄位說明也沒有列。官方也沒有說明水位值的單位與基準，所以不能拿同一個數字在不同站之間比較，也不能拿它推算會不會淹水。想知道某個地點現在有沒有積水，請看<a href="https://taipeiheo.aws-gov.org/public/realtime" target="_blank" rel="noopener noreferrer">臺北市民眾水情資訊網</a>，並以臺北市政府的公告與指示為準。</div></details><details class="faq-item"><summary><div><span class="tool-index-num mr-3">02</span><span class="font-serif-tc text-base md:text-lg font-bold tracking-cn">為什麼有些站的水位是負的？</span></div><div class="faq-icon"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 12h14" />
+  <path d="M12 5v14" />
+</svg>
+</div></summary><div class="faq-body pl-9">官方開放資料沒有說明負值的意義，欄位說明也沒有寫水位值是相對哪一個基準。本頁照原值顯示，不改成零，也不替它解釋。</div></details><details class="faq-item"><summary><div><span class="tool-index-num mr-3">03</span><span class="font-serif-tc text-base md:text-lg font-bold tracking-cn">雨量表的數字是哪一段時間的雨？</span></div><div class="faq-icon"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 12h14" />
+  <path d="M12 5v14" />
+</svg>
+</div></summary><div class="faq-body pl-9">官方欄位說明寫的是「目前日累積雨量」，沒有寫從幾點開始累積，也沒有標單位。想看逐時雨量或中央氣象署的全臺雨量站，請用本站的<a href="/rain/">即時雨量</a>。</div></details><details class="faq-item"><summary><div><span class="tool-index-num mr-3">04</span><span class="font-serif-tc text-base md:text-lg font-bold tracking-cn">為什麼有的站時間停在好幾個小時以前？</span></div><div class="faq-icon"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 12h14" />
+  <path d="M12 5v14" />
+</svg>
+</div></summary><div class="faq-body pl-9">那代表官方資料裡，這個站最新一筆的時間已經超過 60 分鐘沒有更新。原因可能在儀器、傳輸或資料平臺，官方沒有逐站說明；本頁把這些站標成「停更」，數值照列，但請不要把它當成現在的水位。水利處在資料說明裡也寫了，下水道水位計「偶有故障及不穩定狀況」。</div></details><details class="faq-item"><summary><div><span class="tool-index-num mr-3">05</span><span class="font-serif-tc text-base md:text-lg font-bold tracking-cn">這一頁跟市政 debug 松有什麼關係？</span></div><div class="faq-icon"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M5 12h14" />
+  <path d="M12 5v14" />
+</svg>
+</div></summary><div class="faq-body pl-9">市政 debug 松是一個公開徵集臺北市政題目的活動。題庫第 7 題是自由題，列出的備選方向裡有一項與淹水有關，本頁就是用公開資料回答這個方向。我們沒有報名、不參加票選，也與任何競選活動無關。</div></details></div> </div></section> <p class="max-w-6xl mx-auto rt-source mb-8">資料來源：臺北市政府工務局水利處（依政府資料開放授權條款－第 1 版使用）；告警：國家災害防救科技中心彙整，各則發布機關以原文為準。</p> </main> </div> <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"水位到多少會淹水？","acceptedAnswer":{"@type":"Answer","text":"臺北市水利處的開放資料沒有提供這個答案：資料欄位裡沒有警戒值，官方欄位說明也沒有列。官方也沒有說明水位值的單位與基準，所以不能拿同一個數字在不同站之間比較，也不能拿它推算會不會淹水。想知道某個地點現在有沒有積水，請看臺北市民眾水情資訊網，並以臺北市政府的公告與指示為準。"}},{"@type":"Question","name":"為什麼有些站的水位是負的？","acceptedAnswer":{"@type":"Answer","text":"官方開放資料沒有說明負值的意義，欄位說明也沒有寫水位值是相對哪一個基準。本頁照原值顯示，不改成零，也不替它解釋。"}},{"@type":"Question","name":"雨量表的數字是哪一段時間的雨？","acceptedAnswer":{"@type":"Answer","text":"官方欄位說明寫的是「目前日累積雨量」，沒有寫從幾點開始累積，也沒有標單位。想看逐時雨量或中央氣象署的全臺雨量站，請用本站的即時雨量。"}},{"@type":"Question","name":"為什麼有的站時間停在好幾個小時以前？","acceptedAnswer":{"@type":"Answer","text":"那代表官方資料裡，這個站最新一筆的時間已經超過 60 分鐘沒有更新。原因可能在儀器、傳輸或資料平臺，官方沒有逐站說明；本頁把這些站標成「停更」，數值照列，但請不要把它當成現在的水位。水利處在資料說明裡也寫了，下水道水位計「偶有故障及不穩定狀況」。"}},{"@type":"Question","name":"這一頁跟市政 debug 松有什麼關係？","acceptedAnswer":{"@type":"Answer","text":"市政 debug 松是一個公開徵集臺北市政題目的活動。題庫第 7 題是自由題，列出的備選方向裡有一項與淹水有關，本頁就是用公開資料回答這個方向。我們沒有報名、不參加票選，也與任何競選活動無關。"}}]}</script> <script>
+    (function () {
+      var BASES = ['https://rt.twtools.cc', 'https://twtools-rt.charlie-chien.workers.dev'];
+      var DISTRICTS = ['全部', '中正區', '大同區', '中山區', '松山區', '大安區', '萬華區', '信義區', '士林區', '北投區', '內湖區', '南港區', '文山區'];
+      var flagText = { outdated: '停更', bad_timestamp: '時間異常', low_voltage: '儀器電壓偏低' };
+      var selectedDistrict = localStorage.getItem('twtools_taipei_flood_district_v1') || '全部';
+      if (DISTRICTS.indexOf(selectedDistrict) === -1) selectedDistrict = '全部';
+      var sewer = null, rain = null;
+      var overview = document.getElementById('tf-overview');
+      var filter = document.getElementById('tf-district');
+
+      function escapeHtml(value) { var el = document.createElement('div'); el.textContent = value == null ? '' : String(value); return el.innerHTML; }
+      function fmtTime(value) { var m = String(value || '').match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/); return m ? m[1] + '/' + m[2] + '/' + m[3] + ' ' + m[4] + ':' + m[5] : '—'; }
+      function fmtNumber(value) { return value === null || value === undefined ? '—' : String(value); }
+      function stationOrder(a, b) { return String(a.district || '').localeCompare(String(b.district || ''), 'zh-Hant') || String(a.id || '').localeCompare(String(b.id || ''), 'en'); }
+      function filterStations(stations) { return stations.filter(function (row) { return selectedDistrict === '全部' || row.district === selectedDistrict; }).sort(stationOrder); }
+      function renderFilter() { filter.innerHTML = DISTRICTS.map(function (district) { return '<button type="button" class="rt-refresh font-mono-tc' + (district === selectedDistrict ? ' taipei-filter-active' : '') + '" data-district="' + district + '">' + district + '</button>'; }).join(''); }
+      var failed = { sewer: false, rain: false };
+      function renderOverview() {
+        var parts = [];
+        if (sewer) parts.push('水位站 ' + sewer.count + ' 站，其中停更 ' + sewer.quality.outdatedStations + '、時間異常 ' + sewer.quality.badTimestamps + '、儀器電壓偏低 ' + sewer.quality.lowVoltage + '；官方資料時間 ' + fmtTime(sewer.observedAt) + '。');
+        else if (failed.sewer) parts.push('水位站：目前無法確認。');
+        if (rain) parts.push('雨量站 ' + rain.count + ' 站，其中停更 ' + rain.quality.outdatedStations + '、時間異常 ' + rain.quality.badTimestamps + '；官方資料時間 ' + fmtTime(rain.observedAt) + '。');
+        else if (failed.rain) parts.push('雨量站：目前無法確認。');
+        overview.textContent = parts.length ? parts.join('') : '正在向臺北市水利處取得資料…';
+      }
+      function clearKind(kind) {
+        document.getElementById('tf-' + kind + '-body').innerHTML = '';
+        document.getElementById('tf-' + kind + '-table').hidden = true;
+        document.getElementById('tf-' + kind + '-source').textContent = '';
+        document.getElementById('tf-' + kind + '-fail').hidden = true;
+      }
+      function renderTable(kind, payload) {
+        var body = document.getElementById('tf-' + kind + '-body');
+        var rows = filterStations(payload.stations);
+        body.innerHTML = rows.map(function (row) {
+          var quality = (row.flags || []).map(function (flag) { return flagText[flag] || ''; }).filter(Boolean).join('、') || '—';
+          var cells = kind === 'sewer'
+            ? [row.name, row.district, fmtNumber(row.levelOut), fmtNumber(row.voltage), fmtTime(row.observedAt), quality]
+            : [row.name, row.district, fmtNumber(row.rainDayMm), fmtTime(row.observedAt), quality];
+          return '<tr>' + cells.map(function (cell) { return '<td>' + escapeHtml(cell) + '</td>'; }).join('') + '</tr>';
+        }).join('');
+        document.getElementById('tf-' + kind + '-source').textContent = '臺北市政府工務局水利處｜官方資料時間：' + fmtTime(payload.observedAt);
+        document.getElementById('tf-' + kind + '-table').hidden = false;
+      }
+      function renderData() { renderFilter(); renderOverview(); if (sewer) renderTable('sewer', sewer); if (rain) renderTable('rain', rain); }
+      function fetchPayload(path) {
+        return BASES.reduce(function (attempt, base) { return attempt.catch(function () { var controller = new AbortController(); var timer = setTimeout(function () { controller.abort(); }, 15000); return fetch(base + path, { signal: controller.signal }).then(function (response) { clearTimeout(timer); if (!response.ok) throw new Error('http'); return response.json(); }).then(function (payload) { if (!payload || payload.ok !== true || !Array.isArray(payload.stations)) throw new Error('payload'); return payload; }).catch(function (error) { clearTimeout(timer); throw error; }); }); }, Promise.reject(new Error('start')));
+      }
+      function loadKind(kind, path) {
+        clearKind(kind); overview.textContent = '';
+        return fetchPayload(path).then(function (payload) { failed[kind] = false; if (kind === 'sewer') sewer = payload; else rain = payload; renderData(); }).catch(function () { failed[kind] = true; if (kind === 'sewer') sewer = null; else rain = null; renderOverview(); document.getElementById('tf-' + kind + '-fail').hidden = false; renderOverview(); });
+      }
+      function matchTaipei(alert) { if (!alert.areas || !alert.areas.length) return true; return alert.areas.some(function (area) { return String(area).replace(/台/g, '臺').indexOf('臺北市') !== -1; }); }
+      function loadAlerts() {
+        var list = document.getElementById('tf-alert-list'), fail = document.getElementById('tf-alert-fail'), note = document.getElementById('tf-alert-note'); list.innerHTML = ''; fail.hidden = true; note.hidden = true;
+        BASES.reduce(function (attempt, base) { return attempt.catch(function () { return fetch(base + '/v1/alerts').then(function (response) { if (!response.ok) throw new Error('http'); return response.json(); }).then(function (payload) { if (!payload || payload.ok !== true || !Array.isArray(payload.alerts)) throw new Error('payload'); return payload; }); }); }, Promise.reject(new Error('start'))).then(function (payload) {
+          var alerts = payload.alerts.filter(matchTaipei); note.hidden = false;
+          if (!alerts.length) { list.innerHTML = '<p class="m-0 text-sm">國家災害防救科技中心彙整的告警資料裡，目前沒有影響範圍含臺北市的告警。這不代表沒有積水，請同時留意臺北市政府的公告。</p>'; return; }
+          list.innerHTML = alerts.map(function (alert) { var unresolved = !alert.areas || !alert.areas.length; return '<article class="rt-card"><div class="flex items-baseline justify-between gap-2 flex-wrap mb-1"><span class="font-serif-tc text-sm font-bold tracking-cn">' + escapeHtml(alert.category || '') + '</span><span class="rt-source">' + escapeHtml(alert.agency || '') + '</span></div><p class="m-0 text-sm" style="line-height:1.8">' + escapeHtml(alert.summary || '') + '</p>' + (unresolved ? '<p class="rt-source mt-2 mb-0">這則告警的影響範圍無法自動判讀，為了避免漏看，照樣列出。</p>' : '') + '</article>'; }).join('');
+        }).catch(function () { fail.hidden = false; });
+      }
+      filter.addEventListener('click', function (event) { var button = event.target.closest('[data-district]'); if (!button) return; selectedDistrict = button.getAttribute('data-district'); localStorage.setItem('twtools_taipei_flood_district_v1', selectedDistrict); renderData(); });
+      loadKind('sewer', '/v1/taipei/sewer-level'); loadKind('rain', '/v1/taipei/rain'); loadAlerts();
+    })();
+  </script>  <!-- Affiliates.One / Adotone Ad Link 網站驗證碼（須 is:inline 才會原樣輸出，勿移除 is:inline） --> <script>var ConverlyCustomData = {channelId: null};</script> <script async defer src="https://cdn.adotone.com/production/adlinks/676dd203e573377526b0bfa14fb812f5265fb0db262acf5759eaf3acb67f8e66.js"></script> </body> </html>
