@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><script>(function(){try{var s=localStorage.getItem('tw-sidebar-collapsed');var c=s===null?false:s==='1';if(c){document.documentElement.classList.add('sidebar-collapsed');}}catch(e){}})();</script><title>收錄政策｜選舉結果存檔 | TWTools</title><meta name="description" content="選舉結果存檔的收錄規則：只收法定選務機關公布的開票結果開放資料，名稱照原文，數字照官方，沒收的地方公開說明原因。"><link rel="canonical" href="https://twtools.cc/elections/policy/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://www.googletagmanager.com"><!-- 2026-10-10 字重減重 10→8：去 Serif 500（0 用）、Mono 500（1 用→400）；Sans 300 保留（首頁 hero .accent 與放鬆頁副標是刻意的細體，拿掉會變常規字重）。每個 Noto 字重的 CSS 約 127KB raw。 --><!-- 2026-10-11 評估過字型自架（@fontsource 可變字重放 public/fonts，commit 7ced834）後回退：這頁本來就要抓 44 片／2.7MB 切片，
+       自架沒少 bytes，卻把它搬到 twtools.cc 同一條連線，把 island 的 JS chunk 餓到 55 秒才載完（DCL 3.3s→51.9s）。
+       GitHub Pages 自架不划算；要再減只能減字重或改設計。紀錄見 CoWork/Charlie/2026-10-10/twtools-review/README.md。 --><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://twtools.cc/elections/policy/"><meta property="og:title" content="收錄政策｜選舉結果存檔 | TWTools"><meta property="og:description" content="選舉結果存檔的收錄規則：只收法定選務機關公布的開票結果開放資料，名稱照原文，數字照官方，沒收的地方公開說明原因。"><meta property="og:image" content="https://twtools.cc/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="TWTools — 打工牛馬的線上工具箱"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="收錄政策｜選舉結果存檔 | TWTools"><meta name="twitter:description" content="選舉結果存檔的收錄規則：只收法定選務機關公布的開票結果開放資料，名稱照原文，數字照官方，沒收的地方公開說明原因。"><meta name="twitter:image" content="https://twtools.cc/og-image.png"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    // 內部流量標記（2026-10-10）：開任何頁加 ?internal=1 會把本瀏覽器記成內部（?internal=0 取消），
+    // 之後所有事件帶 traffic_type=internal；GA4 後台「內部流量」資料篩選器啟用後就會排除。
+    // 用途＝Charlie 自己的裝置 + 我們用真瀏覽器驗頁面時的流量，不再灌進使用數據。
+    var twInternal = false;
+    try {
+      var twQ = new URLSearchParams(location.search).get('internal');
+      if (twQ === '1') localStorage.setItem('tw_internal', '1');
+      else if (twQ === '0') localStorage.removeItem('tw_internal');
+      twInternal = localStorage.getItem('tw_internal') === '1';
+    } catch (e) {}
+    gtag('config', 'G-0WTK2LJFTY', twInternal ? { traffic_type: 'internal' } : {});
+    // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
+    // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
+    // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
+    window.twTrack = function (tool, action, label, extra) {
+      try {
+        if (typeof gtag !== 'function') return;
+        var t = tool || (location.pathname.split('/').filter(Boolean)[0] || 'home');
+        var p = { tool: t, action: String(action || ''), label: label == null ? '' : String(label).slice(0, 100) };
+        if (extra && typeof extra === 'object') for (var k in extra) if (p[k] === undefined) p[k] = extra[k];
+        gtag('event', 'tool_action', p);
+      } catch (e) {}
+    };
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind：2026-10-10 起改 build-time（tailwind.config.cjs＋src/styles/tailwind.css），不再載 cdn.tailwindcss.com；
+       theme（brand／warm／accent 色票、darkMode class、typography plugin）原樣搬到 tailwind.config.cjs。 --><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/BaseLayout.-DLUuO5R.css">
+<style>.el-notice[data-astro-cid-ohvchgle]{margin:0;color:var(--tw-text-muted);font-size:.875rem;line-height:1.7}
+.el-title[data-astro-cid-zgeu7voa]{font-size:clamp(32px,4.8vw,52px);line-height:1.1;color:var(--tw-hero-color);letter-spacing:-.015em}.el-h2[data-astro-cid-zgeu7voa]{font-size:1.125rem;font-weight:700;margin:2.5rem 0 .75rem}.el-p[data-astro-cid-zgeu7voa],.el-ol[data-astro-cid-zgeu7voa] li[data-astro-cid-zgeu7voa],.el-ul[data-astro-cid-zgeu7voa] li[data-astro-cid-zgeu7voa]{font-size:.9375rem;line-height:1.85;color:var(--tw-text-secondary)}.el-p[data-astro-cid-zgeu7voa]{margin:0 0 .9rem}.el-ol[data-astro-cid-zgeu7voa],.el-ul[data-astro-cid-zgeu7voa]{margin:0 0 1rem;padding-left:1.3rem;display:grid;gap:.4rem}.el-table-wrap[data-astro-cid-zgeu7voa]{overflow-x:auto}.el-table[data-astro-cid-zgeu7voa]{width:100%;min-width:520px;border-collapse:collapse;font-size:.875rem}.el-table[data-astro-cid-zgeu7voa] th[data-astro-cid-zgeu7voa],.el-table[data-astro-cid-zgeu7voa] td[data-astro-cid-zgeu7voa]{padding:.6rem;text-align:left;vertical-align:top;border-bottom:1px solid var(--tw-border);font-weight:400;line-height:1.7}.el-table[data-astro-cid-zgeu7voa] th[data-astro-cid-zgeu7voa]{color:var(--tw-text-muted);font-size:.8125rem;white-space:nowrap}
+</style></head> <body class="min-h-screen paper-noise">  <div class="flex min-h-screen" style="background: var(--tw-page-bg);" data-astro-cid-zgeu7voa> <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-8" data-astro-cid-zgeu7voa> <nav class="max-w-6xl mx-auto mb-6" aria-label="breadcrumb"> <div class="flex items-center gap-2 text-sm flex-wrap" style="color: var(--tw-text-muted);"> <a href="/" class="grow-underline">首頁</a><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+<a href="/elections/" class="grow-underline">選舉結果存檔</a><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+<span style="color: var(--tw-text-primary);">收錄政策</span> </div> </nav> <article class="max-w-3xl mx-auto mb-16" data-astro-cid-zgeu7voa> <div class="flex items-center gap-3 mb-4 flex-wrap" data-astro-cid-zgeu7voa><span class="brand-dot" data-astro-cid-zgeu7voa></span><span class="eyebrow" data-astro-cid-zgeu7voa>ELECTION RESULTS · POLICY</span></div> <h1 class="font-serif-tc font-black tracking-cn mb-5 el-title" data-astro-cid-zgeu7voa>收錄政策</h1> <p class="el-notice" data-astro-cid-ohvchgle>本區只呈現選務機關公布的開票結果，不放民調、不評論候選人、不收捐款或贊助；由 Charlie Chien 個人維運。 <a href="/elections/policy/" class="grow-underline" data-astro-cid-ohvchgle>收錄政策</a> · <a href="/elections/about/" class="grow-underline" data-astro-cid-ohvchgle>關於</a></p> <h2 class="font-serif-tc el-h2" data-astro-cid-zgeu7voa>收錄規則</h2> <ol class="el-ol" data-astro-cid-zgeu7voa> <li data-astro-cid-zgeu7voa>只收法定選務機關公布、不用登入就能下載的開票結果。需要另外向對方申請授權的資料不收。</li> <li data-astro-cid-zgeu7voa>只收已經開完票、選務機關公布結果之後的選舉。不做即時開票。</li> <li data-astro-cid-zgeu7voa>國名、選舉名稱、地名、候選人與政黨名稱，照選務機關原文。候選人與政黨不取中文譯名；選舉制度名稱可以在原文後面附中文說明，說明不取代原文。</li> <li data-astro-cid-zgeu7voa>數字照官方檔。官方檔需要加總或計算才能得到的數字（例如選區合計、得票率），照該機關公布的計算規則計算，並在該頁寫明計算方式與核對結果。</li> <li data-astro-cid-zgeu7voa>候選人與選區的順序照官方檔，不依得票多寡排序。</li> <li data-astro-cid-zgeu7voa>每頁附官方出處連結、授權條款原文與本站擷取時間；官方沒有附授權條款時，照實寫「官方未附授權條款」。</li> <li data-astro-cid-zgeu7voa>對每一場選舉用同一套版面與規則，不因國家或結果不同而改變。</li> <li data-astro-cid-zgeu7voa>不評價選舉品質，也不判斷一場選舉是否自由公正；收錄只代表該機關有公開資料。</li> </ol> <h2 class="font-serif-tc el-h2" data-astro-cid-zgeu7voa>本區不放的東西</h2> <ul class="el-ul" data-astro-cid-zgeu7voa> <li data-astro-cid-zgeu7voa>民意調查，包括引述別人的民調數字。</li> <li data-astro-cid-zgeu7voa>影音、候選人照片、黨徽或政黨標誌。政黨只寫文字名稱。</li> <li data-astro-cid-zgeu7voa>對候選人或政黨的評價、評分、比較或排名，以及選情預測。</li> <li data-astro-cid-zgeu7voa>留言功能，以及任何形式的捐款、贊助或委託廣告。</li> </ul> <h2 class="font-serif-tc el-h2" data-astro-cid-zgeu7voa>目前狀態與原因</h2> <div class="el-table-wrap" data-astro-cid-zgeu7voa> <table class="el-table" data-astro-cid-zgeu7voa> <thead data-astro-cid-zgeu7voa><tr data-astro-cid-zgeu7voa><th data-astro-cid-zgeu7voa>國家或地區（原文）</th><th data-astro-cid-zgeu7voa>選舉（原文）</th><th data-astro-cid-zgeu7voa>狀態</th><th data-astro-cid-zgeu7voa>原因</th></tr></thead> <tbody data-astro-cid-zgeu7voa><tr data-astro-cid-zgeu7voa><td data-astro-cid-zgeu7voa>대한민국</td><td data-astro-cid-zgeu7voa>제9회 전국동시지방선거（2026-06-03）</td><td data-astro-cid-zgeu7voa>已收錄市道首長選舉；同日其他 7 種選舉尚未收錄</td><td data-astro-cid-zgeu7voa>中央選舉管理委員會在公共資料入口網站公開開票檔，授權為「이용허락범위 제한 없음」。</td></tr><tr data-astro-cid-zgeu7voa><td data-astro-cid-zgeu7voa>日本</td><td data-astro-cid-zgeu7voa>第51回衆議院議員総選挙（2026-02-08）</td><td data-astro-cid-zgeu7voa>準備中</td><td data-astro-cid-zgeu7voa>總務省公開結果調；適用「公共データ利用規約（第1.0版）」，須標明出處與加工。候選人層級資料只有 PDF，解析與核對完成後收錄。</td></tr><tr data-astro-cid-zgeu7voa><td data-astro-cid-zgeu7voa>United States</td><td data-astro-cid-zgeu7voa>General Election（2026-11-03，各州辦理）</td><td data-astro-cid-zgeu7voa>選後收錄：聯邦參議員、聯邦眾議員與州長</td><td data-astro-cid-zgeu7voa>沒有全國統一的即時官方檔；聯邦選舉委員會的全國彙編在選後一段時間才發布，例如 2022 年期中選舉的彙編於 2025 年 2 月發布。本區改用各州選務機關公布的認證結果逐州收錄。多數州的結果檔沒有附開放授權條款；開票數字屬事實資料，本區照各州公布的認證數字呈現並標明出處，該頁授權欄註明「官方未附授權條款」。</td></tr><tr data-astro-cid-zgeu7voa><td data-astro-cid-zgeu7voa>中華民國</td><td data-astro-cid-zgeu7voa>115年地方公職人員選舉（2026-11-28）</td><td data-astro-cid-zgeu7voa>選後收錄</td><td data-astro-cid-zgeu7voa>中央選舉委員會以政府資料開放授權條款－第 1 版公開歷屆選舉資料。投票日後，等中央選舉委員會公布結果再收錄。</td></tr><tr data-astro-cid-zgeu7voa><td data-astro-cid-zgeu7voa>其他國家與地區</td><td data-astro-cid-zgeu7voa>—</td><td data-astro-cid-zgeu7voa>尚未評估</td><td data-astro-cid-zgeu7voa>還沒查過當地選務機關的資料。尚未評估不代表當地沒有選舉，也不代表沒有公開資料。</td></tr></tbody> </table> </div> <h2 class="font-serif-tc el-h2" data-astro-cid-zgeu7voa>更正</h2> <p class="el-p" data-astro-cid-zgeu7voa>發現數字與官方公告不一致，請寫信到 <a href="mailto:hi@twtools.cc" class="grow-underline" data-astro-cid-zgeu7voa>hi@twtools.cc</a>，附上頁面網址與官方出處。我們 7 天內回覆；確認有誤會修正，並記在該頁的「更正紀錄」。</p> </article> </main> </div>  <!-- Affiliates.One / Adotone Ad Link 網站驗證碼（須 is:inline 才會原樣輸出，勿移除 is:inline） --> <script>var ConverlyCustomData = {channelId: null};</script> <script async defer src="https://cdn.adotone.com/production/adlinks/676dd203e573377526b0bfa14fb812f5265fb0db262acf5759eaf3acb67f8e66.js"></script> </body> </html>
