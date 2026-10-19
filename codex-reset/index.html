@@ -347,9 +347,9 @@
         var from = s.verifiedHistoryFrom || (s.historyFrom || s.today).slice(0, 10);
         var byDay = {};
         s.events.forEach(function (e) { (byDay[e.day] = byDay[e.day] || []).push(e); });
-        var first = (new Date(Date.UTC(year, mo - 1, 1)).getUTCDay() + 6) % 7;
+        var first = new Date(Date.UTC(year, mo - 1, 1)).getUTCDay();
         var days = new Date(Date.UTC(year, mo, 0)).getUTCDate();
-        var cells = ['一','二','三','四','五','六','日'].map(function (d) { return '<span class="cr-dow">' + d + '</span>'; });
+        var cells = ['日','一','二','三','四','五','六'].map(function (d) { return '<span class="cr-dow">' + d + '</span>'; });
         for (var i = 0; i < first; i++) cells.push('<span class="cr-day-blank"></span>');
         for (var d = 1; d <= days; d++) {
           var key = month + '-' + String(d).padStart(2, '0');
