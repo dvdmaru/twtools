@@ -1,0 +1,572 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><script>(function(){try{var s=localStorage.getItem('tw-sidebar-collapsed');var c=s===null?false:s==='1';if(c){document.documentElement.classList.add('sidebar-collapsed');}}catch(e){}})();</script><title>PHP2Shell 怎麼修？站長查版本步驟與 PHP 支援終止對照表 | TWTools</title><meta name="description" content="PHP2Shell 修補不能只更新 WordPress。本文整理網站實際 PHP 版本的查法、8.2 至 8.5 的修補版本、5.4 至 8.1 的支援終止日期，以及共用主機該向業者確認的事項。另補 PHP 官方 10 月 23 日新增風險提醒，區分版本更新、套件回補與暫時緩解，附可直接貼給主機商的詢問清單。資料查核至 2026 年 10 月 25 日，台北時間。"><link rel="canonical" href="https://twtools.cc/blog/php2shell-php-version-eol-guide-2026/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://www.googletagmanager.com"><!-- 2026-10-10 字重減重 10→8：去 Serif 500（0 用）、Mono 500（1 用→400）；Sans 300 保留（首頁 hero .accent 與放鬆頁副標是刻意的細體，拿掉會變常規字重）。每個 Noto 字重的 CSS 約 127KB raw。 --><!-- 2026-10-11 評估過字型自架（@fontsource 可變字重放 public/fonts，commit 7ced834）後回退：這頁本來就要抓 44 片／2.7MB 切片，
+       自架沒少 bytes，卻把它搬到 twtools.cc 同一條連線，把 island 的 JS chunk 餓到 55 秒才載完（DCL 3.3s→51.9s）。
+       GitHub Pages 自架不划算；要再減只能減字重或改設計。紀錄見 CoWork/Charlie/2026-10-10/twtools-review/README.md。 --><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:url" content="https://twtools.cc/blog/php2shell-php-version-eol-guide-2026/"><meta property="og:title" content="PHP2Shell 怎麼修？站長查版本步驟與 PHP 支援終止對照表 | TWTools"><meta property="og:description" content="PHP2Shell 修補不能只更新 WordPress。本文整理網站實際 PHP 版本的查法、8.2 至 8.5 的修補版本、5.4 至 8.1 的支援終止日期，以及共用主機該向業者確認的事項。另補 PHP 官方 10 月 23 日新增風險提醒，區分版本更新、套件回補與暫時緩解，附可直接貼給主機商的詢問清單。資料查核至 2026 年 10 月 25 日，台北時間。"><meta property="og:image" content="https://twtools.cc/blog-images/php2shell-php-version-eol-guide-2026-cover.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="PHP2Shell 怎麼修？站長查版本步驟與 PHP 支援終止對照表"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="PHP2Shell 怎麼修？站長查版本步驟與 PHP 支援終止對照表 | TWTools"><meta name="twitter:description" content="PHP2Shell 修補不能只更新 WordPress。本文整理網站實際 PHP 版本的查法、8.2 至 8.5 的修補版本、5.4 至 8.1 的支援終止日期，以及共用主機該向業者確認的事項。另補 PHP 官方 10 月 23 日新增風險提醒，區分版本更新、套件回補與暫時緩解，附可直接貼給主機商的詢問清單。資料查核至 2026 年 10 月 25 日，台北時間。"><meta name="twitter:image" content="https://twtools.cc/blog-images/php2shell-php-version-eol-guide-2026-cover.png"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    // 內部流量標記（2026-10-10）：開任何頁加 ?internal=1 會把本瀏覽器記成內部（?internal=0 取消），
+    // 之後所有事件帶 traffic_type=internal；GA4 後台「內部流量」資料篩選器啟用後就會排除。
+    // 用途＝Charlie 自己的裝置 + 我們用真瀏覽器驗頁面時的流量，不再灌進使用數據。
+    var twInternal = false;
+    try {
+      var twQ = new URLSearchParams(location.search).get('internal');
+      if (twQ === '1') localStorage.setItem('tw_internal', '1');
+      else if (twQ === '0') localStorage.removeItem('tw_internal');
+      twInternal = localStorage.getItem('tw_internal') === '1';
+    } catch (e) {}
+    gtag('config', 'G-0WTK2LJFTY', twInternal ? { traffic_type: 'internal' } : {});
+    // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
+    // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
+    // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
+    window.twTrack = function (tool, action, label, extra) {
+      try {
+        if (typeof gtag !== 'function') return;
+        var t = tool || (location.pathname.split('/').filter(Boolean)[0] || 'home');
+        var p = { tool: t, action: String(action || ''), label: label == null ? '' : String(label).slice(0, 100) };
+        if (extra && typeof extra === 'object') for (var k in extra) if (p[k] === undefined) p[k] = extra[k];
+        gtag('event', 'tool_action', p);
+      } catch (e) {}
+    };
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind：2026-10-10 起改 build-time（tailwind.config.cjs＋src/styles/tailwind.css），不再載 cdn.tailwindcss.com；
+       theme（brand／warm／accent 色票、darkMode class、typography plugin）原樣搬到 tailwind.config.cjs。 --><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/BaseLayout.-DLUuO5R.css">
+<style>.db-callout[data-astro-cid-lqth5lif]{display:flex;align-items:center;gap:12px;border:1.5px solid var(--tw-hero-color);background:var(--tw-surface);padding:12px 16px;margin:0 0 20px;text-decoration:none;color:inherit;transition:transform .15s ease}.db-callout[data-astro-cid-lqth5lif]:hover{transform:translateY(-1px)}.db-callout-icon[data-astro-cid-lqth5lif]{font-size:22px;flex-shrink:0}.db-callout-text[data-astro-cid-lqth5lif]{display:flex;flex-direction:column;gap:1px;min-width:0}.db-callout-text[data-astro-cid-lqth5lif] strong[data-astro-cid-lqth5lif]{font-size:15px}.db-callout-text[data-astro-cid-lqth5lif] span[data-astro-cid-lqth5lif]{font-size:12.5px;color:var(--tw-text-secondary);line-height:1.5}.db-callout-go[data-astro-cid-lqth5lif]{margin-left:auto;flex-shrink:0;font-size:12px;color:var(--tw-hero-color);border:1px solid var(--tw-hero-color);padding:5px 10px;white-space:nowrap}
+</style></head> <body class="min-h-screen paper-noise">   <button id="sidebar-hamburger" class="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg" style="background:var(--tw-surface);color:var(--tw-text-primary)">☰</button>  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 md:hidden hidden"></div>  <aside id="sidebar-panel" data-sidebar-panel class="fixed top-0 left-0 h-full w-56 z-40 flex flex-col border-r transition-transform -translate-x-full md:translate-x-0" style="background:var(--tw-page-bg);border-color:var(--tw-border)"> <!-- Logo --> <div data-sidebar-logo class="p-4 border-b flex items-center justify-between" style="border-color:var(--tw-border)"> <a href="/" class="flex items-center no-underline"> <img src="/logo-icon-128.png" width="128" height="128" alt="TWTools" class="w-7 h-7 rounded-lg"> <span data-sidebar-brand class="text-sm font-bold ml-1.5" style="color:var(--tw-brand-accent)">TWTools</span> </a> <button id="sidebar-close" class="md:hidden text-lg leading-none" style="color:var(--tw-text-muted)">✕</button> </div> <!-- 桌機收合鈕（手機由漢堡鈕負責，此鈕於 <768px 隱藏） --> <button type="button" data-sidebar-toggle aria-controls="sidebar-panel" aria-expanded="true" class="w-full items-center justify-center py-2 border-b text-xs" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <span class="chev inline-block leading-none">«</span> <span data-sidebar-label class="ml-1.5">收合側欄</span> </button> <!-- Nav items grouped by category --> <nav class="flex-1 py-2 overflow-y-auto"> <div> <div data-sidebar-group class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">檔案處理</div> <a href="/image/" data-sidebar-item title="圖片工具" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🖼️</span> <span data-sidebar-label>圖片工具</span> </a><a href="/pdf/" data-sidebar-item title="PDF 工具" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📄</span> <span data-sidebar-label>PDF 工具</span> </a><a href="/resume/" data-sidebar-item title="履歷產生器" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📋</span> <span data-sidebar-label>履歷產生器</span> </a><a href="/proofread/" data-sidebar-item title="錯別字檢查" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">✍️</span> <span data-sidebar-label>錯別字檢查</span> </a> </div><div> <div data-sidebar-group class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">生活查詢</div> <a href="/dashboard/" data-sidebar-item title="防災儀表板" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛡️</span> <span data-sidebar-label>防災儀表板</span> </a><a href="/dashboard/wall/" data-sidebar-item title="颱風直播牆" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📡</span> <span data-sidebar-label>颱風直播牆</span> </a><a href="/typhoon/" data-sidebar-item title="颱風停班停課" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌀</span> <span data-sidebar-label>颱風停班停課</span> </a><a href="/dingfengbo/" data-sidebar-item title="定風波 風雨時間軸" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌧️</span> <span data-sidebar-label>定風波 風雨時間軸</span> </a><a href="/reservoir/" data-sidebar-item title="水庫即時水情" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💧</span> <span data-sidebar-label>水庫即時水情</span> </a><a href="/drone/" data-sidebar-item title="無人機管制區查詢" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛸</span> <span data-sidebar-label>無人機管制區查詢</span> </a><a href="/alerts/" data-sidebar-item title="災害即時告警" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🚨</span> <span data-sidebar-label>災害即時告警</span> </a><a href="/rain/" data-sidebar-item title="即時雨量" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☔</span> <span data-sidebar-label>即時雨量</span> </a><a href="/taipei/flood/" data-sidebar-item title="臺北下水道水位" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌧️</span> <span data-sidebar-label>臺北下水道水位</span> </a><a href="/taipei/data-notes/" data-sidebar-item title="資料源實測筆記" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📝</span> <span data-sidebar-label>資料源實測筆記</span> </a><a href="/oil-recall/" data-sidebar-item title="問題沙拉油查詢" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛢️</span> <span data-sidebar-label>問題沙拉油查詢</span> </a><a href="/lottery/" data-sidebar-item title="台灣彩券" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎰</span> <span data-sidebar-label>台灣彩券</span> </a><a href="/currency/" data-sidebar-item title="匯率換算" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💱</span> <span data-sidebar-label>匯率換算</span> </a><a href="/codex-reset/" data-sidebar-item title="Codex 額度重置監看" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🔄</span> <span data-sidebar-label>Codex 額度重置監看</span> </a> </div><div> <div data-sidebar-group class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">計算換算</div> <a href="/datecalc/" data-sidebar-item title="日期計算器" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📅</span> <span data-sidebar-label>日期計算器</span> </a><a href="/countdown/" data-sidebar-item title="倒數計時器" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⏳</span> <span data-sidebar-label>倒數計時器</span> </a><a href="/unit/" data-sidebar-item title="單位換算" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📏</span> <span data-sidebar-label>單位換算</span> </a> </div><div> <div data-sidebar-group class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">查詢工具</div> <a href="/postal/" data-sidebar-item title="郵遞區號" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📮</span> <span data-sidebar-label>郵遞區號</span> </a><a href="/address/" data-sidebar-item title="地址中譯英" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌐</span> <span data-sidebar-label>地址中譯英</span> </a><a href="/lunar/" data-sidebar-item title="農曆國曆" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> <span data-sidebar-label>農曆國曆</span> </a><a href="/solar-terms/" data-sidebar-item title="二十四節氣" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☀️</span> <span data-sidebar-label>二十四節氣</span> </a> </div><div> <div data-sidebar-group class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">學習工具</div> <a href="/vocabulary/" data-sidebar-item title="英文單字片語" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎓</span> <span data-sidebar-label>英文單字片語</span> </a> </div><div> <div data-sidebar-group class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">站長工具</div> <a href="/seo/" data-sidebar-item title="SEO/GEO/AEO" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📊</span> <span data-sidebar-label>SEO/GEO/AEO</span> </a><a href="/clock/" data-sidebar-item title="翻頁時鐘" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🕐</span> <span data-sidebar-label>翻頁時鐘</span> </a> </div><div> <div data-sidebar-group class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">放鬆小站</div> <a href="/breathe/" data-sidebar-item title="一起喘口氣" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">😮‍💨</span> <span data-sidebar-label>一起喘口氣</span> </a><a href="/midnight/" data-sidebar-item title="深夜宵夜所" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> <span data-sidebar-label>深夜宵夜所</span> </a><a href="/woodenfish/" data-sidebar-item title="電子木魚" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🪵</span> <span data-sidebar-label>電子木魚</span> </a><a href="/sand/" data-sidebar-item title="指尖流沙" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⌛</span> <span data-sidebar-label>指尖流沙</span> </a> </div><div> <div data-sidebar-group class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">休閒遊戲</div> <a href="/bee/" data-sidebar-item title="小蜜蜂" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🐝</span> <span data-sidebar-label>小蜜蜂</span> </a><a href="/invaders/" data-sidebar-item title="太空侵略者" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">👾</span> <span data-sidebar-label>太空侵略者</span> </a><a href="/crab/" data-sidebar-item title="打螃蟹" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🦀</span> <span data-sidebar-label>打螃蟹</span> </a> </div><div> <div data-sidebar-group class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">更多</div> <a href="/blog/" data-sidebar-item title="知識文章" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-r-2" style="background:rgba(107,115,148,0.15);color:var(--tw-brand-accent);border-color:var(--tw-brand-accent)"> <span class="text-base">📝</span> <span data-sidebar-label>知識文章</span> </a> </div>   </nav> <div data-sidebar-footer class="p-3 border-t text-xs text-center space-y-1" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <div class="flex justify-center gap-3"> <a href="/about/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">關於</a> <a href="/privacy/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">隱私權</a> <a href="/terms/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">條款</a> </div>
+打工牛馬的線上工具箱 © 2026
+</div> </aside>  <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8 min-h-screen" style="background:var(--tw-page-bg)">   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PHP2Shell 怎麼修？站長查版本步驟與 PHP 支援終止對照表","description":"PHP2Shell 修補不能只更新 WordPress。本文整理網站實際 PHP 版本的查法、8.2 至 8.5 的修補版本、5.4 至 8.1 的支援終止日期，以及共用主機該向業者確認的事項。另補 PHP 官方 10 月 23 日新增風險提醒，區分版本更新、套件回補與暫時緩解，附可直接貼給主機商的詢問清單。資料查核至 2026 年 10 月 25 日，台北時間。","image":"https://twtools.cc/blog-images/php2shell-php-version-eol-guide-2026-cover.png","datePublished":"2026-10-25T00:00:00+08:00","dateModified":"2026-10-25T00:00:00+08:00","author":{"@type":"Organization","name":"TWTools 編輯部","url":"https://twtools.cc"},"publisher":{"@type":"Organization","name":"TWTools","url":"https://twtools.cc","logo":{"@type":"ImageObject","url":"https://twtools.cc/favicon.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://twtools.cc/blog/php2shell-php-version-eol-guide-2026/"},"inLanguage":"zh-Hant-TW","keywords":"PHP2Shell, PHP 版本怎麼查, PHP EOL, PHP 支援終止, PHP 8.2 安全更新, WordPress PHP 更新, CVE-2026-109618, CVE-2026-109619, CVE-2026-115560"}</script>  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"WordPress 與外掛都更新了，還要更新 PHP 嗎？","acceptedAnswer":{"@type":"Answer","text":"要確認 PHP 本體。PHP2Shell 的兩個原始漏洞在 PHP 執行環境，CMS 與外掛更新不能替代 PHP 修補。共用主機請業者提供完整套件版本與這兩個 CVE 的修補依據。"}},{"@type":"Question","name":"PHP 8.3 還在支援期間，為什麼仍要更新？","acceptedAnswer":{"@type":"Answer","text":"受支援代表該分支仍會收到修補，不代表所有舊修訂版都安全。10 月 21 日兩個 CVE 的 8.3 分支修補版是 8.3.36；供應商回補套件則依其安全公告判定。還要核對 10 月 23 日的後續設定提醒。"}},{"@type":"Question","name":"PHP 8.1 有補丁，是不是可以繼續用？","acceptedAnswer":{"@type":"Answer","text":"PHP 8.1 已於 2025-12-31 終止上游支援。本次最小原始碼回補沒有恢復上游支援（含持續安全修補）；商業 LTS 也須確認涵蓋範圍與期限。先修補眼前風險，仍應安排遷移。"}},{"@type":"Question","name":"關閉 Session 上傳進度就能解決 PHP2Shell 嗎？","acceptedAnswer":{"@type":"Answer","text":"不能取代 PHP 更新。它能阻擋特定 Session 攻擊路徑，也是 10 月 23 日後續提醒的處理方式，但不涵蓋原本所有漏洞路徑。設定須在請求解析前生效，並重啟所有 worker。"}},{"@type":"Question","name":"php -v 顯示修補版，網站就已經修好了嗎？","acceptedAnswer":{"@type":"Answer","text":"還不能據此判定。php -v 顯示命令列 PHP，網站可能由另一版本處理。應再核對網站實際服務、所有節點及 worker 已更新，並取得供應商修補紀錄。"}}]}</script> <nav class="max-w-5xl mx-auto px-2 md:px-6 pt-2 pb-4 no-print" aria-label="breadcrumb"> <ol class="flex items-center gap-2 text-sm flex-wrap m-0 p-0 list-none" style="color: var(--tw-text-muted);"> <li><a href="/" class="grow-underline">首頁</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><a href="/blog/" class="grow-underline">編輯室</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><span style="color: var(--tw-text-primary);">站長工具</span></li> </ol> </nav>  <section class="max-w-5xl mx-auto px-2 md:px-6 pb-6"> <div class="article-col"> <div class="flex items-center gap-3 mb-5 flex-wrap"> <span class="brand-dot"></span> <span class="eyebrow">站長工具</span> <span class="printrule hidden md:inline">|</span> <span class="eyebrow">9 分鐘</span> <span class="printrule hidden md:inline">|</span> <span class="updated-pill"><span class="pulse-dot"></span>UPDATED · 2026 / 10 / 25</span> </div> <h1 class="font-serif-tc font-black tracking-cn" style="font-size: clamp(30px, 4.6vw, 52px); line-height: 1.15; color: var(--tw-hero-color); letter-spacing: -0.015em; margin: 0;"> PHP2Shell 怎麼修？站長查版本步驟與 PHP 支援終止對照表 </h1> <p class="font-serif-tc" style="margin: 24px 0 0; font-size: clamp(16px, 1.8vw, 19px); line-height: 1.65; color: var(--tw-text-secondary); font-weight: 400;"> PHP2Shell 修補不能只更新 WordPress。本文整理網站實際 PHP 版本的查法、8.2 至 8.5 的修補版本、5.4 至 8.1 的支援終止日期，以及共用主機該向業者確認的事項。另補 PHP 官方 10 月 23 日新增風險提醒，區分版本更新、套件回補與暫時緩解，附可直接貼給主機商的詢問清單。資料查核至 2026 年 10 月 25 日，台北時間。 </p> <div class="mt-8 pt-6 border-t flex items-center gap-x-6 gap-y-2 flex-wrap text-sm no-print" style="border-color: var(--tw-border); color: var(--tw-text-muted);"> <span class="inline-flex items-center gap-2"> <span class="w-7 h-7 rounded-full grid place-items-center" style="background: var(--tw-hero-color); color: #fffbfa; font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 12px;">編</span> <span style="color: var(--tw-text-secondary);">TWTools 編輯部</span> </span> <span class="printrule">|</span> <time datetime="2026-10-25">2026 / 10 / 25</time> <span class="ml-auto inline-flex items-center gap-3">  <button type="button" id="print-link" class="grow-underline inline-flex items-center gap-1.5" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0; font: inherit;"> <svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+  <rect x="6" y="14" width="12" height="8" rx="1" />
+</svg>
+列印
+</button> </span> </div> </div> </section>  <figure class="max-w-5xl mx-auto px-2 md:px-6 mb-8 figure"> <div class="article-col"> <img src="/blog-images/php2shell-php-version-eol-guide-2026-cover.png" alt="PHP2Shell 怎麼修？站長查版本步驟與 PHP 支援終止對照表" class="hero-cover" style="width: 100%; object-fit: cover; background: var(--tw-surface);" loading="eager" fetchpriority="high"> <figcaption><em>PHP2Shell 怎麼修？站長查版本步驟與 PHP 支援終止對照表</em> <span class="src">— ILLUSTRATION · TWTOOLS EDITORIAL</span></figcaption> </div> </figure> <article class="max-w-5xl mx-auto px-2 md:px-6 mb-12"> <div class="article-frame"> <aside class="article-margin no-print"> <div class="margin-label">站長工具 · 2026</div> </aside> <div class="prose-cn"> <!-- TOC --> <details class="toc-block no-print" open> <summary> <div class="toc-head"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 5h.01" />
+  <path d="M3 12h.01" />
+  <path d="M3 19h.01" />
+  <path d="M8 5h13" />
+  <path d="M8 12h13" />
+  <path d="M8 19h13" />
+</svg>
+ <span class="eyebrow">CONTENTS · 目次</span> <h3>本文 7 個段落</h3> </div> <svg aria-hidden="true"
+  class="w-4 h-4 toc-chev lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m6 9 6 6 6-6" />
+</svg>
+ </summary> <div class="toc-list"> <ol> <li> <a href="#一php2shell-是什麼哪些網站需要處理"> <span class="toc-num">§ 01</span> <span class="toc-title">一、PHP2Shell 是什麼？哪些網站需要處理？</span> </a> </li><li> <a href="#二php-版本怎麼查先看網站正在跑哪一版"> <span class="toc-num">§ 02</span> <span class="toc-title">二、PHP 版本怎麼查？先看網站正在跑哪一版</span> </a> </li><li> <a href="#三php-修補版本與支援終止日期對照"> <span class="toc-num">§ 03</span> <span class="toc-title">三、PHP 修補版本與支援終止日期對照</span> </a> </li><li> <a href="#四10-月-23-日又有提醒升級後仍要核對設定"> <span class="toc-num">§ 04</span> <span class="toc-title">四、10 月 23 日又有提醒：升級後仍要核對設定</span> </a> </li><li> <a href="#五共用主機問什麼自管主機怎麼驗收"> <span class="toc-num">§ 05</span> <span class="toc-title">五、共用主機問什麼？自管主機怎麼驗收？</span> </a> </li><li> <a href="#六修完之後還要留意哪些異常"> <span class="toc-num">§ 06</span> <span class="toc-title">六、修完之後，還要留意哪些異常？</span> </a> </li><li> <a href="#常見問題faq"> <span class="toc-num">§ 07</span> <span class="toc-title">常見問題（FAQ）</span> </a> </li> </ol> </div> </details>  <p>收到 PHP2Shell 警訊，進 WordPress 後台把外掛全部更新，這樣處理完了嗎？還要查網站底下的 PHP。它是執行網站程式的環境，通常由主機商或維運人員管理，更新 CMS 和外掛不會自動替它修補。</p>
+<p>先做 3 件事：<strong>查出這個網站實際使用的 PHP 完整版本、確認主機商的修補紀錄、核對更新後的服務確實已重新啟動。</strong> 如果仍使用 PHP 8.1 或更舊分支，還要安排遷移。</p>
+<blockquote>
+<p>本文查核至 2026 年 10 月 25 日（台北時間）。PHP 官方 10 月 23 日另有後續風險提醒，已列在第 4 節。表列版本針對 10 月 21 日的兩個漏洞，不代表網站所有安全問題都已排除；後續版本以原廠及套件供應商公告為準。</p>
+</blockquote>
+<h2 id="一php2shell-是什麼哪些網站需要處理">一、PHP2Shell 是什麼？哪些網站需要處理？</h2>
+<p>PHP2Shell 指的是 <strong>CVE-2026-109618、CVE-2026-109619</strong> 這組 PHP 核心漏洞，兩者的 CVSS v4.0 分數均為 9.2。問題涉及記憶體不足處理與跨請求殘留狀態，可能讓未登入的攻擊者在伺服器上執行程式碼。<a href="https://www.twcert.org.tw/tw/cp-169-11303-1d68a-1.html">TWCERT/CC 已於 10 月 22 日發布通報。</a></p>
+<p>風險落在 PHP 執行環境。WordPress、Drupal、Joomla 或自行開發的 PHP 網站，都應盤點；沒有安裝特定外掛，不能據此排除。Wiz 研究指出，受影響範圍可回溯到 PHP 5.4，但不同版本、架構與設定可走的攻擊路徑有差異，不能理解成每個網站都能被同一招成功入侵。<a href="https://www.wiz.io/blog/php2shell-php-rce">Wiz 原始研究</a></p>
+<p>PHP 官方要求盤點的架構包括 PHP-FPM、Apache mod_php、php-cgi、FrankenPHP 與 LiteSpeed。<strong>只要主機仍接受網頁請求並執行 PHP，就應確認修補狀態。</strong> 這也包含平常少用的舊站與子網域。純靜態 HTML 本身沒有 PHP 執行層；但同一主機是否另有 PHP 服務，仍須確認。<a href="https://www.php.net/archive/2026.php#2026-10-21-5">PHP 安全公告</a></p>
+<h2 id="二php-版本怎麼查先看網站正在跑哪一版">二、PHP 版本怎麼查？先看網站正在跑哪一版</h2>
+<h3 id="wordpress從網站狀態查看">WordPress：從網站狀態查看</h3>
+<p>以管理員身分登入後台，依序開啟：</p>
+<p><strong>工具（Tools）→網站狀態（Site Health）→資訊（Info）→伺服器（Server）→PHP 版本（PHP version）。</strong></p>
+<p>介面譯名可能隨語系略有差異。記下完整版本，例如 <code>8.3.36</code>，不要只記「PHP 8」或「8.3」。<a href="https://wordpress.org/documentation/article/site-health-screen/">WordPress 官方文件</a></p>
+<h3 id="共用主機查指定網域的設定">共用主機：查指定網域的設定</h3>
+<p>進主機管理面板的 PHP 設定頁，選到要查的網域。面板列出的「可選版本」和網站「目前採用版本」要分開看；有多個網域時，請逐站確認。如果只顯示 8.3 這類分支名稱，向主機商索取完整套件版本及本次修補紀錄。</p>
+<h3 id="有-sshphp--v-只能作交叉檢查">有 SSH：<code>php -v</code> 只能作交叉檢查</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">php</span><span style="color:#79B8FF"> -v</span></span></code></pre>
+<p>這個指令顯示命令列介面（CLI）所用的 PHP。網站可能由另一套 PHP-FPM 或 Apache 模組處理，兩者可以不同。請維運人員核對實際接收網站流量的服務；不要看到 SSH 顯示新版本，就替所有網域打勾。<a href="https://www.php.net/manual/en/features.commandline.options.php">PHP CLI 文件</a></p>
+<p><code>phpinfo()</code> 也能顯示網頁執行環境，但會揭露設定、路徑及部分環境資訊。一般站長優先使用後台或請主機商確認。確有除錯需要時，僅在有存取控制的環境使用，查完移除；難猜的檔名不構成存取控制。<a href="https://www.php.net/manual/en/function.phpinfo.php">PHP 手冊</a></p>
+<h2 id="三php-修補版本與支援終止日期對照">三、PHP 修補版本與支援終止日期對照</h2>
+<p>以下支援期限指 <strong>PHP 專案的上游支援</strong>。Linux 發行版或商業長期支援（LTS）可能有自己的合約與回補政策，須另外確認。</p>
+<h3 id="目前受支援的-4-個分支">目前受支援的 4 個分支</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>PHP 分支</th><th>10/25 維護狀態</th><th>安全支援結束日期</th><th>10/21 兩個 CVE 修補版</th></tr></thead><tbody><tr><td>8.5</td><td>一般維護</td><td>2029-12-31</td><td>8.5.12</td></tr><tr><td>8.4</td><td>一般維護</td><td>2028-12-31</td><td>8.4.27</td></tr><tr><td>8.3</td><td>僅安全修補</td><td>2027-12-31</td><td>8.3.36</td></tr><tr><td>8.2</td><td>僅安全修補</td><td>2026-12-31</td><td>8.2.35</td></tr></tbody></table>
+<p>一般維護包含錯誤與安全修正；轉為安全維護後，主要處理重大安全問題。8.4 的一般維護到 2026-12-31，8.5 到 2027-12-31。<a href="https://www.php.net/supported-versions.php">PHP 官方支援表</a></p>
+<p>表列四版是 10 月 21 日兩個 CVE 的正式修補版本。使用上游版本者，應安裝該分支已發布的最新修正版；若主機商有套件回補，判定方式見下一段。8.2 雖有本次修正，安全支援將於今年底結束，修補後仍要規劃遷移。<a href="https://www.php.net/archive/2026.php#2026-10-21-5">PHP 安全公告</a></p>
+<p>PHP 8.6 目前是候選測試版，不應拿來當正式站的升級捷徑。<a href="https://www.php.net/archive/2026.php#2026-10-21-6">PHP 8.6 RC4 發布說明</a></p>
+<h3 id="已終止支援eol的舊分支">已終止支援（EOL）的舊分支</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>PHP 分支</th><th>上游支援終止日期</th></tr></thead><tbody><tr><td>8.1</td><td>2025-12-31</td></tr><tr><td>8.0</td><td>2023-11-26</td></tr><tr><td>7.4</td><td>2022-11-28</td></tr><tr><td>7.3</td><td>2021-12-06</td></tr><tr><td>7.2</td><td>2020-11-30</td></tr><tr><td>7.1</td><td>2019-12-01</td></tr><tr><td>7.0</td><td>2019-01-10</td></tr><tr><td>5.6</td><td>2018-12-31</td></tr><tr><td>5.5</td><td>2016-07-21</td></tr><tr><td>5.4</td><td>2015-09-03</td></tr></tbody></table>
+<p>資料來源：<a href="https://www.php.net/eol.php">PHP 已終止支援分支表</a>。日期採官方列值，不另推算成台北某個時刻突然停止運作；EOL 代表上游停止支援，程式不會因此自動關機。</p>
+<p>本次有一項例外：PHP 安全團隊為 <strong>7.4、8.0、8.1</strong> 提供最小原始碼回補，協助自行編譯或沒有 LTS 供應商的使用者。這沒有恢復這 3 個分支的正常支援，也不能延伸成「8.1 以下都有補丁」。小站長應請主機商處理，不建議照網路片段自行編譯正式主機。<a href="https://www.php.net/archive/2026.php#2026-10-21-5">原廠回補說明</a></p>
+<h3 id="版號比較舊也可能已回補">版號比較舊，也可能已回補</h3>
+<p>回補（backport）是把安全修正放進供應商維護的既有套件，未必把上游版本號改成表列四版。<strong>完整套件版本、供應商安全公告與這兩個 CVE 的修補狀態，要一起看。</strong> 主機商若只回覆「已開 WAF」或「WordPress 已更新」，仍未回答 PHP 是否修補。<a href="https://access.redhat.com/security/vulnerabilities/RHSB-2026-013">Red Hat 本次安全指引</a></p>
+<h2 id="四10-月-23-日又有提醒升級後仍要核對設定">四、10 月 23 日又有提醒：升級後仍要核對設定</h2>
+<p>PHP 官方另公告 <strong>CVE-2026-115560</strong> 的少見風險組合：<code>session.serialize_handler</code> 原設定為 <code>php_binary</code> 或 <code>php_serialize</code>，程式在執行時以 <code>ini_set()</code> 切換成 <code>php</code>，之後呼叫 <code>session_start()</code>，且 Session 上傳進度功能仍啟用。</p>
+<p>官方建議，在下一次例行錯誤修正版發布前，設定：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ini"><code><span class="line"><span style="color:#F97583">session.upload_progress.enabled</span><span style="color:#E1E4E8">=0</span></span></code></pre>
+<p>依官方說明，從未在執行時切換上述序列化處理方式的應用，可保留此功能。本篇建議先完成 10 月 21 日修補，再由管理者判斷是否適用。<strong>先前已停用者，應維持停用；尚未修補者不要因這段例外而重新開啟。</strong> 無法判斷自己的程式是否符合條件時，請主機商或開發者確認。本次查核未見官方已發布這個後續問題的正式修補版公告。<a href="https://www.php.net/archive/2026.php#2026-10-23-1">10 月 23 日原廠提醒</a></p>
+<p>這項設定要由管理者在請求解析前套用，並重啟所有 PHP 工作程序（worker）。把 <code>ini_set()</code> 寫在首頁，或只修改 FPM 的 <code>.user.ini</code>，不能當成等效處理。<a href="https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp">官方技術公告</a></p>
+<p>要分清楚兩件事：10 月 21 日的版本更新處理原本兩個漏洞；關閉上傳進度只能阻擋特定 Session 路徑。<strong>尚未安裝原本修補的主機，仍須更新。</strong> WAF 或關閉上傳功能，都不能替代 PHP 本體修正。</p>
+<p>官方也列出 <code>memory_limit=-1</code> 作為無法立即更新時的緩解之一，但它並不完整，取消 PHP 記憶體上限還會帶來資源耗盡風險。這須由管理者配合容器或 cgroup 等外部資源限制評估，站長不要當成一鍵解法自行套用。<a href="https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w">OOM 技術公告與緩解限制</a></p>
+<h2 id="五共用主機問什麼自管主機怎麼驗收">五、共用主機問什麼？自管主機怎麼驗收？</h2>
+<p>如果主機交給業者維護，可以直接傳下面這段，填入自己的網域：</p>
+<blockquote>
+<p>請協助確認此網域實際處理網頁請求的 PHP 完整版本與套件版本，並提供 CVE-2026-109618、CVE-2026-109619 的修補公告或回補依據。更新是否已套用至所有服務節點，所有 PHP worker 是否已重新啟動？另外，請確認 PHP 10 月 23 日 CVE-2026-115560 提醒是否適用，以及上傳進度設定的處置。若目前分支已 EOL，請提供升級選項、相容性測試與完成時間。</p>
+</blockquote>
+<p>自管主機則由維運人員負責安裝更新、套用設定及重啟；容器環境要確認實際服務已換成修補後的映像。只下載新套件、只重建映像但沒替換正在跑的容器，都還沒做完。Red Hat 特別提醒要重啟每個 worker，不能只靠 reload。<a href="https://access.redhat.com/security/vulnerabilities/RHSB-2026-013">供應商維運說明</a></p>
+<p>跨分支升級前，依 <a href="https://wordpress.org/support/update-php/">WordPress 官方指引</a> 備份網站、更新核心、佈景主題及外掛。本篇建議確認備份包含網站檔案與資料庫，並先在測試環境驗相容性，按網站實際功能檢查登入、表單、圖片上傳、結帳及排程。這份長青指引的版本建議不能取代本次漏洞的修補版對照。</p>
+<p><strong>同分支修補通常較容易安排；跨分支遷移能取得較長的支援時間，但有相容性成本。</strong> 若舊外掛暫時卡住遷移，先向供應商取得現分支可用的修補方案與期限。無法及時修補的對外服務，應由維運人員評估限制存取或暫停服務；不要讓未修補 PHP 無限期留在線上。</p>
+<h2 id="六修完之後還要留意哪些異常">六、修完之後，還要留意哪些異常？</h2>
+<p>更新可以封堵漏洞，先前是否已遭入侵仍要另查。建議請維運或資安人員核對更新前後的存取及錯誤紀錄、非預期檔案異動、陌生管理員、異常工作程序或對外連線。發現異常先保留紀錄、時間與檔案證據，再依事件處理程序處置。</p>
+<p>PHP 崩潰或記憶體不足訊息都可能有正常原因，單一異常不能直接判定入侵；反過來，<strong>沒有錯誤紀錄也不能證明安全</strong>，官方指出某些路徑可能在寫入日誌前就失敗。<a href="https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp">官方診斷限制</a></p>
+<p>完成這次處置後，把「網站／主機商／PHP 分支／修補依據／下次 EOL」記成維護表，比下次收到警訊再重新找人省事。網站對外內容與搜尋呈現可另用 <a href="/seo/">TWTools 三軸掃描器</a> 檢查；它不做 PHP 漏洞偵測，也不能替這次修補驗收。</p>
+<h2 id="常見問題faq">常見問題（FAQ）</h2>
+<h3 id="wordpress-與外掛都更新了還要更新-php-嗎">WordPress 與外掛都更新了，還要更新 PHP 嗎？</h3>
+<p>要確認 PHP 本體。PHP2Shell 的兩個原始漏洞在 PHP 執行環境，CMS 與外掛更新不能替代 PHP 修補。共用主機請業者提供完整套件版本與這兩個 CVE 的修補依據。</p>
+<h3 id="php-83-還在支援期間為什麼仍要更新">PHP 8.3 還在支援期間，為什麼仍要更新？</h3>
+<p>受支援代表該分支仍會收到修補，不代表所有舊修訂版都安全。10 月 21 日兩個 CVE 的 8.3 分支修補版是 8.3.36；供應商回補套件則依其安全公告判定。還要核對 10 月 23 日的後續設定提醒。</p>
+<h3 id="php-81-有補丁是不是可以繼續用">PHP 8.1 有補丁，是不是可以繼續用？</h3>
+<p>PHP 8.1 已於 2025-12-31 終止上游支援。本次最小原始碼回補沒有恢復上游支援（含持續安全修補）；商業 LTS 也須確認涵蓋範圍與期限。先修補眼前風險，仍應安排遷移。</p>
+<h3 id="關閉-session-上傳進度就能解決-php2shell-嗎">關閉 Session 上傳進度就能解決 PHP2Shell 嗎？</h3>
+<p>不能取代 PHP 更新。它能阻擋特定 Session 攻擊路徑，也是 10 月 23 日後續提醒的處理方式，但不涵蓋原本所有漏洞路徑。設定須在請求解析前生效，並重啟所有 worker。</p>
+<h3 id="php--v-顯示修補版網站就已經修好了嗎">php -v 顯示修補版，網站就已經修好了嗎？</h3>
+<p>還不能據此判定。php -v 顯示命令列 PHP，網站可能由另一版本處理。應再核對網站實際服務、所有節點及 worker 已更新，並取得供應商修補紀錄。</p>
+<hr>
+<p><strong>主要資料來源</strong>：本文依 <a href="https://www.php.net/archive/2026.php#2026-10-21-5">PHP 10/21 安全公告</a>、<a href="https://www.php.net/archive/2026.php#2026-10-23-1">10/23 後續提醒</a>、<a href="https://www.php.net/supported-versions.php">支援版本表</a>、<a href="https://www.php.net/eol.php">EOL 表</a>、<a href="https://www.twcert.org.tw/tw/cp-169-11303-1d68a-1.html">TWCERT/CC 通報</a>、<a href="https://www.wiz.io/blog/php2shell-php-rce">Wiz 研究</a>、<a href="https://access.redhat.com/security/vulnerabilities/RHSB-2026-013">Red Hat 指引</a>及 WordPress 官方文件綜整。修補狀態會變更，請以原廠及實際套件供應商的最新公告為準。</p>   <!-- Reactions --> <div class="reactions no-print"> <div class="ask">這篇對你有幫助嗎？</div> <div class="react-buttons"> <button type="button" class="react-btn" data-react="useful"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
+  <path d="M7 10v12" />
+</svg>
+ <span>覺得有用</span> <span class="count" data-react-count="useful">—</span> </button> <button type="button" class="react-btn" data-react="bookmark"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z" />
+</svg>
+ <span>收藏</span> <span class="count" data-react-count="bookmark">—</span> </button> </div> <span class="meta">PUBLISHED · 2026 / 10 / 25</span> </div> <!-- Full CTA --> <div class="cta-full no-print"> <div class="cta-head"> <h4>把這篇帶走</h4> <span class="eyebrow">SAVE · SHARE · FEED</span> </div> <div class="cta-grid"> <a href="#" class="cta-cell" data-action="copy-link"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+</svg>
+</div> <div> <div class="label">複製連結 <span class="kbd">⌘ C</span></div> <div class="desc">把這篇 URL 存到 Notion、Pocket，或直接傳給朋友。</div> </div> </a> <a href="/blog/php2shell-php-version-eol-guide-2026/index.md" class="cta-cell" data-action="copy-md"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+</div> <div> <div class="label">複製 Markdown</div> <div class="desc">原始 .md 內容，餵 Gemini Notebook、ChatGPT 當研究素材。</div> </div> </a> <a href="https://notebook.google.com/?import=https%3A%2F%2Ftwtools.cc%2Fblog%2Fphp2shell-php-version-eol-guide-2026%2F" target="_blank" rel="noopener" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
+  <path d="M9 13a4.5 4.5 0 0 0 3-4" />
+  <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" />
+  <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
+  <path d="M6 18a4 4 0 0 1-1.967-.516" />
+  <path d="M12 13h4" />
+  <path d="M12 18h6a2 2 0 0 1 2 2v1" />
+  <path d="M12 8h8" />
+  <path d="M16 8V5a2 2 0 0 1 2-2" />
+  <circle cx="16" cy="13" r=".5" />
+  <circle cx="18" cy="3" r=".5" />
+  <circle cx="20" cy="21" r=".5" />
+  <circle cx="20" cy="8" r=".5" />
+</svg>
+</div> <div> <div class="label">送進 Gemini Notebook</div> <div class="desc">一鍵把本文加入你的 Gemini Notebook（原 NotebookLM）來源。</div> </div> </a> <a href="/blog/rss.xml" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 11a9 9 0 0 1 9 9" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <circle cx="5" cy="19" r="1" />
+</svg>
+</div> <div> <div class="label">訂閱 RSS</div> <div class="desc">每週一篇，更新就推到你的 Reader。</div> </div> </a> </div> </div> </div> <aside class="article-margin no-print"> <div class="margin-label">TWTOOLS / EDITORIAL</div> </aside> </div> </article>  <script data-blog-tool-click>
+    document.addEventListener('click', function (e) {
+      try {
+        var a = e.target && e.target.closest ? e.target.closest('article a[href]') : null;
+        if (!a) return;
+        var u = new URL(a.getAttribute('href'), location.href);
+        if (u.origin !== location.origin) return;
+        var seg = u.pathname.split('/').filter(Boolean)[0] || '';
+        if (!seg || seg === 'blog') return;
+        if (typeof window.twTrack === 'function') window.twTrack('blog', 'click', seg);
+      } catch (err) {}
+    }, { passive: true });
+  </script>  <section class="no-print"> <div class="adjacent"> <a href="/blog/typhoon-northeast-monsoon-interaction-guide-2026/"> <div class="arrow-row"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m12 19-7-7 7-7" />
+  <path d="M19 12H5" />
+</svg>
+ <span class="eyebrow">PREV · 上一篇</span> </div> <div class="post-title">共伴效應是什麼？颱風遇上東北季風，北部、宜蘭為何容易下大雨</div> </a> <div style="background: var(--tw-page-bg);"></div> </div> </section> <div class="max-w-6xl mx-auto pb-2"> <div class="pt-5 mt-6 border-t flex flex-col md:flex-row md:items-baseline gap-x-6 gap-y-2" style="border-color: var(--tw-border);"> <span class="eyebrow shrink-0">姊妹站 · FAMILY</span> <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm" style="color: var(--tw-text-muted);"> <a href="https://aire.twtools.cc/" title="aire — AI Tool Atlas·AI 工具圖鑑" class="grow-underline whitespace-nowrap">aire — AI Tool Atlas·AI 工具圖鑑</a><a href="https://tree.twtools.cc/" title="樹洞21號 — 匿名 AI 心事平台" class="grow-underline whitespace-nowrap">樹洞21號 — 匿名 AI 心事平台</a><a href="https://foootball.twtools.cc/" title="@foootball — 2026 世界盃賽程" class="grow-underline whitespace-nowrap">@foootball — 2026 世界盃賽程</a><a href="https://baseball.twtools.cc/" title="@baseball — 中職 CPBL＋MLB 深度戰報" class="grow-underline whitespace-nowrap">@baseball — 中職 CPBL＋MLB 深度戰報</a><a href="https://basketball.twtools.cc/" title="籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據" class="grow-underline whitespace-nowrap">籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據</a><a href="https://racing.twtools.cc/" title="賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果" class="grow-underline whitespace-nowrap">賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果</a><a href="https://health.twtools.cc/" title="健檢數據誌 — 健檢報告上的數字，各機構判準並列" class="grow-underline whitespace-nowrap">健檢數據誌 — 健檢報告上的數字，各機構判準並列</a><a href="https://tender.twtools.cc/" title="標案雷達 — 網通設備標案查詢、押標金試算與規格預檢" class="grow-underline whitespace-nowrap">標案雷達 — 網通設備標案查詢、押標金試算與規格預檢</a><a href="https://shhhh.cc/" title="Shhhh — 專業短網址管理平台" class="grow-underline whitespace-nowrap">Shhhh — 專業短網址管理平台</a><a href="https://dvdmaru.com/" title="dvdmaru — 把事實和敘事分開來看" class="grow-underline whitespace-nowrap">dvdmaru — 把事實和敘事分開來看</a> </div> </div> </div> </main>  <script>
+    (function() {
+      var hamburger = document.getElementById('sidebar-hamburger');
+      var overlay = document.getElementById('sidebar-overlay');
+      var panel = document.getElementById('sidebar-panel');
+      var closeBtn = document.getElementById('sidebar-close');
+
+      // 手機開合。與 Sidebar.jsx（React 版）行為必須一致——2026-07-31 前兩者已漂移：
+      // React 版有 Escape 關閉與背景捲動鎖，本檔沒有，同一顆漢堡鈕兩種手感。
+      // 改任一邊時請同步另一邊（或更好：把行為再往下沉到共用層）。
+      function isOpen() {
+        return overlay && !overlay.classList.contains('hidden');
+      }
+      function openSidebar() {
+        panel.classList.remove('-translate-x-full');
+        panel.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';   // 選單開著時鎖住背景捲動
+      }
+      function closeSidebar() {
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      if (hamburger) hamburger.addEventListener('click', openSidebar);
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+
+      // Escape 關閉。只在開啟時作用,避免無謂地重設 body.overflow 干擾其他元件。
+      document.addEventListener('keydown', function (e) {
+        if ((e.key === 'Escape' || e.key === 'Esc') && isOpen()) closeSidebar();
+      });
+
+      // ── 桌機收合 ──────────────────────────────────────────────
+      // 狀態的唯一真相是 <html> 的 class(BaseLayout boot script 已於繪製前套好),
+      // 這裡只負責切換與寫回偏好。手機不走這條(鈕在 <768px 由 CSS 隱藏)。
+      var toggle = document.querySelector('[data-sidebar-toggle]');
+      if (toggle) {
+        var root = document.documentElement;
+        var syncLabel = function () {
+          var collapsed = root.classList.contains('sidebar-collapsed');
+          toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+          toggle.setAttribute('aria-label', collapsed ? '展開側欄' : '收合側欄');
+        };
+        toggle.addEventListener('click', function () {
+          var collapsed = root.classList.toggle('sidebar-collapsed');
+          try { localStorage.setItem('tw-sidebar-collapsed', collapsed ? '1' : '0'); } catch (e) {}
+          syncLabel();
+        });
+        syncLabel();
+      }
+    })();
+  </script>  <!-- Affiliates.One / Adotone Ad Link 網站驗證碼（須 is:inline 才會原樣輸出，勿移除 is:inline） --> <script>var ConverlyCustomData = {channelId: null};</script> <script async defer src="https://cdn.adotone.com/production/adlinks/676dd203e573377526b0bfa14fb812f5265fb0db262acf5759eaf3acb67f8e66.js"></script> </body> </html> <script>
+  (function () {
+    // Print
+    var printBtn = document.getElementById('print-link');
+    if (printBtn) {
+      printBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.print();
+      });
+    }
+
+    // TOC smooth scroll
+    document.querySelectorAll('details.toc-block .toc-list a').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var target = document.querySelector(a.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        var y = target.getBoundingClientRect().top + window.scrollY - 24;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        if (history.replaceState) history.replaceState(null, '', a.getAttribute('href'));
+      });
+    });
+
+    // Mobile TOC collapse by default
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      var toc = document.querySelector('details.toc-block');
+      if (toc) toc.removeAttribute('open');
+    }
+
+    // Reactions — localStorage-backed toggle (per-slug)
+    var slug = location.pathname.replace(/\/+$/, '').split('/').pop() || 'post';
+    var STORAGE_KEY = 'twtools.reactions.' + slug;
+    var BASE = { useful: 0, bookmark: 0 };
+    function readState() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (_) {}
+      return { useful: false, bookmark: false };
+    }
+    function writeState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+    }
+    function renderCount(key, state) {
+      var el = document.querySelector('[data-react-count="' + key + '"]');
+      if (!el) return;
+      el.textContent = String(BASE[key] + (state[key] ? 1 : 0));
+    }
+    function renderActive(key, state) {
+      var btn = document.querySelector('[data-react="' + key + '"]');
+      if (!btn) return;
+      btn.classList.toggle('is-active', !!state[key]);
+    }
+    var state = readState();
+    Object.keys(BASE).forEach(function (k) { renderCount(k, state); renderActive(k, state); });
+    document.querySelectorAll('[data-react]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.getAttribute('data-react');
+        state[key] = !state[key];
+        writeState(state);
+        renderCount(key, state);
+        renderActive(key, state);
+      });
+    });
+
+    // CTA: copy link
+    var copyLink = document.querySelector('[data-action="copy-link"]');
+    if (copyLink) {
+      copyLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(location.href).then(function () {
+            var label = copyLink.querySelector('.label');
+            if (!label) return;
+            var orig = label.innerHTML;
+            label.textContent = '已複製 ✓';
+            setTimeout(function () { label.innerHTML = orig; }, 1400);
+          });
+        }
+      });
+    }
+  })();
+</script>
