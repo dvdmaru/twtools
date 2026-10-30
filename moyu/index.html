@@ -1,0 +1,399 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><script>(function(){try{var s=localStorage.getItem('tw-sidebar-collapsed');var c=s===null?true:s==='1';if(c){document.documentElement.classList.add('sidebar-collapsed');}}catch(e){}})();</script><title>摸魚螢幕 — 一鍵假裝電腦在更新｜TWTools</title><meta name="description" content="選一個畫面就全螢幕：Windows 更新中、macOS 更新中、自己會打字的 Excel 報表、藍色當機畫面。進度會慢慢跑、會自己動，向量繪製 4K 也清楚。按 Esc 離開，不會真的動到你的電腦。"><link rel="canonical" href="https://twtools.cc/moyu/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://www.googletagmanager.com"><!-- 2026-10-10 字重減重 10→8：去 Serif 500（0 用）、Mono 500（1 用→400）；Sans 300 保留（首頁 hero .accent 與放鬆頁副標是刻意的細體，拿掉會變常規字重）。每個 Noto 字重的 CSS 約 127KB raw。 --><!-- 2026-10-11 評估過字型自架（@fontsource 可變字重放 public/fonts，commit 7ced834）後回退：這頁本來就要抓 44 片／2.7MB 切片，
+       自架沒少 bytes，卻把它搬到 twtools.cc 同一條連線，把 island 的 JS chunk 餓到 55 秒才載完（DCL 3.3s→51.9s）。
+       GitHub Pages 自架不划算；要再減只能減字重或改設計。紀錄見 CoWork/Charlie/2026-10-10/twtools-review/README.md。 --><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://twtools.cc/moyu/"><meta property="og:title" content="摸魚螢幕 — 一鍵假裝電腦在更新｜TWTools"><meta property="og:description" content="選一個畫面就全螢幕：Windows 更新中、macOS 更新中、自己會打字的 Excel 報表、藍色當機畫面。進度會慢慢跑、會自己動，向量繪製 4K 也清楚。按 Esc 離開，不會真的動到你的電腦。"><meta property="og:image" content="https://twtools.cc/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="TWTools — 打工牛馬的線上工具箱"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="摸魚螢幕 — 一鍵假裝電腦在更新｜TWTools"><meta name="twitter:description" content="選一個畫面就全螢幕：Windows 更新中、macOS 更新中、自己會打字的 Excel 報表、藍色當機畫面。進度會慢慢跑、會自己動，向量繪製 4K 也清楚。按 Esc 離開，不會真的動到你的電腦。"><meta name="twitter:image" content="https://twtools.cc/og-image.png"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    // 內部流量標記（2026-10-10）：開任何頁加 ?internal=1 會把本瀏覽器記成內部（?internal=0 取消），
+    // 之後所有事件帶 traffic_type=internal；GA4 後台「內部流量」資料篩選器啟用後就會排除。
+    // 用途＝Charlie 自己的裝置 + 我們用真瀏覽器驗頁面時的流量，不再灌進使用數據。
+    var twInternal = false;
+    try {
+      var twQ = new URLSearchParams(location.search).get('internal');
+      if (twQ === '1') localStorage.setItem('tw_internal', '1');
+      else if (twQ === '0') localStorage.removeItem('tw_internal');
+      twInternal = localStorage.getItem('tw_internal') === '1';
+    } catch (e) {}
+    gtag('config', 'G-0WTK2LJFTY', twInternal ? { traffic_type: 'internal' } : {});
+    // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
+    // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
+    // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
+    window.twTrack = function (tool, action, label, extra) {
+      try {
+        if (typeof gtag !== 'function') return;
+        var t = tool || (location.pathname.split('/').filter(Boolean)[0] || 'home');
+        var p = { tool: t, action: String(action || ''), label: label == null ? '' : String(label).slice(0, 100) };
+        if (extra && typeof extra === 'object') for (var k in extra) if (p[k] === undefined) p[k] = extra[k];
+        gtag('event', 'tool_action', p);
+      } catch (e) {}
+    };
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind：2026-10-10 起改 build-time（tailwind.config.cjs＋src/styles/tailwind.css），不再載 cdn.tailwindcss.com；
+       theme（brand／warm／accent 色票、darkMode class、typography plugin）原樣搬到 tailwind.config.cjs。 --><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/moyu@_@astro.Bbo6yXee.css">
+<link rel="stylesheet" href="/_assets/BaseLayout.lBJRRmsJ.css">
+<style>.sb-group-toggle{cursor:pointer;background:transparent;border:0}.sb-group-chev{display:inline-block;font-size:.9rem;line-height:1;transition:transform .15s ease}.sb-group-toggle[aria-expanded=true] .sb-group-chev{transform:rotate(90deg)}.sb-group-toggle:focus-visible{outline:2px solid var(--tw-brand-accent);outline-offset:-2px}@media(min-width:768px){html.sidebar-collapsed [data-sidebar-panel] [data-group-items][hidden]{display:block}}@media(prefers-reduced-motion:reduce){.sb-group-chev{transition:none}}
+</style></head> <body class="min-h-screen paper-noise">   <button id="sidebar-hamburger" class="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg" style="background:var(--tw-surface);color:var(--tw-text-primary)">☰</button>  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 md:hidden hidden"></div>  <aside id="sidebar-panel" data-sidebar-panel class="fixed top-0 left-0 h-full w-56 z-40 flex flex-col border-r transition-transform -translate-x-full md:translate-x-0" style="background:var(--tw-page-bg);border-color:var(--tw-border)"> <!-- Logo --> <div data-sidebar-logo class="p-4 border-b flex items-center justify-between" style="border-color:var(--tw-border)"> <a href="/" class="flex items-center no-underline"> <img src="/logo-icon-128.png" width="128" height="128" alt="TWTools" class="w-7 h-7 rounded-lg"> <span data-sidebar-brand class="text-sm font-bold ml-1.5" style="color:var(--tw-brand-accent)">TWTools</span> </a> <button id="sidebar-close" class="md:hidden text-lg leading-none" style="color:var(--tw-text-muted)">✕</button> </div> <!-- 桌機收合鈕（手機由漢堡鈕負責，此鈕於 <768px 隱藏） --> <button type="button" data-sidebar-toggle aria-controls="sidebar-panel" aria-expanded="true" class="w-full items-center justify-center py-2 border-b text-xs" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <span class="chev inline-block leading-none">«</span> <span data-sidebar-label class="ml-1.5">收合側欄</span> </button> <!-- Nav items grouped by category --> <nav data-sidebar-nav class="flex-1 py-2 overflow-y-auto"> <div> <button type="button" data-sidebar-group data-group-toggle="disaster" data-current="false" aria-expanded="false" aria-controls="sb-group-disaster" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>防災即時</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-disaster" data-group-items hidden> <a href="/typhoon/" data-sidebar-item title="颱風停班停課" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌀</span> <span data-sidebar-label>颱風停班停課</span> </a><a href="/rain/" data-sidebar-item title="即時雨量" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☔</span> <span data-sidebar-label>即時雨量</span> </a><a href="/dashboard/" data-sidebar-item title="防災儀表板" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛡️</span> <span data-sidebar-label>防災儀表板</span> </a><a href="/reservoir/" data-sidebar-item title="水庫即時水情" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💧</span> <span data-sidebar-label>水庫即時水情</span> </a><a href="/dingfengbo/" data-sidebar-item title="定風波 風雨時間軸" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌧️</span> <span data-sidebar-label>定風波 風雨時間軸</span> </a><a href="/alerts/" data-sidebar-item title="災害即時告警" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🚨</span> <span data-sidebar-label>災害即時告警</span> </a><a href="/dashboard/wall/" data-sidebar-item title="颱風直播牆" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📡</span> <span data-sidebar-label>颱風直播牆</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="life" data-current="false" aria-expanded="false" aria-controls="sb-group-life" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>生活查詢</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-life" data-group-items hidden> <a href="/address/" data-sidebar-item title="地址中譯英" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌐</span> <span data-sidebar-label>地址中譯英</span> </a><a href="/drone/" data-sidebar-item title="無人機管制區查詢" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛸</span> <span data-sidebar-label>無人機管制區查詢</span> </a><a href="/lottery/" data-sidebar-item title="台灣彩券" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎰</span> <span data-sidebar-label>台灣彩券</span> </a><a href="/lunar/" data-sidebar-item title="農曆國曆" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> <span data-sidebar-label>農曆國曆</span> </a><a href="/postal/" data-sidebar-item title="郵遞區號" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📮</span> <span data-sidebar-label>郵遞區號</span> </a><a href="/clock/" data-sidebar-item title="翻頁時鐘" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🕐</span> <span data-sidebar-label>翻頁時鐘</span> </a><a href="/solar-terms/" data-sidebar-item title="二十四節氣" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☀️</span> <span data-sidebar-label>二十四節氣</span> </a><a href="/currency/" data-sidebar-item title="匯率換算" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💱</span> <span data-sidebar-label>匯率換算</span> </a><a href="/codex-reset/" data-sidebar-item title="Codex 額度重置監看" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🔄</span> <span data-sidebar-label>Codex 額度重置監看</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="docs" data-current="false" aria-expanded="false" aria-controls="sb-group-docs" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>文件與計算</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-docs" data-group-items hidden> <a href="/proofread/" data-sidebar-item title="錯別字檢查" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">✍️</span> <span data-sidebar-label>錯別字檢查</span> </a><a href="/image/" data-sidebar-item title="圖片工具" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🖼️</span> <span data-sidebar-label>圖片工具</span> </a><a href="/pdf/" data-sidebar-item title="PDF 工具" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📄</span> <span data-sidebar-label>PDF 工具</span> </a><a href="/datecalc/" data-sidebar-item title="日期計算器" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📅</span> <span data-sidebar-label>日期計算器</span> </a><a href="/countdown/" data-sidebar-item title="倒數計時器" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⏳</span> <span data-sidebar-label>倒數計時器</span> </a><a href="/unit/" data-sidebar-item title="單位換算" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📏</span> <span data-sidebar-label>單位換算</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="learn" data-current="false" aria-expanded="false" aria-controls="sb-group-learn" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>學習與檢測</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-learn" data-group-items hidden> <a href="/seo/" data-sidebar-item title="SEO/GEO/AEO" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📊</span> <span data-sidebar-label>SEO/GEO/AEO</span> </a><a href="/vocabulary/" data-sidebar-item title="英文單字片語" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎓</span> <span data-sidebar-label>英文單字片語</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="relax" data-current="true" aria-expanded="true" aria-controls="sb-group-relax" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>放鬆小站</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-relax" data-group-items> <a href="/bee/" data-sidebar-item title="小蜜蜂" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🐝</span> <span data-sidebar-label>小蜜蜂</span> </a><a href="/midnight/" data-sidebar-item title="深夜宵夜所" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> <span data-sidebar-label>深夜宵夜所</span> </a><a href="/woodenfish/" data-sidebar-item title="電子木魚" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🪵</span> <span data-sidebar-label>電子木魚</span> </a><a href="/breathe/" data-sidebar-item title="一起喘口氣" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">😮‍💨</span> <span data-sidebar-label>一起喘口氣</span> </a><a href="/invaders/" data-sidebar-item title="太空侵略者" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">👾</span> <span data-sidebar-label>太空侵略者</span> </a><a href="/sand/" data-sidebar-item title="指尖流沙" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⌛</span> <span data-sidebar-label>指尖流沙</span> </a><a href="/moyu/" data-sidebar-item title="摸魚螢幕" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-r-2" style="background:rgba(107,115,148,0.15);color:var(--tw-brand-accent);border-color:var(--tw-brand-accent)"> <span class="text-base">🐟</span> <span data-sidebar-label>摸魚螢幕</span> </a><a href="/coin/" data-sidebar-item title="別糾結" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🪙</span> <span data-sidebar-label>別糾結</span> </a><a href="/crab/" data-sidebar-item title="打螃蟹" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🦀</span> <span data-sidebar-label>打螃蟹</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="records" data-current="false" aria-expanded="false" aria-controls="sb-group-records" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>公共紀錄</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-records" data-group-items hidden> <a href="/council/" data-sidebar-item title="議員任內紀錄" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🏛️</span> <span data-sidebar-label>議員任內紀錄</span> </a><a href="/elections/" data-sidebar-item title="選舉結果存檔" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🗳️</span> <span data-sidebar-label>選舉結果存檔</span> </a> </div> </div><div> <div data-sidebar-group class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">更多</div> <div id="sb-group-more" data-group-items> <a href="/blog/" data-sidebar-item title="知識文章" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📝</span> <span data-sidebar-label>知識文章</span> </a> </div> </div>   </nav> <div data-sidebar-footer class="p-3 border-t text-xs text-center space-y-1" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <div class="flex justify-center gap-3"> <a href="/about/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">關於</a> <a href="/privacy/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">隱私權</a> <a href="/terms/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">條款</a> </div>
+打工牛馬的線上工具箱 © 2026
+</div> </aside>  <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8 min-h-screen" style="background:var(--tw-page-bg)">   <section id="entry" class="max-w-3xl mx-auto"> <div class="hero"> <span class="eyebrow">摸魚螢幕 · 一鍵全螢幕</span> <h1>老闆走過來<br>電腦剛好在更新</h1> <p class="sub">選一個畫面，整個螢幕就變成它。進度會慢慢跑、Excel 會自己打字，看起來就是在忙。</p> </div> <div class="scenes" role="list"> <button class="scene" data-scene="win" role="listitem"> <span class="thumb t-win" aria-hidden="true"><i class="tdots"></i><b></b><b class="s"></b></span> <span class="nm">Windows 更新中</span> <span class="ds">藍底轉圈圈・百分比慢慢爬・跑完會「重開機」再來一輪</span> </button> <button class="scene" data-scene="mac" role="listitem"> <span class="thumb t-mac" aria-hidden="true"><b></b></span> <span class="nm">macOS 更新中</span> <span class="ds">黑底進度條・「剩下大約 N 分鐘」・偶爾重新計算</span> </button> <button class="scene" data-scene="xls" role="listitem"> <span class="thumb t-xls" aria-hidden="true"><b></b></span> <span class="nm">Excel 報表</span> <span class="ds">自己打數字、下公式、算合計；狂按鍵盤會打更快</span> </button> <button class="scene" data-scene="bsod" role="listitem"> <span class="thumb t-bsod" aria-hidden="true">:(</span> <span class="nm">藍色當機畫面</span> <span class="ds">「您的電腦發生問題」・收集錯誤資訊 0→100%</span> </button> </div> <div class="how"> <div class="item"><b>Esc 離開</b><span>或離開全螢幕就收起來</span></div> <div class="item"><b>游標自動藏</b><span>滑鼠停 2 秒就看不到</span></div> <div class="item"><b>螢幕不休眠</b><span>瀏覽器支援時，畫面會一直亮著</span></div> </div> <footer class="my-note"> <div class="reads">放鬆小站系列：<a href="/woodenfish/">電子木魚</a> · <a href="/breathe/">一起喘口氣</a> · <a href="/coin/">別糾結</a></div> <div class="privacy">純粹是網頁畫出來的畫面：不會真的更新、不會動到你的電腦，也不上傳任何資料。畫面為示意，非 Microsoft、Apple 官方畫面。摸魚有度，工作記得做完。</div> </footer> </section>  <section id="moyu" aria-hidden="true"> <!-- Windows 更新 --> <div class="sc" id="sc-win"> <div class="w-mid"> <div class="wdots"><i></i><i></i><i></i><i></i><i></i></div> <p class="w-l1" id="winL1">正在處理更新　已完成 0%</p> <p class="w-l2" id="winL2">請勿關閉電腦。這需要一段時間。</p> </div> <p class="w-foot" id="winFoot">您的電腦將會重新啟動數次</p> </div> <!-- macOS 更新 --> <div class="sc" id="sc-mac"> <div class="m-mid"> <div class="m-bar"><span id="macFill"></span></div> <p class="m-txt" id="macTxt">正在計算剩餘時間…</p> </div> </div> <!-- Excel --> <div class="sc" id="sc-xls"> <div class="x-title"> <span class="x-qa"><i></i><i></i><i></i><em>自動儲存 ● 開啟</em></span> <span class="x-name" id="xName">2026 年度營收分析_v3_最終版.xlsx - 已儲存</span> <span class="x-win">—　☐　✕</span> </div> <div class="x-tabs"><span>檔案</span><span class="on">常用</span><span>插入</span><span>頁面配置</span><span>公式</span><span>資料</span><span>校閱</span><span>檢視</span><span>說明</span></div> <div class="x-ribbon"> <div class="g"><div class="r"><span class="big">📋<em>貼上</em></span><span class="col"><span>✂ 剪下</span><span>⧉ 複製</span><span>🖌 複製格式</span></span></div><div class="gl">剪貼簿</div></div> <div class="g"><div class="r col"><span><span class="dd">新細明體 ▾</span><span class="dd sm">12 ▾</span></span><span><b>B</b> <i>I</i> <u>U</u> ⊞ ▾　A ▾</span></div><div class="gl">字型</div></div> <div class="g"><div class="r col"><span>≡ ≡ ≡　⇥ ⇤</span><span>↵ 自動換列　⊟ 跨欄置中 ▾</span></div><div class="gl">對齊方式</div></div> <div class="g"><div class="r col"><span class="dd">通用格式 ▾</span><span>$ ▾　%　,　.0 .00</span></div><div class="gl">數值</div></div> <div class="g hide-s"><div class="r col"><span>▦ 設定格式化的條件 ▾</span><span>▤ 格式化為表格 ▾</span><span>▥ 儲存格樣式 ▾</span></div><div class="gl">樣式</div></div> <div class="g hide-s"><div class="r"><span class="big">⊞<em>插入</em></span><span class="big">⊟<em>刪除</em></span><span class="big">▣<em>格式</em></span></div><div class="gl">儲存格</div></div> <div class="g hide-s"><div class="r col"><span>Σ 自動加總 ▾</span><span>⇅ 排序與篩選 ▾</span><span>⌕ 尋找與選取 ▾</span></div><div class="gl">編輯</div></div> </div> <div class="x-fbar"> <span class="x-nbox" id="xNbox">A1</span> <span class="x-fx">✕　✓ <i>fx</i></span> <span class="x-ftxt" id="xFtxt"></span> </div> <div class="x-grid" id="xGrid"></div> <div class="x-sheets"><span class="nav">◀ ▶</span><span class="tab on" id="xTab">年度總表</span><span class="tab">原始資料</span><span class="tab">樞紐分析</span><span class="tab">⊕</span></div> <div class="x-status"><span id="xMode">就緒</span><span class="x-sum" id="xSum"></span><span class="x-zoom">▤　▦　▥　─────●───── 100%</span></div> </div> <!-- 藍色當機畫面 --> <div class="sc" id="sc-bsod"> <div class="b-box"> <div class="b-face">:(</div> <p class="b-l1">您的電腦發生問題，因此必須重新啟動。我們只會收集一些錯誤資訊，然後就會為您重新啟動。</p> <p class="b-l1" id="bsodPct">已完成 0%</p> <div class="b-row"> <svg class="b-qr" id="bsodQr" viewBox="0 0 29 29" shape-rendering="crispEdges" aria-hidden="true"></svg> <div class="b-small"> <p>如需此問題的詳細資訊和可能的修正方式，請在網路上搜尋下方的停止代碼。</p> <p>如果您要致電支援人員，請提供下列資訊：<br>停止代碼：<span id="bsodCode">CRITICAL_PROCESS_DIED</span></p> </div> </div> </div> </div> <div class="my-black" id="myBlack"></div> <button class="my-exit" id="myExit" type="button">離開（Esc）</button> </section>  <script>
+/* ============================================================
+   摸魚螢幕
+   - 四個畫面各有 start()/stop()；計時一律用 setTimeout/setInterval，
+     進度以「經過的實際時間」換算，分頁被節流時也不會亂跳。
+   - 全螢幕：點選卡片（使用者手勢）時 requestFullscreen；不支援的裝置（如 iPhone）
+     就以 position:fixed 蓋滿畫面。離開全螢幕＝收起。
+   全部在本機運算與顯示，無任何網路傳輸。
+   ============================================================ */
+const $=s=>document.querySelector(s);
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const ri=(a,b)=>Math.floor(rnd(a,b+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const stage=$("#moyu");
+let current=null, timers=[], wakeLock=null;
+function later(fn,ms){ const id=setTimeout(fn,ms); timers.push(id); return id; }
+function every(fn,ms){ const id=setInterval(fn,ms); timers.push(id); return id; }
+function clearAll(){ timers.forEach(id=>{clearTimeout(id);clearInterval(id);}); timers=[]; }
+function black(on){ $("#myBlack").classList.toggle("on",on); }
+
+/* ---------- Windows 更新：百分比慢爬，到 100% 「重新啟動」後再來一輪 ---------- */
+const WIN={
+  p:0,
+  start(){ this.p=ri(6,32); this.show(); this.tick(); },
+  show(){
+    $("#winL1").textContent="正在處理更新　已完成 "+this.p+"%";
+    $("#winL2").textContent="請勿關閉電腦。這需要一段時間。";
+    $("#winFoot").style.visibility="visible";
+  },
+  tick(){
+    // 越接近 100 越慢；偶爾一次跳 2–3%
+    const slow=this.p>85?2.2:this.p>60?1.4:1;
+    later(()=>{
+      this.p=Math.min(100,this.p+(Math.random()<.12?ri(2,3):1));
+      if(this.p>=100) return this.reboot();
+      this.show(); this.tick();
+    }, rnd(5000,19000)*slow);
+  },
+  reboot(){
+    $("#winL1").textContent="正在處理更新　已完成 100%";
+    later(()=>{
+      $("#winL1").textContent="正在重新啟動";
+      $("#winL2").textContent=""; $("#winFoot").style.visibility="hidden";
+      later(()=>{ black(true); later(()=>{ black(false); this.p=0; this.show(); this.tick(); }, 3500); }, 16000);
+    }, 6000);
+  },
+};
+
+/* ---------- macOS 更新：進度依時間推進，剩餘分鐘偶爾「重新計算」 ---------- */
+const MAC={
+  t0:0,T:0,shown:0,calcUntil:0,
+  start(){
+    this.T=rnd(28,46)*60000; this.t0=Date.now()-this.T*rnd(.08,.3);
+    this.calcUntil=Date.now()+4000; this.shown=0;
+    this.update(); every(()=>this.update(),1000);
+  },
+  update(){
+    const now=Date.now(), f=Math.min(1,(now-this.t0)/this.T);
+    $("#macFill").style.width=(f*100).toFixed(2)+"%";
+    if(f>=1){ return this.finish(); }
+    if(now<this.calcUntil){ $("#macTxt").textContent="正在計算剩餘時間…"; return; }
+    if(Math.random()<.004){ this.calcUntil=now+rnd(4000,9000); return; }
+    const mins=Math.ceil((this.T-(now-this.t0))/60000);
+    // 顯示的分鐘只在差 2 分以上或往下走時更新，避免每秒跳動
+    if(!this.shown||mins<this.shown||mins-this.shown>=2) this.shown=mins;
+    $("#macTxt").textContent=this.shown<=1?"剩下不到 1 分鐘":"剩下大約 "+this.shown+" 分鐘";
+  },
+  finish(){
+    clearAll(); $("#macTxt").textContent="";
+    black(true);
+    later(()=>{ black(false); this.start(); }, 5000);
+  },
+};
+
+/* ---------- 藍色當機畫面：收集錯誤資訊 0→100%，再「重新啟動」換一個停止代碼 ---------- */
+const CODES=["CRITICAL_PROCESS_DIED","IRQL_NOT_LESS_OR_EQUAL","SYSTEM_SERVICE_EXCEPTION","MEMORY_MANAGEMENT","PAGE_FAULT_IN_NONPAGED_AREA","DPC_WATCHDOG_VIOLATION","KERNEL_SECURITY_CHECK_FAILURE","UNEXPECTED_KERNEL_MODE_TRAP"];
+function drawQr(){
+  // 假 QR：三個定位角＋隨機模組，畫成 SVG（向量，4K 也銳利）；不對應任何網址
+  const N=29, on=new Set();
+  const finder=(ox,oy)=>{ for(let y=0;y<7;y++)for(let x=0;x<7;x++){
+    const edge=x===0||y===0||x===6||y===6, core=x>=2&&x<=4&&y>=2&&y<=4;
+    if(edge||core) on.add((ox+x)+","+(oy+y)); } };
+  finder(1,1); finder(N-8,1); finder(1,N-8);
+  const inFinder=(x,y)=>(x<9&&y<9)||(x>N-10&&y<9)||(x<9&&y>N-10);
+  for(let y=1;y<N-1;y++)for(let x=1;x<N-1;x++){ if(!inFinder(x,y)&&Math.random()<.46) on.add(x+","+y); }
+  let s=""; on.forEach(k=>{ const [x,y]=k.split(","); s+='<rect x="'+x+'" y="'+y+'" width="1" height="1"/>'; });
+  $("#bsodQr").innerHTML=s;
+}
+const BSOD={
+  p:0,
+  start(){ $("#bsodCode").textContent=pick(CODES); drawQr(); this.p=0; this.show(); this.tick(); },
+  show(){ $("#bsodPct").textContent="已完成 "+this.p+"%"; },
+  tick(){
+    later(()=>{
+      this.p=Math.min(100,this.p+pick([1,2,5,10,20]));
+      this.show();
+      if(this.p>=100) return later(()=>{ black(true); later(()=>{ black(false); this.start(); }, 2500); }, 9000);
+      this.tick();
+    }, rnd(2500,9000));
+  },
+};
+
+/* ---------- Excel：自己打數字、下公式、算合計；按鍵盤會打更快 ---------- */
+const COLS="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const PRODUCTS=["企業雲端方案","中小企業訂閱","教育授權","政府標案","通路經銷","海外代理","客製化專案","維護合約","顧問服務","硬體銷售","廣告營收","其他收入","會員加值","展會贊助"];
+const OWNERS=["王經理","陳協理","林專員","張副理","李主任","黃專員","吳經理","周副理"];
+const SHEETS=[["2026 年度營收分析（單位：千元）","年度總表"],["2027 營收預估（單位：千元）","明年預估"],["各產品線成本分攤（單位：千元）","成本分攤"],["業務部 KPI 追蹤（單位：千元）","KPI 追蹤"]];
+const XL={
+  cells:{}, el:{}, cols:0, rows:0, colW:[], rowH:0, queue:[], task:null, typed:0, sheetN:0, boost:0,
+  start(){ this.buildGrid(); this.newSheet(true); this.loop(); },
+  buildGrid(){
+    const g=$("#xGrid"); g.innerHTML=""; this.el={};
+    const em=parseFloat(getComputedStyle($("#sc-xls")).fontSize);
+    const W=g.clientWidth||innerWidth, H=g.clientHeight||innerHeight*.7;
+    const rh=em*1.65, hw=em*3.2, cw=em*6.6, aw=em*10.5;
+    this.cols=Math.max(8,Math.min(26,1+Math.ceil((W-hw-aw)/cw)));
+    this.rows=Math.max(18,Math.ceil((H-em*1.55)/rh)+1);
+    this.colW=[aw].concat(Array(this.cols-1).fill(cw));
+    g.style.gridTemplateColumns=hw+"px "+this.colW.map(w=>w+"px").join(" ");
+    const frag=document.createDocumentFragment();
+    const add=(cls,txt,key)=>{ const d=document.createElement("div"); d.className=cls; if(txt)d.textContent=txt; if(key)this.el[key]=d; frag.appendChild(d); return d; };
+    add("h","");
+    for(let c=0;c<this.cols;c++) add("h",COLS[c],"H"+COLS[c]);
+    for(let r=1;r<=this.rows;r++){
+      add("h rn",String(r),"R"+r);
+      for(let c=0;c<this.cols;c++) add("c","",COLS[c]+r);
+    }
+    g.appendChild(frag);
+    const cur=document.createElement("div"); cur.className="x-cur"; g.appendChild(cur); this.cur=cur;
+    this.geo={hw,rh,hh:em*1.55};
+  },
+  set(key,val,cls){
+    this.cells[key]={v:val,cls:cls||""};
+    const d=this.el[key]; if(!d) return;
+    d.textContent=val; d.className="c"+(cls?" "+cls:"");
+  },
+  select(key){
+    const c=COLS.indexOf(key[0]), r=parseInt(key.slice(1),10);
+    $("#xNbox").textContent=key;
+    document.querySelectorAll("#xGrid .h.on").forEach(e=>e.classList.remove("on"));
+    this.el["H"+key[0]]&&this.el["H"+key[0]].classList.add("on");
+    this.el["R"+r]&&this.el["R"+r].classList.add("on");
+    const x=this.geo.hw+this.colW.slice(0,c).reduce((a,b)=>a+b,0), y=this.geo.hh+(r-1)*this.geo.rh;
+    Object.assign(this.cur.style,{left:(x-1)+"px",top:(y-1)+"px",width:(this.colW[c]+1)+"px",height:(this.geo.rh+1)+"px"});
+    const cell=this.cells[key]; $("#xFtxt").textContent=cell&&cell.f?cell.f:(cell?cell.v:"");
+  },
+  newSheet(first){
+    this.cells={};
+    for(let r=1;r<=this.rows;r++)for(let c=0;c<this.cols;c++) this.set(COLS[c]+r,"");
+    const [title,tab]=SHEETS[this.sheetN%SHEETS.length]; this.sheetN++;
+    $("#xTab").textContent=tab;
+    this.set("A1",title,"t");
+    ["產品線","Q1","Q2","Q3","Q4","合計","成長率","負責人"].forEach((h,i)=>this.set(COLS[i]+"3",h,"hd"+(i?" n":"")));
+    const prods=PRODUCTS.slice().sort(()=>Math.random()-.5).slice(0,12);
+    const n=prods.length, last=4+n-1, totR=last+2;
+    prods.forEach((p,i)=>this.set("A"+(4+i),p));
+    this.set("A"+totR,"總計","tot");
+    // 開場已完成幾列，看起來是做到一半
+    const done=first?ri(2,5):0, q=[];
+    for(let i=0;i<n;i++){
+      const r=4+i, vals=[0,1,2,3].map(()=>ri(1200,9800));
+      const cellsRow=[];
+      vals.forEach((v,j)=>cellsRow.push({k:COLS[1+j]+r,type:String(v),show:v.toLocaleString("en-US"),cls:"n"}));
+      const sum=vals.reduce((a,b)=>a+b,0);
+      cellsRow.push({k:"F"+r,type:"=SUM(B"+r+":E"+r+")",show:sum.toLocaleString("en-US"),cls:"n",f:true,num:sum});
+      const g=(vals[3]-vals[0])/vals[0];
+      cellsRow.push({k:"G"+r,type:"=(E"+r+"-B"+r+")/B"+r,show:(g*100).toFixed(1)+"%",cls:"n",f:true});
+      cellsRow.push({k:"H"+r,type:pick(OWNERS),show:null});
+      if(i<done) cellsRow.forEach(t=>this.commit(t)); else q.push(...cellsRow);
+    }
+    ["B","C","D","E","F"].forEach(c=>q.push({k:c+totR,type:"=SUM("+c+"4:"+c+last+")",cls:"n tot",f:true,total:[c,4,last]}));
+    this.queue=q; this.task=null;
+    this.select(q[0]?q[0].k:"A1");
+  },
+  commit(t){
+    let show=t.show;
+    if(t.total){ const [c,a,b]=t.total; let s=0; for(let r=a;r<=b;r++) s+=parseFloat(String((this.cells[c+r]||{}).v||"0").replace(/,/g,""))||0; show=s.toLocaleString("en-US"); }
+    this.set(t.k,show==null?t.type:show,t.cls);
+    if(t.f) this.cells[t.k].f=t.type;
+  },
+  typeChars(n){
+    if(!this.task){
+      this.task=this.queue.shift();
+      if(!this.task){ return false; }
+      this.typed=0; this.select(this.task.k); $("#xMode").textContent="輸入";
+    }
+    this.typed=Math.min(this.task.type.length,this.typed+n);
+    const s=this.task.type.slice(0,this.typed);
+    $("#xFtxt").textContent=s;
+    const d=this.el[this.task.k]; if(d){ d.textContent=s; d.className="c"; }
+    if(this.typed>=this.task.type.length){
+      const t=this.task; this.task=null;
+      later(()=>{ this.commit(t); $("#xMode").textContent="就緒"; this.statusSum(t); }, 120);
+      return "done";
+    }
+    return true;
+  },
+  statusSum(t){
+    const v=String((this.cells[t.k]||{}).v||"").replace(/,/g,"");
+    $("#xSum").textContent=/^\d+$/.test(v)?"加總: "+Number(v).toLocaleString("en-US"):"";
+  },
+  loop(){
+    const r=this.typeChars(1);
+    if(r===false){
+      // 整張做完：存檔、停一下、換下一張
+      $("#xMode").textContent="就緒"; $("#xName").textContent=$("#xName").textContent.replace(/ - .*$/," - 正在儲存…");
+      return later(()=>{ $("#xName").textContent=$("#xName").textContent.replace(/ - .*$/," - 已儲存"); later(()=>{ this.newSheet(false); this.loop(); }, rnd(2500,5000)); }, 1800);
+    }
+    const ms=r==="done"?rnd(350,1300):(this.boost>0?40:rnd(70,230));
+    if(this.boost>0) this.boost--;
+    later(()=>this.loop(), ms);
+  },
+  key(){ this.boost=Math.min(this.boost+3,30); this.typeChars(ri(1,2)); },
+};
+
+/* ---------- 進出全螢幕 ---------- */
+const SCENES={win:WIN,mac:MAC,xls:XL,bsod:BSOD};
+let idleT=null, exitT=null;
+function poke(){
+  stage.classList.remove("idle"); clearTimeout(idleT);
+  idleT=setTimeout(()=>stage.classList.add("idle"),2000);
+}
+function showExit(){
+  const b=$("#myExit"); b.classList.add("show"); clearTimeout(exitT);
+  exitT=setTimeout(()=>b.classList.remove("show"),2600);
+}
+async function start(name){
+  current=name;
+  stage.classList.add("on"); stage.setAttribute("aria-hidden","false");
+  document.documentElement.classList.add("my-lock"); document.body.style.overflow="hidden";
+  document.querySelectorAll("#moyu .sc").forEach(e=>e.classList.toggle("on",e.id==="sc-"+name));
+  const fs=stage.requestFullscreen||stage.webkitRequestFullscreen;
+  if(fs){ try{ await fs.call(stage,{navigationUI:"hide"}); }catch(e){} }
+  try{ if(navigator.wakeLock) wakeLock=await navigator.wakeLock.request("screen"); }catch(e){}
+  black(false); SCENES[name].start(); poke(); showExit();
+}
+function stop(){
+  if(!current) return;
+  clearAll(); current=null; black(false);
+  stage.classList.remove("on","idle"); stage.setAttribute("aria-hidden","true");
+  document.documentElement.classList.remove("my-lock"); document.body.style.overflow="";
+  try{ wakeLock&&wakeLock.release(); }catch(e){} wakeLock=null;
+  const fe=document.fullscreenElement||document.webkitFullscreenElement;
+  if(fe){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); }
+}
+document.querySelectorAll("#entry .scene").forEach(b=>b.addEventListener("click",()=>{
+  const s=b.dataset.scene;
+  if(typeof gtag==="function")gtag("event","moyu_start",{scene:s});
+  if(typeof window.twTrack==="function")window.twTrack("moyu","start",s);
+  start(s);
+}));
+["fullscreenchange","webkitfullscreenchange"].forEach(ev=>document.addEventListener(ev,()=>{
+  if(!(document.fullscreenElement||document.webkitFullscreenElement)) stop();
+}));
+document.addEventListener("visibilitychange",async()=>{
+  if(current&&document.visibilityState==="visible"&&navigator.wakeLock){ try{ wakeLock=await navigator.wakeLock.request("screen"); }catch(e){} }
+});
+document.addEventListener("keydown",e=>{
+  if(!current) return;
+  if(e.key==="Escape"){ stop(); return; }
+  if(current==="xls"&&!e.metaKey&&!e.ctrlKey&&!e.altKey&&(e.key.length===1||e.key==="Enter"||e.key==="Backspace"||e.key==="Tab")){ e.preventDefault(); XL.key(); poke(); }
+});
+stage.addEventListener("mousemove",()=>{ poke(); showExit(); });
+stage.addEventListener("touchstart",()=>{ showExit(); if(current==="xls") XL.key(); },{passive:true});
+$("#myExit").addEventListener("click",stop);
+addEventListener("resize",()=>{ if(current==="xls"){ clearAll(); XL.buildGrid(); XL.newSheet(true); XL.loop(); } });
+  </script>  <div class="max-w-6xl mx-auto pb-2"> <div class="pt-5 mt-6 border-t flex flex-col md:flex-row md:items-baseline gap-x-6 gap-y-2" style="border-color: var(--tw-border);"> <span class="eyebrow shrink-0">姊妹站 · FAMILY</span> <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm" style="color: var(--tw-text-muted);"> <a href="https://aire.twtools.cc/" title="aire — AI Tool Atlas·AI 工具圖鑑" class="grow-underline whitespace-nowrap">aire — AI Tool Atlas·AI 工具圖鑑</a><a href="https://tree.twtools.cc/" title="樹洞21號 — 匿名 AI 心事平台" class="grow-underline whitespace-nowrap">樹洞21號 — 匿名 AI 心事平台</a><a href="https://foootball.twtools.cc/" title="@foootball — 2026 世界盃賽程" class="grow-underline whitespace-nowrap">@foootball — 2026 世界盃賽程</a><a href="https://baseball.twtools.cc/" title="@baseball — 中職 CPBL＋MLB 深度戰報" class="grow-underline whitespace-nowrap">@baseball — 中職 CPBL＋MLB 深度戰報</a><a href="https://basketball.twtools.cc/" title="籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據" class="grow-underline whitespace-nowrap">籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據</a><a href="https://racing.twtools.cc/" title="賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果" class="grow-underline whitespace-nowrap">賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果</a><a href="https://health.twtools.cc/" title="健檢數據誌 — 健檢報告上的數字，各機構判準並列" class="grow-underline whitespace-nowrap">健檢數據誌 — 健檢報告上的數字，各機構判準並列</a><a href="https://tender.twtools.cc/" title="標案雷達 — 網通設備標案查詢、押標金試算與規格預檢" class="grow-underline whitespace-nowrap">標案雷達 — 網通設備標案查詢、押標金試算與規格預檢</a><a href="https://shhhh.cc/" title="Shhhh — 專業短網址管理平台" class="grow-underline whitespace-nowrap">Shhhh — 專業短網址管理平台</a><a href="https://dvdmaru.com/" title="dvdmaru — 把事實和敘事分開來看" class="grow-underline whitespace-nowrap">dvdmaru — 把事實和敘事分開來看</a> </div> </div> </div> </main>  <script type="module" src="/_assets/SidebarLayout.astro_astro_type_script_index_0_lang.qtscrtdu.js"></script> <script>
+    (function() {
+      var hamburger = document.getElementById('sidebar-hamburger');
+      var overlay = document.getElementById('sidebar-overlay');
+      var panel = document.getElementById('sidebar-panel');
+      var closeBtn = document.getElementById('sidebar-close');
+
+      // 手機開合。與 Sidebar.jsx（React 版）行為必須一致——2026-07-31 前兩者已漂移：
+      // React 版有 Escape 關閉與背景捲動鎖，本檔沒有，同一顆漢堡鈕兩種手感。
+      // 改任一邊時請同步另一邊（或更好：把行為再往下沉到共用層）。
+      function isOpen() {
+        return overlay && !overlay.classList.contains('hidden');
+      }
+      function openSidebar() {
+        panel.classList.remove('-translate-x-full');
+        panel.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';   // 選單開著時鎖住背景捲動
+      }
+      function closeSidebar() {
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      if (hamburger) hamburger.addEventListener('click', openSidebar);
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+
+      // Escape 關閉。只在開啟時作用,避免無謂地重設 body.overflow 干擾其他元件。
+      document.addEventListener('keydown', function (e) {
+        if ((e.key === 'Escape' || e.key === 'Esc') && isOpen()) closeSidebar();
+      });
+
+      // ── 桌機收合 ──────────────────────────────────────────────
+      // 狀態的唯一真相是 <html> 的 class(BaseLayout boot script 已於繪製前套好),
+      // 這裡只負責切換與寫回偏好。手機不走這條(鈕在 <768px 由 CSS 隱藏)。
+      var toggle = document.querySelector('[data-sidebar-toggle]');
+      if (toggle) {
+        var root = document.documentElement;
+        var syncLabel = function () {
+          var collapsed = root.classList.contains('sidebar-collapsed');
+          toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+          toggle.setAttribute('aria-label', collapsed ? '展開側欄' : '收合側欄');
+        };
+        toggle.addEventListener('click', function () {
+          var collapsed = root.classList.toggle('sidebar-collapsed');
+          try { localStorage.setItem('tw-sidebar-collapsed', collapsed ? '1' : '0'); } catch (e) {}
+          syncLabel();
+        });
+        syncLabel();
+      }
+    })();
+  </script>  <!-- Affiliates.One / Adotone Ad Link 網站驗證碼（須 is:inline 才會原樣輸出，勿移除 is:inline） --> <script>var ConverlyCustomData = {channelId: null};</script> <script async defer src="https://cdn.adotone.com/production/adlinks/676dd203e573377526b0bfa14fb812f5265fb0db262acf5759eaf3acb67f8e66.js"></script> </body> </html>
