@@ -4,8 +4,8 @@ title_en: 'US Midterm Elections Explained: What Is on the 2026 Ballot and How Ta
 date: 2026-11-01
 category_zh: '公民生活'
 category_en: 'Civic Life'
-readTime_zh: '9 分鐘'
-readTime_en: '9 min'
+readTime_zh: '10 分鐘'
+readTime_en: '10 min'
 summary_zh: '2026 美國期中選舉在美國當地 11 月 3 日舉行，不改選總統，卻會改變國會席次。從台灣讀者熟悉的總統、立委與九合一選舉出發，說清楚參眾兩院、435 席眾議員與 35 席參議員、國會多數的影響，以及開票夜數字為何還不是正式結果。附制度圖解與中文開票頁入口。'
 summary_en: 'A plain-language introduction to the November 3, 2026 US midterm elections, comparing Congress with Taiwan’s legislature and local elections. Includes an explanatory diagram and a link to TWTools’ Chinese-language Senate and governor results page. Sources checked November 1, 2026, Taipei time.'
 cover: '/blog-images/us-midterm-elections-guide-2026-cover.png'
@@ -47,6 +47,26 @@ author: 'TWTools 編輯部'
 表格依 [USA.gov](https://www.usa.gov/midterm-elections)、[眾議院制度說明](https://www.house.gov/the-house-explained)及 [USPS 本次選舉資訊](https://about.usps.com/postal-bulletin/2026/pb22712/html/cover_003.htm)整理。「435 席」指有全院表決權的席次；華府與部分領地另有代表，不能把 435 當成所有國會成員的總數。任期欄是定期任期，不能據此認為補缺選舉都會另開一個完整任期。
 
 可以記成兩句：**眾議院看人口，每 2 年全部重選；參議院每州一樣有 2 席，分批改選。** 所以，這次沒有參議員選舉的州，不代表漏辦選舉，而是可能還沒輪到該州的席位。[USA.gov 參議員選舉說明](https://www.usa.gov/midterm-elections)
+
+### 參、眾兩院平常做什麼？怎麼分工？
+
+**訂法律、決定政府經費，通常要兩院合作。** 一般聯邦法案可以由參議員或眾議員提出，兩院各自審查、修改與表決；最後必須通過相同版本，才送交總統簽署或否決。政府經費的撥款法案，也要經過兩院同意。[USA.gov 立法流程](https://www.usa.gov/how-laws-are-made)、[聯邦預算流程](https://www.usa.gov/federal-budget-process)
+
+**監督政府，也是兩院都有的工作。** 兩院都能透過委員會舉行聽證、要求官員說明政策或調查施政問題。[白宮的國會職權說明](https://www.whitehouse.gov/government/legislative-branch/)
+
+另外，有幾項工作由憲法分別交給其中一院：
+
+| 工作 | 眾議院負責什麼？ | 參議院負責什麼？ |
+|---|---|---|
+| 稅收等歲入法案 | 法案須先從眾院提出 | 可以審議、提出修正，最後仍須兩院同意 |
+| 部長、聯邦法官等人事案 | 不參與這類提名的同意表決 | 審查依法須經參院同意的總統提名 |
+| 條約同意 | 不負責這項同意表決 | 決定是否同意批准條約 |
+| 彈劾聯邦官員 | 表決是否正式提出彈劾指控 | 進行彈劾審判，決定指控是否成立 |
+
+表格依[眾院的歲入權說明](https://history.house.gov/Institution/Origins-Development/Power-of-the-Purse/Power-of-the-Purse/)、[白宮的立法部門介紹](https://www.whitehouse.gov/government/legislative-branch/)、[參院的條約同意權說明](https://www.senate.gov/about/powers-procedures/treaties.htm)及 [USA.gov 彈劾流程](https://www.usa.gov/impeachment)整理。人事案這裡指依法須經參院同意的職位，不能擴大解讀成所有任命；條約也有特定的憲法程序，各種對外協議不一定都走同一套。**眾院通過彈劾，是提出指控；仍須經參院審判，並不會在眾院表決後立即解職。**
+
+舉例來說，總統提名最高法院大法官時，要看參議院是否同意；若要通過一筆政府經費的撥款法案，就要看參、眾兩院能否通過同一版本。從這樣的分工來看，選舉後即使同一政黨只拿下一院多數，也可能影響不同的政策與人事決定。
+
 
 ### 為什麼這次參議院名單沒有加州？
 
@@ -221,3 +241,8 @@ author: 'TWTools 編輯部'
 14. [喬治亞州政府：2026 年一般選舉決選日](https://georgia.gov/events/2026-12-01/election-day-general-election-runoff)。過半門檻、前兩名決選與預定日期。
 15. 阿拉斯加選務機關：[排序投票說明](https://www.elections.alaska.gov/election-information/)、[結果與排序計票時程](https://www.elections.alaska.gov/election-results/)。第一順位票與後續排序輪次不同；11 月 18 日為目前公布的排序計票安排。
 16. [肯塔基州選務機關：Election Day Information](https://elect.ky.gov/Frequently-Asked-Questions/Pages/Election-Day-Information.aspx)及[州官方時區說明](https://www.kentuckytourism.com/trip-planning/travel-tools/transportation)。當地投票截止時間與跨時區情形。
+
+17. [USA.gov：The federal budget process](https://www.usa.gov/federal-budget-process)。撥款法案須經兩院通過相同版本。
+18. [眾院歷史辦公室：The Power of the Purse](https://history.house.gov/Institution/Origins-Development/Power-of-the-Purse/Power-of-the-Purse/)。歲入法案由眾院起始，參院仍可提出修正。
+19. [參議院：About Treaties](https://www.senate.gov/about/powers-procedures/treaties.htm)。條約同意權與其他對外協議的區別。
+20. [USA.gov：How federal impeachment works](https://www.usa.gov/impeachment)。眾院提出指控、參院審判，以及免職的不同階段。
