@@ -1,0 +1,506 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><script>(function(){try{var s=localStorage.getItem('tw-sidebar-collapsed');var c=s===null?false:s==='1';if(c){document.documentElement.classList.add('sidebar-collapsed');}}catch(e){}})();</script><title>日本免稅新制懶人包：11/1 起先付稅再退款，機場退稅怎麼辦？ | TWTools</title><meta name="description" content="日本 2026 年 11 月 1 日起改採免稅退款制：先付含稅價，出境時在託運前完成海關確認，再由業者退款。整理 5,000 日圓門檻、90 天期限、消耗品、轉機及 Visit Japan Web 注意事項。"><link rel="canonical" href="https://twtools.cc/blog/japan-tax-free-refund-guide-2026/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://www.googletagmanager.com"><!-- 2026-10-10 字重減重 10→8：去 Serif 500（0 用）、Mono 500（1 用→400）；Sans 300 保留（首頁 hero .accent 與放鬆頁副標是刻意的細體，拿掉會變常規字重）。每個 Noto 字重的 CSS 約 127KB raw。 --><!-- 2026-10-11 評估過字型自架（@fontsource 可變字重放 public/fonts，commit 7ced834）後回退：這頁本來就要抓 44 片／2.7MB 切片，
+       自架沒少 bytes，卻把它搬到 twtools.cc 同一條連線，把 island 的 JS chunk 餓到 55 秒才載完（DCL 3.3s→51.9s）。
+       GitHub Pages 自架不划算；要再減只能減字重或改設計。紀錄見 CoWork/Charlie/2026-10-10/twtools-review/README.md。 --><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:url" content="https://twtools.cc/blog/japan-tax-free-refund-guide-2026/"><meta property="og:title" content="日本免稅新制懶人包：11/1 起先付稅再退款，機場退稅怎麼辦？ | TWTools"><meta property="og:description" content="日本 2026 年 11 月 1 日起改採免稅退款制：先付含稅價，出境時在託運前完成海關確認，再由業者退款。整理 5,000 日圓門檻、90 天期限、消耗品、轉機及 Visit Japan Web 注意事項。"><meta property="og:image" content="https://twtools.cc/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="日本免稅新制懶人包：11/1 起先付稅再退款，機場退稅怎麼辦？"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="日本免稅新制懶人包：11/1 起先付稅再退款，機場退稅怎麼辦？ | TWTools"><meta name="twitter:description" content="日本 2026 年 11 月 1 日起改採免稅退款制：先付含稅價，出境時在託運前完成海關確認，再由業者退款。整理 5,000 日圓門檻、90 天期限、消耗品、轉機及 Visit Japan Web 注意事項。"><meta name="twitter:image" content="https://twtools.cc/og-image.png"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    // 內部流量標記（2026-10-10）：開任何頁加 ?internal=1 會把本瀏覽器記成內部（?internal=0 取消），
+    // 之後所有事件帶 traffic_type=internal；GA4 後台「內部流量」資料篩選器啟用後就會排除。
+    // 用途＝Charlie 自己的裝置 + 我們用真瀏覽器驗頁面時的流量，不再灌進使用數據。
+    var twInternal = false;
+    try {
+      var twQ = new URLSearchParams(location.search).get('internal');
+      if (twQ === '1') localStorage.setItem('tw_internal', '1');
+      else if (twQ === '0') localStorage.removeItem('tw_internal');
+      twInternal = localStorage.getItem('tw_internal') === '1';
+    } catch (e) {}
+    gtag('config', 'G-0WTK2LJFTY', twInternal ? { traffic_type: 'internal' } : {});
+    // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
+    // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
+    // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
+    window.twTrack = function (tool, action, label, extra) {
+      try {
+        if (typeof gtag !== 'function') return;
+        var t = tool || (location.pathname.split('/').filter(Boolean)[0] || 'home');
+        var p = { tool: t, action: String(action || ''), label: label == null ? '' : String(label).slice(0, 100) };
+        if (extra && typeof extra === 'object') for (var k in extra) if (p[k] === undefined) p[k] = extra[k];
+        gtag('event', 'tool_action', p);
+      } catch (e) {}
+    };
+  </script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5189873222333915" crossorigin="anonymous"></script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind：2026-10-10 起改 build-time（tailwind.config.cjs＋src/styles/tailwind.css），不再載 cdn.tailwindcss.com；
+       theme（brand／warm／accent 色票、darkMode class、typography plugin）原樣搬到 tailwind.config.cjs。 --><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/BaseLayout.lBJRRmsJ.css">
+<style>.db-callout[data-astro-cid-lqth5lif]{display:flex;align-items:center;gap:12px;border:1.5px solid var(--tw-hero-color);background:var(--tw-surface);padding:12px 16px;margin:0 0 20px;text-decoration:none;color:inherit;transition:transform .15s ease}.db-callout[data-astro-cid-lqth5lif]:hover{transform:translateY(-1px)}.db-callout-icon[data-astro-cid-lqth5lif]{font-size:22px;flex-shrink:0}.db-callout-text[data-astro-cid-lqth5lif]{display:flex;flex-direction:column;gap:1px;min-width:0}.db-callout-text[data-astro-cid-lqth5lif] strong[data-astro-cid-lqth5lif]{font-size:15px}.db-callout-text[data-astro-cid-lqth5lif] span[data-astro-cid-lqth5lif]{font-size:12.5px;color:var(--tw-text-secondary);line-height:1.5}.db-callout-go[data-astro-cid-lqth5lif]{margin-left:auto;flex-shrink:0;font-size:12px;color:var(--tw-hero-color);border:1px solid var(--tw-hero-color);padding:5px 10px;white-space:nowrap}
+.sb-group-toggle{cursor:pointer;background:transparent;border:0}.sb-group-chev{display:inline-block;font-size:.9rem;line-height:1;transition:transform .15s ease}.sb-group-toggle[aria-expanded=true] .sb-group-chev{transform:rotate(90deg)}.sb-group-toggle:focus-visible{outline:2px solid var(--tw-brand-accent);outline-offset:-2px}@media(min-width:768px){html.sidebar-collapsed [data-sidebar-panel] [data-group-items][hidden]{display:block}}@media(prefers-reduced-motion:reduce){.sb-group-chev{transition:none}}
+</style></head> <body class="min-h-screen paper-noise">   <button id="sidebar-hamburger" class="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg" style="background:var(--tw-surface);color:var(--tw-text-primary)">☰</button>  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 md:hidden hidden"></div>  <aside id="sidebar-panel" data-sidebar-panel class="fixed top-0 left-0 h-full w-56 z-40 flex flex-col border-r transition-transform -translate-x-full md:translate-x-0" style="background:var(--tw-page-bg);border-color:var(--tw-border)"> <!-- Logo --> <div data-sidebar-logo class="p-4 border-b flex items-center justify-between" style="border-color:var(--tw-border)"> <a href="/" class="flex items-center no-underline"> <img src="/logo-icon-128.png" width="128" height="128" alt="TWTools" class="w-7 h-7 rounded-lg"> <span data-sidebar-brand class="text-sm font-bold ml-1.5" style="color:var(--tw-brand-accent)">TWTools</span> </a> <button id="sidebar-close" class="md:hidden text-lg leading-none" style="color:var(--tw-text-muted)">✕</button> </div> <!-- 桌機收合鈕（手機由漢堡鈕負責，此鈕於 <768px 隱藏） --> <button type="button" data-sidebar-toggle aria-controls="sidebar-panel" aria-expanded="true" class="w-full items-center justify-center py-2 border-b text-xs" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <span class="chev inline-block leading-none">«</span> <span data-sidebar-label class="ml-1.5">收合側欄</span> </button> <!-- Nav items grouped by category --> <nav data-sidebar-nav class="flex-1 py-2 overflow-y-auto"> <div> <button type="button" data-sidebar-group data-group-toggle="disaster" data-current="true" aria-expanded="true" aria-controls="sb-group-disaster" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>防災即時</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-disaster" data-group-items> <a href="/typhoon/" data-sidebar-item title="颱風停班停課" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌀</span> <span data-sidebar-label>颱風停班停課</span> </a><a href="/rain/" data-sidebar-item title="即時雨量" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☔</span> <span data-sidebar-label>即時雨量</span> </a><a href="/dashboard/" data-sidebar-item title="防災儀表板" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛡️</span> <span data-sidebar-label>防災儀表板</span> </a><a href="/reservoir/" data-sidebar-item title="水庫即時水情" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💧</span> <span data-sidebar-label>水庫即時水情</span> </a><a href="/dingfengbo/" data-sidebar-item title="定風波 風雨時間軸" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌧️</span> <span data-sidebar-label>定風波 風雨時間軸</span> </a><a href="/alerts/" data-sidebar-item title="災害即時告警" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🚨</span> <span data-sidebar-label>災害即時告警</span> </a><a href="/dashboard/wall/" data-sidebar-item title="颱風直播牆" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📡</span> <span data-sidebar-label>颱風直播牆</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="life" data-current="false" aria-expanded="false" aria-controls="sb-group-life" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>生活查詢</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-life" data-group-items hidden> <a href="/address/" data-sidebar-item title="地址中譯英" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌐</span> <span data-sidebar-label>地址中譯英</span> </a><a href="/drone/" data-sidebar-item title="無人機管制區查詢" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛸</span> <span data-sidebar-label>無人機管制區查詢</span> </a><a href="/lottery/" data-sidebar-item title="台灣彩券" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎰</span> <span data-sidebar-label>台灣彩券</span> </a><a href="/lunar/" data-sidebar-item title="農曆國曆" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> <span data-sidebar-label>農曆國曆</span> </a><a href="/postal/" data-sidebar-item title="郵遞區號" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📮</span> <span data-sidebar-label>郵遞區號</span> </a><a href="/clock/" data-sidebar-item title="翻頁時鐘" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🕐</span> <span data-sidebar-label>翻頁時鐘</span> </a><a href="/solar-terms/" data-sidebar-item title="二十四節氣" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☀️</span> <span data-sidebar-label>二十四節氣</span> </a><a href="/currency/" data-sidebar-item title="匯率換算" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💱</span> <span data-sidebar-label>匯率換算</span> </a><a href="/codex-reset/" data-sidebar-item title="Codex 額度重置監看" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🔄</span> <span data-sidebar-label>Codex 額度重置監看</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="docs" data-current="false" aria-expanded="false" aria-controls="sb-group-docs" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>文件與計算</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-docs" data-group-items hidden> <a href="/proofread/" data-sidebar-item title="錯別字檢查" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">✍️</span> <span data-sidebar-label>錯別字檢查</span> </a><a href="/image/" data-sidebar-item title="圖片工具" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🖼️</span> <span data-sidebar-label>圖片工具</span> </a><a href="/pdf/" data-sidebar-item title="PDF 工具" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📄</span> <span data-sidebar-label>PDF 工具</span> </a><a href="/datecalc/" data-sidebar-item title="日期計算器" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📅</span> <span data-sidebar-label>日期計算器</span> </a><a href="/countdown/" data-sidebar-item title="倒數計時器" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⏳</span> <span data-sidebar-label>倒數計時器</span> </a><a href="/unit/" data-sidebar-item title="單位換算" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📏</span> <span data-sidebar-label>單位換算</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="learn" data-current="false" aria-expanded="false" aria-controls="sb-group-learn" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>學習與檢測</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-learn" data-group-items hidden> <a href="/seo/" data-sidebar-item title="SEO/GEO/AEO" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📊</span> <span data-sidebar-label>SEO/GEO/AEO</span> </a><a href="/vocabulary/" data-sidebar-item title="英文單字片語" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎓</span> <span data-sidebar-label>英文單字片語</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="relax" data-current="false" aria-expanded="false" aria-controls="sb-group-relax" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>放鬆小站</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-relax" data-group-items hidden> <a href="/bee/" data-sidebar-item title="小蜜蜂" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🐝</span> <span data-sidebar-label>小蜜蜂</span> </a><a href="/midnight/" data-sidebar-item title="深夜宵夜所" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> <span data-sidebar-label>深夜宵夜所</span> </a><a href="/woodenfish/" data-sidebar-item title="電子木魚" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🪵</span> <span data-sidebar-label>電子木魚</span> </a><a href="/breathe/" data-sidebar-item title="一起喘口氣" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">😮‍💨</span> <span data-sidebar-label>一起喘口氣</span> </a><a href="/invaders/" data-sidebar-item title="太空侵略者" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">👾</span> <span data-sidebar-label>太空侵略者</span> </a><a href="/sand/" data-sidebar-item title="指尖流沙" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⌛</span> <span data-sidebar-label>指尖流沙</span> </a><a href="/moyu/" data-sidebar-item title="摸魚螢幕" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🐟</span> <span data-sidebar-label>摸魚螢幕</span> </a><a href="/coin/" data-sidebar-item title="別糾結" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🪙</span> <span data-sidebar-label>別糾結</span> </a><a href="/crab/" data-sidebar-item title="打螃蟹" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🦀</span> <span data-sidebar-label>打螃蟹</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="records" data-current="false" aria-expanded="false" aria-controls="sb-group-records" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>公共紀錄</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-records" data-group-items hidden> <a href="/council/" data-sidebar-item title="議員任內紀錄" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🏛️</span> <span data-sidebar-label>議員任內紀錄</span> </a><a href="/elections/" data-sidebar-item title="選舉結果存檔" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🗳️</span> <span data-sidebar-label>選舉結果存檔</span> </a> </div> </div><div> <div data-sidebar-group class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">更多</div> <div id="sb-group-more" data-group-items> <a href="/blog/" data-sidebar-item title="知識文章" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-r-2" style="background:rgba(107,115,148,0.15);color:var(--tw-brand-accent);border-color:var(--tw-brand-accent)"> <span class="text-base">📝</span> <span data-sidebar-label>知識文章</span> </a> </div> </div>   </nav> <div data-sidebar-footer class="p-3 border-t text-xs text-center space-y-1" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <div class="flex justify-center gap-3"> <a href="/about/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">關於</a> <a href="/privacy/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">隱私權</a> <a href="/terms/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">條款</a> </div>
+打工牛馬的線上工具箱 © 2026
+</div> </aside>  <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8 min-h-screen" style="background:var(--tw-page-bg)">   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"日本免稅新制懶人包：11/1 起先付稅再退款，機場退稅怎麼辦？","description":"日本 2026 年 11 月 1 日起改採免稅退款制：先付含稅價，出境時在託運前完成海關確認，再由業者退款。整理 5,000 日圓門檻、90 天期限、消耗品、轉機及 Visit Japan Web 注意事項。","image":"https://twtools.cc/og-image.png","datePublished":"2026-11-02T00:00:00+08:00","dateModified":"2026-11-02T00:00:00+08:00","author":{"@type":"Organization","name":"TWTools 編輯部","url":"https://twtools.cc"},"publisher":{"@type":"Organization","name":"TWTools","url":"https://twtools.cc","logo":{"@type":"ImageObject","url":"https://twtools.cc/favicon.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://twtools.cc/blog/japan-tax-free-refund-guide-2026/"},"inLanguage":"zh-Hant-TW","keywords":"日本免稅新制, 日本退稅 2026, 日本退稅 11月1日, 日本機場退稅, 日本免稅 5000日圓, Visit Japan Web"}</script>  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"11 月 1 日之前買，11 月之後才離境，也要先付稅等退款嗎？","acceptedAnswer":{"@type":"Answer","text":"日本觀光廳以購買日區分，退款制適用於 2026 年 11 月 1 日起購買的商品。先前購買的商品請依當時店家及海關指示辦理。"}},{"@type":"Question","name":"所有旅客都可以申請嗎？","acceptedAnswer":{"@type":"Answer","text":"不一定。必須符合日本規定的免稅購買對象及文件條件；一般外國籍非居住者需符合官方列示的在留資格等條件，通常須能確認入境未滿 6 個月；短期赴日觀光旅客也應在購買時讓店家確認資格。日本人及其他居留身分有不同文件條件，不能單憑國籍判斷。"}},{"@type":"Question","name":"忘記在託運前辦理怎麼辦？","acceptedAnswer":{"@type":"Answer","text":"不要假設能取回託運行李補辦。日本觀光廳明確提醒，完成手續時必須持有所有免稅商品，也不能以辦理免稅為由要求航空公司取回已託運的行李。遇到問題請直接詢問機場海關。"}},{"@type":"Question","name":"出境時一定會被檢查嗎？","acceptedAnswer":{"@type":"Answer","text":"不一定。手續機會顯示是否需要檢查；顯示不需檢查時確認手續完成，顯示需要檢查時則須到指定場所接受檢查。"}},{"@type":"Question","name":"Visit Japan Web 可以在家先完成出境確認嗎？","acceptedAnswer":{"@type":"Answer","text":"不能把事先登錄等同出境確認。可使用線上方式的旅客仍須在指定機場、指定無線網路可連線的出境大廳區域辦理，並符合官方規定的在留資格等條件；日本籍旅客不能使用這項線上方式。 日本購物退稅與入境臺灣的行李申報是兩件事，返臺時仍應依臺灣海關規定辦理。"}}]}</script> <nav class="max-w-5xl mx-auto px-2 md:px-6 pt-2 pb-4 no-print" aria-label="breadcrumb"> <ol class="flex items-center gap-2 text-sm flex-wrap m-0 p-0 list-none" style="color: var(--tw-text-muted);"> <li><a href="/" class="grow-underline">首頁</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><a href="/blog/" class="grow-underline">編輯室</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><span style="color: var(--tw-text-primary);">旅遊生活</span></li> </ol> </nav>  <section class="max-w-5xl mx-auto px-2 md:px-6 pb-6"> <div class="article-col"> <div class="flex items-center gap-3 mb-5 flex-wrap"> <span class="brand-dot"></span> <span class="eyebrow">旅遊生活</span> <span class="printrule hidden md:inline">|</span> <span class="eyebrow">6 分鐘</span> <span class="printrule hidden md:inline">|</span> <span class="updated-pill"><span class="pulse-dot"></span>UPDATED · 2026 / 11 / 02</span> </div> <h1 class="font-serif-tc font-black tracking-cn" style="font-size: clamp(30px, 4.6vw, 52px); line-height: 1.15; color: var(--tw-hero-color); letter-spacing: -0.015em; margin: 0;"> 日本免稅新制懶人包：11/1 起先付稅再退款，機場退稅怎麼辦？ </h1> <p class="font-serif-tc" style="margin: 24px 0 0; font-size: clamp(16px, 1.8vw, 19px); line-height: 1.65; color: var(--tw-text-secondary); font-weight: 400;"> 日本 2026 年 11 月 1 日起改採免稅退款制：先付含稅價，出境時在託運前完成海關確認，再由業者退款。整理 5,000 日圓門檻、90 天期限、消耗品、轉機及 Visit Japan Web 注意事項。 </p> <div class="mt-8 pt-6 border-t flex items-center gap-x-6 gap-y-2 flex-wrap text-sm no-print" style="border-color: var(--tw-border); color: var(--tw-text-muted);"> <span class="inline-flex items-center gap-2"> <span class="w-7 h-7 rounded-full grid place-items-center" style="background: var(--tw-hero-color); color: #fffbfa; font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 12px;">編</span> <span style="color: var(--tw-text-secondary);">TWTools 編輯部</span> </span> <span class="printrule">|</span> <time datetime="2026-11-02">2026 / 11 / 02</time> <span class="ml-auto inline-flex items-center gap-3">  <button type="button" id="print-link" class="grow-underline inline-flex items-center gap-1.5" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0; font: inherit;"> <svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+  <rect x="6" y="14" width="12" height="8" rx="1" />
+</svg>
+列印
+</button> </span> </div> </div> </section>   <article class="max-w-5xl mx-auto px-2 md:px-6 mb-12"> <div class="article-frame"> <aside class="article-margin no-print"> <div class="margin-label">旅遊生活 · 2026</div> </aside> <div class="prose-cn"> <!-- TOC --> <details class="toc-block no-print" open> <summary> <div class="toc-head"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 5h.01" />
+  <path d="M3 12h.01" />
+  <path d="M3 19h.01" />
+  <path d="M8 5h13" />
+  <path d="M8 12h13" />
+  <path d="M8 19h13" />
+</svg>
+ <span class="eyebrow">CONTENTS · 目次</span> <h3>本文 7 個段落</h3> </div> <svg aria-hidden="true"
+  class="w-4 h-4 toc-chev lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m6 9 6 6 6-6" />
+</svg>
+ </summary> <div class="toc-list"> <ol> <li> <a href="#新舊制度差在哪裡"> <span class="toc-num">§ 01</span> <span class="toc-title">新舊制度差在哪裡？</span> </a> </li><li> <a href="#新制怎麼辦照這四步走"> <span class="toc-num">§ 02</span> <span class="toc-title">新制怎麼辦？照這四步走</span> </a> </li><li> <a href="#買多少才符合餅乾和化妝品可以拆嗎"> <span class="toc-num">§ 03</span> <span class="toc-title">買多少才符合？餅乾和化妝品可以拆嗎？</span> </a> </li><li> <a href="#付款與退稅金額要注意什麼"> <span class="toc-num">§ 04</span> <span class="toc-title">付款與退稅金額要注意什麼？</span> </a> </li><li> <a href="#常見問題"> <span class="toc-num">§ 05</span> <span class="toc-title">常見問題</span> </a> </li><li> <a href="#出發前檢查清單"> <span class="toc-num">§ 06</span> <span class="toc-title">出發前檢查清單</span> </a> </li><li> <a href="#參考資料"> <span class="toc-num">§ 07</span> <span class="toc-title">參考資料</span> </a> </li> </ol> </div> </details>  <p>在日本免稅店購物，符合免稅條件時的結帳方式改變了。從 <strong>2026 年 11 月 1 日起購買</strong>的商品，符合條件的旅客要先付含稅價格，出境時接受日本海關的商品攜出確認，再由免稅店等業者辦理退款；確認後仍須將商品帶出日本。這種做法稱為「退款制」（Refund Method）。</p>
+<p>最重要的一句話：<strong>先辦海關確認，再託運行李。</strong> 如果商品已經放進託運行李，航空公司不會因為旅客要補辦免稅手續而把行李取回。</p>
+<blockquote>
+<p>本文依日本觀光廳與國稅廳公布資料整理，查核日期為 2026 年 11 月 2 日。退款方式、時間及手續費請向購物的免稅店確認。</p>
+</blockquote>
+<h2 id="新舊制度差在哪裡">新舊制度差在哪裡？</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>項目</th><th>2026 年 10 月 31 日前購買</th><th>2026 年 11 月 1 日起購買</th></tr></thead><tbody><tr><td>付款</td><td>符合條件時可付免稅價，或先付含稅價後在櫃檯退款</td><td>先付含稅價格</td></tr><tr><td>退款</td><td>購物時以免稅價購買，或先付含稅價再依店家流程在櫃檯退款</td><td>出境時經海關確認後，由店家等業者退款</td></tr><tr><td>消耗品特殊包裝</td><td>原制度有特殊包裝規定</td><td>特殊包裝規定取消，商品仍須帶出日本</td></tr><tr><td>最低購買額</td><td>有最低金額規定</td><td>同店同日未稅滿 5,000 日圓</td></tr></tbody></table>
+<p>判斷新舊制度看<strong>購買日期</strong>，不是單看搭機日期。跨過 11 月 1 日的旅程，可能同時有兩種制度的商品，出發前可向店家及海關確認各自手續。 <a href="https://www.mlit.go.jp/kankocho/tax-free/page01_000001_00021.html">來源：日本觀光廳</a></p>
+<h2 id="新制怎麼辦照這四步走">新制怎麼辦？照這四步走</h2>
+<ol>
+<li><strong>在免稅店購物時出示護照</strong>，確認自己符合免稅資格，並依店家指示完成購買紀錄及退款方式登記。先支付含稅金額，也先問清楚退款方式、手續費與時間。</li>
+<li><strong>把商品留到出境時</strong>，並在購買日起 90 天內出境，於該次出境時完成海關確認。90 天從購買日的隔天起算；例如 11 月 1 日購買，確認期限為隔年 1 月 30 日。免稅商品要能由購買者本人持有並帶出日本；部分店家另提供符合規定的直接運送制度，是否受理請詢問店家。</li>
+<li><strong>在行李託運前辦理確認</strong>。機場或港口的免稅手續機會顯示是否需要檢查；若顯示需要檢查，帶著商品到海關檢查場所。安排充裕時間，完成確認及必要檢查後再託運。</li>
+<li><strong>確認後等待退款</strong>。退款不是在海關確認當下必定領現金；實際退款細節以免稅店等業者說明為準。</li>
+</ol>
+<p>日本觀光廳表示，成田、羽田、關西、中部、福岡、新千歲及那霸等七座機場，在國際線出境大廳、安檢前的指定專用無線網路可連線區域，符合資格者也可使用 Visit Japan Web 辦理。適用的在留資格為短期停留、外交或公用；日本籍旅客不能使用此線上方式。若結果顯示「未完成」、需要海關檢查，應帶商品到海關檢查場所；沒有完成確認就不能退款。若從日本國內線轉國際線，應在<strong>最後離開日本的機場</strong>辦理。若行李可能在國內線直掛到最終目的地，應事先向航空公司確認行李安排，確保在最後出境機場辦理確認時能持有商品。 <a href="https://www.mlit.go.jp/kankocho/tax-free/page01_000001_00021.html">來源：日本觀光廳旅客專頁</a></p>
+<h2 id="買多少才符合餅乾和化妝品可以拆嗎">買多少才符合？餅乾和化妝品可以拆嗎？</h2>
+<p>一般而言，在同一家免稅店同一天購買的商品，未稅金額滿 <strong>5,000 日圓</strong>才符合最低門檻。若店家委託共同免稅手續櫃檯，符合規定時，同一人在同日於多家店購買的商品可以在該櫃檯合併計算；不要假設任何不同店舖都能合併。</p>
+<p>衣服等非消耗品在日本使用後，若最終帶出日本，仍可接受海關確認。消耗品的特殊包裝規定雖然取消，<strong>不代表可以先在日本吃掉或用掉，再就已消費商品申請退款</strong>。而且日本觀光廳說明，海關以一次購物手續為單位確認：同一筆購物中，只要有一件免稅商品沒有持有，該筆其他商品也不能獲得海關確認及退款。</p>
+<p>例如，同一筆購物買了餅乾和化妝品，如果出境前把餅乾吃掉，不能只拿化妝品去完成該筆退稅。如果消耗品全部或部分已在日本吃掉或用掉，例如化妝品用過一部分，應先向海關櫃檯人員說明，不要先使用免稅手續機。其他免稅商品如果遺失或沒有持有，也應先向海關說明；不同購物手續中仍完整持有的商品，可依海關確認結果辦理。商品需以本人可帶出境的數量購買，金、白金地金等及原本不課消費稅的商品不適用。 <a href="https://www.mlit.go.jp/kankocho/tax-free/page01_000001_00021.html">來源：日本觀光廳</a></p>
+<h2 id="付款與退稅金額要注意什麼">付款與退稅金額要注意什麼？</h2>
+<p>新制需要先付含稅價，旅費和信用卡額度要預留空間。退款發生在海關確認後，實際入帳日期、退款方式及是否收取費用，應以購物店家或其退款業者的說明為準。</p>
+<p>不要把消費稅率直接乘上含稅售價當成退款金額。例如一件<strong>未稅 10,000 日圓、消費稅率 10%</strong> 的商品，含稅價為 11,000 日圓，消費稅相當額是 1,000 日圓；實際收到金額仍須看店家退款及費用規定。</p>
+<h2 id="常見問題">常見問題</h2>
+<h3 id="11-月-1-日之前買11-月之後才離境也要先付稅等退款嗎">11 月 1 日之前買，11 月之後才離境，也要先付稅等退款嗎？</h3>
+<p>日本觀光廳以購買日區分，退款制適用於 2026 年 11 月 1 日起購買的商品。先前購買的商品請依當時店家及海關指示辦理。</p>
+<h3 id="所有旅客都可以申請嗎">所有旅客都可以申請嗎？</h3>
+<p>不一定。必須符合日本規定的免稅購買對象及文件條件；一般外國籍非居住者需符合官方列示的在留資格等條件，通常須能確認入境未滿 6 個月；短期赴日觀光旅客也應在購買時讓店家確認資格。日本人及其他居留身分有不同文件條件，不能單憑國籍判斷。</p>
+<h3 id="忘記在託運前辦理怎麼辦">忘記在託運前辦理怎麼辦？</h3>
+<p>不要假設能取回託運行李補辦。日本觀光廳明確提醒，完成手續時必須持有所有免稅商品，也不能以辦理免稅為由要求航空公司取回已託運的行李。遇到問題請直接詢問機場海關。</p>
+<h3 id="出境時一定會被檢查嗎">出境時一定會被檢查嗎？</h3>
+<p>不一定。手續機會顯示是否需要檢查；顯示不需檢查時確認手續完成，顯示需要檢查時則須到指定場所接受檢查。</p>
+<h3 id="visit-japan-web-可以在家先完成出境確認嗎">Visit Japan Web 可以在家先完成出境確認嗎？</h3>
+<p>不能把事先登錄等同出境確認。可使用線上方式的旅客仍須在指定機場、指定無線網路可連線的出境大廳區域辦理，並符合官方規定的在留資格等條件；日本籍旅客不能使用這項線上方式。</p>
+<p>日本購物退稅與入境臺灣的行李申報是兩件事，返臺時仍應依<a href="https://web.customs.gov.tw/singlehtml/2222?cntId=a1ba90a5e6744b15909b0226ed55a35d">臺灣海關規定</a>辦理。</p>
+<h2 id="出發前檢查清單">出發前檢查清單</h2>
+<ul>
+<li>確認購買日期、店家免稅資格，以及每筆購物商品是否都還在。</li>
+<li>問清退款登記方式、預計時間與手續費；保留店家提供的紀錄。</li>
+<li>確認商品由本人攜帶，預留機場辦理與可能受檢的時間。</li>
+<li><strong>先到免稅手續機或符合條件的線上管道完成海關確認，再辦理託運。</strong></li>
+<li>若經國內線轉機，以最後出境機場為準；不清楚行李安排時先問航空公司與海關。</li>
+</ul>
+<p>其他行前準備可參考 <a href="/blog/japan-travel-guide/">日本自由行攻略</a>。</p>
+<h2 id="參考資料">參考資料</h2>
+<ul>
+<li><a href="https://www.mlit.go.jp/kankocho/tax-free/page01_000001_00021.html">日本觀光廳：免稅新制旅客專頁、繁體中文手冊與常見問題</a></li>
+<li><a href="https://www.nta.go.jp/publication/pamph/shohi/menzei/201805/format/002.htm">日本國稅廳：免稅制度改為退款制的資料與問答</a></li>
+<li><a href="https://www.nta.go.jp/publication/pamph/shohi/menzei/201805/pdf/0025003-110_01.pdf">日本國稅廳：新制與 90 天期限說明</a></li>
+<li><a href="https://www.mlit.go.jp/kankocho/tax-free/page01_000001_00050.html">日本觀光廳：出境及海關確認常見問題</a></li>
+<li><a href="https://www.customs.go.jp/osaka/news/news_pdf/gyoseikon_shiryou2_kanshi.pdf">大阪海關：新舊制度說明</a></li>
+<li><a href="https://www.nta.go.jp/publication/pamph/shohi/menzei/201805/format/002/onlinetetsuzuki/faqeng.htm">日本國稅廳：線上海關確認操作與結果說明（英文）</a></li>
+</ul>   <!-- Reactions --> <div class="reactions no-print"> <div class="ask">這篇對你有幫助嗎？</div> <div class="react-buttons"> <button type="button" class="react-btn" data-react="useful"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
+  <path d="M7 10v12" />
+</svg>
+ <span>覺得有用</span> <span class="count" data-react-count="useful">—</span> </button> <button type="button" class="react-btn" data-react="bookmark"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z" />
+</svg>
+ <span>收藏</span> <span class="count" data-react-count="bookmark">—</span> </button> </div> <span class="meta">PUBLISHED · 2026 / 11 / 02</span> </div> <!-- Full CTA --> <div class="cta-full no-print"> <div class="cta-head"> <h4>把這篇帶走</h4> <span class="eyebrow">SAVE · SHARE · FEED</span> </div> <div class="cta-grid"> <a href="#" class="cta-cell" data-action="copy-link"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+</svg>
+</div> <div> <div class="label">複製連結 <span class="kbd">⌘ C</span></div> <div class="desc">把這篇 URL 存到 Notion、Pocket，或直接傳給朋友。</div> </div> </a> <a href="/blog/japan-tax-free-refund-guide-2026/index.md" class="cta-cell" data-action="copy-md"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+</div> <div> <div class="label">複製 Markdown</div> <div class="desc">原始 .md 內容，餵 Gemini Notebook、ChatGPT 當研究素材。</div> </div> </a> <a href="https://notebook.google.com/?import=https%3A%2F%2Ftwtools.cc%2Fblog%2Fjapan-tax-free-refund-guide-2026%2F" target="_blank" rel="noopener" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
+  <path d="M9 13a4.5 4.5 0 0 0 3-4" />
+  <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" />
+  <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
+  <path d="M6 18a4 4 0 0 1-1.967-.516" />
+  <path d="M12 13h4" />
+  <path d="M12 18h6a2 2 0 0 1 2 2v1" />
+  <path d="M12 8h8" />
+  <path d="M16 8V5a2 2 0 0 1 2-2" />
+  <circle cx="16" cy="13" r=".5" />
+  <circle cx="18" cy="3" r=".5" />
+  <circle cx="20" cy="21" r=".5" />
+  <circle cx="20" cy="8" r=".5" />
+</svg>
+</div> <div> <div class="label">送進 Gemini Notebook</div> <div class="desc">一鍵把本文加入你的 Gemini Notebook（原 NotebookLM）來源。</div> </div> </a> <a href="/blog/rss.xml" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 11a9 9 0 0 1 9 9" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <circle cx="5" cy="19" r="1" />
+</svg>
+</div> <div> <div class="label">訂閱 RSS</div> <div class="desc">每週一篇，更新就推到你的 Reader。</div> </div> </a> </div> </div> </div> <aside class="article-margin no-print"> <div class="margin-label">TWTOOLS / EDITORIAL</div> </aside> </div> </article>  <script data-blog-tool-click>
+    document.addEventListener('click', function (e) {
+      try {
+        var a = e.target && e.target.closest ? e.target.closest('article a[href]') : null;
+        if (!a) return;
+        var u = new URL(a.getAttribute('href'), location.href);
+        if (u.origin !== location.origin) return;
+        var seg = u.pathname.split('/').filter(Boolean)[0] || '';
+        if (!seg || seg === 'blog') return;
+        if (typeof window.twTrack === 'function') window.twTrack('blog', 'click', seg);
+      } catch (err) {}
+    }, { passive: true });
+  </script>  <section class="no-print"> <div class="adjacent"> <a href="/blog/us-midterm-elections-guide-2026/"> <div class="arrow-row"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m12 19-7-7 7-7" />
+  <path d="M19 12H5" />
+</svg>
+ <span class="eyebrow">PREV · 上一篇</span> </div> <div class="post-title">美國期中選舉是什麼？2026 選什麼、跟台灣有什麼不同</div> </a> <div style="background: var(--tw-page-bg);"></div> </div> </section> <div class="max-w-6xl mx-auto pb-2"> <div class="pt-5 mt-6 border-t flex flex-col md:flex-row md:items-baseline gap-x-6 gap-y-2" style="border-color: var(--tw-border);"> <span class="eyebrow shrink-0">姊妹站 · FAMILY</span> <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm" style="color: var(--tw-text-muted);"> <a href="https://aire.twtools.cc/" title="aire — AI Tool Atlas·AI 工具圖鑑" class="grow-underline whitespace-nowrap">aire — AI Tool Atlas·AI 工具圖鑑</a><a href="https://tree.twtools.cc/" title="樹洞21號 — 匿名 AI 心事平台" class="grow-underline whitespace-nowrap">樹洞21號 — 匿名 AI 心事平台</a><a href="https://foootball.twtools.cc/" title="@foootball — 2026 世界盃賽程" class="grow-underline whitespace-nowrap">@foootball — 2026 世界盃賽程</a><a href="https://baseball.twtools.cc/" title="@baseball — 中職 CPBL＋MLB 深度戰報" class="grow-underline whitespace-nowrap">@baseball — 中職 CPBL＋MLB 深度戰報</a><a href="https://basketball.twtools.cc/" title="籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據" class="grow-underline whitespace-nowrap">籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據</a><a href="https://racing.twtools.cc/" title="賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果" class="grow-underline whitespace-nowrap">賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果</a><a href="https://health.twtools.cc/" title="健檢數據誌 — 健檢報告上的數字，各機構判準並列" class="grow-underline whitespace-nowrap">健檢數據誌 — 健檢報告上的數字，各機構判準並列</a><a href="https://tender.twtools.cc/" title="標案雷達 — 網通設備標案查詢、押標金試算與規格預檢" class="grow-underline whitespace-nowrap">標案雷達 — 網通設備標案查詢、押標金試算與規格預檢</a><a href="https://shhhh.cc/" title="Shhhh — 專業短網址管理平台" class="grow-underline whitespace-nowrap">Shhhh — 專業短網址管理平台</a><a href="https://dvdmaru.com/" title="dvdmaru — 把事實和敘事分開來看" class="grow-underline whitespace-nowrap">dvdmaru — 把事實和敘事分開來看</a> </div> </div> </div> </main>  <script type="module" src="/_assets/SidebarLayout.astro_astro_type_script_index_0_lang.qtscrtdu.js"></script> <script>
+    (function() {
+      var hamburger = document.getElementById('sidebar-hamburger');
+      var overlay = document.getElementById('sidebar-overlay');
+      var panel = document.getElementById('sidebar-panel');
+      var closeBtn = document.getElementById('sidebar-close');
+
+      // 手機開合。與 Sidebar.jsx（React 版）行為必須一致——2026-07-31 前兩者已漂移：
+      // React 版有 Escape 關閉與背景捲動鎖，本檔沒有，同一顆漢堡鈕兩種手感。
+      // 改任一邊時請同步另一邊（或更好：把行為再往下沉到共用層）。
+      function isOpen() {
+        return overlay && !overlay.classList.contains('hidden');
+      }
+      function openSidebar() {
+        panel.classList.remove('-translate-x-full');
+        panel.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';   // 選單開著時鎖住背景捲動
+      }
+      function closeSidebar() {
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      if (hamburger) hamburger.addEventListener('click', openSidebar);
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+
+      // Escape 關閉。只在開啟時作用,避免無謂地重設 body.overflow 干擾其他元件。
+      document.addEventListener('keydown', function (e) {
+        if ((e.key === 'Escape' || e.key === 'Esc') && isOpen()) closeSidebar();
+      });
+
+      // ── 桌機收合 ──────────────────────────────────────────────
+      // 狀態的唯一真相是 <html> 的 class(BaseLayout boot script 已於繪製前套好),
+      // 這裡只負責切換與寫回偏好。手機不走這條(鈕在 <768px 由 CSS 隱藏)。
+      var toggle = document.querySelector('[data-sidebar-toggle]');
+      if (toggle) {
+        var root = document.documentElement;
+        var syncLabel = function () {
+          var collapsed = root.classList.contains('sidebar-collapsed');
+          toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+          toggle.setAttribute('aria-label', collapsed ? '展開側欄' : '收合側欄');
+        };
+        toggle.addEventListener('click', function () {
+          var collapsed = root.classList.toggle('sidebar-collapsed');
+          try { localStorage.setItem('tw-sidebar-collapsed', collapsed ? '1' : '0'); } catch (e) {}
+          syncLabel();
+        });
+        syncLabel();
+      }
+    })();
+  </script>  <!-- Affiliates.One / Adotone Ad Link 網站驗證碼（須 is:inline 才會原樣輸出，勿移除 is:inline） --> <script>var ConverlyCustomData = {channelId: null};</script> <script async defer src="https://cdn.adotone.com/production/adlinks/676dd203e573377526b0bfa14fb812f5265fb0db262acf5759eaf3acb67f8e66.js"></script> </body> </html> <script>
+  (function () {
+    // Print
+    var printBtn = document.getElementById('print-link');
+    if (printBtn) {
+      printBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.print();
+      });
+    }
+
+    // TOC smooth scroll
+    document.querySelectorAll('details.toc-block .toc-list a').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var target = document.querySelector(a.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        var y = target.getBoundingClientRect().top + window.scrollY - 24;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        if (history.replaceState) history.replaceState(null, '', a.getAttribute('href'));
+      });
+    });
+
+    // Mobile TOC collapse by default
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      var toc = document.querySelector('details.toc-block');
+      if (toc) toc.removeAttribute('open');
+    }
+
+    // Reactions — localStorage-backed toggle (per-slug)
+    var slug = location.pathname.replace(/\/+$/, '').split('/').pop() || 'post';
+    var STORAGE_KEY = 'twtools.reactions.' + slug;
+    var BASE = { useful: 0, bookmark: 0 };
+    function readState() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (_) {}
+      return { useful: false, bookmark: false };
+    }
+    function writeState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+    }
+    function renderCount(key, state) {
+      var el = document.querySelector('[data-react-count="' + key + '"]');
+      if (!el) return;
+      el.textContent = String(BASE[key] + (state[key] ? 1 : 0));
+    }
+    function renderActive(key, state) {
+      var btn = document.querySelector('[data-react="' + key + '"]');
+      if (!btn) return;
+      btn.classList.toggle('is-active', !!state[key]);
+    }
+    var state = readState();
+    Object.keys(BASE).forEach(function (k) { renderCount(k, state); renderActive(k, state); });
+    document.querySelectorAll('[data-react]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.getAttribute('data-react');
+        state[key] = !state[key];
+        writeState(state);
+        renderCount(key, state);
+        renderActive(key, state);
+      });
+    });
+
+    // CTA: copy link
+    var copyLink = document.querySelector('[data-action="copy-link"]');
+    if (copyLink) {
+      copyLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(location.href).then(function () {
+            var label = copyLink.querySelector('.label');
+            if (!label) return;
+            var orig = label.innerHTML;
+            label.textContent = '已複製 ✓';
+            setTimeout(function () { label.innerHTML = orig; }, 1400);
+          });
+        }
+      });
+    }
+  })();
+</script>
