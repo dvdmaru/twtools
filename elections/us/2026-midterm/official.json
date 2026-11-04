@@ -1,0 +1,83 @@
+{
+ "active": true,
+ "fetchedAt": "2026-11-04T05:10:19Z",
+ "races": {
+  "87151": {
+   "source": "https://electionresults.iowa.gov/IA/127077/web.345435/#/summary",
+   "sourceLabel": "Iowa 選務機關官方開票網站",
+   "officialUpdated": "11/3/2026 11:07:34 PM CST",
+   "reportingZh": "官方標示：已回報 90 / 99 個郡",
+   "reportingPct": 90.9,
+   "fetchedAt": "2026-11-04T05:10:21Z",
+   "pctComputed": false,
+   "candidates": {
+    "220354": {
+     "votes": 587281,
+     "pct": 46.17
+    },
+    "220355": {
+     "votes": 643996,
+     "pct": 50.63
+    },
+    "220356": {
+     "votes": 39111,
+     "pct": 3.07
+    }
+   }
+  },
+  "87229": {
+   "source": "https://electionresults.sos.mn.gov/",
+   "sourceLabel": "Minnesota 選務機關官方開票網站",
+   "officialUpdated": "官方檔案更新於臺北時間 11/4 13:08",
+   "reportingZh": "官方標示：已回報 3,079 / 4,105 個投票區",
+   "reportingPct": 75.0,
+   "fetchedAt": "2026-11-04T05:10:22Z",
+   "pctComputed": false,
+   "candidates": {
+    "220624": {
+     "votes": 31957,
+     "pct": 1.46
+    },
+    "220623": {
+     "votes": 24627,
+     "pct": 1.13
+    },
+    "220621": {
+     "votes": 1182797,
+     "pct": 54.09
+    },
+    "220622": {
+     "votes": 944663,
+     "pct": 43.2
+    }
+   }
+  }
+ },
+ "nolive": {
+  "86916": {
+   "source": "https://www.elections.alaska.gov/",
+   "sourceLabel": "Alaska 選務機關",
+   "noteZh": "Alaska 官方選務網站目前要求人工驗證，本站無法讀取；請直接查看官方網站（本站查核：臺北時間 11/4 13:05）"
+  },
+  "87188": {
+   "source": "https://www.maine.gov/sos/elections-voting/election-results-data",
+   "sourceLabel": "Maine 選務機關",
+   "noteZh": "Maine 官方不在開票夜公布全州即時數字：開票夜由各鄉鎮自行公布，州務卿收齊各鄉鎮結果後才彙整公布（本站查核：臺北時間 11/4 13:03）"
+  },
+  "87283": {
+   "source": "https://www.sos.nh.gov/2026-general-election-results",
+   "sourceLabel": "New Hampshire 選務機關",
+   "noteZh": "New Hampshire 州務卿網站尚未公布本場結果，官方頁面標示開票完成後才會放上連結（本站查核：臺北時間 11/4 13:03）"
+  },
+  "87260": {
+   "source": "https://silverstateelection.nv.gov/",
+   "sourceLabel": "Nevada 選務機關",
+   "noteZh": "Nevada 官方開票網站有防機器人機制，本站無法自動擷取；請直接查看官方網站（本站查核：臺北時間 11/4 13:05）"
+  },
+  "87491": {
+   "source": "https://elections.wi.gov/elections/election-results",
+   "sourceLabel": "Wisconsin 選務機關",
+   "noteZh": "Wisconsin 選舉委員會說明該州開票夜沒有全州統一的官方即時數字，由 72 個郡各自公布（本站查核：臺北時間 11/4 13:03）"
+  }
+ }
+}
