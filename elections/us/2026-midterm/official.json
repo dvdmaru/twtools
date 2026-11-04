@@ -1,84 +1,84 @@
 {
  "active": true,
- "fetchedAt": "2026-11-04T05:59:31Z",
+ "fetchedAt": "2026-11-04T06:29:22Z",
  "races": {
   "86928": {
    "source": "https://app.enhancedvoting.com/results/public/Arizona/110326GeneralElection",
    "sourceLabel": "Arizona 選務機關官方開票網站",
-   "officialUpdated": "2026-11-04T05:58:21.9223882Z",
+   "officialUpdated": "2026-11-04T06:06:18.8633756Z",
    "reportingZh": "官方標示：15 / 15 個郡已開始回報（不代表開票完成）",
    "reportingPct": null,
-   "fetchedAt": "2026-11-04T05:59:32Z",
+   "fetchedAt": "2026-11-04T06:29:25Z",
    "pctComputed": true,
    "candidates": {
     "219803": {
-     "votes": 1006116,
-     "pct": 57.76
+     "votes": 1007810,
+     "pct": 57.73
     },
     "219802": {
-     "votes": 707694,
-     "pct": 40.63
+     "votes": 709710,
+     "pct": 40.65
     },
     "219804": {
-     "votes": 13578,
+     "votes": 13658,
      "pct": 0.78
     },
     "219805": {
-     "votes": 13455,
-     "pct": 0.77
+     "votes": 13533,
+     "pct": 0.78
     }
    }
   },
   "86952": {
    "source": "https://electionresults.sos.ca.gov/returns/governor",
    "sourceLabel": "California 選務機關官方開票網站",
-   "officialUpdated": "November 3, 2026, 9:55 p.m.",
-   "reportingZh": "官方標示：23,860 個投票區中 16,344 個已有部分回報（郵寄選票會再計數數週）",
+   "officialUpdated": "November 3, 2026, 10:25 p.m.",
+   "reportingZh": "官方標示：23,860 個投票區中 17,157 個已有部分回報（郵寄選票會再計數數週）",
    "reportingPct": null,
-   "fetchedAt": "2026-11-04T05:59:38Z",
+   "fetchedAt": "2026-11-04T06:29:26Z",
    "pctComputed": false,
    "candidates": {
     "219858": {
-     "votes": 4030056,
-     "pct": 64.9
+     "votes": 4287641,
+     "pct": 65.0
     },
     "219857": {
-     "votes": 2181421,
-     "pct": 35.1
+     "votes": 2305049,
+     "pct": 35.0
     }
    }
   },
   "87022": {
    "source": "https://results.enr.clarityelections.com/CO/127407/",
    "sourceLabel": "Colorado 選務機關官方開票網站",
-   "officialUpdated": "11/3/2026 10:58:17 PM MST",
-   "reportingZh": "官方標示：4,297 個投票區中 1,106 個全部完成、3,134 個部分回報",
+   "officialUpdated": "11/3/2026 11:19:18 PM MST",
+   "reportingZh": "官方標示：4,297 個投票區中 1,108 個全部完成、3,134 個部分回報",
    "reportingPct": null,
-   "fetchedAt": "2026-11-04T05:59:40Z",
+   "fetchedAt": "2026-11-04T06:29:28Z",
    "pctComputed": false,
    "candidates": {
     "220026": {
-     "votes": 718748,
-     "pct": 35.21
+     "votes": 731462,
+     "pct": 35.32
     },
     "220027": {
-     "votes": 1238886,
-     "pct": 60.68
+     "votes": 1254093,
+     "pct": 60.55
     },
     "220030": {
-     "votes": 51727,
-     "pct": 2.53
+     "votes": 52682,
+     "pct": 2.54
     },
     "220031": {
-     "votes": 2807,
+     "votes": 2867,
      "pct": 0.14
     },
     "220032": {
-     "votes": 20834,
-     "pct": 1.02
+     "votes": 21368,
+     "pct": 1.03
     },
     "220033": {
-     "votes": 8553,
+     "votes": 8751,
      "pct": 0.42
     }
    }
@@ -86,39 +86,39 @@
   "87018": {
    "source": "https://results.enr.clarityelections.com/CO/127407/",
    "sourceLabel": "Colorado 選務機關官方開票網站",
-   "officialUpdated": "11/3/2026 10:58:17 PM MST",
-   "reportingZh": "官方標示：4,297 個投票區中 1,106 個全部完成、3,134 個部分回報",
+   "officialUpdated": "11/3/2026 11:19:18 PM MST",
+   "reportingZh": "官方標示：4,297 個投票區中 1,108 個全部完成、3,134 個部分回報",
    "reportingPct": null,
-   "fetchedAt": "2026-11-04T05:59:40Z",
+   "fetchedAt": "2026-11-04T06:29:28Z",
    "pctComputed": false,
    "candidates": {
     "220008": {
-     "votes": 675514,
-     "pct": 33.25
+     "votes": 687730,
+     "pct": 33.37
     },
     "220009": {
-     "votes": 1247604,
-     "pct": 61.41
+     "votes": 1262817,
+     "pct": 61.27
     },
     "220010": {
-     "votes": 12117,
+     "votes": 12374,
      "pct": 0.6
     },
     "220011": {
-     "votes": 30165,
-     "pct": 1.48
+     "votes": 30827,
+     "pct": 1.5
     },
     "220012": {
-     "votes": 3801,
+     "votes": 3878,
      "pct": 0.19
     },
     "220013": {
-     "votes": 5960,
-     "pct": 0.29
+     "votes": 6096,
+     "pct": 0.3
     },
     "220014": {
-     "votes": 56303,
-     "pct": 2.77
+     "votes": 57257,
+     "pct": 2.78
     }
    }
   },
@@ -128,7 +128,7 @@
    "officialUpdated": "2026-11-04T04:44:35.7017084Z",
    "reportingZh": "官方標示：159 / 159 個郡已開始回報（不代表開票完成）",
    "reportingPct": null,
-   "fetchedAt": "2026-11-04T05:59:40Z",
+   "fetchedAt": "2026-11-04T06:29:29Z",
    "pctComputed": true,
    "candidates": {
     "220201": {
@@ -147,7 +147,7 @@
    "officialUpdated": "2026-11-04T04:44:35.7017084Z",
    "reportingZh": "官方標示：159 / 159 個郡已開始回報（不代表開票完成）",
    "reportingPct": null,
-   "fetchedAt": "2026-11-04T05:59:40Z",
+   "fetchedAt": "2026-11-04T06:29:29Z",
    "pctComputed": true,
    "candidates": {
     "220202": {
@@ -163,119 +163,119 @@
   "87151": {
    "source": "https://electionresults.iowa.gov/IA/127077/web.345435/#/summary",
    "sourceLabel": "Iowa 選務機關官方開票網站",
-   "officialUpdated": "11/3/2026 11:57:03 PM CST",
-   "reportingZh": "官方標示：已回報 1,609 / 1,656 個投票區",
-   "reportingPct": 97.1,
-   "fetchedAt": "2026-11-04T05:59:42Z",
+   "officialUpdated": "11/4/2026 12:25:50 AM CST",
+   "reportingZh": "官方標示：已回報 1,629 / 1,659 個投票區",
+   "reportingPct": 98.1,
+   "fetchedAt": "2026-11-04T06:29:30Z",
    "pctComputed": false,
    "candidates": {
     "220354": {
-     "votes": 616934,
-     "pct": 46.32
+     "votes": 625618,
+     "pct": 46.41
     },
     "220355": {
-     "votes": 671918,
-     "pct": 50.45
+     "votes": 678922,
+     "pct": 50.36
     },
     "220356": {
-     "votes": 41245,
-     "pct": 3.1
+     "votes": 41865,
+     "pct": 3.11
     }
    }
   },
   "87152": {
    "source": "https://electionresults.iowa.gov/IA/127077/web.345435/#/summary",
    "sourceLabel": "Iowa 選務機關官方開票網站",
-   "officialUpdated": "11/3/2026 11:57:03 PM CST",
-   "reportingZh": "官方標示：已回報 1,609 / 1,656 個投票區",
-   "reportingPct": 97.1,
-   "fetchedAt": "2026-11-04T05:59:42Z",
+   "officialUpdated": "11/4/2026 12:25:50 AM CST",
+   "reportingZh": "官方標示：已回報 1,629 / 1,659 個投票區",
+   "reportingPct": 98.1,
+   "fetchedAt": "2026-11-04T06:29:30Z",
    "pctComputed": false,
    "candidates": {
     "220357": {
-     "votes": 594627,
-     "pct": 44.46
+     "votes": 602799,
+     "pct": 44.53
     },
     "220358": {
-     "votes": 740990,
-     "pct": 55.41
+     "votes": 749188,
+     "pct": 55.34
     }
    }
   },
   "87229": {
    "source": "https://electionresults.sos.mn.gov/",
    "sourceLabel": "Minnesota 選務機關官方開票網站",
-   "officialUpdated": "臺北時間 11/4 13:58",
-   "reportingZh": "官方標示：已回報 3,776 / 4,105 個投票區",
-   "reportingPct": 91.9,
-   "fetchedAt": "2026-11-04T05:59:43Z",
+   "officialUpdated": "臺北時間 11/4 14:19",
+   "reportingZh": "官方標示：已回報 3,881 / 4,105 個投票區",
+   "reportingPct": 94.5,
+   "fetchedAt": "2026-11-04T06:29:32Z",
    "pctComputed": false,
    "candidates": {
     "220624": {
-     "votes": 38772,
-     "pct": 1.47
+     "votes": 39737,
+     "pct": 1.46
     },
     "220623": {
-     "votes": 30170,
+     "votes": 31011,
      "pct": 1.14
     },
     "220621": {
-     "votes": 1435318,
-     "pct": 54.26
+     "votes": 1474476,
+     "pct": 54.34
     },
     "220622": {
-     "votes": 1137866,
-     "pct": 43.01
+     "votes": 1164871,
+     "pct": 42.93
     }
    }
   },
   "87230": {
    "source": "https://electionresults.sos.mn.gov/",
    "sourceLabel": "Minnesota 選務機關官方開票網站",
-   "officialUpdated": "臺北時間 11/4 13:58",
-   "reportingZh": "官方標示：已回報 3,776 / 4,105 個投票區",
-   "reportingPct": 91.9,
-   "fetchedAt": "2026-11-04T05:59:43Z",
+   "officialUpdated": "臺北時間 11/4 14:19",
+   "reportingZh": "官方標示：已回報 3,881 / 4,105 個投票區",
+   "reportingPct": 94.5,
+   "fetchedAt": "2026-11-04T06:29:32Z",
    "pctComputed": false,
    "candidates": {
     "220628": {
-     "votes": 48129,
-     "pct": 1.82
+     "votes": 49558,
+     "pct": 1.83
     },
     "220626": {
-     "votes": 1481310,
-     "pct": 56.03
+     "votes": 1521143,
+     "pct": 56.09
     },
     "220627": {
-     "votes": 1112064,
-     "pct": 42.06
+     "votes": 1138659,
+     "pct": 41.99
     }
    }
   },
   "87247": {
    "source": "https://electionresults.mt.gov/resultsSW.aspx?type=FED&map=CTY",
    "sourceLabel": "Montana 選務機關官方開票網站",
-   "officialUpdated": "11/3/2026 10:55:25 PM MT",
-   "reportingZh": "官方標示：728 個投票區中 118 個全部完成、451 個部分回報",
+   "officialUpdated": "11/3/2026 11:25:22 PM MT",
+   "reportingZh": "官方標示：728 個投票區中 217 個全部完成、482 個部分回報",
    "reportingPct": null,
-   "fetchedAt": "2026-11-04T05:59:45Z",
+   "fetchedAt": "2026-11-04T06:29:34Z",
    "pctComputed": true,
    "candidates": {
     "220680": {
-     "votes": 116400,
-     "pct": 46.86
+     "votes": 168651,
+     "pct": 47.04
     },
     "220681": {
-     "votes": 29049,
-     "pct": 11.69
+     "votes": 43124,
+     "pct": 12.03
     },
     "220682": {
-     "votes": 4129,
-     "pct": 1.66
+     "votes": 6333,
+     "pct": 1.77
     },
     "220683": {
-     "votes": 98847,
-     "pct": 39.79
+     "votes": 140382,
+     "pct": 39.16
     }
    }
   },
@@ -285,7 +285,7 @@
    "officialUpdated": "November 4, 2026 12:55 am",
    "reportingZh": "官方標示：已回報 2,626 / 2,626 個投票區",
    "reportingPct": 100.0,
-   "fetchedAt": "2026-11-04T05:59:47Z",
+   "fetchedAt": "2026-11-04T06:29:36Z",
    "pctComputed": false,
    "candidates": {
     "220936": {
@@ -309,58 +309,58 @@
   "87254": {
    "source": "https://electionresults.nebraska.gov/resultsSW.aspx?type=SW&map=CTY",
    "sourceLabel": "Nebraska 選務機關官方開票網站",
-   "officialUpdated": "11/3/2026 11:55 PM CT",
-   "reportingZh": "官方標示：1,322 個投票區中 373 個全部完成、637 個部分回報",
+   "officialUpdated": "11/4/2026 12:25 AM CT",
+   "reportingZh": "官方標示：1,322 個投票區中 462 個全部完成、552 個部分回報",
    "reportingPct": null,
-   "fetchedAt": "2026-11-04T05:59:49Z",
+   "fetchedAt": "2026-11-04T06:29:38Z",
    "pctComputed": false,
    "candidates": {
     "220702": {
-     "votes": 254125,
-     "pct": 48.45
+     "votes": 289873,
+     "pct": 48.87
     },
     "220703": {
-     "votes": 11042,
-     "pct": 2.11
+     "votes": 12601,
+     "pct": 2.12
     },
     "220704": {
-     "votes": 13772,
-     "pct": 2.63
+     "votes": 15388,
+     "pct": 2.59
     },
     "220705": {
-     "votes": 6073,
-     "pct": 1.16
+     "votes": 6944,
+     "pct": 1.17
     },
     "220706": {
-     "votes": 239482,
-     "pct": 45.66
+     "votes": 268313,
+     "pct": 45.24
     }
    }
   },
   "87255": {
    "source": "https://electionresults.nebraska.gov/resultsSW.aspx?type=SW&map=CTY",
    "sourceLabel": "Nebraska 選務機關官方開票網站",
-   "officialUpdated": "11/3/2026 11:55 PM CT",
-   "reportingZh": "官方標示：1,322 個投票區中 373 個全部完成、637 個部分回報",
+   "officialUpdated": "11/4/2026 12:25 AM CT",
+   "reportingZh": "官方標示：1,322 個投票區中 462 個全部完成、552 個部分回報",
    "reportingPct": null,
-   "fetchedAt": "2026-11-04T05:59:49Z",
+   "fetchedAt": "2026-11-04T06:29:38Z",
    "pctComputed": false,
    "candidates": {
     "220707": {
-     "votes": 255563,
-     "pct": 48.59
+     "votes": 291796,
+     "pct": 49.09
     },
     "220708": {
-     "votes": 234793,
-     "pct": 44.65
+     "votes": 261516,
+     "pct": 44.0
     },
     "220709": {
-     "votes": 13007,
-     "pct": 2.47
+     "votes": 15187,
+     "pct": 2.56
     },
     "220710": {
-     "votes": 22541,
-     "pct": 4.29
+     "votes": 25898,
+     "pct": 4.36
     }
    }
   },
@@ -370,7 +370,7 @@
    "officialUpdated": "11/4/2026 12:30:47 AM EST",
    "reportingZh": "官方標示：46 個郡中 44 個郡計完、2 個郡部分回報",
    "reportingPct": null,
-   "fetchedAt": "2026-11-04T05:59:51Z",
+   "fetchedAt": "2026-11-04T06:29:40Z",
    "pctComputed": false,
    "candidates": {
     "221091": {
@@ -397,7 +397,7 @@
    "officialUpdated": "11/4/2026 12:30:47 AM EST",
    "reportingZh": "官方標示：46 個郡中 44 個郡計完、2 個郡部分回報",
    "reportingPct": null,
-   "fetchedAt": "2026-11-04T05:59:51Z",
+   "fetchedAt": "2026-11-04T06:29:40Z",
    "pctComputed": false,
    "candidates": {
     "221096": {
@@ -421,65 +421,65 @@
   "87438": {
    "source": "https://goelect.txelections.civixapps.com/ivis-enr-ui/races",
    "sourceLabel": "Texas 選務機關官方開票網站",
-   "officialUpdated": "Nov 04, 2026 05:59:07",
-   "reportingZh": "官方標示：已回報 2,602 / 5,302 個投票所",
-   "reportingPct": 49.0,
-   "fetchedAt": "2026-11-04T05:59:53Z",
+   "officialUpdated": "Nov 04, 2026 06:28:55",
+   "reportingZh": "官方標示：已回報 2,843 / 5,302 個投票所",
+   "reportingPct": 53.6,
+   "fetchedAt": "2026-11-04T06:29:42Z",
    "pctComputed": false,
    "candidates": {
     "221153": {
-     "votes": 4579595,
-     "pct": 54.8688817284124
+     "votes": 4646100,
+     "pct": 54.80319106710699
     },
     "221152": {
-     "votes": 3618044,
-     "pct": 43.34838087739027
+     "votes": 3678835,
+     "pct": 43.3937920856978
     },
     "1175698": {
-     "votes": 145697,
-     "pct": 1.7456197461095362
+     "votes": 149668,
+     "pct": 1.7654127118727037
     }
    }
   },
   "55857": {
    "source": "https://goelect.txelections.civixapps.com/ivis-enr-ui/races",
    "sourceLabel": "Texas 選務機關官方開票網站",
-   "officialUpdated": "Nov 04, 2026 05:59:07",
-   "reportingZh": "官方標示：已回報 2,602 / 5,302 個投票所",
-   "reportingPct": 49.0,
-   "fetchedAt": "2026-11-04T05:59:53Z",
+   "officialUpdated": "Nov 04, 2026 06:28:55",
+   "reportingZh": "官方標示：已回報 2,843 / 5,302 個投票所",
+   "reportingPct": 53.6,
+   "fetchedAt": "2026-11-04T06:29:42Z",
    "pctComputed": false,
    "candidates": {
     "140181": {
-     "votes": 4414808,
-     "pct": 52.83
+     "votes": 4460703,
+     "pct": 52.7
     },
     "140180": {
-     "votes": 3826300,
-     "pct": 45.79
+     "votes": 3886847,
+     "pct": 45.92
     },
     "1175096": {
-     "votes": 112364,
-     "pct": 1.34
+     "votes": 114772,
+     "pct": 1.36
     }
    }
   },
   "87472": {
    "source": "https://enr.elections.virginia.gov/results/public/virginia/elections/2026-November-General",
    "sourceLabel": "Virginia 選務機關官方開票網站",
-   "officialUpdated": "2026-11-04T05:57:09.9758992Z",
-   "reportingZh": "官方標示：2,529 個投票區中，2,110 個開票夜計完、5 個全部完成、414 個部分回報（暫定選票等尚未計入）",
+   "officialUpdated": "2026-11-04T06:25:10.4053766Z",
+   "reportingZh": "官方標示：2,529 個投票區中，2,198 個開票夜計完、5 個全部完成、326 個部分回報（暫定選票等尚未計入）",
    "reportingPct": null,
-   "fetchedAt": "2026-11-04T05:59:55Z",
+   "fetchedAt": "2026-11-04T06:29:44Z",
    "pctComputed": false,
    "candidates": {
     "221245": {
-     "votes": 2047387,
-     "pct": 60.17
+     "votes": 2150108,
+     "pct": 60.91
     },
     "221246": {
-     "votes": 1346391,
-     "pct": 39.57
+     "votes": 1370749,
+     "pct": 38.83
     }
    }
   }
