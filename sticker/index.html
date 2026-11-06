@@ -227,6 +227,10 @@
       { id: 'pixel',      label: '像素風格',   emoji: '👾', desc: '復古遊戲像素藝術' },
       { id: '3d-render',  label: '3D 渲染',    emoji: '🧊', desc: '立體質感，光影細膩' },
       { id: 'realistic',  label: '寫實光影',   emoji: '📸', desc: '接近真實的光影效果' },
+      // 2026-11-06 搞怪三款（D）：刻意畫爛／極簡幾何／亮面 emoji
+      { id: 'doodle',     label: '塗鴉醜萌',   emoji: '✏️', desc: '粗黑線白底，故意畫爛' },
+      { id: 'geo-min',    label: '極簡幾何',   emoji: '⚪', desc: '幾何色塊，臉只剩幾筆' },
+      { id: 'glossy-emoji', label: '亮面 emoji', emoji: '🟡', desc: '光滑圓球質感，像手機表情' },
     ];
 
     const CAPTION_THEMES = [
@@ -363,7 +367,13 @@
       'pixel':     'in retro pixel art style with visible square pixels, limited color palette, 8-bit/16-bit game aesthetic',
       '3d-render': 'in high-quality 3D rendered style with realistic lighting, smooth surfaces, subtle shadows, clay-like material',
       'realistic': 'in semi-realistic illustration style with detailed lighting, soft shadows, photographic quality',
+      // 2026-11-06 搞怪三款（D）
+      'doodle':    'in a deliberately crude, childlike doodle style: thick uneven black marker outlines, mostly white/unfilled body with at most one or two flat accent colors, wobbly hand-drawn lines, no shading, no gradients, intentionally "badly drawn" ugly-cute look like a quick MS Paint scribble. Keep ONLY the most recognizable features (species, signature colors, signature accessory) and reduce everything else to a few strokes',
+      'geo-min':   'in an extremely minimalist geometric style: the character is reduced to a few flat geometric shapes (circles, half-circles, rounded rectangles) in solid flat colors, the face is just 2-4 tiny strokes (dot eyes, one short line for the mouth), no outlines or hairline-thin outlines, no shading, no texture, no details. Keep only the signature colors and ONE identifying feature so the character is still recognizable',
+      'glossy-emoji': 'in a glossy smartphone-emoji style: a smooth rounded, slightly 3D body like a shiny plastic ball or blob, soft gradients, one bright specular highlight on top, tiny stubby limbs, bold simple facial features, vivid saturated colors, rendered like Apple/Google emoji. Keep the species cue and signature colors',
     };
+    // 這幾款的「保留角色辨識度」只保留物種＋主色＋一個特徵，其餘刻意簡化／畫歪（否則 PRESERVE 規則會把畫風拉回參考圖）
+    const STYLE_IDENTITY_RELAX = new Set(['doodle', 'geo-min', 'glossy-emoji']);
 
     // ============================================================
     // Utility: Smart Background Removal (sample corners → targeted removal)
@@ -1667,7 +1677,9 @@
           campaignRule ? `\n🎯 CAMPAIGN RULE (MUST FOLLOW):\n${campaignRule}\n` : '',
           extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority for this specific sticker): ${extraHint}\n` : '',
           '', 'CRITICAL REQUIREMENTS:',
-          '- PRESERVE the character species and visual identity from the reference image — this is the #1 priority',
+          STYLE_IDENTITY_RELAX.has(selectedStyle)
+            ? '- Keep ONLY the character species, signature colors and one key identifying feature from the reference image; deliberately simplify, distort or "badly draw" everything else to match the chosen art style — do NOT faithfully reproduce the reference rendering'
+            : '- PRESERVE the character species and visual identity from the reference image — this is the #1 priority',
           '- The character outfit/costume MUST match the scene context described above',
           '- Do NOT include any text, letters, words, numbers, or characters in the image',
           '- Use a clean solid CHROMA KEY GREEN background (hex #00B140) — this specific green is required for automated background removal. Fill the ENTIRE background with this exact green color.',
@@ -1682,9 +1694,10 @@
         ].join('\n');
       };
 
-      const generateOne = async (index, extraHint = '') => {
+      const generateOne = async (index, extraHint = '', signal = undefined) => {
         const res = await fetch(`${WORKER_URL}/generate-image`, {
           method: 'POST',
+          signal,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             prompt: buildPrompt(index, extraHint),
@@ -1699,23 +1712,76 @@
         return `data:${img.mimeType};base64,${img.base64}`;
       };
 
+      // === 2026-11-06 A：單張逾時＋自動重試；B：有限併發 ===
+      const GEN_TIMEOUT_MS = 60000;   // 單張逾時（Gemini 單張約 16-18s，60s 沒回就放棄這次）
+      const GEN_MAX_ATTEMPTS = 3;     // 1 次＋自動重試 2 次（退避 1.5s / 3s）
+      const GEN_CONCURRENCY = 3;      // 同時進行張數（paid tier RPM 足夠；24 張約從 7 分鐘縮到 3 分鐘內）
+      const sleepMs = (ms) => new Promise(r => setTimeout(r, ms));
+      // 不值得重試的錯：花費上限／金鑰／請求格式（worker 已轉成中文可讀訊息）；其餘（逾時／5xx／429 限流／網路）都重試
+      const isRetryableError = (msg) => !/花費上限|spend|金鑰|API key|HTTP 40[013]|Missing required/i.test(msg || '');
+
+      const generateWithRetry = async (index, extraHint = '', onAttempt) => {
+        let lastErr = null;
+        for (let attempt = 1; attempt <= GEN_MAX_ATTEMPTS; attempt++) {
+          if (abortRef.current) throw new Error('已停止');
+          const ctrl = new AbortController();
+          const timer = setTimeout(() => ctrl.abort(), GEN_TIMEOUT_MS);
+          try {
+            onAttempt?.(attempt);
+            return await generateOne(index, extraHint, ctrl.signal);
+          } catch (err) {
+            lastErr = (err?.name === 'AbortError') ? new Error(`逾時（${GEN_TIMEOUT_MS / 1000}s 沒回應）`) : err;
+            if (abortRef.current || !isRetryableError(lastErr.message) || attempt === GEN_MAX_ATTEMPTS) break;
+            await sleepMs(1500 * attempt + Math.random() * 500);
+          } finally {
+            clearTimeout(timer);
+          }
+        }
+        throw lastErr || new Error('未知錯誤');
+      };
+
+      // 併發池：共用佇列，N 個 worker 各自取號；回傳失敗清單
+      const runGenerationPool = async (indices, onDone) => {
+        const queue = [...indices];
+        const failed = [];
+        const worker = async () => {
+          while (queue.length && !abortRef.current) {
+            const i = queue.shift();
+            setGenerateProgress(prev => ({ ...prev, inFlight: [...(prev.inFlight || []), i] }));
+            try {
+              const dataUrl = await generateWithRetry(i, '', (attempt) => {
+                if (attempt > 1) setGenerateProgress(prev => ({ ...prev, note: `第 ${i + 1} 張重試中（第 ${attempt} 次）` }));
+              });
+              setGeneratedImages(prev => { const n = [...prev]; n[i] = dataUrl; return n; });
+            } catch (err) {
+              console.error(`Sticker ${i + 1} failed:`, err);
+              failed.push({ index: i, message: err.message });
+            }
+            setGenerateProgress(prev => ({ ...prev, inFlight: (prev.inFlight || []).filter(x => x !== i) }));
+            onDone?.(i);
+          }
+        };
+        await Promise.all(Array.from({ length: Math.min(GEN_CONCURRENCY, queue.length) }, worker));
+        return failed;
+      };
+
       const handleGenerateAll = async () => {
         setIsGenerating(true);
         abortRef.current = false;
-        setGenerateProgress({ current: 0, total: stickerCount, errors: [] });
-        const nextImages = [...generatedImages];
-        for (let i = 0; i < stickerCount; i++) {
-          if (abortRef.current) break;
-          setGenerateProgress(prev => ({ ...prev, current: i + 1 }));
-          if (nextImages[i]) continue;
-          try {
-            nextImages[i] = await generateOne(i);
-            setGeneratedImages([...nextImages]);
-          } catch (err) {
-            console.error(`Sticker ${i + 1} failed:`, err);
-            setGenerateProgress(prev => ({ ...prev, errors: [...prev.errors, { index: i, message: err.message }] }));
-          }
+        const todo = [];
+        for (let i = 0; i < stickerCount; i++) if (!generatedImages[i]) todo.push(i);
+        setGenerateProgress({ current: stickerCount - todo.length, total: stickerCount, errors: [], note: '' });
+        const bump = () => setGenerateProgress(prev => ({ ...prev, current: prev.current + 1, note: '' }));
+
+        let failed = await runGenerationPool(todo, bump);
+        // 整批跑完後，對「可重試」的失敗張再補跑一輪（Gemini 間歇慢回通常過幾十秒就恢復）
+        const retryable = failed.filter(f => isRetryableError(f.message)).map(f => f.index);
+        if (retryable.length && !abortRef.current) {
+          setGenerateProgress(prev => ({ ...prev, current: prev.current - retryable.length, note: `補跑 ${retryable.length} 張失敗的` }));
+          const stillFailed = await runGenerationPool(retryable, bump);
+          failed = failed.filter(f => !retryable.includes(f.index)).concat(stillFailed);
         }
+        setGenerateProgress(prev => ({ ...prev, errors: failed, note: '' }));
         setIsGenerating(false);
       };
 
@@ -1724,7 +1790,7 @@
       const handleRetryOne = async (index) => {
         try {
           const hint = stickerHints[index] || '';
-          const dataUrl = await generateOne(index, hint);
+          const dataUrl = await generateWithRetry(index, hint);
           const next = [...generatedImages]; next[index] = dataUrl; setGeneratedImages(next);
           const nextP = [...processedImages]; nextP[index] = null; setProcessedImages(nextP);
           setGenerateProgress(prev => ({ ...prev, errors: prev.errors.filter(e => e.index !== index) }));
@@ -1736,7 +1802,7 @@
         setRegenLoadingIndex(index);
         try {
           const hint = stickerHints[index] || '';
-          const dataUrl = await generateOne(index, hint);
+          const dataUrl = await generateWithRetry(index, hint);
           const next = [...generatedImages]; next[index] = dataUrl; setGeneratedImages(next);
           const nextP = [...processedImages]; nextP[index] = null; setProcessedImages(nextP);
         } catch (err) { alert(`第 ${index + 1} 張重新生成失敗：${err.message}`); }
@@ -1770,7 +1836,7 @@
                   className="px-6 py-2.5 rounded-xl bg-red-500 text-white font-medium hover:bg-red-600 transition">
                   ⏹ 停止生成
                 </button>
-                <div className="text-sm text-gray-500">正在生成第 {generateProgress.current}/{generateProgress.total} 張...</div>
+                <div className="text-sm text-gray-500">已完成 {generateProgress.current}/{generateProgress.total} 張（同時 {GEN_CONCURRENCY} 張進行中）{generateProgress.note ? ` ・ ${generateProgress.note}` : ''}</div>
               </div>
             )}
             {(isGenerating || hasImages) && (
@@ -1793,7 +1859,7 @@
                 <div className="text-red-500 text-xs">
                   失敗：{generateProgress.errors.map(e => `#${e.index + 1}`).join('、')}
                 </div>
-                <div className="text-red-400 text-xs mt-1">可點擊失敗圖片上的重試按鈕</div>
+                <div className="text-red-400 text-xs mt-1">已自動重試 {GEN_MAX_ATTEMPTS} 次＋補跑一輪仍失敗；可點擊失敗圖片上的重試按鈕</div>
               </div>
             )}
           </div>
@@ -1867,7 +1933,7 @@
           <div className="sticker-grid">
             {Array.from({ length: stickerCount }).map((_, i) => {
               const isFailed = generateProgress.errors.find(e => e.index === i);
-              const isCurrentlyGenerating = isGenerating && generateProgress.current === i + 1 && !generatedImages[i];
+              const isCurrentlyGenerating = isGenerating && (generateProgress.inFlight || []).includes(i) && !generatedImages[i];
               const isRegening = regenLoadingIndex === i;
               const displayImage = processedImages[i] || generatedImages[i];
 
