@@ -1859,6 +1859,9 @@
                 <div className="text-red-500 text-xs">
                   失敗：{generateProgress.errors.map(e => `#${e.index + 1}`).join('、')}
                 </div>
+                {[...new Set(generateProgress.errors.map(e => e.message).filter(Boolean))].slice(0, 3).map(m => (
+                  <div key={m} className="text-red-500 text-xs mt-1 break-all">原因：{m}</div>
+                ))}
                 <div className="text-red-400 text-xs mt-1">已自動重試 {GEN_MAX_ATTEMPTS} 次＋補跑一輪仍失敗；可點擊失敗圖片上的重試按鈕</div>
               </div>
             )}
