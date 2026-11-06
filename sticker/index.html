@@ -368,12 +368,109 @@
       '3d-render': 'in high-quality 3D rendered style with realistic lighting, smooth surfaces, subtle shadows, clay-like material',
       'realistic': 'in semi-realistic illustration style with detailed lighting, soft shadows, photographic quality',
       // 2026-11-06 搞怪三款（D）
-      'doodle':    'in a deliberately crude, childlike doodle style: thick uneven black marker outlines, mostly white/unfilled body with at most one or two flat accent colors, wobbly hand-drawn lines, no shading, no gradients, intentionally "badly drawn" ugly-cute look like a quick MS Paint scribble. Keep ONLY the most recognizable features (species, signature colors, signature accessory) and reduce everything else to a few strokes',
-      'geo-min':   'in an extremely minimalist geometric style: the character is reduced to a few flat geometric shapes (circles, half-circles, rounded rectangles) in solid flat colors, the face is just 2-4 tiny strokes (dot eyes, one short line for the mouth), no outlines or hairline-thin outlines, no shading, no texture, no details. Keep only the signature colors and ONE identifying feature so the character is still recognizable',
-      'glossy-emoji': 'in a glossy smartphone-emoji style: a smooth rounded, slightly 3D body like a shiny plastic ball or blob, soft gradients, one bright specular highlight on top, tiny stubby limbs, bold simple facial features, vivid saturated colors, rendered like Apple/Google emoji. Keep the species cue and signature colors',
+      'doodle':    'IGNORE the rendering style of the reference image entirely (no anime linework, no cel-shading). Redraw it in a deliberately crude, childlike doodle style: thick uneven black marker outlines, mostly white/unfilled body with at most one or two flat accent colors, wobbly hand-drawn lines, no shading, no gradients, intentionally "badly drawn" ugly-cute look like a quick MS Paint scribble. Keep ONLY the most recognizable features (species, signature colors, signature accessory) and reduce everything else to a few strokes',
+      'geo-min':   'IGNORE the rendering style of the reference image entirely. Redraw it in an extremely minimalist geometric style: the character is reduced to a few flat geometric shapes (circles, half-circles, rounded rectangles) in solid flat colors, the face is just 2-4 tiny strokes (dot eyes, one short line for the mouth), no outlines or hairline-thin outlines, no shading, no texture, no details. Keep only the signature colors and ONE identifying feature so the character is still recognizable',
+      'glossy-emoji': 'IGNORE the rendering style of the reference image entirely. Redraw it in a glossy smartphone-emoji style: a smooth rounded, slightly 3D body like a shiny plastic ball or blob, soft gradients, one bright specular highlight on top, tiny stubby limbs, bold simple facial features, vivid saturated colors, rendered like Apple/Google emoji. Keep the species cue and signature colors',
     };
     // 這幾款的「保留角色辨識度」只保留物種＋主色＋一個特徵，其餘刻意簡化／畫歪（否則 PRESERVE 規則會把畫風拉回參考圖）
     const STYLE_IDENTITY_RELAX = new Set(['doodle', 'geo-min', 'glossy-emoji']);
+    // ============================================================
+    // 2026-11-06 P9 第二刀：搞怪程度（E 構圖解禁 ＋ F 變形池開放到有字模式）
+    // ============================================================
+    const GOOFY_LEVELS = [
+      { id: 'normal',  label: '😐 正常', desc: '照文案站好站滿（原本的行為）' },
+      { id: 'goofy',   label: '🤪 搞怪', desc: '倒栽蔥、融化、局部裁切，刻意畫歪' },
+      { id: 'extreme', label: '🤯 浮誇', desc: '身體臉全毀，迷因等級' },
+    ];
+    // 全身梗（sticker / big 用）：構圖＋身體變形，每張依 index 指派一個，40 筆保證 40 張不重複
+    const GOOFY_BODY_GAGS = [
+      'planted head-first into the ground upside down, only the legs sticking up and kicking',
+      'melted into a flat goopy puddle on the floor, the face still visible in the puddle',
+      'flattened like a pancake by an invisible weight, paper-thin, eyes popping out',
+      'lying face-down on the floor like a dead fish, limbs limp, a little ghost soul floating out of the mouth',
+      'only the top half of the head peeking up from the bottom edge of the frame, eyes just visible, everything else hidden',
+      'extreme close-up on one giant eye and part of the nose, everything else cropped out of frame',
+      'drawn tiny in one corner of the frame, surrounded by huge empty space, looking lost',
+      'stretched vertically like rubber taffy, body three times too tall, arms dangling',
+      'squashed horizontally into a wide blob, cheeks pushed out, tiny stubby limbs',
+      'rolling across the frame as a round ball with motion blur, arms and legs tucked in',
+      'frozen mid-fall with legs above the head, face smashed toward the camera',
+      'hanging upside down from the top edge like a bat, hair or ears pointing down',
+      'half of the body out of frame on the right side, waving goodbye with one hand',
+      'crouched in a tight ball in the bottom corner, sulking under a small dark rain cloud',
+      'legs spinning like a cartoon wheel running away, upper body leaning far forward',
+      'body turned into an egg-shaped blob with the face stretched across it',
+      'face pressed flat against an invisible glass pane facing the viewer, nose and cheeks smushed',
+      'doing a dramatic backbend with the belly up, face upside down looking at the viewer',
+      'lying on the back with all four limbs straight up in the air like a dead bug',
+      'body shrunk to a tiny bean with an enormous head, running in panic',
+      'completely boneless and draped over an invisible chair like wet laundry',
+      'leaning so far into the camera that the face takes most of the frame and the body is a tiny distant blur',
+      'caught mid-sneeze with the whole body thrown backward, head snapped back',
+      'one giant hand or paw reaching toward the camera, huge in perspective, the face small behind it',
+      'floating belly-up like a drowned fish with X eyes, bubbles rising',
+      'folded in half at the waist, head between the knees, peering at the viewer through the legs',
+      'sliding down the frame like a sticker peeling off a wall, body half-curled',
+      'sprinting so fast the body is just a streak with the face at the front',
+      'posed like a stiff mannequin with arms straight out, dead blank stare',
+      'drawn as a spinning swirl with a face, hugging its own knees',
+      'tilted 45 degrees, falling diagonally out of the bottom corner of the frame',
+      'crawling in from the left edge on all fours with a sneaky grin, half the body still off-frame',
+      'inflated like a balloon, round and floating, limbs tiny',
+      'standing on the head with legs crossed in the air, perfectly calm expression',
+      'buried up to the neck in the ground, only the head visible at the bottom edge',
+      'body twisted so the back faces the viewer while the head is turned all the way around',
+      'wrapped around the frame edges like a noodle, limbs impossibly long',
+      'face enormous with a tiny stick-figure body dangling below it',
+      'seen from directly above, a top-down view of just the head and shoulders',
+      'posed like a begging dog, on the knees with hands or paws up and tongue out',
+    ];
+    // 臉部梗（bigface / emoji 用）：臉填滿的前提下做變形
+    const GOOFY_FACE_GAGS = [
+      'face squashed so the eyes sit at the very bottom and the forehead fills the top',
+      'one eye enormous and the other tiny, mouth a wobbly scribble',
+      'face stretched sideways twice as wide as it should be',
+      'face cropped at the nose with half of it out of frame',
+      'face seen from directly below, nostrils huge, chin first',
+      'face melting downward with the features dripping',
+      'eyes as two different-sized dots, mouth a single crooked line',
+      'cheeks puffed so big the eyes disappear into slits',
+      'face upside down with the expression still readable',
+      'mouth stretched across the entire face from corner to corner',
+      'face flattened against invisible glass, nose smushed sideways',
+      'spiral eyes, tongue out to one side, head tilted 90 degrees',
+      'tiny face in the middle of a huge empty head shape',
+      'only the eyes and eyebrows peeking up from the bottom edge of the frame',
+      'face inflated like a balloon about to pop, features tiny',
+      'face wrinkled like a crumpled paper ball',
+      'face with a wobbly asymmetrical outline as if drawn by a toddler',
+      'face split by a huge grin showing a single tooth',
+      'all the features crowded into one corner of the face',
+      'extreme close-up of just one eye with a tear forming',
+      'face squished between two invisible walls, tall and thin',
+      'giant forehead and tiny chin, eyebrows up at the hairline',
+      'face drawn as a lumpy potato with dot eyes',
+      'face blurred from shaking violently, several ghost outlines',
+    ];
+    const goofyRules = (level) => {
+      if (level === 'normal') return [];
+      const rules = [
+        '- DRAW IT DELIBERATELY OFF-MODEL AND UGLY-CUTE: wobbly outlines, asymmetrical features, awkward proportions. Clean, pretty, well-proportioned character art is a FAILURE here.',
+        '- The pose or expression must look physically impossible or absurd. A normal standing pose or a polite smile is FORBIDDEN.',
+        '- Keep only the character species, signature colors and ONE identifying feature; everything else may be wrecked for the joke.',
+      ];
+      if (level === 'extreme') rules.push(
+        '- 300% EXAGGERATION: distort the body and face far beyond anything anatomically possible. It should look like a crappy reaction-meme doodle that makes people laugh out loud, not an illustration.',
+        '- Ignore the reference image rendering style completely; redraw it as a crude marker scribble.',
+      );
+      return rules;
+    };
+    // 搞怪模式下取代「置中／滿版／站好」那幾條（只給 sticker / big；bigface / emoji 仍要臉填滿）
+    const GOOFY_COMPOSITION_RULES = [
+      '- COMPOSITION IS FREE AND MEANT TO BE WEIRD: the character may be off-center, cropped by any edge, upside down, tiny with lots of empty space, or partially out of frame — whatever makes the gag funnier. Do NOT force the character to fill the frame or stand centered. Any later instruction to "fill the frame" or "crop tightly" does NOT apply to this image.',
+      '- No scene, no props beyond what the gag needs, no outfit changes to match a theme.',
+    ];
+
 
     // ============================================================
     // Utility: Smart Background Removal (sample corners → targeted removal)
@@ -799,6 +896,7 @@
       const [currentStep, setCurrentStep] = useState(0);
       const [referenceImage, setReferenceImage] = useState(null);
       const [selectedStyle, setSelectedStyle] = useState(null);
+      const [goofyLevel, setGoofyLevel] = useState('normal'); // P9 第二刀：搞怪程度
       const [captions, setCaptions] = useState(Array(40).fill(''));
       const [captionMeta, setCaptionMeta] = useState(Array(40).fill(null));
       const [captionTheme, setCaptionTheme] = useState('daily');
@@ -999,7 +1097,7 @@
                 availableCampaigns={availableCampaigns} />
             )}
             {steps[currentStep] === '選畫風' && (
-              <StepStyle selectedStyle={selectedStyle} setSelectedStyle={setSelectedStyle} />
+              <StepStyle selectedStyle={selectedStyle} setSelectedStyle={setSelectedStyle} goofyLevel={goofyLevel} setGoofyLevel={setGoofyLevel} />
             )}
             {steps[currentStep] === '編輯文案' && (
               <StepCaptions captions={captions} setCaptions={setCaptions}
@@ -1010,7 +1108,7 @@
             )}
             {steps[currentStep] === '預覽生成' && (
               <StepPreview
-                referenceImage={referenceImage} selectedStyle={selectedStyle}
+                referenceImage={referenceImage} selectedStyle={selectedStyle} goofyLevel={goofyLevel}
                 captions={captions} captionMeta={captionMeta} captionTheme={captionTheme}
                 generatedImages={generatedImages} setGeneratedImages={setGeneratedImages}
                 processedImages={processedImages} setProcessedImages={setProcessedImages}
@@ -1194,7 +1292,7 @@
     // Step 1: Style
     // ============================================================
 
-    function StepStyle({ selectedStyle, setSelectedStyle }) {
+    function StepStyle({ selectedStyle, setSelectedStyle, goofyLevel, setGoofyLevel }) {
       return (
         <div className="space-y-6">
           <div className="text-center">
@@ -1210,6 +1308,19 @@
                 <div className="text-xs text-gray-400 mt-1">{s.desc}</div>
               </div>
             ))}
+          </div>
+          {/* P9 第二刀：搞怪程度 */}
+          <div className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="text-sm font-medium text-gray-900 mb-1">🤪 搞怪程度</div>
+            <div className="text-xs text-gray-400 mb-3">「搞怪」以上會解除「置中、滿版、站好、服裝配主題」的規則，改成每張指派一個變形或構圖梗；任何畫風都能搭。</div>
+            <div className="flex flex-wrap gap-2">
+              {GOOFY_LEVELS.map(g => (
+                <button key={g.id} type="button" onClick={() => setGoofyLevel(g.id)}
+                  className={`px-3 py-1.5 rounded-full text-sm border transition ${goofyLevel === g.id ? 'bg-primary text-white border-primary' : 'bg-white text-gray-600 border-gray-200 hover:border-primary'}`}>
+                  {g.label}<span className="ml-1 text-xs opacity-70">{g.desc}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       );
@@ -1371,7 +1482,7 @@
     // ============================================================
 
     function StepPreview({
-      referenceImage, selectedStyle, captions, captionMeta, captionTheme,
+      referenceImage, selectedStyle, goofyLevel = 'normal', captions, captionMeta, captionTheme,
       generatedImages, setGeneratedImages,
       processedImages, setProcessedImages,
       stickerCount, isGenerating, setIsGenerating,
@@ -1541,6 +1652,10 @@
       ];
 
       const buildPrompt = (index, extraHint = '') => {
+        const isGoofy = goofyLevel !== 'normal';
+        const bodyGag = isGoofy ? GOOFY_BODY_GAGS[index % GOOFY_BODY_GAGS.length] : '';
+        const faceGag = isGoofy ? GOOFY_FACE_GAGS[index % GOOFY_FACE_GAGS.length] : '';
+        const goofyRuleLines = goofyRules(goofyLevel);
         // === Emoji mode: no text, varied expressions, 180×180 ===
         if (isEmoji) {
           // 如果有哭活動，用哭專用 moods；否則用一般 moods
@@ -1556,6 +1671,8 @@
             '',
             `This is for a LINE messaging EMOJI — a tiny icon (180×180px) displayed inline in chat text at approximately 24px.`,
             `The character expression/pose: ${mood}.`,
+            isGoofy ? `GOOFY GAG FOR THIS EMOJI (must be obvious): ${faceGag}.` : '',
+            ...goofyRuleLines,
             campaignRule ? `\n🎯 CAMPAIGN RULE (MUST FOLLOW):\n${campaignRule}\n` : '',
             extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority): ${extraHint}\n` : '',
             '',
@@ -1610,6 +1727,8 @@
               : (wasEdited
                 ? `This is a LINE "BIG FACE" sticker with the text "${caption}". The character's facial expression must clearly convey the feeling of "${caption}" at maximum intensity.`
                 : `The character should express: mood "${moodStr}" for the text "${caption}". Make the expression EXTREMELY exaggerated and dramatic.`),
+            isGoofy ? `GOOFY GAG FOR THIS FACE (must be obvious, on top of the expression): ${faceGag}.` : '',
+            ...goofyRuleLines,
             campaignRule ? `\n🎯 CAMPAIGN RULE (MUST FOLLOW):\n${campaignRule}\n` : '',
             extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority): ${extraHint}\n` : '',
             '',
@@ -1660,13 +1779,19 @@
           `The character MUST be the SAME species and type as the reference — if it is a cat, draw a cat; if it is a dog, draw a dog; if it is a human, draw a human. NEVER change the species.`,
           `Preserve the character's distinctive features: fur/hair color, eye color, accessories, clothing, markings, and proportions from the reference image.`,
           '',
-          sceneHint ? `SCENE/COSTUME CONTEXT: ${sceneHint}` : '',
+          (sceneHint && !isGoofy) ? `SCENE/COSTUME CONTEXT: ${sceneHint}` : '',
           wordlessExpression
             ? [
                 `This illustration is for a LINE messaging ${isBig ? 'BIG WORDLESS sticker (tall portrait format, NO TEXT, NO LETTERS, NO NUMBERS anywhere in the image)' : 'WORDLESS sticker (NO TEXT, NO LETTERS, NO NUMBERS anywhere in the image)'}.`,
                 `The character MUST vividly perform this SPECIFIC archetype: ${wordlessExpression}.`,
                 `Push it to absolute cartoon-extreme. This is the ONE specific archetype assigned to THIS sticker — it must look visibly DIFFERENT from any other sticker in the same set.`,
               ].join('\n')
+            : isGoofy
+              ? [
+                  `This illustration is for a LINE messaging ${isBig ? 'BIG sticker (tall portrait format)' : 'sticker'} with the text "${caption}"${moodStr ? ` (mood: ${moodStr})` : ''}.`,
+                  `The character MUST perform this GAG: ${bodyGag}. Push it to cartoon-extreme while still conveying the feeling of "${caption}".`,
+                  `This is the ONE gag assigned to THIS sticker — it must look visibly DIFFERENT from every other sticker in the set.`,
+                ].join('\n')
             : (wasEdited
                 ? `This illustration is for a LINE messaging ${isBig ? 'BIG sticker (tall portrait format)' : 'sticker'} with the text "${caption}". Infer the most appropriate mood, facial expression, and body pose directly from this text. The character's expression and action must clearly convey the feeling of "${caption}".`
                 : [
@@ -1680,16 +1805,20 @@
           STYLE_IDENTITY_RELAX.has(selectedStyle)
             ? '- Keep ONLY the character species, signature colors and one key identifying feature from the reference image; deliberately simplify, distort or "badly draw" everything else to match the chosen art style — do NOT faithfully reproduce the reference rendering'
             : '- PRESERVE the character species and visual identity from the reference image — this is the #1 priority',
-          '- The character outfit/costume MUST match the scene context described above',
+          isGoofy ? '' : '- The character outfit/costume MUST match the scene context described above',
           '- Do NOT include any text, letters, words, numbers, or characters in the image',
           '- Use a clean solid CHROMA KEY GREEN background (hex #00B140) — this specific green is required for automated background removal. Fill the ENTIRE background with this exact green color.',
-          isBig
-            ? '- TALL PORTRAIT COMPOSITION (396×660 pixels): The canvas is a tall vertical rectangle. Draw the FULL BODY of the character standing/posing, utilizing the full height. The character should occupy 80-90% of the canvas height. This format has more room for expressive full-body poses.'
-            : '- FILL THE FRAME: The character should occupy at least 80-90% of the canvas height. Minimize empty space above and below the character. For upper-body shots, crop tightly from chest up. For full-body shots, the character should nearly touch the top and bottom edges.',
-          '- Single character only, centered in frame',
-          isBig
-            ? '- Expressive and clear — full-body pose should be dynamic and readable (396x660 pixels)'
-            : '- Expressive and clear at small sizes (370x320 pixels)',
+          ...(isGoofy
+            ? [...GOOFY_COMPOSITION_RULES, ...goofyRuleLines, `- Canvas is ${isBig ? '396×660 (tall)' : '370×320'} pixels; the gag must still read at small size.`]
+            : [
+                isBig
+                  ? '- TALL PORTRAIT COMPOSITION (396×660 pixels): The canvas is a tall vertical rectangle. Draw the FULL BODY of the character standing/posing, utilizing the full height. The character should occupy 80-90% of the canvas height. This format has more room for expressive full-body poses.'
+                  : '- FILL THE FRAME: The character should occupy at least 80-90% of the canvas height. Minimize empty space above and below the character. For upper-body shots, crop tightly from chest up. For full-body shots, the character should nearly touch the top and bottom edges.',
+                '- Single character only, centered in frame',
+                isBig
+                  ? '- Expressive and clear — full-body pose should be dynamic and readable (396x660 pixels)'
+                  : '- Expressive and clear at small sizes (370x320 pixels)',
+              ]),
           '- No decorative borders or frames',
         ].join('\n');
       };
@@ -1703,6 +1832,7 @@
             prompt: buildPrompt(index, extraHint),
             referenceImage: referenceImage?.dataUrl || null,
             style: selectedStyle,
+            composition: (goofyLevel !== 'normal' && !isEmoji && !isBigFace) ? 'free' : 'fill',
           }),
         });
         if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `HTTP ${res.status}`);
@@ -1817,7 +1947,7 @@
           <div className="text-center">
             <h2 className="text-xl font-bold text-gray-900 mb-1">預覽 & 生成</h2>
             <p className="text-gray-500 text-sm">
-              畫風：{styleName} ・ {stickerCount} 張{isEmoji ? '表情貼' : isBig ? '大貼圖' : isBigFace ? '大臉貼圖' : '貼圖'}
+              畫風：{styleName}{goofyLevel !== 'normal' ? ` ・ ${GOOFY_LEVELS.find(g => g.id === goofyLevel)?.label}` : ''} ・ {stickerCount} 張{isEmoji ? '表情貼' : isBig ? '大貼圖' : isBigFace ? '大臉貼圖' : '貼圖'}
               {isEmoji && <span className="ml-2 text-xs text-amber-500">（180×180 · 無文字）</span>}
             </p>
           </div>
