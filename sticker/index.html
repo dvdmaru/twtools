@@ -976,6 +976,7 @@
             if (cancelled) return;
             for (const it of (d.items || [])) {
               if (it.status === 'closed') continue;
+              if (it.status === 'unknown' && !it.review) continue; // 期限解析不到的不自動變晶片（面板仍列出，人工看原文）
               const ai = (it.ai && !it.ai.error) ? it.ai : null;
               if (ai && ai.eligible === 'no') continue;
               const short = it.title.replace(/[！!♡🔥～~]+$/g, '').slice(0, 12);
