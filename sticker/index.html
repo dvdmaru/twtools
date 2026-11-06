@@ -179,7 +179,7 @@
     // Constants
     // ============================================================
 
-    const WORKER_URL = 'https://line-sticker-proxy.charlie-chien.workers.dev';
+    const WORKER_URL = new URLSearchParams(location.search).get('worker') || 'https://line-sticker-proxy.charlie-chien.workers.dev';
     // Product type configurations
     const PRODUCT_CONFIG = {
       sticker: {
@@ -966,6 +966,7 @@
       const [referenceImage, setReferenceImage] = useState(null);
       const [selectedStyle, setSelectedStyle] = useState(null);
       const [goofyLevel, setGoofyLevel] = useState('normal'); // P9 第二刀：搞怪程度
+      const [liveCampaign, setLiveCampaign] = useState(null); // P9 第四刀：套用中的 LINE 官方募集
       const [captions, setCaptions] = useState(Array(40).fill(''));
       const [captionMeta, setCaptionMeta] = useState(Array(40).fill(null));
       const [captionTheme, setCaptionTheme] = useState('daily');
@@ -1159,6 +1160,7 @@
           <div className="mt-8">
             {steps[currentStep] === '上傳參考圖' && (
               <StepUpload referenceImage={referenceImage} setReferenceImage={setReferenceImage}
+                liveCampaign={liveCampaign} setLiveCampaign={setLiveCampaign} setCaptionTheme={setCaptionTheme}
                 stickerCount={stickerCount} setStickerCount={setStickerCount}
                 productType={productType} onProductTypeChange={handleProductTypeChange}
                 config={config}
@@ -1169,7 +1171,7 @@
               <StepStyle selectedStyle={selectedStyle} setSelectedStyle={setSelectedStyle} goofyLevel={goofyLevel} setGoofyLevel={setGoofyLevel} />
             )}
             {steps[currentStep] === '編輯文案' && (
-              <StepCaptions captions={captions} setCaptions={setCaptions} referenceImage={referenceImage}
+              <StepCaptions captions={captions} setCaptions={setCaptions} referenceImage={referenceImage} liveCampaign={liveCampaign}
                 captionMeta={captionMeta} setCaptionMeta={setCaptionMeta}
                 stickerCount={stickerCount}
                 captionTheme={captionTheme} setCaptionTheme={setCaptionTheme}
@@ -1178,7 +1180,7 @@
             {steps[currentStep] === '預覽生成' && (
               <StepPreview
                 referenceImage={referenceImage} selectedStyle={selectedStyle} goofyLevel={goofyLevel}
-                captions={captions} captionMeta={captionMeta} captionTheme={captionTheme}
+                captions={captions} captionMeta={captionMeta} captionTheme={captionTheme} liveCampaign={liveCampaign}
                 generatedImages={generatedImages} setGeneratedImages={setGeneratedImages}
                 processedImages={processedImages} setProcessedImages={setProcessedImages}
                 stickerCount={stickerCount}
@@ -1256,6 +1258,68 @@
     // ============================================================
 
 
+
+    // P9 第四刀：LINE 官方募集中（worker /campaigns；抓不到就誠實顯示，不假裝沒有活動）
+    function LiveCampaigns({ liveCampaign, setLiveCampaign, setCaptionTheme }) {
+      const [data, setData] = useState(null);
+      const [err, setErr] = useState(null);
+      useEffect(() => {
+        let cancelled = false;
+        fetch(`${WORKER_URL}/campaigns`).then(r => r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))
+          .then(d => { if (!cancelled) setData(d); })
+          .catch(e => { if (!cancelled) setErr(e.message); });
+        return () => { cancelled = true; };
+      }, []);
+      const use = (it) => {
+        const cond = (it.conditions && it.conditions[1]) ? it.conditions[1] : '';
+        const themeText = `${it.title}${it.checkbox ? `（LINE 官方「${it.checkbox}」募集）` : ''}${cond ? `：${cond}` : ''}`.slice(0, 160);
+        setLiveCampaign({ ...it, themeText });
+        setCaptionTheme('custom');
+      };
+      const items = (data?.items || []).filter(it => it.status === 'open' || it.status === 'upcoming' || it.status === 'unknown');
+      return (
+        <div className="bg-gradient-to-r from-sky-50 to-indigo-50 rounded-xl p-4 border border-sky-200">
+          <div className="flex items-center justify-between mb-1">
+            <div className="text-sm font-medium text-sky-900">📢 LINE 官方募集中</div>
+            <a href={data?.source || 'https://creator-mag-tw.weblog.to/archives/cat_230123.html'} target="_blank" rel="noopener" className="text-xs text-sky-600 underline">官方公告頁</a>
+          </div>
+          {err && <div className="text-xs text-red-500">無法取得官方募集清單（{err}）。請直接看官方公告頁。</div>}
+          {!err && !data && <div className="text-xs text-gray-400">載入中…</div>}
+          {data && items.length === 0 && <div className="text-xs text-gray-500">目前沒有抓到進行中的募集（{data.today} 查）。</div>}
+          <div className="space-y-2">
+            {items.map(it => {
+              const active = liveCampaign?.id === it.id;
+              return (
+                <div key={it.id} className={`bg-white rounded-lg border p-3 ${active ? 'border-primary ring-2 ring-primary/20' : 'border-gray-200'}`}>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <a href={it.url} target="_blank" rel="noopener" className="font-medium text-sm text-gray-900 hover:underline">{it.title}</a>
+                    {it.status === 'open' && <span className="text-[11px] px-1.5 py-0.5 rounded bg-green-100 text-green-700">審核受理中・剩 {it.daysLeft} 天</span>}
+                    {it.status === 'upcoming' && <span className="text-[11px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">{it.review?.start} 開始</span>}
+                    {it.status === 'unknown' && <span className="text-[11px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-500">期限未解析，請看原文</span>}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {it.review ? `審核受理 ${it.review.start} ～ ${it.review.end}${it.review.endYearFixed ? '（原文年份疑筆誤，已修正）' : ''}` : '審核期間：原文未標明'}
+                    {it.checkbox ? ` ・ 上架時勾選「${it.checkbox}」` : ''}
+                    {it.minCount ? ` ・ 至少 ${it.minCount} 張符合主題` : ''}
+                    {it.saleBy ? ` ・ 最晚 ${it.saleBy} 開賣` : ''}
+                  </div>
+                  {!it.review && it.excerpt && <div className="text-xs text-gray-400 mt-1 line-clamp-2">{it.excerpt}</div>}
+                  <div className="mt-2 flex gap-2">
+                    <button type="button" onClick={() => use(it)}
+                      className={`px-3 py-1 rounded-full text-xs font-medium transition ${active ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                      {active ? '✓ 已套用這個主題' : '用這個主題'}
+                    </button>
+                    {active && <button type="button" onClick={() => setLiveCampaign(null)} className="px-3 py-1 rounded-full text-xs text-gray-500 hover:bg-gray-100">取消</button>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="text-[11px] text-gray-400 mt-2">參加方式：貼圖編輯頁 → 販售資訊 → 勾選特輯 → 送審，都在 LINE Creators Market 手動做；這裡只負責把符合主題的貼圖生出來。清單每 6 小時更新一次。</div>
+        </div>
+      );
+    }
+
     // P9 第三刀：角色庫元件（點縮圖 → fetch 成 dataURL → 當參考圖；preset 帶 name/desc 給文案 API）
     function CharacterLibrary({ referenceImage, setReferenceImage }) {
       const [group, setGroup] = useState('all');
@@ -1308,7 +1372,8 @@
 
     function StepUpload({ referenceImage, setReferenceImage, stickerCount, setStickerCount,
       productType, onProductTypeChange, config,
-      activeCampaign, setActiveCampaign, availableCampaigns }) {
+      activeCampaign, setActiveCampaign, availableCampaigns,
+      liveCampaign, setLiveCampaign, setCaptionTheme }) {
       const fileInputRef = useRef(null);
       const handleFile = (file) => {
         if (!file || !file.type.startsWith('image/')) return;
@@ -1333,6 +1398,8 @@
               </button>
             ))}
           </div>
+
+          <LiveCampaigns liveCampaign={liveCampaign} setLiveCampaign={setLiveCampaign} setCaptionTheme={setCaptionTheme} />
 
           {/* LINE 活動主題選擇（只在有適用活動時顯示） */}
           {availableCampaigns.length > 0 && (
@@ -1453,11 +1520,12 @@
     // Step 2: Captions
     // ============================================================
 
-    function StepCaptions({ captions, setCaptions, captionMeta, setCaptionMeta, stickerCount, captionTheme, setCaptionTheme, activeCampaign, referenceImage }) {
+    function StepCaptions({ captions, setCaptions, captionMeta, setCaptionMeta, stickerCount, captionTheme, setCaptionTheme, activeCampaign, referenceImage, liveCampaign }) {
       const theme = captionTheme;
       const setTheme = setCaptionTheme;
       const [captionStyle, setCaptionStyle] = useState('mixed');
-      const [customThemeText, setCustomThemeText] = useState('');
+      const [customThemeText, setCustomThemeText] = useState(liveCampaign?.themeText || '');
+      useEffect(() => { if (liveCampaign?.themeText) setCustomThemeText(liveCampaign.themeText); }, [liveCampaign?.id]);
       const [isGenerating, setIsGenerating] = useState(false);
 
       const updateCaption = (index, value) => {
@@ -1606,7 +1674,7 @@
     // ============================================================
 
     function StepPreview({
-      referenceImage, selectedStyle, goofyLevel = 'normal', captions, captionMeta, captionTheme,
+      referenceImage, selectedStyle, goofyLevel = 'normal', liveCampaign = null, captions, captionMeta, captionTheme,
       generatedImages, setGeneratedImages,
       processedImages, setProcessedImages,
       stickerCount, isGenerating, setIsGenerating,
@@ -1780,12 +1848,16 @@
         const bodyGag = isGoofy ? GOOFY_BODY_GAGS[index % GOOFY_BODY_GAGS.length] : '';
         const faceGag = isGoofy ? GOOFY_FACE_GAGS[index % GOOFY_FACE_GAGS.length] : '';
         const goofyRuleLines = goofyRules(goofyLevel);
+        // P9 第四刀：套用 LINE 官方募集時，每張都要看得出主題元素
+        const liveCampaignRule = liveCampaign
+          ? `LINE OFFICIAL CAMPAIGN "${liveCampaign.title}"${liveCampaign.conditions?.[1] ? ` — requirement: ${liveCampaign.conditions[1]}` : ''}. This sticker MUST visibly relate to that theme: include at least one obvious visual element of the theme (costume, prop, gesture or setting) so a reviewer can tell at a glance.`
+          : '';
         // === Emoji mode: no text, varied expressions, 180×180 ===
         if (isEmoji) {
           // 如果有哭活動，用哭專用 moods；否則用一般 moods
           const moodPool = (activeCampaign === 'cry') ? CRY_EMOJI_MOODS : EMOJI_MOODS;
           const mood = moodPool[index % moodPool.length];
-          const campaignRule = activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '';
+          const campaignRule = [activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '', liveCampaignRule].filter(Boolean).join('\n');
           return [
             `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), face shape, color palette, and key FACIAL features. You MUST preserve ALL of these in your output.`,
             '',
@@ -1838,7 +1910,7 @@
             ? WORDLESS_EXPRESSIONS[index % WORDLESS_EXPRESSIONS.length]
             : null;
           // 活動額外 prompt 規則（campaign overlay）
-          const campaignRule = activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '';
+          const campaignRule = [activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '', liveCampaignRule].filter(Boolean).join('\n');
           return [
             `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), face shape, color palette, and key FACIAL features. You MUST preserve ALL of these in your output.`,
             '',
@@ -1895,7 +1967,7 @@
           ? WORDLESS_EXPRESSIONS[index % WORDLESS_EXPRESSIONS.length]
           : null;
         // 活動額外 prompt 規則（campaign overlay）
-        const campaignRule = activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '';
+        const campaignRule = [activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '', liveCampaignRule].filter(Boolean).join('\n');
         return [
           `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), body shape, color palette, and key visual features. You MUST preserve ALL of these in your output.`,
           '',
@@ -2279,6 +2351,19 @@
             </div>
           </div>
 
+          {liveCampaign && (
+            <div className="bg-sky-50 border border-sky-200 rounded-xl p-4 text-sm text-sky-900">
+              <div className="font-medium mb-1">📢 參加「{liveCampaign.title}」上架時記得</div>
+              <ul className="text-xs space-y-0.5 list-disc pl-4">
+                {liveCampaign.checkbox && <li>貼圖編輯頁 → 販售資訊 → 勾選「{liveCampaign.checkbox}」再送審</li>}
+                {liveCampaign.review && <li>審核受理到 {liveCampaign.review.end}（越早送越好，官方說可能來不及審）</li>}
+                {liveCampaign.minCount && <li>至少 {liveCampaign.minCount} 張要看得出主題；本組 {stickerCount} 張</li>}
+                {liveCampaign.saleBy && <li>通過後最晚 {liveCampaign.saleBy} 開始販售</li>}
+                {liveCampaign.priceLine && <li>{liveCampaign.priceLine}</li>}
+                <li>不可含姓名／暱稱；需為全新貼圖；<a className="underline" href={liveCampaign.url} target="_blank" rel="noopener">看原文</a></li>
+              </ul>
+            </div>
+          )}
           {/* === P5: LINE Listing Text Generator === */}
           {hasImages && (
             <ListingGenerator referenceImage={referenceImage}
