@@ -471,6 +471,75 @@
       '- No scene, no props beyond what the gag needs, no outfit changes to match a theme.',
     ];
 
+    // ============================================================
+    // 2026-11-06 P9 第三刀：預設角色庫（縮圖在 characters/<id>.png；原圖在 Dropbox/AI/LINE 貼圖/Character）
+    // desc 會當作「角色 persona」送進 /generate-captions，讓文案像這個角色會說的話
+    // ============================================================
+    const CHARACTER_GROUPS = [
+      { id: 'all', label: '全部' }, { id: 'jimeng', label: '即夢新款' }, { id: 'people', label: '人物' }, { id: 'animal', label: '動物' },
+      { id: 'cute', label: '可愛系' }, { id: 'real', label: '寫實' },
+    ];
+    const CHARACTER_LIBRARY = [
+      // 2026-11-06 即夢 Seedream 5.0 Lite 生成（畫布「LINE 貼圖 角色庫 2026-11-06」），原圖在 Dropbox/AI/LINE 貼圖/Character/jimeng-2026-11-06-*
+      { id: 'j-capybara-chill-1', name: '佛系水豚', group: 'jimeng', desc: '頭頂放橘子的水豚，半閉眼一臉淡定，什麼都不在乎，講話慢吞吞、超佛系' },
+      { id: 'j-capybara-chill-2', name: '佛系水豚（二）', group: 'jimeng', desc: '頭頂放橘子的水豚，半閉眼一臉淡定，什麼都不在乎，講話慢吞吞、超佛系' },
+      { id: 'j-clay-3d-cat-1', name: '黏土小貓', group: 'jimeng', desc: '黏土質感的奶油色小貓，橘耳朵、黑豆眼，圓胖呆萌，講話軟軟的' },
+      { id: 'j-clay-3d-cat-2', name: '黏土小貓（二）', group: 'jimeng', desc: '黏土質感的奶油色小貓，橘耳朵、黑豆眼，圓胖呆萌，講話軟軟的' },
+      { id: 'j-doodle-panda-1', name: '塗鴉熊貓', group: 'jimeng', desc: '用馬克筆亂塗的黑白熊貓，胸口紅蝴蝶結，大嘴傻笑，醜萌，講話很白爛' },
+      { id: 'j-doodle-panda-2', name: '塗鴉熊貓（二）', group: 'jimeng', desc: '用馬克筆亂塗的黑白熊貓，胸口紅蝴蝶結，大嘴傻笑，醜萌，講話很白爛' },
+      { id: 'j-geo-halfcircle-face-1', name: '極簡半圓臉', group: 'jimeng', desc: '半圓奶白色頭、灰色髮帶、珊瑚紅梯形身體的極簡幾何小人，面無表情，講話冷靜到好笑' },
+      { id: 'j-geo-halfcircle-face-2', name: '極簡半圓臉（二）', group: 'jimeng', desc: '半圓奶白色頭、灰色髮帶、珊瑚紅梯形身體的極簡幾何小人，面無表情，講話冷靜到好笑' },
+      { id: 'j-glossy-yellow-ball-1', name: '亮面黃球', group: 'jimeng', desc: '圓滾滾的亮黃色球體，兩條小黑腿、沒有手，臉只有兩點一線，表情呆萌，講話簡短又無厘頭' },
+      { id: 'j-glossy-yellow-ball-2', name: '亮面黃球（二）', group: 'jimeng', desc: '圓滾滾的亮黃色球體，兩條小黑腿、沒有手，臉只有兩點一線，表情呆萌，講話簡短又無厘頭' },
+      { id: 'j-kawaii-ghost-1', name: '安全帽小幽靈', group: 'jimeng', desc: '戴黃色安全帽的白色小幽靈，紅腮紅、小手舉胸前，膽小但認真，講話客氣' },
+      { id: 'j-kawaii-ghost-2', name: '安全帽小幽靈（二）', group: 'jimeng', desc: '戴黃色安全帽的白色小幽靈，紅腮紅、小手舉胸前，膽小但認真，講話客氣' },
+      { id: 'j-pixel-frog-1', name: '像素青蛙', group: 'jimeng', desc: '16-bit 像素風綠色青蛙，復古遊戲角色，講話像遊戲對話框、很直接' },
+      { id: 'j-pixel-frog-2', name: '像素青蛙（二）', group: 'jimeng', desc: '16-bit 像素風綠色青蛙，復古遊戲角色，講話像遊戲對話框、很直接' },
+      { id: 'j-stickman-bald-uncle-1', name: '火柴人大叔', group: 'jimeng', desc: '火柴人畫法的地中海大叔，啤酒肚、人字拖，表情欠揍，講話油膩又自信' },
+      { id: 'j-stickman-bald-uncle-2', name: '火柴人大叔（二）', group: 'jimeng', desc: '火柴人畫法的地中海大叔，啤酒肚、人字拖，表情欠揍，講話油膩又自信' },
+      { id: 'j-tofu-blob-1', name: '白豆腐', group: 'jimeng', desc: '頭頂一片蔥的白豆腐方塊，小黑眼睛、ω 嘴，軟弱易碎，講話小心翼翼' },
+      { id: 'j-tofu-blob-2', name: '白豆腐（二）', group: 'jimeng', desc: '頭頂一片蔥的白豆腐方塊，小黑眼睛、ω 嘴，軟弱易碎，講話小心翼翼' },
+      { id: 'j-yuru-chara-bear-1', name: '鬆弛熊', group: 'jimeng', desc: '軟趴趴沒骨頭的米色小熊，眼神放空、腮紅，日系鬆弛感，講話懶洋洋' },
+      { id: 'j-yuru-chara-bear-2', name: '鬆弛熊（二）', group: 'jimeng', desc: '軟趴趴沒骨頭的米色小熊，眼神放空、腮紅，日系鬆弛感，講話懶洋洋' },
+      { id: 'c19', name: '搞怪大叔', group: 'people', desc: '地中海髮型、香腸嘴、小眼睛的中年大叔，表情浮誇欠揍，講話油條又自我感覺良好' },
+      { id: 'c32', name: '啤酒肚大叔', group: 'people', desc: '挺著啤酒肚、穿人字拖的中年大叔，愛摳鼻、不修邊幅，講話直白沒在客氣' },
+      { id: 'c21', name: '丸子頭女高中生', group: 'people', desc: '綁丸子頭、穿寬鬆水手服的女高中生，常常犯睏打哈欠，講話懶懶的、厭世但可愛' },
+      { id: 'c30', name: 'JK 制服女高中生', group: 'people', desc: '齊瀏海、JK 制服的女高中生，愛比耶、活潑外向，講話很有元氣' },
+      { id: 'c35', name: '耳機女高中生', group: 'people', desc: '短髮、戴耳機的女高中生，愛聽歌、慢熱，講話淡淡的' },
+      { id: 'c37', name: '雙馬尾水手服女孩', group: 'people', desc: '雙馬尾、水手服的女高中生，容易害羞、臉紅，講話小聲又委婉' },
+      { id: 'c22', name: '黑框眼鏡男大生', group: 'people', desc: '戴黑框眼鏡、白 T 的男大生，永遠在犯睏、作業永遠寫不完，講話冷淡吐槽' },
+      { id: 'c29', name: '運動男大生', group: 'people', desc: '穿運動服、愛揮拳加油的男大生，熱血直率，講話很大聲很正能量' },
+      { id: 'c31', name: '棒球帽男大生', group: 'people', desc: '戴棒球帽、格子衫的男大生，容易被嚇到、反應很大，講話誇張' },
+      { id: 'c36', name: '耳機帽T男大生', group: 'people', desc: '圓滾滾腦袋、寬鬆連帽衣、戴耳機的男大生，宅宅的、愛搞怪，講話很網路梗' },
+      { id: 'c23', name: '灰西裝上班族', group: 'people', desc: '短髮、灰西裝的女上班族，專業幹練，講話有條理但偶爾崩潰' },
+      { id: 'c24', name: '疲憊上班族', group: 'people', desc: '手拿咖啡、一臉疲憊的女上班族，被工作榨乾，講話厭世、靠咖啡續命' },
+      { id: 'c27', name: '眼鏡上班族', group: 'people', desc: '齊耳短髮、黑框眼鏡、職業套裝的女上班族，自信微笑，講話得體但會偷酸' },
+      { id: 'c38', name: '比耶上班族', group: 'people', desc: '幹練短髮、休閒西裝的女上班族，愛比耶、樂觀，講話很會鼓勵人' },
+      { id: 'c07', name: '抱狗女孩（彩鉛）', group: 'people', desc: '彩色鉛筆畫風的長髮女孩，抱著小白狗坐在窗邊，溫柔文青，講話很療癒' },
+      { id: 'c20', name: '三頭身白貓', group: 'animal', desc: '三頭身、圓滾滾的白貓，大眼睛，表情無辜可愛，講話天真' },
+      { id: 'c26', name: '灰貓眼鏡', group: 'animal', desc: '戴眼鏡的灰貓，一臉認真嚴肅，講話像老師在說教' },
+      { id: 'c28', name: '橘貓戴帽', group: 'animal', desc: '戴小帽子的橘貓，調皮搗蛋，講話很皮、愛裝無辜' },
+      { id: 'c25', name: '白毛球小狗', group: 'animal', desc: '圓滾滾像毛球的白色小狗，大眼睛，講話撒嬌黏人' },
+      { id: 'c33', name: '紅項圈小白狗', group: 'animal', desc: '戴紅項圈、吐舌頭的小白狗，超開心、傻呼呼，講話只有快樂' },
+      { id: 'c34', name: '抱骨頭小白狗', group: 'animal', desc: '抱著骨頭、一臉滿足的小白狗，吃貨，講話離不開吃' },
+      { id: 'c39', name: '戴帽小白狗', group: 'animal', desc: '戴小帽子、歪頭好奇的小白狗，什麼都想問，講話充滿問號' },
+      { id: 'c08', name: '人形橘貓', group: 'cute', desc: '站著像人的毛絨橘貓，穿小衣服，溫馴乖巧，講話軟軟的' },
+      { id: 'c09', name: '人形橘貓（戶外）', group: 'cute', desc: '站著像人的毛絨橘貓，在戶外散步，開朗，講話軟軟的' },
+      { id: 'c12', name: '粉帽小貓', group: 'cute', desc: '戴粉色毛帽、抱著蛋的超可愛小貓，軟萌無害，講話像在撒嬌' },
+      { id: 'c14', name: '粉帽小貓（二）', group: 'cute', desc: '戴粉色毛帽、抱著蛋的超可愛小貓，軟萌無害，講話像在撒嬌' },
+      { id: 'c15', name: '粉帽小貓（三）', group: 'cute', desc: '戴粉色毛帽、抱著蛋的超可愛小貓，軟萌無害，講話像在撒嬌' },
+      { id: 'c18', name: '粉帽小貓（四）', group: 'cute', desc: '戴粉色毛帽、抱著蛋的超可愛小貓，軟萌無害，講話像在撒嬌' },
+      { id: 'c13', name: '柴犬寶寶', group: 'cute', desc: '大胖臉小身子、像人一樣站著的柴犬寶寶，憨憨的，講話很直很傻' },
+      { id: 'c16', name: '柴犬寶寶（二）', group: 'cute', desc: '大胖臉小身子、像人一樣站著的柴犬寶寶，憨憨的，講話很直很傻' },
+      { id: 'c17', name: '柴犬寶寶（三）', group: 'cute', desc: '大胖臉小身子、像人一樣站著的柴犬寶寶，憨憨的，講話很直很傻' },
+      { id: 'c01', name: '銀髮酷姐（寫實）', group: 'real', desc: '白色短髮、黑色頸圈的寫實 3D 酷女孩，冷冷的，講話很酷很省字' },
+      { id: 'c02', name: '藍衣金髮女（寫實）', group: 'real', desc: '金色短髮、藍色無袖上衣的寫實 3D 女生，在公園湖邊，陽光開朗' },
+      { id: 'c03', name: '藍衣金髮女（二）', group: 'real', desc: '金色短髮、藍色無袖上衣的寫實 3D 女生，在公園湖邊，陽光開朗' },
+      { id: 'c04', name: '藍衣金髮女（三）', group: 'real', desc: '金色短髮、藍色無袖上衣的寫實 3D 女生，在公園湖邊，陽光開朗' },
+      { id: 'c05', name: '皮衣短髮女（寫實）', group: 'real', desc: '棕色短髮、黑皮衣、眼神清冷的寫實美女，講話高冷' },
+      { id: 'c06', name: '皮衣短髮女（二）', group: 'real', desc: '棕色短髮、黑皮衣、眼神清冷的寫實美女，講話高冷' },
+    ];
+
 
     // ============================================================
     // Utility: Smart Background Removal (sample corners → targeted removal)
@@ -1100,7 +1169,7 @@
               <StepStyle selectedStyle={selectedStyle} setSelectedStyle={setSelectedStyle} goofyLevel={goofyLevel} setGoofyLevel={setGoofyLevel} />
             )}
             {steps[currentStep] === '編輯文案' && (
-              <StepCaptions captions={captions} setCaptions={setCaptions}
+              <StepCaptions captions={captions} setCaptions={setCaptions} referenceImage={referenceImage}
                 captionMeta={captionMeta} setCaptionMeta={setCaptionMeta}
                 stickerCount={stickerCount}
                 captionTheme={captionTheme} setCaptionTheme={setCaptionTheme}
@@ -1185,6 +1254,57 @@
     // ============================================================
     // Step 0: Upload
     // ============================================================
+
+
+    // P9 第三刀：角色庫元件（點縮圖 → fetch 成 dataURL → 當參考圖；preset 帶 name/desc 給文案 API）
+    function CharacterLibrary({ referenceImage, setReferenceImage }) {
+      const [group, setGroup] = useState('all');
+      const [loadingId, setLoadingId] = useState(null);
+      const pick = async (c) => {
+        setLoadingId(c.id);
+        try {
+          const res = await fetch(`characters/${c.id}.png`);
+          const blob = await res.blob();
+          const dataUrl = await new Promise((resolve, reject) => {
+            const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = reject; r.readAsDataURL(blob);
+          });
+          setReferenceImage({ dataUrl, file: { name: `${c.name}.png` }, preset: c });
+        } catch (err) {
+          alert('載入角色失敗：' + err.message);
+        } finally { setLoadingId(null); }
+      };
+      const list = CHARACTER_LIBRARY.filter(c => group === 'all' || c.group === group);
+      return (
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-sm font-medium text-gray-900">🎭 或從角色庫挑一個（{CHARACTER_LIBRARY.length} 個）</div>
+            <div className="flex gap-1">
+              {CHARACTER_GROUPS.map(g => (
+                <button key={g.id} type="button" onClick={() => setGroup(g.id)}
+                  className={`px-2.5 py-1 rounded-full text-xs border transition ${group === g.id ? 'bg-gray-800 text-white border-gray-800' : 'bg-white text-gray-500 border-gray-200 hover:border-gray-400'}`}>
+                  {g.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="text-xs text-gray-400 mb-3">選了角色，文案步驟會照這個角色的個性來寫；上架文案的角色描述也會自動帶入。</div>
+          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
+            {list.map(c => {
+              const selected = referenceImage?.preset?.id === c.id;
+              return (
+                <button key={c.id} type="button" onClick={() => pick(c)} title={c.desc}
+                  className={`rounded-lg border-2 overflow-hidden text-left transition ${selected ? 'border-primary ring-2 ring-primary/30' : 'border-gray-100 hover:border-gray-300'}`}>
+                  <div className="aspect-square bg-gray-50 flex items-center justify-center">
+                    <img src={`characters/${c.id}.png`} alt={c.name} loading="lazy" className="w-full h-full object-contain" />
+                  </div>
+                  <div className="px-1.5 py-1 text-[11px] leading-tight text-gray-700 truncate">{loadingId === c.id ? '載入中…' : c.name}</div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
 
     function StepUpload({ referenceImage, setReferenceImage, stickerCount, setStickerCount,
       productType, onProductTypeChange, config,
@@ -1275,6 +1395,9 @@
             <input ref={fileInputRef} type="file" accept="image/*"
               onChange={(e) => handleFile(e.target.files[0])} className="hidden" />
           </div>
+
+          {/* P9 第三刀：預設角色庫 */}
+          <CharacterLibrary referenceImage={referenceImage} setReferenceImage={setReferenceImage} />
           <div className="flex items-center justify-center gap-4">
             <span className="text-sm text-gray-600">{productType === 'emoji' ? '表情貼張數：' : '貼圖張數：'}</span>
             {config.countOptions.map(n => (
@@ -1330,7 +1453,7 @@
     // Step 2: Captions
     // ============================================================
 
-    function StepCaptions({ captions, setCaptions, captionMeta, setCaptionMeta, stickerCount, captionTheme, setCaptionTheme, activeCampaign }) {
+    function StepCaptions({ captions, setCaptions, captionMeta, setCaptionMeta, stickerCount, captionTheme, setCaptionTheme, activeCampaign, referenceImage }) {
       const theme = captionTheme;
       const setTheme = setCaptionTheme;
       const [captionStyle, setCaptionStyle] = useState('mixed');
@@ -1364,6 +1487,7 @@
               count: stickerCount, language: 'zh-TW',
               style: CAPTION_STYLES.find(s => s.id === captionStyle)?.label || captionStyle,
               trending: theme === 'trending', // 告訴 Worker 啟用時事流行梗模式
+              character: referenceImage?.preset ? `${referenceImage.preset.name}：${referenceImage.preset.desc}` : null, // P9 第三刀：角色 persona
               exclude: captions.slice(0, stickerCount).filter(c => c.trim()), // 排除已有文案
               // P8.1 純視覺活動（如 watery）affectsCaptions:false 時不傳 campaign/Hint，避免 Gemini 對文案過度約束
               campaign: (activeCampaign && CAMPAIGNS[activeCampaign]?.affectsCaptions !== false) ? activeCampaign : null,
@@ -2157,7 +2281,7 @@
 
           {/* === P5: LINE Listing Text Generator === */}
           {hasImages && (
-            <ListingGenerator
+            <ListingGenerator referenceImage={referenceImage}
               captionTheme={captionTheme}
               captions={captions}
               stickerCount={stickerCount}
@@ -2307,10 +2431,10 @@
     // ListingGenerator — LINE Creators Market 上架文案
     // ============================================================
 
-    function ListingGenerator({ captionTheme, captions, stickerCount, listing, setListing, isGeneratingListing, setIsGeneratingListing, isEmoji, productType }) {
+    function ListingGenerator({ captionTheme, captions, stickerCount, listing, setListing, isGeneratingListing, setIsGeneratingListing, isEmoji, productType, referenceImage }) {
       const isBig = productType === 'big';
       const isBigFace = productType === 'bigface';
-      const [charDesc, setCharDesc] = useState('');
+      const [charDesc, setCharDesc] = useState(referenceImage?.preset?.desc || '');
 
       const handleGenerate = async () => {
         setIsGeneratingListing(true);
