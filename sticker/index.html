@@ -241,6 +241,7 @@
       { id: 'festive',  label: '節慶祝福',  emoji: '🎉' },
       { id: 'motivate', label: '正能量',    emoji: '💪' },
       { id: 'sarcasm',  label: '厭世語錄',  emoji: '😮‍💨' },
+      { id: 'reply',    label: '接話回嘴梗', emoji: '💬' }, // P9 第六刀 G：回別人訊息用的 reaction 梗
       { id: 'pets',     label: '毛孩日常',  emoji: '🐾' },
       { id: 'food',     label: '吃貨語錄',  emoji: '🍜' },
       { id: 'sports',   label: '運動健身',  emoji: '🏃' },
@@ -964,6 +965,7 @@
 
       const [currentStep, setCurrentStep] = useState(0);
       const [referenceImage, setReferenceImage] = useState(null);
+      const [charText, setCharText] = useState(''); // P9 第六刀 H：文字描述角色（沒參考圖時當角色設定；有圖時當補充）
       const [selectedStyle, setSelectedStyle] = useState(null);
       const [goofyLevel, setGoofyLevel] = useState('normal'); // P9 第二刀：搞怪程度
       // P9 第五刀：抓 LINE 官方募集，能參加的直接註冊成活動（key live:<id>），晶片區自動出現
@@ -1055,7 +1057,7 @@
       const canProceed = () => {
         const stepName = steps[currentStep];
         switch (stepName) {
-          case '上傳參考圖': return !!referenceImage;
+          case '上傳參考圖': return !!referenceImage || charText.trim().length >= 4; // P9 第六刀 H：沒圖可用文字描述
           case '選畫風': return !!selectedStyle;
           case '編輯文案': return captions.slice(0, stickerCount).filter(c => c.trim()).length >= stickerCount;
           default: return false; // 預覽生成 step has no "next"
@@ -1190,7 +1192,7 @@
 
           <div className="mt-8">
             {steps[currentStep] === '上傳參考圖' && (
-              <StepUpload referenceImage={referenceImage} setReferenceImage={setReferenceImage}
+              <StepUpload referenceImage={referenceImage} setReferenceImage={setReferenceImage} charText={charText} setCharText={setCharText}
                 liveData={liveData} liveErr={liveErr} setCaptionTheme={setCaptionTheme}
                 stickerCount={stickerCount} setStickerCount={setStickerCount}
                 productType={productType} onProductTypeChange={handleProductTypeChange}
@@ -1202,7 +1204,7 @@
               <StepStyle selectedStyle={selectedStyle} setSelectedStyle={setSelectedStyle} goofyLevel={goofyLevel} setGoofyLevel={setGoofyLevel} />
             )}
             {steps[currentStep] === '編輯文案' && (
-              <StepCaptions captions={captions} setCaptions={setCaptions} referenceImage={referenceImage} liveCampaign={liveCampaign}
+              <StepCaptions captions={captions} setCaptions={setCaptions} referenceImage={referenceImage} charText={charText} liveCampaign={liveCampaign}
                 captionMeta={captionMeta} setCaptionMeta={setCaptionMeta}
                 stickerCount={stickerCount}
                 captionTheme={captionTheme} setCaptionTheme={setCaptionTheme}
@@ -1210,7 +1212,7 @@
             )}
             {steps[currentStep] === '預覽生成' && (
               <StepPreview
-                referenceImage={referenceImage} selectedStyle={selectedStyle} goofyLevel={goofyLevel}
+                referenceImage={referenceImage} charText={charText} selectedStyle={selectedStyle} goofyLevel={goofyLevel}
                 captions={captions} captionMeta={captionMeta} captionTheme={captionTheme} liveCampaign={liveCampaign}
                 generatedImages={generatedImages} setGeneratedImages={setGeneratedImages}
                 processedImages={processedImages} setProcessedImages={setProcessedImages}
@@ -1397,7 +1399,7 @@
       );
     }
 
-    function StepUpload({ referenceImage, setReferenceImage, stickerCount, setStickerCount,
+    function StepUpload({ referenceImage, setReferenceImage, charText = '', setCharText = () => {}, stickerCount, setStickerCount,
       productType, onProductTypeChange, config,
       activeCampaign, setActiveCampaign, availableCampaigns,
       liveData, liveErr, setCaptionTheme }) {
@@ -1464,8 +1466,8 @@
           )}
 
           <div className="text-center">
-            <h2 className="text-xl font-bold text-gray-900 mb-1">上傳角色參考圖</h2>
-            <p className="text-gray-500 text-sm">AI 會根據這張圖生成同一角色的不同表情和動作</p>
+            <h2 className="text-xl font-bold text-gray-900 mb-1">角色設定：上傳參考圖、挑角色庫、或用文字描述</h2>
+            <p className="text-gray-500 text-sm">三選一即可；AI 會生成同一角色的不同表情和動作</p>
           </div>
           <div
             onDrop={(e) => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); }}
@@ -1488,6 +1490,23 @@
             )}
             <input ref={fileInputRef} type="file" accept="image/*"
               onChange={(e) => handleFile(e.target.files[0])} className="hidden" />
+          </div>
+
+          {/* P9 第六刀 H：參考圖選填——沒圖時用文字描述角色（幾何球、半圓臉這類用描述比找圖快） */}
+          <div className={`rounded-xl p-4 border ${(!referenceImage && charText.trim().length >= 4) ? 'bg-green-50 border-green-200' : 'bg-white border-gray-100 shadow-sm'}`}>
+            <label className="text-xs text-gray-600 font-medium block mb-2">
+              ✏️ 用文字描述角色{referenceImage ? '（選填：有圖時當補充說明，例如名字、個性）' : '（沒有參考圖時填這裡就能開始，至少 4 個字）'}
+            </label>
+            <textarea value={charText} onChange={(e) => setCharText(e.target.value)} rows={2}
+              placeholder="例：一顆亮面的黃色球，兩條短短的黑腿，臉只有兩個點眼睛和一條線嘴巴 ／ 一個白色半圓臉，只露出兩道粗眉毛 ／ 一隻畫得很醜的塗鴉熊貓"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm resize-none
+                         focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" />
+            {!referenceImage && charText.trim().length >= 4 && (
+              <p className="text-xs text-green-700 mt-1">✓ 會用這段描述當角色設定（每張都照這段畫）；畫風選「原版風格」時會改用簡潔卡通風</p>
+            )}
+            {!referenceImage && charText.trim().length > 0 && charText.trim().length < 4 && (
+              <p className="text-xs text-amber-600 mt-1">再多描述一點（至少 4 個字）</p>
+            )}
           </div>
 
           {/* P9 第三刀：預設角色庫 */}
@@ -1547,7 +1566,7 @@
     // Step 2: Captions
     // ============================================================
 
-    function StepCaptions({ captions, setCaptions, captionMeta, setCaptionMeta, stickerCount, captionTheme, setCaptionTheme, activeCampaign, referenceImage, liveCampaign }) {
+    function StepCaptions({ captions, setCaptions, captionMeta, setCaptionMeta, stickerCount, captionTheme, setCaptionTheme, activeCampaign, referenceImage, charText = '', liveCampaign }) {
       const theme = captionTheme;
       const setTheme = setCaptionTheme;
       const [captionStyle, setCaptionStyle] = useState('mixed');
@@ -1582,7 +1601,7 @@
               count: stickerCount, language: 'zh-TW',
               style: CAPTION_STYLES.find(s => s.id === captionStyle)?.label || captionStyle,
               trending: theme === 'trending', // 告訴 Worker 啟用時事流行梗模式
-              character: referenceImage?.preset ? `${referenceImage.preset.name}：${referenceImage.preset.desc}` : null, // P9 第三刀：角色 persona
+              character: referenceImage?.preset ? `${referenceImage.preset.name}：${referenceImage.preset.desc}${charText.trim() ? `（${charText.trim()}）` : ''}` : (charText.trim() || null), // P9 第三刀：角色 persona；第六刀 H：文字描述角色也帶給文案
               campaignMoods: (activeCampaign && CAMPAIGNS[activeCampaign]?.moods?.length) ? CAMPAIGNS[activeCampaign].moods : null, // P9 第五刀：live 活動情緒池
               exclude: captions.slice(0, stickerCount).filter(c => c.trim()), // 排除已有文案
               // P8.1 純視覺活動（如 watery）affectsCaptions:false 時不傳 campaign/Hint，避免 Gemini 對文案過度約束
@@ -1702,7 +1721,7 @@
     // ============================================================
 
     function StepPreview({
-      referenceImage, selectedStyle, goofyLevel = 'normal', liveCampaign = null, captions, captionMeta, captionTheme,
+      referenceImage, charText = '', selectedStyle, goofyLevel = 'normal', liveCampaign = null, captions, captionMeta, captionTheme,
       generatedImages, setGeneratedImages,
       processedImages, setProcessedImages,
       stickerCount, isGenerating, setIsGenerating,
@@ -1726,7 +1745,37 @@
       const wordlessMode = !!CAMPAIGNS[activeCampaign]?.wordlessCampaign;
       const hasText = (config?.hasText !== false) && !wordlessMode;
       const styleName = ART_STYLES.find(s => s.id === selectedStyle)?.label || selectedStyle;
-      const stylePrompt = STYLE_PROMPTS[selectedStyle] || STYLE_PROMPTS['original'];
+      // P9 第六刀 H：參考圖選填——沒圖時角色由文字描述定義；「原版風格」沒圖可保留就改簡潔卡通
+      const hasRef = !!referenceImage?.dataUrl;
+      const charTextTrim = (charText || '').trim();
+      const stylePrompt = (!hasRef && (selectedStyle === 'original' || !STYLE_PROMPTS[selectedStyle]))
+        ? 'in a clean, simple, cute cartoon style with bold clean outlines and flat colors'
+        : (STYLE_PROMPTS[selectedStyle] || STYLE_PROMPTS['original']);
+      const identitySrc = hasRef ? 'from the reference image' : 'from the CHARACTER text description above';
+      // 三條生圖路徑共用的「角色身分」開頭：有圖照圖、沒圖照文字；shot＝這張要畫的取景
+      const identityLines = (kind, shot) => {
+        const feat = kind === 'face' ? 'face shape, color palette, and key FACIAL features' : 'body shape, color palette, and key visual features';
+        if (hasRef) return [
+          `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), ${feat}. You MUST preserve ALL of these in your output.`,
+          '',
+          `Based on the reference character image provided, generate ${shot} ${stylePrompt}.`,
+          kind === 'face'
+            ? `The character MUST be the SAME species and type as the reference — NEVER change the species.`
+            : `The character MUST be the SAME species and type as the reference — if it is a cat, draw a cat; if it is a dog, draw a dog; if it is a human, draw a human. NEVER change the species.`,
+          kind === 'face'
+            ? `Preserve the character's distinctive FACIAL features: fur/hair color, eye shape, eye color, ear shape, nose, accessories (hats, glasses, etc.), markings, and face proportions.`
+            : `Preserve the character's distinctive features: fur/hair color, eye color, accessories, clothing, markings, and proportions from the reference image.`,
+          charTextTrim ? `CHARACTER NOTES from the user (supplementary to the image, do not contradict the image): ${charTextTrim}` : '',
+        ];
+        return [
+          `IMPORTANT: There is NO reference image. The character is defined ONLY by the text description below — treat it as the official character sheet and follow it literally:`,
+          `CHARACTER: ${charTextTrim || 'a simple cute round mascot'}`,
+          '',
+          `Generate ${shot} of this exact character ${stylePrompt}.`,
+          `Keep the character's species/type, body shape, colors and signature features EXACTLY as described, and identical across every sticker in the set (it must read as the same character every time).`,
+          `If the description is a simple shape (a ball, a blob, a half-circle face, a stick figure), draw it as exactly that simple shape — do NOT add extra anatomy, fur, clothing or details that are not described.`,
+        ];
+      };
       const abortRef = useRef(false);
       const [fontsReady, setFontsReady] = useState(false);
 
@@ -1742,6 +1791,7 @@
         'festive':   'The character is in a festive/holiday setting, wearing festive outfit.',
         'motivate':  'The character is in a bright positive setting, wearing cheerful casual clothes.',
         'sarcasm':   'The character looks exhausted, wearing pajamas or oversized hoodie.',
+        'reply':     'The character is REACTING to someone else\'s chat message: addressing the viewer directly (pointing at the viewer, shrugging, leaning in, holding a phone, raised eyebrow), everyday casual clothes.',
         'pets':      'The character is interacting with a pet or in a cozy home setting, wearing casual comfortable clothes.',
         'food':      'The character is in a food/dining setting, wearing a cute apron or casual clothes, near food or drinks.',
         'sports':    'The character is in a gym or outdoor sports setting, wearing athletic sportswear.',
@@ -1887,11 +1937,7 @@
           const mood = moodPool[index % moodPool.length];
           const campaignRule = [activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '', liveCampaignRule].filter(Boolean).join('\n');
           return [
-            `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), face shape, color palette, and key FACIAL features. You MUST preserve ALL of these in your output.`,
-            '',
-            `Based on the reference character image provided, generate a CLOSE-UP FACE illustration ${stylePrompt}.`,
-            `The character MUST be the SAME species and type as the reference — NEVER change the species.`,
-            `Preserve the character's distinctive FACIAL features: fur/hair color, eye shape, eye color, ear shape, nose, accessories (hats, glasses, etc.), markings, and face proportions.`,
+            ...identityLines('face', 'a CLOSE-UP FACE illustration'),
             '',
             `This is for a LINE messaging EMOJI — a tiny icon (180×180px) displayed inline in chat text at approximately 24px.`,
             `The character expression/pose: ${mood}.`,
@@ -1917,7 +1963,7 @@
             '- The expression must be INSTANTLY recognizable even at 24px display size',
             '',
             'TECHNICAL REQUIREMENTS:',
-            '- PRESERVE the character species and visual identity from the reference image — #1 priority',
+            `- PRESERVE the character species and visual identity ${identitySrc} — #1 priority`,
             '- Do NOT include any text, letters, words, numbers, or characters in the image',
             '- Use a clean solid CHROMA KEY GREEN background (hex #00B140) — fill the ENTIRE background with this exact green color',
             '- Single character face only, centered in frame',
@@ -1940,11 +1986,7 @@
           // 活動額外 prompt 規則（campaign overlay）
           const campaignRule = [activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '', liveCampaignRule].filter(Boolean).join('\n');
           return [
-            `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), face shape, color palette, and key FACIAL features. You MUST preserve ALL of these in your output.`,
-            '',
-            `Based on the reference character image provided, generate a FACE-ONLY EXTREME CLOSE-UP illustration ${stylePrompt}.`,
-            `The character MUST be the SAME species and type as the reference — NEVER change the species.`,
-            `Preserve the character's distinctive FACIAL features: fur/hair color, eye shape, eye color, ear shape, nose, accessories, markings, and face proportions.`,
+            ...identityLines('face', 'a FACE-ONLY EXTREME CLOSE-UP illustration'),
             '',
             wordlessExpression
               ? `This is a LINE "BIG FACE" WORDLESS sticker (NO TEXT, NO LETTERS, NO NUMBERS anywhere in the image). The character's face MUST vividly perform this SPECIFIC archetype: ${wordlessExpression}. Push it to absolute cartoon-extreme. This is the ONE specific archetype assigned to THIS sticker — it must look visibly DIFFERENT from any other sticker in the same set.`
@@ -1975,7 +2017,7 @@
             '- The face should look like a manga reaction panel — maximum comedic impact.',
             '',
             'TECHNICAL REQUIREMENTS:',
-            '- PRESERVE the character species and visual identity from the reference image',
+            `- PRESERVE the character species and visual identity ${identitySrc}`,
             '- Do NOT include any text, letters, words, numbers, or characters in the image',
             '- Use a clean solid CHROMA KEY GREEN background (hex #00B140) — fill the ENTIRE background',
             '- Single character face only, centered in frame',
@@ -1997,11 +2039,7 @@
         // 活動額外 prompt 規則（campaign overlay）
         const campaignRule = [activeCampaign ? (CAMPAIGNS[activeCampaign]?.promptOverlay || '') : '', liveCampaignRule].filter(Boolean).join('\n');
         return [
-          `IMPORTANT: Look at the reference image carefully. Identify the character's SPECIES (cat, dog, rabbit, human, etc.), body shape, color palette, and key visual features. You MUST preserve ALL of these in your output.`,
-          '',
-          `Based on the reference character image provided, generate a single character illustration ${stylePrompt}.`,
-          `The character MUST be the SAME species and type as the reference — if it is a cat, draw a cat; if it is a dog, draw a dog; if it is a human, draw a human. NEVER change the species.`,
-          `Preserve the character's distinctive features: fur/hair color, eye color, accessories, clothing, markings, and proportions from the reference image.`,
+          ...identityLines('body', 'a single character illustration'),
           '',
           (sceneHint && !isGoofy) ? `SCENE/COSTUME CONTEXT: ${sceneHint}` : '',
           wordlessExpression
@@ -2027,8 +2065,8 @@
           extraHint ? `\nADDITIONAL USER INSTRUCTION (highest priority for this specific sticker): ${extraHint}\n` : '',
           '', 'CRITICAL REQUIREMENTS:',
           STYLE_IDENTITY_RELAX.has(selectedStyle)
-            ? '- Keep ONLY the character species, signature colors and one key identifying feature from the reference image; deliberately simplify, distort or "badly draw" everything else to match the chosen art style — do NOT faithfully reproduce the reference rendering'
-            : '- PRESERVE the character species and visual identity from the reference image — this is the #1 priority',
+            ? `- Keep ONLY the character species, signature colors and one key identifying feature ${identitySrc}; deliberately simplify, distort or "badly draw" everything else to match the chosen art style${hasRef ? ' — do NOT faithfully reproduce the reference rendering' : ''}`
+            : `- PRESERVE the character species and visual identity ${identitySrc} — this is the #1 priority`,
           isGoofy ? '' : '- The character outfit/costume MUST match the scene context described above',
           '- Do NOT include any text, letters, words, numbers, or characters in the image',
           '- Use a clean solid CHROMA KEY GREEN background (hex #00B140) — this specific green is required for automated background removal. Fill the ENTIRE background with this exact green color.',
@@ -2370,7 +2408,7 @@
           {/* === Summary === */}
           <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-sm text-gray-600">
             <div className="grid grid-cols-2 gap-2">
-              <div>📎 參考圖：{referenceImage?.file?.name || '無'}</div>
+              <div>📎 角色：{referenceImage?.file?.name || (charTextTrim ? `文字描述「${charTextTrim.slice(0, 24)}${charTextTrim.length > 24 ? '…' : ''}」` : '無')}</div>
               <div>🎨 畫風：{styleName}</div>
               {hasText && <div>📝 文案：{captions.slice(0, stickerCount).filter(c => c.trim()).length}/{stickerCount} 句已填</div>}
               <div>📐 規格：{config.sizeLabel}px（{isEmoji ? 'LINE 表情貼' : isBigFace ? 'LINE 大臉貼圖' : 'LINE 主圖'}）</div>
@@ -2394,7 +2432,7 @@
           )}
           {/* === P5: LINE Listing Text Generator === */}
           {hasImages && (
-            <ListingGenerator referenceImage={referenceImage}
+            <ListingGenerator referenceImage={referenceImage} charText={charText}
               captionTheme={captionTheme}
               captions={captions}
               stickerCount={stickerCount}
@@ -2544,10 +2582,10 @@
     // ListingGenerator — LINE Creators Market 上架文案
     // ============================================================
 
-    function ListingGenerator({ captionTheme, captions, stickerCount, listing, setListing, isGeneratingListing, setIsGeneratingListing, isEmoji, productType, referenceImage }) {
+    function ListingGenerator({ captionTheme, captions, stickerCount, listing, setListing, isGeneratingListing, setIsGeneratingListing, isEmoji, productType, referenceImage, charText = '' }) {
       const isBig = productType === 'big';
       const isBigFace = productType === 'bigface';
-      const [charDesc, setCharDesc] = useState(referenceImage?.preset?.desc || '');
+      const [charDesc, setCharDesc] = useState(referenceImage?.preset?.desc || charText.trim() || ''); // 第六刀 H：文字描述角色也預填
 
       const handleGenerate = async () => {
         setIsGeneratingListing(true);
