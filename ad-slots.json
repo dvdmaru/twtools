@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "updated": "2026-11-07",
+  "note": "站群版位設定。tier：paid（付費，標「贊助」）> house（自家，標「推廣」）> affiliate（聯盟，標「推廣」）。時間一律台北時間 +08:00；start 含、end 不含。只接受 https 連結。",
+  "campaigns": [
+    {
+      "id": "house-2026-election-live",
+      "tier": "house",
+      "slots": ["home_hero"],
+      "sites": ["racing", "foootball", "baseball", "basketball", "dvdmaru"],
+      "start": "2026-11-21T00:00:00+08:00",
+      "end": "2026-11-29T12:00:00+08:00",
+      "title": "11/28 16:00 開票直播",
+      "desc": "只用中選會官方數字",
+      "cta": "看開票中心",
+      "url": "https://twtools.cc/elections/count/"
+    }
+  ]
+}
