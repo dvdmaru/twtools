@@ -179,7 +179,20 @@
     // Constants
     // ============================================================
 
-    const WORKER_URL = new URLSearchParams(location.search).get('worker') || 'https://line-sticker-proxy.charlie-chien.workers.dev';
+    // 資安稽核 2026-11-09：?worker= 只接受自己的 Worker 與本機開發位址，否則一條外部連結就能把使用者的照片與提示詞送到別人的伺服器
+    const DEFAULT_WORKER = 'https://line-sticker-proxy.charlie-chien.workers.dev';
+    const WORKER_URL = (() => {
+      const w = new URLSearchParams(location.search).get('worker');
+      if (!w) return DEFAULT_WORKER;
+      try {
+        const u = new URL(w);
+        const ok = (u.protocol === 'https:' && /^[a-z0-9-]+\.charlie-chien\.workers\.dev$/i.test(u.hostname))
+          || (u.protocol === 'http:' && (u.hostname === 'localhost' || u.hostname === '127.0.0.1'));
+        return ok ? u.origin : DEFAULT_WORKER;
+      } catch { return DEFAULT_WORKER; }
+    })();
+    // 外部提供的連結只放 http(s)，擋 javascript: 這類 scheme（React 18 不會擋）
+    const safeHref = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u)) ? u : '#';
     // Product type configurations
     const PRODUCT_CONFIG = {
       sticker: {
@@ -1306,7 +1319,7 @@
         <div className="bg-gradient-to-r from-sky-50 to-indigo-50 rounded-xl p-4 border border-sky-200">
           <div className="flex items-center justify-between mb-1">
             <div className="text-sm font-medium text-sky-900">📢 LINE 官方募集中（自動判斷）</div>
-            <a href={data?.source || 'https://creator-mag-tw.weblog.to/archives/cat_230123.html'} target="_blank" rel="noopener" className="text-xs text-sky-600 underline">官方公告頁</a>
+            <a href={safeHref(data?.source || 'https://creator-mag-tw.weblog.to/archives/cat_230123.html')} target="_blank" rel="noopener" className="text-xs text-sky-600 underline">官方公告頁</a>
           </div>
           {err && <div className="text-xs text-red-500">無法取得官方募集清單（{err}）。請直接看官方公告頁。</div>}
           {!err && !data && <div className="text-xs text-gray-400">載入中…</div>}
@@ -1317,7 +1330,7 @@
               return (
                 <div key={it.id} className={`bg-white rounded-lg border p-3 ${active ? 'border-primary ring-2 ring-primary/20' : 'border-gray-200'}`}>
                   <div className="flex flex-wrap items-center gap-2">
-                    <a href={it.url} target="_blank" rel="noopener" className="font-medium text-sm text-gray-900 hover:underline">{it.title}</a>
+                    <a href={safeHref(it.url)} target="_blank" rel="noopener" className="font-medium text-sm text-gray-900 hover:underline">{it.title}</a>
                     {badge(ai)}
                     {it.status === 'open' && <span className="text-[11px] px-1.5 py-0.5 rounded bg-green-50 text-green-700">剩 {it.daysLeft} 天</span>}
                     {it.status === 'upcoming' && <span className="text-[11px] px-1.5 py-0.5 rounded bg-amber-50 text-amber-700">{it.review?.start} 開始</span>}
@@ -2426,7 +2439,7 @@
                 {liveCampaign.minCount && <li>至少 {liveCampaign.minCount} 張要看得出主題；本組 {stickerCount} 張</li>}
                 {liveCampaign.saleBy && <li>通過後最晚 {liveCampaign.saleBy} 開始販售</li>}
                 {liveCampaign.priceLine && <li>{liveCampaign.priceLine}</li>}
-                <li>不可含姓名／暱稱；需為全新貼圖；<a className="underline" href={liveCampaign.url} target="_blank" rel="noopener">看原文</a></li>
+                <li>不可含姓名／暱稱；需為全新貼圖；<a className="underline" href={safeHref(liveCampaign.url)} target="_blank" rel="noopener">看原文</a></li>
               </ul>
             </div>
           )}
