@@ -1,0 +1,529 @@
+<!DOCTYPE html><html lang="zh-TW"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><script>(function(){try{var s=localStorage.getItem('tw-sidebar-collapsed');var c=s===null?false:s==='1';if(c){document.documentElement.classList.add('sidebar-collapsed');}}catch(e){}})();</script><title>個資外洩怎麼辦？易遊網逾69萬人事件後的7件事與旅遊業案例 | TWTools</title><meta name="description" content="收到個資外洩通知，先確認資料範圍，再防假客服與訂單詐騙。整理易遊網事件後可做的7件事、信用卡與帳密處理原則、旅遊業案例及官方求助管道。"><link rel="canonical" href="https://twtools.cc/blog/personal-data-breach-what-to-do-travel-guide-2026/"><link rel="icon" href="/favicon.png" type="image/png"><!-- RSS auto-discovery (Phase 1 Round 1 Task E) --><link rel="alternate" type="application/rss+xml" title="TWTools · Blog" href="/blog/rss.xml"><!-- Preconnect to critical third-party origins --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://www.googletagmanager.com"><!-- 2026-10-10 字重減重 10→8：去 Serif 500（0 用）、Mono 500（1 用→400）；Sans 300 保留（首頁 hero .accent 與放鬆頁副標是刻意的細體，拿掉會變常規字重）。每個 Noto 字重的 CSS 約 127KB raw。 --><!-- 2026-10-11 評估過字型自架（@fontsource 可變字重放 public/fonts，commit 7ced834）後回退：這頁本來就要抓 44 片／2.7MB 切片，
+       自架沒少 bytes，卻把它搬到 twtools.cc 同一條連線，把 island 的 JS chunk 餓到 55 秒才載完（DCL 3.3s→51.9s）。
+       GitHub Pages 自架不划算；要再減只能減字重或改設計。紀錄見 CoWork/Charlie/2026-10-10/twtools-review/README.md。 --><!-- Google Fonts: Noto Sans TC (UI/body) + Noto Serif TC (Hero/h2/編輯感) + JetBrains Mono (eyebrow/編號/mono 標籤) --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400&display=swap"></noscript><!-- Open Graph --><meta property="og:type" content="article"><meta property="og:url" content="https://twtools.cc/blog/personal-data-breach-what-to-do-travel-guide-2026/"><meta property="og:title" content="個資外洩怎麼辦？易遊網逾69萬人事件後的7件事與旅遊業案例 | TWTools"><meta property="og:description" content="收到個資外洩通知，先確認資料範圍，再防假客服與訂單詐騙。整理易遊網事件後可做的7件事、信用卡與帳密處理原則、旅遊業案例及官方求助管道。"><meta property="og:image" content="https://twtools.cc/blog-images/personal-data-breach-what-to-do-travel-guide-2026-cover.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="個資外洩怎麼辦？易遊網逾69萬人事件後的7件事與旅遊業案例"><meta property="og:locale" content="zh_TW"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="個資外洩怎麼辦？易遊網逾69萬人事件後的7件事與旅遊業案例 | TWTools"><meta name="twitter:description" content="收到個資外洩通知，先確認資料範圍，再防假客服與訂單詐騙。整理易遊網事件後可做的7件事、信用卡與帳密處理原則、旅遊業案例及官方求助管道。"><meta name="twitter:image" content="https://twtools.cc/blog-images/personal-data-breach-what-to-do-travel-guide-2026-cover.jpg"><!-- Site-wide Organization JSON-LD(GEO/E-E-A-T signal, brand=schema source) --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TWTools","alternateName":["打工牛馬的線上工具箱","TWTools.cc"],"url":"https://twtools.cc/","logo":{"@type":"ImageObject","url":"https://twtools.cc/logo-full.png","width":363,"height":100},"sameAs":["https://github.com/dvdmaru","https://dvdmaru.substack.com","https://aire.twtools.cc"]}</script><!-- Google Analytics (async, non-blocking) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0WTK2LJFTY"></script><script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    // 內部流量標記（2026-10-10）：開任何頁加 ?internal=1 會把本瀏覽器記成內部（?internal=0 取消），
+    // 之後所有事件帶 traffic_type=internal；GA4 後台「內部流量」資料篩選器啟用後就會排除。
+    // 用途＝Charlie 自己的裝置 + 我們用真瀏覽器驗頁面時的流量，不再灌進使用數據。
+    var twInternal = false;
+    try {
+      var twQ = new URLSearchParams(location.search).get('internal');
+      if (twQ === '1') localStorage.setItem('tw_internal', '1');
+      else if (twQ === '0') localStorage.removeItem('tw_internal');
+      twInternal = localStorage.getItem('tw_internal') === '1';
+    } catch (e) {}
+    gtag('config', 'G-0WTK2LJFTY', twInternal ? { traffic_type: 'internal' } : {});
+    // 全站工具內互動事件（2026-09-27）：一個事件名 tool_action，三個參數 tool／action／label，
+    // GA4 後台把三者註冊成事件範圍自訂維度即可分組看。React island 走 src/lib/track.js，inline script 直接呼叫 window.twTrack。
+    // 只在「離散動作」呼叫（按鈕、切 tab、選單改變），不要綁在每次打字上。
+    window.twTrack = function (tool, action, label, extra) {
+      try {
+        if (typeof gtag !== 'function') return;
+        var t = tool || (location.pathname.split('/').filter(Boolean)[0] || 'home');
+        var p = { tool: t, action: String(action || ''), label: label == null ? '' : String(label).slice(0, 100) };
+        if (extra && typeof extra === 'object') for (var k in extra) if (p[k] === undefined) p[k] = extra[k];
+        gtag('event', 'tool_action', p);
+      } catch (e) {}
+    };
+  </script><!-- Light mode only: remove dark class if present --><script>
+    document.documentElement.classList.remove('dark');
+  </script><!-- Tailwind：2026-10-10 起改 build-time（tailwind.config.cjs＋src/styles/tailwind.css），不再載 cdn.tailwindcss.com；
+       theme（brand／warm／accent 色票、darkMode class、typography plugin）原樣搬到 tailwind.config.cjs。 --><!-- Base styles + Theme CSS variables --><style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', system-ui, sans-serif;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { loading: lazy; }
+    html { scroll-behavior: smooth; }
+
+    /* Lottery number grid */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+      gap: 5px;
+    }
+    @media (min-width: 640px) {
+      .num-grid {
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+      }
+    }
+
+    /* Light-only — CSS variables for Morandi Warm 莫蘭迪柔粉底 */
+    :root {
+      --tw-page-bg: #faefee;
+      --tw-text-primary: #201914;
+      --tw-text-secondary: #5a4845;
+      --tw-text-muted: #786866;
+      --tw-surface: #fffbfa;
+      --tw-surface-hover: #f2e4e3;
+      --tw-border: #e5d3d1;
+      --tw-brand-text: #935e5c;
+      --tw-brand-accent: #7e5400;
+      --tw-hero-color: #7c4241;
+    }
+
+    body {
+      background-color: var(--tw-page-bg);
+      color: var(--tw-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style><link rel="stylesheet" href="/_assets/BaseLayout.lBJRRmsJ.css">
+<style>.db-callout[data-astro-cid-lqth5lif]{display:flex;align-items:center;gap:12px;border:1.5px solid var(--tw-hero-color);background:var(--tw-surface);padding:12px 16px;margin:0 0 20px;text-decoration:none;color:inherit;transition:transform .15s ease}.db-callout[data-astro-cid-lqth5lif]:hover{transform:translateY(-1px)}.db-callout-icon[data-astro-cid-lqth5lif]{font-size:22px;flex-shrink:0}.db-callout-text[data-astro-cid-lqth5lif]{display:flex;flex-direction:column;gap:1px;min-width:0}.db-callout-text[data-astro-cid-lqth5lif] strong[data-astro-cid-lqth5lif]{font-size:15px}.db-callout-text[data-astro-cid-lqth5lif] span[data-astro-cid-lqth5lif]{font-size:12.5px;color:var(--tw-text-secondary);line-height:1.5}.db-callout-go[data-astro-cid-lqth5lif]{margin-left:auto;flex-shrink:0;font-size:12px;color:var(--tw-hero-color);border:1px solid var(--tw-hero-color);padding:5px 10px;white-space:nowrap}
+.sb-group-toggle{cursor:pointer;background:transparent;border:0}.sb-group-chev{display:inline-block;font-size:.9rem;line-height:1;transition:transform .15s ease}.sb-group-toggle[aria-expanded=true] .sb-group-chev{transform:rotate(90deg)}.sb-group-toggle:focus-visible{outline:2px solid var(--tw-brand-accent);outline-offset:-2px}@media(min-width:768px){html.sidebar-collapsed [data-sidebar-panel] [data-group-items][hidden]{display:block}}@media(prefers-reduced-motion:reduce){.sb-group-chev{transition:none}}
+</style></head> <body class="min-h-screen paper-noise">   <button id="sidebar-hamburger" class="fixed top-3 left-3 z-50 md:hidden p-2 rounded-lg" style="background:var(--tw-surface);color:var(--tw-text-primary)">☰</button>  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 md:hidden hidden"></div>  <aside id="sidebar-panel" data-sidebar-panel class="fixed top-0 left-0 h-full w-56 z-40 flex flex-col border-r transition-transform -translate-x-full md:translate-x-0" style="background:var(--tw-page-bg);border-color:var(--tw-border)"> <!-- Logo --> <div data-sidebar-logo class="p-4 border-b flex items-center justify-between" style="border-color:var(--tw-border)"> <a href="/" class="flex items-center no-underline"> <img src="/logo-icon-128.png" width="128" height="128" alt="TWTools" class="w-7 h-7 rounded-lg"> <span data-sidebar-brand class="text-sm font-bold ml-1.5" style="color:var(--tw-brand-accent)">TWTools</span> </a> <button id="sidebar-close" class="md:hidden text-lg leading-none" style="color:var(--tw-text-muted)">✕</button> </div> <!-- 桌機收合鈕（手機由漢堡鈕負責，此鈕於 <768px 隱藏） --> <button type="button" data-sidebar-toggle aria-controls="sidebar-panel" aria-expanded="true" class="w-full items-center justify-center py-2 border-b text-xs" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <span class="chev inline-block leading-none">«</span> <span data-sidebar-label class="ml-1.5">收合側欄</span> </button> <!-- Nav items grouped by category --> <nav data-sidebar-nav class="flex-1 py-2 overflow-y-auto"> <div> <button type="button" data-sidebar-group data-group-toggle="disaster" data-current="true" aria-expanded="true" aria-controls="sb-group-disaster" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>防災即時</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-disaster" data-group-items> <a href="/typhoon/" data-sidebar-item title="颱風停班停課" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌀</span> <span data-sidebar-label>颱風停班停課</span> </a><a href="/rain/" data-sidebar-item title="即時雨量" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☔</span> <span data-sidebar-label>即時雨量</span> </a><a href="/dashboard/" data-sidebar-item title="防災儀表板" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛡️</span> <span data-sidebar-label>防災儀表板</span> </a><a href="/reservoir/" data-sidebar-item title="水庫即時水情" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💧</span> <span data-sidebar-label>水庫即時水情</span> </a><a href="/dingfengbo/" data-sidebar-item title="定風波 風雨時間軸" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌧️</span> <span data-sidebar-label>定風波 風雨時間軸</span> </a><a href="/alerts/" data-sidebar-item title="災害即時告警" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🚨</span> <span data-sidebar-label>災害即時告警</span> </a><a href="/dashboard/wall/" data-sidebar-item title="颱風直播牆" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📡</span> <span data-sidebar-label>颱風直播牆</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="life" data-current="false" aria-expanded="false" aria-controls="sb-group-life" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>生活查詢</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-life" data-group-items hidden> <a href="/address/" data-sidebar-item title="地址中譯英" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌐</span> <span data-sidebar-label>地址中譯英</span> </a><a href="/drone/" data-sidebar-item title="無人機管制區查詢" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🛸</span> <span data-sidebar-label>無人機管制區查詢</span> </a><a href="/lottery/" data-sidebar-item title="台灣彩券" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎰</span> <span data-sidebar-label>台灣彩券</span> </a><a href="/lunar/" data-sidebar-item title="農曆國曆" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> <span data-sidebar-label>農曆國曆</span> </a><a href="/postal/" data-sidebar-item title="郵遞區號" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📮</span> <span data-sidebar-label>郵遞區號</span> </a><a href="/clock/" data-sidebar-item title="翻頁時鐘" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🕐</span> <span data-sidebar-label>翻頁時鐘</span> </a><a href="/solar-terms/" data-sidebar-item title="二十四節氣" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">☀️</span> <span data-sidebar-label>二十四節氣</span> </a><a href="/currency/" data-sidebar-item title="匯率換算" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">💱</span> <span data-sidebar-label>匯率換算</span> </a><a href="/codex-reset/" data-sidebar-item title="Codex 額度重置監看" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🔄</span> <span data-sidebar-label>Codex 額度重置監看</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="docs" data-current="false" aria-expanded="false" aria-controls="sb-group-docs" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>文件與計算</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-docs" data-group-items hidden> <a href="/proofread/" data-sidebar-item title="錯別字檢查" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">✍️</span> <span data-sidebar-label>錯別字檢查</span> </a><a href="/image/" data-sidebar-item title="圖片工具" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🖼️</span> <span data-sidebar-label>圖片工具</span> </a><a href="/pdf/" data-sidebar-item title="PDF 工具" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📄</span> <span data-sidebar-label>PDF 工具</span> </a><a href="/datecalc/" data-sidebar-item title="日期計算器" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📅</span> <span data-sidebar-label>日期計算器</span> </a><a href="/countdown/" data-sidebar-item title="倒數計時器" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⏳</span> <span data-sidebar-label>倒數計時器</span> </a><a href="/unit/" data-sidebar-item title="單位換算" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📏</span> <span data-sidebar-label>單位換算</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="learn" data-current="false" aria-expanded="false" aria-controls="sb-group-learn" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>學習與檢測</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-learn" data-group-items hidden> <a href="/seo/" data-sidebar-item title="SEO/GEO/AEO" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">📊</span> <span data-sidebar-label>SEO/GEO/AEO</span> </a><a href="/vocabulary/" data-sidebar-item title="英文單字片語" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🎓</span> <span data-sidebar-label>英文單字片語</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="relax" data-current="false" aria-expanded="false" aria-controls="sb-group-relax" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>放鬆小站</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-relax" data-group-items hidden> <a href="/bee/" data-sidebar-item title="小蜜蜂" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🐝</span> <span data-sidebar-label>小蜜蜂</span> </a><a href="/midnight/" data-sidebar-item title="深夜宵夜所" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🌙</span> <span data-sidebar-label>深夜宵夜所</span> </a><a href="/woodenfish/" data-sidebar-item title="電子木魚" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🪵</span> <span data-sidebar-label>電子木魚</span> </a><a href="/breathe/" data-sidebar-item title="一起喘口氣" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">😮‍💨</span> <span data-sidebar-label>一起喘口氣</span> </a><a href="/invaders/" data-sidebar-item title="太空侵略者" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">👾</span> <span data-sidebar-label>太空侵略者</span> </a><a href="/sand/" data-sidebar-item title="指尖流沙" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">⌛</span> <span data-sidebar-label>指尖流沙</span> </a><a href="/moyu/" data-sidebar-item title="摸魚螢幕" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🐟</span> <span data-sidebar-label>摸魚螢幕</span> </a><a href="/coin/" data-sidebar-item title="別糾結" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🪙</span> <span data-sidebar-label>別糾結</span> </a><a href="/crab/" data-sidebar-item title="打螃蟹" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🦀</span> <span data-sidebar-label>打螃蟹</span> </a> </div> </div><div> <button type="button" data-sidebar-group data-group-toggle="records" data-current="false" aria-expanded="false" aria-controls="sb-group-records" class="sb-group-toggle w-full px-4 pt-4 pb-1 text-xs font-semibold tracking-wide flex items-center justify-between text-left" style="color:var(--tw-text-muted);opacity:0.7"> <span>公共紀錄</span> <span class="sb-group-chev" aria-hidden="true">›</span> </button> <div id="sb-group-records" data-group-items hidden> <a href="/council/" data-sidebar-item title="議員任內紀錄" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🏛️</span> <span data-sidebar-label>議員任內紀錄</span> </a><a href="/elections/" data-sidebar-item title="選舉結果存檔" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline hover:opacity-80" style="color:var(--tw-text-muted)"> <span class="text-base">🗳️</span> <span data-sidebar-label>選舉結果存檔</span> </a> </div> </div><div> <div data-sidebar-group class="px-4 pt-4 pb-1 text-xs font-semibold tracking-wide" style="color:var(--tw-text-muted);opacity:0.7">更多</div> <div id="sb-group-more" data-group-items> <a href="/blog/" data-sidebar-item title="知識文章" class="w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors no-underline border-r-2" style="background:rgba(107,115,148,0.15);color:var(--tw-brand-accent);border-color:var(--tw-brand-accent)"> <span class="text-base">📝</span> <span data-sidebar-label>知識文章</span> </a> </div> </div>   </nav> <div data-sidebar-footer class="p-3 border-t text-xs text-center space-y-1" style="border-color:var(--tw-border);color:var(--tw-text-muted)"> <div class="flex justify-center gap-3"> <a href="/about/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">關於</a> <a href="/privacy/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">隱私權</a> <a href="/terms/" class="transition-colors hover:opacity-80 no-underline" style="color:var(--tw-brand-accent)">條款</a> </div>
+打工牛馬的線上工具箱 © 2026
+</div> </aside>  <main class="flex-1 md:ml-56 p-4 sm:p-6 lg:p-8 min-h-screen" style="background:var(--tw-page-bg)">   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"個資外洩怎麼辦？易遊網逾69萬人事件後的7件事與旅遊業案例","description":"收到個資外洩通知，先確認資料範圍，再防假客服與訂單詐騙。整理易遊網事件後可做的7件事、信用卡與帳密處理原則、旅遊業案例及官方求助管道。","image":"https://twtools.cc/blog-images/personal-data-breach-what-to-do-travel-guide-2026-cover.jpg","datePublished":"2026-11-10T00:00:00+08:00","dateModified":"2026-11-10T00:00:00+08:00","author":{"@type":"Organization","name":"TWTools 編輯部","url":"https://twtools.cc"},"publisher":{"@type":"Organization","name":"TWTools","url":"https://twtools.cc","logo":{"@type":"ImageObject","url":"https://twtools.cc/favicon.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://twtools.cc/blog/personal-data-breach-what-to-do-travel-guide-2026/"},"inLanguage":"zh-Hant-TW"}</script>  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"沒收到易遊網通知，就代表沒受影響嗎？","acceptedAnswer":{"@type":"Answer","text":"不能只憑沒收到訊息判定。請從真正的官網或App向客服確認個人受影響範圍，不要到陌生網站輸入個資查詢。"}},{"@type":"Question","name":"對方知道我的訂單和姓名，還可能是詐騙嗎？","acceptedAnswer":{"@type":"Answer","text":"可能。訂單與聯絡資料可能被拿來假冒客服。先結束通話，再透過自己查到的官方管道確認；不在原通話中接受轉接銀行或165。"}},{"@type":"Question","name":"這次一定要換信用卡嗎？","acceptedAnswer":{"@type":"Answer","text":"業者稱本次未涉及信用卡號，不能據此要求所有人一律換卡。但若你已交出卡號、驗證碼，或發現非本人交易，應立即聯絡銀行，由銀行評估停卡、換卡與爭議處理。"}},{"@type":"Question","name":"改密碼或刪除帳號，就能解決外洩嗎？","acceptedAnswer":{"@type":"Answer","text":"改密碼能保護帳號，無法收回流出的訂單或聯絡資料。刪除帳號也不能保證第三人副本消失，仍須留意可疑來電與帳務。"}},{"@type":"Question","name":"只有個資外洩、還沒受騙，也能打165嗎？","acceptedAnswer":{"@type":"Answer","text":"遇到可疑來電或不確定是否為詐騙，可先向165諮詢。若已出現匯款、盜刷或其他損失，請聯絡銀行及警方，保留證據並完成報案程序。 今天可以先做兩件小事：把重要帳號的兩步驟驗證打開，再告訴同行家人「任何退款或帳務來電，都先掛掉自行查證」。若眼前已經有異常交易，優先聯絡銀行與警方。"}}]}</script> <nav class="max-w-5xl mx-auto px-2 md:px-6 pt-2 pb-4 no-print" aria-label="breadcrumb"> <ol class="flex items-center gap-2 text-sm flex-wrap m-0 p-0 list-none" style="color: var(--tw-text-muted);"> <li><a href="/" class="grow-underline">首頁</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><a href="/blog/" class="grow-underline">編輯室</a></li> <li><svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m9 18 6-6-6-6" />
+</svg>
+</li> <li><span style="color: var(--tw-text-primary);">生活知識</span></li> </ol> </nav>  <section class="max-w-5xl mx-auto px-2 md:px-6 pb-6"> <div class="article-col"> <div class="flex items-center gap-3 mb-5 flex-wrap"> <span class="brand-dot"></span> <span class="eyebrow">生活知識</span> <span class="printrule hidden md:inline">|</span> <span class="eyebrow">9 分鐘</span> <span class="printrule hidden md:inline">|</span> <span class="updated-pill"><span class="pulse-dot"></span>UPDATED · 2026 / 11 / 10</span> </div> <h1 class="font-serif-tc font-black tracking-cn" style="font-size: clamp(30px, 4.6vw, 52px); line-height: 1.15; color: var(--tw-hero-color); letter-spacing: -0.015em; margin: 0;"> 個資外洩怎麼辦？易遊網逾69萬人事件後的7件事與旅遊業案例 </h1> <p class="font-serif-tc" style="margin: 24px 0 0; font-size: clamp(16px, 1.8vw, 19px); line-height: 1.65; color: var(--tw-text-secondary); font-weight: 400;"> 收到個資外洩通知，先確認資料範圍，再防假客服與訂單詐騙。整理易遊網事件後可做的7件事、信用卡與帳密處理原則、旅遊業案例及官方求助管道。 </p> <div class="mt-8 pt-6 border-t flex items-center gap-x-6 gap-y-2 flex-wrap text-sm no-print" style="border-color: var(--tw-border); color: var(--tw-text-muted);"> <span class="inline-flex items-center gap-2"> <span class="w-7 h-7 rounded-full grid place-items-center" style="background: var(--tw-hero-color); color: #fffbfa; font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 12px;">編</span> <span style="color: var(--tw-text-secondary);">TWTools 編輯部</span> </span> <span class="printrule">|</span> <time datetime="2026-11-10">2026 / 11 / 10</time> <span class="ml-auto inline-flex items-center gap-3">  <button type="button" id="print-link" class="grow-underline inline-flex items-center gap-1.5" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0; font: inherit;"> <svg aria-hidden="true"
+  class="w-3.5 h-3.5 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+  <rect x="6" y="14" width="12" height="8" rx="1" />
+</svg>
+列印
+</button> </span> </div> </div> </section>  <figure class="max-w-5xl mx-auto px-2 md:px-6 mb-8 figure"> <div class="article-col"> <img src="/blog-images/personal-data-breach-what-to-do-travel-guide-2026-cover.jpg" alt="個資外洩怎麼辦？易遊網逾69萬人事件後的7件事與旅遊業案例" class="hero-cover" style="width: 100%; object-fit: cover; background: var(--tw-surface);" loading="eager" fetchpriority="high"> <figcaption><em>個資外洩怎麼辦？易遊網逾69萬人事件後的7件事與旅遊業案例</em> <span class="src">— ILLUSTRATION · TWTOOLS EDITORIAL</span></figcaption> </div> </figure> <article class="max-w-5xl mx-auto px-2 md:px-6 mb-12"> <div class="article-frame"> <aside class="article-margin no-print"> <div class="margin-label">生活知識 · 2026</div> </aside> <div class="prose-cn"> <!-- TOC --> <details class="toc-block no-print" open> <summary> <div class="toc-head"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 5h.01" />
+  <path d="M3 12h.01" />
+  <path d="M3 19h.01" />
+  <path d="M8 5h13" />
+  <path d="M8 12h13" />
+  <path d="M8 19h13" />
+</svg>
+ <span class="eyebrow">CONTENTS · 目次</span> <h3>本文 5 個段落</h3> </div> <svg aria-hidden="true"
+  class="w-4 h-4 toc-chev lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m6 9 6 6 6-6" />
+</svg>
+ </summary> <div class="toc-list"> <ol> <li> <a href="#易遊網這次外洩了什麼先分清楚已知與業者說法"> <span class="toc-num">§ 01</span> <span class="toc-title">易遊網這次外洩了什麼？先分清楚已知與業者說法</span> </a> </li><li> <a href="#外洩後先做這7件事"> <span class="toc-num">§ 02</span> <span class="toc-title">外洩後先做這7件事</span> </a> </li><li> <a href="#旅遊業個資外洩事件對照"> <span class="toc-num">§ 03</span> <span class="toc-title">旅遊業個資外洩事件對照</span> </a> </li><li> <a href="#常見問題faq"> <span class="toc-num">§ 04</span> <span class="toc-title">常見問題（FAQ）</span> </a> </li><li> <a href="#來源與更新說明"> <span class="toc-num">§ 05</span> <span class="toc-title">來源與更新說明</span> </a> </li> </ol> </div> </details>  <p>收到「您的個資可能外洩」通知，最急的問題通常是：要換信用卡嗎？對方知道我的訂單，還能相信他是客服嗎？<strong>先停止依陌生來電操作，自己開啟官方網站或App查證；若已出現盜刷或匯款，立即聯絡銀行與警方。</strong></p>
+<p>這篇以2026年11月易遊網事件為起點，整理7件可做的事。事件資訊截至<strong>2026年11月10日（臺北時間）</strong>，後續調查可能修正範圍；防護步驟也適用於其他平台的外洩通知。</p>
+<h2 id="易遊網這次外洩了什麼先分清楚已知與業者說法">易遊網這次外洩了什麼？先分清楚已知與業者說法</h2>
+<p>中央社11月9日報導，易遊網表示11月7日發現會員中心受到外部攻擊，初步清查發現部分歷史訂單聯絡資料遭不當取得。業者稱資料可能包含姓名、電子郵件、聯絡電話及商品訂購資訊，去重後影響<strong>超過69萬人</strong>，並已通報及通知受影響消費者。<a href="https://www.cna.com.tw/news/ahel/202611090202.aspx">來源：中央社</a></p>
+<p>同一份聲明稱，事件未涉及信用卡號、安全碼、登入密碼、護照號碼或身分證字號。這是<strong>業者目前公布的調查說法</strong>，不能延伸為已完成獨立鑑識，也不能保證此後沒有其他詐騙風險。</p>
+<p>知道姓名、電話和訂單細節的人，可能拿這些資料假冒客服。刑事警察局曾提醒，詐騙者會以重複扣款、分期付款設定錯誤，甚至「為了處理個資外洩」為由，要求操作金融服務或交出金融卡。<strong>能說出你買了什麼，仍不足以證明來電者身分。</strong><a href="https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&#x26;module=news&#x26;serno=19d0bb9c-908d-40fb-81fc-11a8e6522d57">來源：刑事警察局</a></p>
+<h2 id="外洩後先做這7件事">外洩後先做這7件事</h2>
+<h3 id="1-自己進官網確認先別點通知裡的連結">1. 自己進官網確認，先別點通知裡的連結</h3>
+<p>收到通知可以先保留，接著從自己原本使用的App、書籤或手動輸入的官網進入客服管道，詢問是否受影響、涉及哪些資料。不要為了「查外洩」再把身分證、信用卡或驗證碼交給陌生網站。</p>
+<p>來電若聲稱要處理訂單錯誤，先掛斷再自行聯絡官方客服。要找165查證，也必須<strong>結束原本通話，重新撥號</strong>；不要留在線上讓對方轉接所謂的警察或銀行。<a href="https://www.moi.gov.tw/News_Content.aspx?n=2&#x26;s=323333">來源：內政部</a></p>
+<h3 id="2-記下外洩的是什麼照資料種類處理">2. 記下外洩的是什麼，照資料種類處理</h3>
+<p>把官方公告、通知日期、訂單編號及客服答覆留存，特別確認公告是「整個事件的範圍」，還是已確認「你個人的受影響欄位」。下表是處理方向，不代表易遊網這次外洩了表中所有資料。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>已知或疑似涉及的資料</th><th>先做什麼</th><th>要避免的誤解</th></tr></thead><tbody><tr><td>姓名、電話、Email、訂單</td><td>提防假客服，透過原官方管道確認退款與帳務</td><td>知道訂單不代表是本人客服</td></tr><tr><td>密碼，或自己在假網站輸入帳密</td><td>從真正網站改密碼，檢查共用相同密碼的其他帳號</td><td>改密碼不能收回已流出的聯絡資料</td></tr><tr><td>信用卡資料、銀行帳密或驗證碼</td><td>立即聯絡發卡銀行或往來銀行，說明交出了什麼</td><td>不要等出帳或等業者調查完才問銀行</td></tr><tr><td>證件號碼或影像</td><td>問清楚範圍，保存通知，疑似遭冒用時向警方求助</td><td>不要再把證件上傳到來路不明的查詢工具</td></tr></tbody></table>
+<h3 id="3-擋住假客服不提供驗證碼也不照指示轉帳">3. 擋住假客服，不提供驗證碼也不照指示轉帳</h3>
+<p>「幫您取消重複扣款」「退款要先認證」「資料外洩，現在幫您保護帳戶」，都可能被拿來包裝詐騙。遇到對方要求操作ATM、網路銀行、提供簡訊驗證碼（OTP），先停止並另行查證。也不要寄出金融卡、存摺，或把密碼改成對方指定的數字。<a href="https://www.cib.npa.gov.tw/ch/app/news/view?id=1887&#x26;module=news&#x26;serno=19d0bb9c-908d-40fb-81fc-11a8e6522d57">來源：刑事警察局</a></p>
+<p>可以先跟同行家人說一聲：如果有人打來提到這趟旅程，請他們各自從官方管道確認。不要在家庭群組轉貼完整護照、卡號或含個資的訂單截圖。</p>
+<h3 id="4-檢查帳號密碼重要帳號開啟第二道驗證">4. 檢查帳號密碼，重要帳號開啟第二道驗證</h3>
+<p>資通安全署建議，不同服務使用不同密碼，並為重要帳號啟用兩步驟驗證。可先檢查電子郵件、金融服務和常用通訊帳號；Email尤其值得優先保護，許多服務的密碼重設信都會寄到這裡。<a href="https://web.moda.gov.tw/ACS/press/news/press/18660">來源：資通安全署</a></p>
+<p>若已把帳密輸入疑似假網站，請直接從真正服務更改密碼；其他使用相同密碼的帳號也一併處理。這與「平台已證實密碼外洩」是兩件事。本次易遊網聲明稱未涉及登入密碼，不應改寫成所有會員密碼都已遭竊。</p>
+<h3 id="5-看交易紀錄換不換卡交由銀行依情況評估">5. 看交易紀錄，換不換卡交由銀行依情況評估</h3>
+<p>光是姓名與訂單外洩，不能直接推論卡號已外洩，也不適合一律要求所有人換卡。先查看近期交易；若已交出卡片資料、OTP，或有非本人交易，立即從銀行官方App或卡片背面的電話聯絡發卡銀行，詢問停卡、換卡及爭議帳款程序。</p>
+<p>臺中市政府消保園地提醒，發現盜領或盜刷時應立即通知銀行並向警方報案。處理結果依個案認定，不要把「有報案」當成一定可以拿回款項。<a href="https://www.consume.taichung.gov.tw/1209347/1209354/1209380/1309991">來源：臺中市政府</a></p>
+<h3 id="6-已經匯款或疑似受騙停止操作聯絡銀行並報案">6. 已經匯款或疑似受騙，停止操作、聯絡銀行並報案</h3>
+<p>保存簡訊、對話、網址、電話號碼、交易時間及匯款紀錄。不要因為對方說「刪掉比較安全」就刪除證據，也不要再付一筆保證金、解凍費或追回款項的服務費。</p>
+<p>可撥<strong>165反詐騙諮詢專線</strong>或<strong>110</strong>求助，並依警方指示完成報案。透過165網站提出網路報案後，請依轉介前往派出所完成筆錄等程序，並取得「受（處）理案件證明單」。只有撥打165或填寫網路資料，不代表已完成報案。若涉及金融交易，同時向銀行說明，不必等客服查完外洩範圍。<a href="https://www.moi.gov.tw/News_Content.aspx?n=2&#x26;s=323333">來源：內政部</a>、<a href="https://md-fraud.police.gov.taipei/cp.aspx?n=CD9002B9355919D1">臺北市政府警察局報案說明</a></p>
+<h3 id="7-向業者提出具體問題留下書面紀錄">7. 向業者提出具體問題，留下書面紀錄</h3>
+<p>聯絡客服時可以依序詢問：我是否在通知名單？涉及哪些欄位與訂單期間？業者採取了哪些措施？後續如何通知？若要行使個資權利，應透過哪個窗口？</p>
+<p>《個人資料保護法》第3條列有查詢、閱覽、取得複製本、補充更正、請求停止蒐集處理利用及刪除等權利，但具體行使仍有法定條件。例如第11條對刪除與停止利用設有條件及例外，不能把提出請求解讀成業者必須立即刪除所有交易紀錄。<a href="https://law.moj.gov.tw/LawClass/LawOldVer.aspx?pcode=I0050021">來源：全國法規資料庫第3條及生效條文第11條</a></p>
+<p>請求業者刪除帳號內資料，也無法保證第三人已取得的副本會消失。若要進一步求償，請保留通知、客服往返、損失與交易證據，依個案尋求法律協助；裁罰金額不會自動變成每位消費者的賠償金。</p>
+<h2 id="旅遊業個資外洩事件對照">旅遊業個資外洩事件對照</h2>
+<p>以下選列三起公開事件，<strong>不是完整名單，也不是資安排名</strong>。表內日期分別標示事件或報導時間，人數與資料筆數也不能混算。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>事件與時間</th><th>公開資料範圍</th><th>已公布的處置與限制</th></tr></thead><tbody><tr><td>易飛網，2025年1月7日公告</td><td>公司承認個資外洩；核讀報導未列具體人數及完整欄位</td><td>公司稱啟動盤查、通報165並安排外部鑑識；本次未確認裁罰狀態。<a href="https://www.cna.com.tw/news/afe/202501070208.aspx">中央社</a></td></tr><tr><td>五福旅遊，2026年1月事件；4月14日報導裁罰</td><td>涉及旅客姓名、護照與行程資料；不以影像份數推算去重人數</td><td>觀光署開罰100萬元。4月14日是報導日，不代表裁罰當日；此處依報導，未直接取得裁罰原件。<a href="https://www.cna.com.tw/news/afe/202604140274.aspx">中央社</a>、<a href="https://news.pts.org.tw/article/803570">公視</a></td></tr><tr><td>易遊網，2026年11月7日偵測、11月9日聲明</td><td>業者稱可能包含姓名、Email、電話、商品訂購資訊，去重後逾69萬人</td><td>業者稱已通報、委外鑑識並通知消費者；未涉及信用卡等項目仍屬業者目前說法。<a href="https://www.cna.com.tw/news/ahel/202611090202.aspx">中央社</a></td></tr></tbody></table>
+<p>資料外洩的種類不同，讀者要採取的措施也不同。聯絡資料與訂單會增加假客服風險；若涉及證件影像，還需要留意身分冒用。未公布人數或欄位的事件，就不能拿來和其他案件做規模排名。</p>
+<h2 id="常見問題faq">常見問題（FAQ）</h2>
+<h3 id="沒收到易遊網通知就代表沒受影響嗎">沒收到易遊網通知，就代表沒受影響嗎？</h3>
+<p>不能只憑沒收到訊息判定。請從真正的官網或App向客服確認個人受影響範圍，不要到陌生網站輸入個資查詢。</p>
+<h3 id="對方知道我的訂單和姓名還可能是詐騙嗎">對方知道我的訂單和姓名，還可能是詐騙嗎？</h3>
+<p>可能。訂單與聯絡資料可能被拿來假冒客服。先結束通話，再透過自己查到的官方管道確認；不在原通話中接受轉接銀行或165。</p>
+<h3 id="這次一定要換信用卡嗎">這次一定要換信用卡嗎？</h3>
+<p>業者稱本次未涉及信用卡號，不能據此要求所有人一律換卡。但若你已交出卡號、驗證碼，或發現非本人交易，應立即聯絡銀行，由銀行評估停卡、換卡與爭議處理。</p>
+<h3 id="改密碼或刪除帳號就能解決外洩嗎">改密碼或刪除帳號，就能解決外洩嗎？</h3>
+<p>改密碼能保護帳號，無法收回流出的訂單或聯絡資料。刪除帳號也不能保證第三人副本消失，仍須留意可疑來電與帳務。</p>
+<h3 id="只有個資外洩還沒受騙也能打165嗎">只有個資外洩、還沒受騙，也能打165嗎？</h3>
+<p>遇到可疑來電或不確定是否為詐騙，可先向165諮詢。若已出現匯款、盜刷或其他損失，請聯絡銀行及警方，保留證據並完成報案程序。</p>
+<p>今天可以先做兩件小事：把重要帳號的兩步驟驗證打開，再告訴同行家人「任何退款或帳務來電，都先掛掉自行查證」。若眼前已經有異常交易，優先聯絡銀行與警方。</p>
+<h2 id="來源與更新說明">來源與更新說明</h2>
+<ul>
+<li>事件來源與個別欄位見上方事件段落及對照表；業者說法均保留歸因，後續調查可能更新。</li>
+<li>防詐流程參考刑事警察局、內政部、臺北市政府警察局；帳號防護參考資通安全署；盜刷處理參考臺中市政府消保園地，連結均附於相關段落。</li>
+<li>法規查閱日為2026年11月10日。<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=I0050021">全國法規資料庫生效狀態</a>標示2025年11月11日部分修正尚未生效，本篇不把未生效的新制通報規定寫成現行義務。本文為一般資訊，個案權利與責任仍須依事實及適用法規判斷。</li>
+</ul>   <!-- Reactions --> <div class="reactions no-print"> <div class="ask">這篇對你有幫助嗎？</div> <div class="react-buttons"> <button type="button" class="react-btn" data-react="useful"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
+  <path d="M7 10v12" />
+</svg>
+ <span>覺得有用</span> <span class="count" data-react-count="useful">—</span> </button> <button type="button" class="react-btn" data-react="bookmark"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z" />
+</svg>
+ <span>收藏</span> <span class="count" data-react-count="bookmark">—</span> </button> </div> <span class="meta">PUBLISHED · 2026 / 11 / 10</span> </div> <!-- Full CTA --> <div class="cta-full no-print"> <div class="cta-head"> <h4>把這篇帶走</h4> <span class="eyebrow">SAVE · SHARE · FEED</span> </div> <div class="cta-grid"> <a href="#" class="cta-cell" data-action="copy-link"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+</svg>
+</div> <div> <div class="label">複製連結 <span class="kbd">⌘ C</span></div> <div class="desc">把這篇 URL 存到 Notion、Pocket，或直接傳給朋友。</div> </div> </a> <a href="/blog/personal-data-breach-what-to-do-travel-guide-2026/index.md" class="cta-cell" data-action="copy-md"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" />
+</svg>
+</div> <div> <div class="label">複製 Markdown</div> <div class="desc">原始 .md 內容，餵 Gemini Notebook、ChatGPT 當研究素材。</div> </div> </a> <a href="https://notebook.google.com/?import=https%3A%2F%2Ftwtools.cc%2Fblog%2Fpersonal-data-breach-what-to-do-travel-guide-2026%2F" target="_blank" rel="noopener" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
+  <path d="M9 13a4.5 4.5 0 0 0 3-4" />
+  <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" />
+  <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
+  <path d="M6 18a4 4 0 0 1-1.967-.516" />
+  <path d="M12 13h4" />
+  <path d="M12 18h6a2 2 0 0 1 2 2v1" />
+  <path d="M12 8h8" />
+  <path d="M16 8V5a2 2 0 0 1 2-2" />
+  <circle cx="16" cy="13" r=".5" />
+  <circle cx="18" cy="3" r=".5" />
+  <circle cx="20" cy="21" r=".5" />
+  <circle cx="20" cy="8" r=".5" />
+</svg>
+</div> <div> <div class="label">送進 Gemini Notebook</div> <div class="desc">一鍵把本文加入你的 Gemini Notebook（原 NotebookLM）來源。</div> </div> </a> <a href="/blog/rss.xml" class="cta-cell"> <div class="icon-box"><svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 11a9 9 0 0 1 9 9" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <circle cx="5" cy="19" r="1" />
+</svg>
+</div> <div> <div class="label">訂閱 RSS</div> <div class="desc">每週一篇，更新就推到你的 Reader。</div> </div> </a> </div> </div> </div> <aside class="article-margin no-print"> <div class="margin-label">TWTOOLS / EDITORIAL</div> </aside> </div> </article>  <script data-blog-tool-click>
+    document.addEventListener('click', function (e) {
+      try {
+        var a = e.target && e.target.closest ? e.target.closest('article a[href]') : null;
+        if (!a) return;
+        var u = new URL(a.getAttribute('href'), location.href);
+        if (u.origin !== location.origin) return;
+        var seg = u.pathname.split('/').filter(Boolean)[0] || '';
+        if (!seg || seg === 'blog') return;
+        if (typeof window.twTrack === 'function') window.twTrack('blog', 'click', seg);
+      } catch (err) {}
+    }, { passive: true });
+  </script>  <section class="no-print"> <div class="adjacent"> <a href="/blog/carbon-monoxide-water-heater-subsidy-guide-2026/"> <div class="arrow-row"> <svg aria-hidden="true"
+  class="w-4 h-4 lucide"
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m12 19-7-7 7-7" />
+  <path d="M19 12H5" />
+</svg>
+ <span class="eyebrow">PREV · 上一篇</span> </div> <div class="post-title">寒流前先檢查：一氧化碳中毒預防、熱水器安裝與各縣市補助查詢</div> </a> <div style="background: var(--tw-page-bg);"></div> </div> </section> <div class="max-w-6xl mx-auto pb-2"> <div class="pt-5 mt-6 border-t flex flex-col md:flex-row md:items-baseline gap-x-6 gap-y-2" style="border-color: var(--tw-border);"> <span class="eyebrow shrink-0">姊妹站 · FAMILY</span> <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm" style="color: var(--tw-text-muted);"> <a href="https://aire.twtools.cc/" title="aire — AI Tool Atlas·AI 工具圖鑑" class="grow-underline whitespace-nowrap">aire — AI Tool Atlas·AI 工具圖鑑</a><a href="https://tree.twtools.cc/" title="樹洞21號 — 匿名 AI 心事平台" class="grow-underline whitespace-nowrap">樹洞21號 — 匿名 AI 心事平台</a><a href="https://foootball.twtools.cc/" title="@foootball — 2026 世界盃賽程" class="grow-underline whitespace-nowrap">@foootball — 2026 世界盃賽程</a><a href="https://baseball.twtools.cc/" title="@baseball — 中職 CPBL＋MLB 深度戰報" class="grow-underline whitespace-nowrap">@baseball — 中職 CPBL＋MLB 深度戰報</a><a href="https://basketball.twtools.cc/" title="籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據" class="grow-underline whitespace-nowrap">籃球數據誌 — NBA・台灣職籃・HBL 戰績與數據</a><a href="https://racing.twtools.cc/" title="賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果" class="grow-underline whitespace-nowrap">賽車數據誌 — F1 積分榜・台北時間賽曆・各站賽果</a><a href="https://health.twtools.cc/" title="健檢數據誌 — 健檢報告上的數字，各機構判準並列" class="grow-underline whitespace-nowrap">健檢數據誌 — 健檢報告上的數字，各機構判準並列</a><a href="https://tender.twtools.cc/" title="標案雷達 — 網通設備標案查詢、押標金試算與規格預檢" class="grow-underline whitespace-nowrap">標案雷達 — 網通設備標案查詢、押標金試算與規格預檢</a><a href="https://shhhh.cc/" title="Shhhh — 專業短網址管理平台" class="grow-underline whitespace-nowrap">Shhhh — 專業短網址管理平台</a><a href="https://dvdmaru.com/" title="dvdmaru — 把事實和敘事分開來看" class="grow-underline whitespace-nowrap">dvdmaru — 把事實和敘事分開來看</a> </div> </div> </div> </main>  <script type="module" src="/_assets/SidebarLayout.astro_astro_type_script_index_0_lang.qtscrtdu.js"></script> <script>
+    (function() {
+      var hamburger = document.getElementById('sidebar-hamburger');
+      var overlay = document.getElementById('sidebar-overlay');
+      var panel = document.getElementById('sidebar-panel');
+      var closeBtn = document.getElementById('sidebar-close');
+
+      // 手機開合。與 Sidebar.jsx（React 版）行為必須一致——2026-07-31 前兩者已漂移：
+      // React 版有 Escape 關閉與背景捲動鎖，本檔沒有，同一顆漢堡鈕兩種手感。
+      // 改任一邊時請同步另一邊（或更好：把行為再往下沉到共用層）。
+      function isOpen() {
+        return overlay && !overlay.classList.contains('hidden');
+      }
+      function openSidebar() {
+        panel.classList.remove('-translate-x-full');
+        panel.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';   // 選單開著時鎖住背景捲動
+      }
+      function closeSidebar() {
+        panel.classList.remove('translate-x-0');
+        panel.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      if (hamburger) hamburger.addEventListener('click', openSidebar);
+      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+
+      // Escape 關閉。只在開啟時作用,避免無謂地重設 body.overflow 干擾其他元件。
+      document.addEventListener('keydown', function (e) {
+        if ((e.key === 'Escape' || e.key === 'Esc') && isOpen()) closeSidebar();
+      });
+
+      // ── 桌機收合 ──────────────────────────────────────────────
+      // 狀態的唯一真相是 <html> 的 class(BaseLayout boot script 已於繪製前套好),
+      // 這裡只負責切換與寫回偏好。手機不走這條(鈕在 <768px 由 CSS 隱藏)。
+      var toggle = document.querySelector('[data-sidebar-toggle]');
+      if (toggle) {
+        var root = document.documentElement;
+        var syncLabel = function () {
+          var collapsed = root.classList.contains('sidebar-collapsed');
+          toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+          toggle.setAttribute('aria-label', collapsed ? '展開側欄' : '收合側欄');
+        };
+        toggle.addEventListener('click', function () {
+          var collapsed = root.classList.toggle('sidebar-collapsed');
+          try { localStorage.setItem('tw-sidebar-collapsed', collapsed ? '1' : '0'); } catch (e) {}
+          syncLabel();
+        });
+        syncLabel();
+      }
+    })();
+  </script>  <!-- Affiliates.One / Adotone Ad Link 網站驗證碼（須 is:inline 才會原樣輸出，勿移除 is:inline） --> <script>var ConverlyCustomData = {channelId: null};</script> <script async defer src="https://cdn.adotone.com/production/adlinks/676dd203e573377526b0bfa14fb812f5265fb0db262acf5759eaf3acb67f8e66.js"></script> </body> </html> <script>
+  (function () {
+    // Print
+    var printBtn = document.getElementById('print-link');
+    if (printBtn) {
+      printBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.print();
+      });
+    }
+
+    // TOC smooth scroll
+    document.querySelectorAll('details.toc-block .toc-list a').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var target = document.querySelector(a.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        var y = target.getBoundingClientRect().top + window.scrollY - 24;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        if (history.replaceState) history.replaceState(null, '', a.getAttribute('href'));
+      });
+    });
+
+    // Mobile TOC collapse by default
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      var toc = document.querySelector('details.toc-block');
+      if (toc) toc.removeAttribute('open');
+    }
+
+    // Reactions — localStorage-backed toggle (per-slug)
+    var slug = location.pathname.replace(/\/+$/, '').split('/').pop() || 'post';
+    var STORAGE_KEY = 'twtools.reactions.' + slug;
+    var BASE = { useful: 0, bookmark: 0 };
+    function readState() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (_) {}
+      return { useful: false, bookmark: false };
+    }
+    function writeState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+    }
+    function renderCount(key, state) {
+      var el = document.querySelector('[data-react-count="' + key + '"]');
+      if (!el) return;
+      el.textContent = String(BASE[key] + (state[key] ? 1 : 0));
+    }
+    function renderActive(key, state) {
+      var btn = document.querySelector('[data-react="' + key + '"]');
+      if (!btn) return;
+      btn.classList.toggle('is-active', !!state[key]);
+    }
+    var state = readState();
+    Object.keys(BASE).forEach(function (k) { renderCount(k, state); renderActive(k, state); });
+    document.querySelectorAll('[data-react]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.getAttribute('data-react');
+        state[key] = !state[key];
+        writeState(state);
+        renderCount(key, state);
+        renderActive(key, state);
+      });
+    });
+
+    // CTA: copy link
+    var copyLink = document.querySelector('[data-action="copy-link"]');
+    if (copyLink) {
+      copyLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(location.href).then(function () {
+            var label = copyLink.querySelector('.label');
+            if (!label) return;
+            var orig = label.innerHTML;
+            label.textContent = '已複製 ✓';
+            setTimeout(function () { label.innerHTML = orig; }, 1400);
+          });
+        }
+      });
+    }
+  })();
+</script>
